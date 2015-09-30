@@ -1,0 +1,2 @@
+# FHC-AddOn-Studiengangsverwaltung
+Studiengangsverwaltung
