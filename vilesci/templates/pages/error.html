@@ -1,0 +1,11 @@
+<div id="alrt_box" class="{{error.type}}" style="min-width: 200px;">
+	<h4>Ein Fehler ist aufgetreten</h4>
+	<div ng-bind-html="error.message">
+		
+	</div>
+	<!--<span class="err_title">Fehler: </span><span>{{error.message}}</span></br>
+	<span class="err_title">Status: </span><span>{{error.status}}</span></br>
+	<span class="err_title">Status Text: </span><span>{{error.statusText}}</span></br>
+	<span class="err_title">URL: </span><span>{{error.url}}</span></br>-->
+	<p style="float:right; margin-top: 10px;"><button class="btn btn-default" ng-click="close()"><span class="glyphicon glyphicon-check"></span></button></p>
+</div>

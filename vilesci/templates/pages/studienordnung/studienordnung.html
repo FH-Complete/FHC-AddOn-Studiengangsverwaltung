@@ -1,0 +1,7 @@
+<div style="width: 100%; height: 100%;">
+	<ul class="nav nav-tabs" ng-controller="studienordnungTabCtrl">
+	  <li ng-repeat="tab in tabs" tab="tab" ng-class="getTabClass(tab)"><a ui-sref="{{tab.link}}" ng-click="setSelectedTab(tab)">{{tab.label}}</a></li>
+	</ul>
+	
+	<div ui-view></div>
+</div>

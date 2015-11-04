@@ -1,0 +1,71 @@
+<div class="contentWrapper" ng-controller='StoNeuController as stoCtrl'>
+	<form id="stoNeu" onsubmit="return false;">
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="studiengang">Studiengang</label>
+					<select class="form-control" name="studiengang" ng-model="stoCtrl.sto.stg_kz" ng-change="stoCtrl.updateVersion()">
+						<option ng-repeat="stg in stoCtrl.studiengangList" value="{{stg.studiengang_kz}}">{{stg.kurzbzlang}} - {{stg.bezeichnung}}</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="version">Version</label>
+					<input type="text" class="form-control" name="version" value="{{stoCtrl.sto.version}}" disabled/>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="aenderungsvariante">Änderungsvariante</label>
+					<select class="form-control" name="aenderungsvariante" ng-model="stoCtrl.aenderungsvariante">
+						<option ng-repeat="av in stoCtrl.aenderungsvarianteList">{{av.bezeichnung}}</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="status">Status</label>
+					<input type="text" class="form-control" name="status" value="{{stoCtrl.sto.status}}" disabled/>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="gueltigvon">Gültig von</label>
+					<select class="form-control" name="gueltigvon" ng-model="stoCtrl.sto.gueltigvon" ng-change="stoCtrl.updateVersion()">
+						<option ng-repeat="sem in stoCtrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="gueltigbis">Gültig bis</label>
+					<select class="form-control" name="gueltigbis" ng-model="stoCtrl.sto.gueltigbis">
+						<option ng-repeat="sem in stoCtrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label for="status">Begründung</label>
+					<textarea class="form-control" rows="5" name='begruendung' ng-model="stoCtrl.sto.begruendung"></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-1">
+				<div class="form-group">
+					<div>
+						<button type="submit" class="btn btn-default" ng-click="stoCtrl.save()">Speichern</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>

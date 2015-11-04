@@ -1,0 +1,114 @@
+<div class="contentWrapper" ng-controller="StgReihungstestCtrl as ctrl">
+	<!--<form id="stoMetadaten" onsubmit="return false;">
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="version">Reihungstest</label>
+					<select class="form-control" name="gueltigvon" ng-model="ctrl.data">
+						<option ng-repeat="reihungstest in ctrl.data" value="{{reihungstest.reihungstest_id}}">{{reihungstest.datum}} {{reihungstest.anmerkung}}</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</form>-->
+	<table id="dataGridReihungstest" class="easyui-datagrid" data-options="url: '', method: 'get', singleSelect:true" style='height: 200px;'>
+		<thead>
+			<tr>
+				<th data-options="field: 'reihungstest_id',align: 'right'">ID</th>
+				<th data-options="field: 'studiengang_kz',align:'right'">STG KZ</th>
+				<th data-options="field: 'ort_kurzbz',align:'right'">Ort</th>
+				<th data-options="field: 'anmerkung',align:'left'">Anmerkung</th>
+				<th data-options="field: 'datum',align:'left'">Datum</th>
+				<th data-options="field: 'uhrzeit',align:'left'">Uhrzeit</th>
+				<th data-options="field: 'done',align:'left'">Done</th>
+				<th data-options="field: 'freigeschaltet',align:'left'">freigeschaltet</th>
+				<th data-options="field: 'max_teilnehmer',align:'left'">max Teilnehmer</th>
+				<th data-options="field: 'oeffentlich',align:'left'">öffentlich</th>
+				<th data-options="field: 'max_teilnehmer',align:'left'">max Teilnehmer</th>
+			</tr>
+		</thead>
+	</table>
+	</br>
+	<form id="reihungstestDetails" onsubmit="return false;" style="display: none;">
+		<!-- Zeile 1 -->
+		<div class="row">
+			<div class="col-sm-1">
+				<div class="form-group">
+					<label for="reihungstest_id">ID</label>
+					<input type="text" class="form-control" name="reihungstest_id" ng-model="ctrl.reihungstest.reihungstest_id" disabled/>
+				</div>
+			</div>
+			<div class="col-sm-1">
+				<div class="form-group">
+					<label for="stgkz">Stg KZ</label>
+					<input type="text" class="form-control" name="stgkz" ng-model="ctrl.reihungstest.studiengang_kz" disabled/>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="ort">Ort</label>
+					<input type="text" class="form-control" name="ort" ng-model="ctrl.reihungstest.ort_kurzbz" disabled/>
+				</div>
+			</div>
+		</div>
+		<!-- Zeile 2 -->
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="datum">Datum</label>
+					<input type="text" class="form-control" name="datum" ng-model="ctrl.reihungstest.datum" disabled/>
+				</div>
+			</div>
+			<div class="col-sm-1">
+				<div class="form-group">
+					<label for="uhrzeit">Uhrzeit</label>
+					<input type="text" class="form-control" name="uhrzeit" ng-model="ctrl.reihungstest.uhrzeit" disabled/>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="maxTeilnehmer">max Teilnehmer</label>
+					<input type="text" class="form-control" name="maxTeilnehmer" ng-model="ctrl.reihungstest.max_teilnehmer"/>
+				</div>
+			</div>
+		</div>
+		<!-- Zeile 3 -->
+		<div class="row">
+			<div class="col-sm-5">
+				<div class="form-group">
+					<label for="anmerkung">Anmerkung</label>
+					<input type="text" class="form-control" name="anmerkung" ng-model="ctrl.reihungstest.anmerkung"/>
+				</div>
+			</div>
+		</div>
+		<!-- Zeile 4 -->
+		<div class="row">
+			<div class="col-sm-1">
+				<div class="checkbox">
+					<label>
+					  <input type="checkbox" name="oeffentlich" ng-model="ctrl.reihungstest.oeffentlich"/>
+					  öffentlich
+					</label>
+				  </div>
+			</div>
+			<div class="col-sm-1">
+				<div class="checkbox">
+					<label>
+					  <input type="checkbox" name="freigeschaltet" ng-model="ctrl.reihungstest.freigeschaltet"/>
+					  freigeschaltet
+					</label>
+				  </div>
+			</div>
+		</div>
+		<!-- Zeile 5 -->
+		<div class="row">
+			<div class="col-sm-1">
+				<div class="form-group">
+					<div>
+						<button type="submit" class="btn btn-default" ng-click="ctrl.save()">Speichern</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>

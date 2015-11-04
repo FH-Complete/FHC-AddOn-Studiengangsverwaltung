@@ -1,0 +1,7 @@
+<div ng-controller="StgBetriebsdatenCtrl">
+	<ul class="nav nav-tabs">
+	  <li ng-repeat="tab in tabs" tab="tab" ng-class="getTabClass(tab)"><a ui-sref="{{tab.link}}" ng-click="setSelectedTab(tab)">{{tab.label}}</a></li>
+	</ul>
+	
+	<div ui-view></div>
+</div>
