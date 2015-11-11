@@ -28,19 +28,16 @@ angular.module('stgv2')
 			{
 				$("#dataGridReihungstest").datagrid({
 					//TODO format Time in column
-					url: "./api/studiengang/reihungstest.php?stgkz=" + $stateParams.stgkz+"&studiensemester_kurzbz="+ctrl.selectedStudiensemester,
+					url: "./api/studiengang/reihungstest/reihungstest.php?stgkz=" + $stateParams.stgkz+"&studiensemester_kurzbz="+ctrl.selectedStudiensemester,
 					method: 'GET',
 					onLoadSuccess: function(data)
 					{
 						//Error Handling happens in loadFilter
-						console.log(data);
 					},
 					onLoadError: function(){
 						//TODO Error Handling
-						console.log("fehler");
 					},
 					loadFilter: function(data){
-						console.log(data);
 						var result = {};
 						if (data.erfolg)
 						{
@@ -58,7 +55,7 @@ angular.module('stgv2')
 					onClickRow: function (row)
 					{
 						var row = $("#dataGridReihungstest").datagrid("getSelected");
-						ctrl.loadReihungstestDetails(row.reihungstest_id);
+						ctrl.loadReihungstestDetails(row);
 						if($("#save").is(":visible"))
 							ctrl.changeButtons();
 					}
@@ -72,33 +69,35 @@ angular.module('stgv2')
 				firstDay: 1
 			});
 			
-			ctrl.loadReihungstestDetails = function(reihungstest_id)
+			ctrl.loadReihungstestDetails = function(row)
 			{
-				$http({
-					method: "GET",
-					url: "./api/studiengang/reihungstestDetails.php?reihungstest_id=" + reihungstest_id
-				}).then(function success(response) {
-					if (response.data.erfolg)
-					{
-						ctrl.reihungstest = response.data.info;
-						var currentDate = new Date();
-						$("#reihungstestDetails").show();
-					}
-					else
-					{
-						errorService.setError(getErrorMsg(response));
-					}
-				}, function error(response) {
-					errorService.setError(getErrorMsg(response));
-				});
+				ctrl.reihungstest = row;
+				$scope.$apply();
+				$("#reihungstestDetails").show();
+				//not needed anymore
+//				$http({
+//					method: "GET",
+//					url: "./api/studiengang/reihungstestDetails.php?reihungstest_id=" + reihungstest_id
+//				}).then(function success(response) {
+//					if (response.data.erfolg)
+//					{
+//						ctrl.reihungstest = response.data.info;
+//						$("#reihungstestDetails").show();
+//					}
+//					else
+//					{
+//						errorService.setError(getErrorMsg(response));
+//					}
+//				}, function error(response) {
+//					errorService.setError(getErrorMsg(response));
+//				});
 			};
 			ctrl.update = function()
 			{
 				var updateData = ctrl.reihungstest;
-				console.log(updateData);
 				$http({
 					method: 'POST',
-					url: './api/studiengang/update_reihungstest.php',
+					url: './api/studiengang/reihungstest/update_reihungstest.php',
 					headers: {
 						'Content-Type': 'application/json'
 					},
@@ -114,10 +113,9 @@ angular.module('stgv2')
 			ctrl.save = function()
 			{
 				var saveData = ctrl.reihungstest;
-				console.log(saveData);
 				$http({
 					method: 'POST',
-					url: './api/studiengang/save_reihungstest.php',
+					url: './api/studiengang/reihungstest/save_reihungstest.php',
 					headers: {
 						'Content-Type': 'application/json'
 					},

@@ -1,11 +1,11 @@
 <?php
 
-require_once('../../../../../config/vilesci.config.inc.php');
-require_once('../../../../../include/functions.inc.php');
-require_once('../../../../../include/benutzerberechtigung.class.php');
-require_once('../../../../../include/reihungstest.class.php');
+require_once('../../../../../../config/vilesci.config.inc.php');
+require_once('../../../../../../include/functions.inc.php');
+require_once('../../../../../../include/benutzerberechtigung.class.php');
+require_once('../../../../../../include/reihungstest.class.php');
 //TODO functions from core?
-require_once('../functions.php');
+require_once('../../functions.php');
 
 //TODO
 $DEBUG = true;
@@ -28,16 +28,16 @@ else
 function mapDataToReihungstest($data)
 {
     $rt = new reihungstest($data->reihungstest_id);
-    $rt->studiengang_kz = $data->studiengang_kz;
+    //$rt->studiengang_kz = $data->studiengang_kz;
     $rt->ort_kurzbz = $data->ort_kurzbz;
     $rt->anmerkung = $data->anmerkung;
     $rt->datum = $data->datum;
     $rt->uhrzeit = $data->uhrzeit;
-    $rt->updatevon = get_uid();
     $rt->max_teilnehmer = $data->max_teilnehmer;
     $rt->oeffentlich = $data->oeffentlich;
     $rt->freigeschaltet = $data->freigeschaltet;
     $rt->studiensemester_kurzbz = $data->studiensemester_kurzbz;
+    $rt->updatevon = get_uid();
     return $rt;
 }
 

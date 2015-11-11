@@ -28,7 +28,7 @@ angular.module('stgv2')
 			{
 				$("#dataGridFoerdervertrag").datagrid({
 					//TODO format Time in column
-					url: "./api/studiengang/foerdervertrag.php?stgkz=" + $stateParams.stgkz,
+					url: "./api/studiengang/foerdervertrag/foerdervertrag.php?stgkz=" + $stateParams.stgkz,
 					method: 'GET',
 					onLoadSuccess: function (data)
 					{
@@ -52,10 +52,10 @@ angular.module('stgv2')
 							return result;
 						}
 					},
-					onClickRow: function (row)
+					onClickRow: function()
 					{
 						var row = $("#dataGridFoerdervertrag").datagrid("getSelected");
-						ctrl.loadFoerdervertragDetails(row.foerdervertrag_id);
+						ctrl.loadFoerdervertragDetails(row);
 						if ($("#save").is(":visible"))
 							ctrl.changeButtons();
 					}
@@ -64,12 +64,19 @@ angular.module('stgv2')
 			
 			ctrl.loadDataGrid();
 			
+			ctrl.loadFoerdervertragDetails = function(row)
+			{
+				ctrl.foerdervertrag = row;
+				$scope.$apply();
+				$("#foerdervertragDetails").show();
+			}
+			
 			ctrl.save = function()
 			{
 				var saveData = ctrl.foerdervertrag;
 				$http({
 					method: 'POST',
-					url: './api/studiengang/save_foerdervertrag.php',
+					url: './api/studiengang/foerdervertrag/save_foerdervertrag.php',
 					headers: {
 						'Content-Type': 'application/json'
 					},
@@ -79,6 +86,24 @@ angular.module('stgv2')
 					$("#dataGridFoerdervertrag").datagrid('reload');
 					//TODO select recently added Reihungstest in Datagrid
 					ctrl.foerdervertrag = new Foerdervertrag();
+				}, function error(response) {
+					errorService.setError(getErrorMsg(response));
+				});
+			};
+			
+			ctrl.update = function()
+			{
+				var updateData = ctrl.foerdervertrag;
+				$http({
+					method: 'POST',
+					url: './api/studiengang/foerdervertrag/update_foerdervertrag.php',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					data: JSON.stringify(updateData)
+				}).then(function success(response) {
+					//TODO success 
+					$("#dataGridFoerdervertrag").datagrid('reload');
 				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
 				});

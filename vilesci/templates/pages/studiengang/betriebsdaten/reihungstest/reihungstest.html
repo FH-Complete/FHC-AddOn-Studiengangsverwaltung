@@ -32,16 +32,18 @@
 		<div class="row">
 			<div class="col-sm-1">
 				<div class="form-group">
-					<label for="reihungstest_id">ID</label>
-					<input type="text" class="form-control" name="reihungstest_id" value="{{ctrl.reihungstest.reihungstest_id}}" disabled/>
+					<label class="sr-only" for="reihungstest_id">ID</label>
+					<input type="hidden" class="form-control" name="reihungstest_id" value="{{ctrl.reihungstest.reihungstest_id}}" disabled/>
 				</div>
 			</div>
 			<div class="col-sm-1">
 				<div class="form-group">
-					<label for="stgkz">Stg KZ</label>
-					<input type="text" class="form-control" name="stgkz" value="{{ctrl.reihungstest.studiengang_kz}}" disabled/>
+					<label class="sr-only" for="stgkz">Stg KZ</label>
+					<input type="hidden" class="form-control" name="stgkz" value="{{ctrl.reihungstest.studiengang_kz}}" disabled/>
 				</div>
 			</div>
+		</div>
+		<div class="row">
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="studiensemester">Studiensemester</label>
