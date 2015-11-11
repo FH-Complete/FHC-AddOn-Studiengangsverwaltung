@@ -1,16 +1,15 @@
 <div class="contentWrapper" ng-controller="StgReihungstestCtrl as ctrl">
-	<!--<form id="stoMetadaten" onsubmit="return false;">
-		<div class="row">
-			<div class="col-sm-2">
-				<div class="form-group">
-					<label for="version">Reihungstest</label>
-					<select class="form-control" name="gueltigvon" ng-model="ctrl.data">
-						<option ng-repeat="reihungstest in ctrl.data" value="{{reihungstest.reihungstest_id}}">{{reihungstest.datum}} {{reihungstest.anmerkung}}</option>
-					</select>
-				</div>
-			</div>
-		</div>
-	</form>-->
+	<div class="col-sm-2">
+		<button class='btn btn-default' ng-click='ctrl.newReihungstest()'>neuer Reihungstest</button>
+	</div>
+	<div class="col-sm-2">
+		<select class="form-control" ng-change="ctrl.loadDataGrid()" ng-model="ctrl.selectedStudiensemester">
+			<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
+		</select>
+	</div>
+	</br>
+	</br>
+	</br>
 	<table id="dataGridReihungstest" class="easyui-datagrid" data-options="url: '', method: 'get', singleSelect:true" style='height: 200px;'>
 		<thead>
 			<tr>
@@ -20,11 +19,10 @@
 				<th data-options="field: 'anmerkung',align:'left'">Anmerkung</th>
 				<th data-options="field: 'datum',align:'left'">Datum</th>
 				<th data-options="field: 'uhrzeit',align:'left'">Uhrzeit</th>
-				<th data-options="field: 'done',align:'left'">Done</th>
+				<th data-options="field: 'max_teilnehmer',align:'left'">max Teilnehmer</th>
 				<th data-options="field: 'freigeschaltet',align:'left'">freigeschaltet</th>
-				<th data-options="field: 'max_teilnehmer',align:'left'">max Teilnehmer</th>
 				<th data-options="field: 'oeffentlich',align:'left'">öffentlich</th>
-				<th data-options="field: 'max_teilnehmer',align:'left'">max Teilnehmer</th>
+				<th data-options="field: 'studiensemester_kurzbz',align:'left'">Studiensemester</th>
 			</tr>
 		</thead>
 	</table>
@@ -35,19 +33,27 @@
 			<div class="col-sm-1">
 				<div class="form-group">
 					<label for="reihungstest_id">ID</label>
-					<input type="text" class="form-control" name="reihungstest_id" ng-model="ctrl.reihungstest.reihungstest_id" disabled/>
+					<input type="text" class="form-control" name="reihungstest_id" value="{{ctrl.reihungstest.reihungstest_id}}" disabled/>
 				</div>
 			</div>
 			<div class="col-sm-1">
 				<div class="form-group">
 					<label for="stgkz">Stg KZ</label>
-					<input type="text" class="form-control" name="stgkz" ng-model="ctrl.reihungstest.studiengang_kz" disabled/>
+					<input type="text" class="form-control" name="stgkz" value="{{ctrl.reihungstest.studiengang_kz}}" disabled/>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="studiensemester">Studiensemester</label>
+					<select class="form-control" name="studiensemester" ng-model="ctrl.reihungstest.studiensemester_kurzbz">
+						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
+					</select>
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="ort">Ort</label>
-					<input type="text" class="form-control" name="ort" ng-model="ctrl.reihungstest.ort_kurzbz" disabled/>
+					<input type="text" class="form-control" name="ort" ng-model="ctrl.reihungstest.ort_kurzbz"/>
 				</div>
 			</div>
 		</div>
@@ -56,13 +62,13 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="datum">Datum</label>
-					<input type="text" class="form-control" name="datum" ng-model="ctrl.reihungstest.datum" disabled/>
+					<input type="text" class="form-control" name="datum" ng-model="ctrl.reihungstest.datum"/>
 				</div>
 			</div>
 			<div class="col-sm-1">
 				<div class="form-group">
 					<label for="uhrzeit">Uhrzeit</label>
-					<input type="text" class="form-control" name="uhrzeit" ng-model="ctrl.reihungstest.uhrzeit" disabled/>
+					<input type="text" class="form-control" name="uhrzeit" ng-model="ctrl.reihungstest.uhrzeit"/>
 				</div>
 			</div>
 			<div class="col-sm-2">
@@ -105,7 +111,8 @@
 			<div class="col-sm-1">
 				<div class="form-group">
 					<div>
-						<button type="submit" class="btn btn-default" ng-click="ctrl.save()">Speichern</button>
+						<button id="update" type="submit" class="btn btn-default" ng-click="ctrl.update()">Speichern</button>
+						<button id="save" type="submit" class="btn btn-default" ng-click="ctrl.save()" style="display:none;">Speichern</button>
 					</div>
 				</div>
 			</div>

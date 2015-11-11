@@ -41,7 +41,8 @@ $data = array(
     'updatevon' => $reihungstest->updatevon,
     'max_teilnehmer' => $reihungstest->max_teilnehmer,
     'oeffentlich' => $reihungstest->oeffentlich,
-    'freigeschaltet' => $reihungstest->freigeschaltet
+    'freigeschaltet' => $reihungstest->freigeschaltet,
+    'studiensemester_kurzbz' => $reihungstest->studiensemester_kurzbz
 );
 
 returnAJAX(true, $data);

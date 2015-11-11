@@ -1,7 +1,7 @@
 angular.module('stgv2')
 	.controller('StgBetriebsdatenCtrl', function($scope, $http, $state, $stateParams){
 		$scope.stgkz = $stateParams.stgkz;
-
+		
 		//TODO get tabs from config
 		$scope.tabs = [
 			{label: 'Bewerbungstermine', link: '.bewerbung'},

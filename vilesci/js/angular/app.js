@@ -142,6 +142,7 @@ angular.module("stgv2")
 				{label: 'Metadaten', link: '.metadaten'},
 				{label: 'Eckdaten', link: '.eckdaten'},
 				{label: 'Module', link: '.module'},
+				{label: 'LVs', link: '.lehrveranstaltungen'},
 				{label: 'Auslandssemeser', link: '.auslandssemester'},
 				{label: 'Berufspraktikum', link: '.berufspraktikum'},
 				{label: 'Studienjahr', link: '.studienjahr'},

@@ -41,9 +41,12 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<link rel="stylesheet" href="./css/bootstrap-3.3.5/dist/css/bootstrap-theme.css">
 
 	<!-- Easy UI CSS -->
-	<link rel="stylesheet" type="text/css" href="./js/jquery-easyui-1.4.3/themes/default/easyui.css">
-	<link rel="stylesheet" type="text/css" href="./js/jquery-easyui-1.4.3/themes/icon.css">
-	<link rel="stylesheet" type="text/css" href="./js/jquery-easyui-1.4.3/themes/color.css">
+	<link rel="stylesheet" type="text/css" href="./js/jquery-easyui-1.4.4/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="./js/jquery-easyui-1.4.4/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="./js/jquery-easyui-1.4.4/themes/color.css">
+	
+	<!-- JQuery UI CSS -->
+	<link rel="stylesheet" type="text/css" href="./js/jquery-ui-1.11.4.custom/jquery-ui.css">
 
 	<!-- App CSS -->
 	<link rel="stylesheet" type="text/css" href="./css/style.css">
@@ -52,8 +55,11 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script type="text/javascript" src="./js/jquery-1.11.3.js"></script>
 
 	<!-- Easy UI JS -->
-	<script type="text/javascript" src="./js/jquery-easyui-1.4.3/jquery.min.js"></script>
-	<script type="text/javascript" src="./js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-easyui-1.4.4/jquery.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+	
+	<!-- JQuery UI -->
+	<script type="text/javascript" src="./js/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
 
 	<!-- Bootstrap JS -->
 	<script src="./css/bootstrap-3.3.5/dist/js/bootstrap.js"></script>
@@ -140,16 +146,16 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 		    <li ng-repeat="tab in tabs" tab="tab" ng-class="getTabClass(tab)"><button type="button" class="btn btn-default" ng-click="setSelectedTab(tab)">{{tab.label}}</button></li>
 		</ul>-->
 	    </div>
-	    <div id="west"data-options="region:'west', split:true, maxWidth: 400" ng-controller="TreeCtrl">
+	    <div id="west"data-options="region:'west', split: true, maxWidth: 400" ng-controller="TreeCtrl">
 		<ul id="west_tree"class="easyui-tree"></ul>
 	    </div>
-	    <div id="footer" data-options="region:'south'" style="height: 5%; pos">
+	    <div id="footer" data-options="region:'south'" style="height: 5%;">
 		<!--TODO zusätzliche Daten anzeigen; z.B.: Username, DB, etc-->
 		<div id="user">User: Stefan Puraner</div>
 	    </div>
 	    <div id="center" data-options="region:'center'">
 		<div class="easyui-layout" fit="true">
-		    <div id="centerNorth" data-options="region:'north', split:true, height: 200" border="false" ng-controller="TreeGridCtrl as gridCtrl">
+		    <div id="centerNorth" data-options="region:'north', split:true, height: 200" border="false" ng-controller="TreeGridCtrl as gridCtrl" >
 			<!--<div id="treeGridWrapper" >-->
 			<table id="treeGrid" class="easyui-treegrid" data-options="url: '', method: 'get', rownumbers: true, idField: 'id', treeField: 'text', fit: true">
 			    <thead frozen="true">

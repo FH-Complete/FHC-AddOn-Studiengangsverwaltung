@@ -124,6 +124,11 @@ angular.module('stgv2').config(function($stateProvider, $urlRouterProvider){
 			url: '/module',
 			templateUrl: './templates/pages/studienplan/module/stplModule.html'
 		})
+		.state('studienplan.lehrveranstaltungen', {
+			name: 'studienplan.lehrveranstaltungen',
+			url: '/lehrveranstaltungen',
+			templateUrl: './templates/pages/studienplan/lehrveranstaltungen/stplLehrveranstaltungen.html'
+		})
 		.state('studienplan.auslandssemester', {
 			name: 'studienplan.auslandssemester',
 			url: '/auslandssemester',
