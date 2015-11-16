@@ -91,14 +91,15 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 
 	<!-- Angular Studienordnung Controllers -->
 	<script type="text/javascript" src="./js/angular/controllers/studienordnung/sto-neu-controller.js"></script>
-	<script type="text/javascript" src="./js/angular/controllers/studienordnung/sto-metadaten-index-controller.js"></script>
-	<script type="text/javascript" src="./js/angular/controllers/studienordnung/sto-dokumente-index-controller.js"></script>
+	<script type="text/javascript" src="./js/angular/controllers/studienordnung/sto-metadaten-controller.js"></script>
+	<script type="text/javascript" src="./js/angular/controllers/studienordnung/sto-dokumente-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studienordnung/sto-eckdaten-controller.js"></script>
 
 	<!-- Angular Studienplan Controllers -->
 	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-neu-controller.js"></script>
-	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-metadaten-index-controller.js"></script>
-	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-eckdaten-index-controller.js"></script>
+	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-metadaten-controller.js"></script>
+	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-eckdaten-controller.js"></script>
+	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-gueltigkeit-controller.js"></script>
 
 	<!-- Angular State Controllers -->
 	<script type="text/javascript" src="./js/angular/controllers/state/state-main-controller.js"></script>
@@ -160,14 +161,14 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 			<table id="treeGrid" class="easyui-treegrid" data-options="url: '', method: 'get', rownumbers: true, idField: 'id', treeField: 'text', fit: true">
 			    <thead frozen="true">
 				<tr>
-				    <th data-options="field: 'text'" width="250">Bezeichnung</th>
+				    <th data-options="field: 'text'" width="250">Version</th>
 				</tr>
 			    </thead>
 			    <thead>
 				<tr>
 				    <th data-options="field: 'status',align: 'right'">Status</th>
 				    <th data-options="field: 'stgkz',align:'right'">STG KZ</th>
-				    <th data-options="field: 'version',align:'right'">Version</th>
+				    <!--<th data-options="field: 'version',align:'right'">Version</th>-->
 				    <th data-options="field: 'orgform_kurzbz',align:'right'">Orgform</th>
 				    <th data-options="field: 'ects',align:'right'">ECTS</th>
 				    <th data-options="field: 'gueltigvon',align:'right'">Gültig von</th>

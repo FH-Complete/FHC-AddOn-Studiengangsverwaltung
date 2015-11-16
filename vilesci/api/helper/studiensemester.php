@@ -10,10 +10,29 @@ require_once('../functions.php');
 //TODO
 $DEBUG = true;
 
-$studiensemester = new studiensemester();
-$studiensemester->getAll();
+$method = filter_input(INPUT_GET, "method");
 
-$data = $studiensemester->studiensemester;
+if(is_null($method))
+{
+    $method = "getAll";   
+}
+elseif(($method == false))
+{
+    returnAJAX(false, "Fehler beim lesen der GET Variablen");    
+}
+
+
+
+$studiensemester = new studiensemester();
+if (method_exists($studiensemester, $method))
+{
+	$studiensemester->$method(); 
+	$data = $studiensemester->studiensemester;
+}
+else
+{
+	returnAJAX(false, "Methode ".$method." existiert nicht.");
+}
 
 returnAJAX(true, $data);
 ?>

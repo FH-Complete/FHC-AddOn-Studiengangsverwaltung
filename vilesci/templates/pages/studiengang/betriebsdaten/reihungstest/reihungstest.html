@@ -1,12 +1,14 @@
 <div class="contentWrapper" ng-controller="StgReihungstestCtrl as ctrl">
 	<div class="col-sm-2">
-		<button class='btn btn-default' ng-click='ctrl.newReihungstest()'>neuer Reihungstest</button>
+		<button class='btn btn-default btn-sm' ng-click='ctrl.newReihungstest()' id="newReihungstest">neuer Reihungstest</button>
 	</div>
 	<div class="col-sm-2">
+		<label>Studiensemester</label>
 		<select class="form-control" ng-change="ctrl.loadDataGrid()" ng-model="ctrl.selectedStudiensemester">
 			<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
 		</select>
 	</div>
+	</br>
 	</br>
 	</br>
 	</br>
@@ -33,13 +35,13 @@
 			<div class="col-sm-1">
 				<div class="form-group">
 					<label class="sr-only" for="reihungstest_id">ID</label>
-					<input type="hidden" class="form-control" name="reihungstest_id" value="{{ctrl.reihungstest.reihungstest_id}}" disabled/>
+					<input type="hidden" class="form-control input-sm" name="reihungstest_id" value="{{ctrl.reihungstest.reihungstest_id}}" disabled/>
 				</div>
 			</div>
 			<div class="col-sm-1">
 				<div class="form-group">
 					<label class="sr-only" for="stgkz">Stg KZ</label>
-					<input type="hidden" class="form-control" name="stgkz" value="{{ctrl.reihungstest.studiengang_kz}}" disabled/>
+					<input type="hidden" class="form-control input-sm" name="stgkz" value="{{ctrl.reihungstest.studiengang_kz}}" disabled/>
 				</div>
 			</div>
 		</div>
@@ -47,15 +49,16 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="studiensemester">Studiensemester</label>
-					<select class="form-control" name="studiensemester" ng-model="ctrl.reihungstest.studiensemester_kurzbz">
+					<select class="form-control input-sm" name="studiensemester" ng-model="ctrl.reihungstest.studiensemester_kurzbz">
 						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
 					</select>
 				</div>
 			</div>
 			<div class="col-sm-2">
+				<!--TODO ORT aus DB laden-->
 				<div class="form-group">
 					<label for="ort">Ort</label>
-					<input type="text" class="form-control" name="ort" ng-model="ctrl.reihungstest.ort_kurzbz"/>
+					<input type="text" class="form-control input-sm" name="ort" ng-model="ctrl.reihungstest.ort_kurzbz"/>
 				</div>
 			</div>
 		</div>
@@ -64,19 +67,19 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="datum">Datum</label>
-					<input type="text" class="form-control" name="datum" ng-model="ctrl.reihungstest.datum"/>
+					<input type="text" class="form-control input-sm" name="datum" ng-model="ctrl.reihungstest.datum"/>
 				</div>
 			</div>
 			<div class="col-sm-1">
 				<div class="form-group">
 					<label for="uhrzeit">Uhrzeit</label>
-					<input type="text" class="form-control" name="uhrzeit" ng-model="ctrl.reihungstest.uhrzeit"/>
+					<input type="text" class="form-control input-sm" name="uhrzeit" ng-model="ctrl.reihungstest.uhrzeit"/>
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="maxTeilnehmer">max Teilnehmer</label>
-					<input type="text" class="form-control" name="maxTeilnehmer" ng-model="ctrl.reihungstest.max_teilnehmer"/>
+					<input type="text" class="form-control input-sm" name="maxTeilnehmer" ng-model="ctrl.reihungstest.max_teilnehmer"/>
 				</div>
 			</div>
 		</div>
@@ -85,7 +88,7 @@
 			<div class="col-sm-5">
 				<div class="form-group">
 					<label for="anmerkung">Anmerkung</label>
-					<input type="text" class="form-control" name="anmerkung" ng-model="ctrl.reihungstest.anmerkung"/>
+					<input type="text" class="form-control input-sm" name="anmerkung" ng-model="ctrl.reihungstest.anmerkung"/>
 				</div>
 			</div>
 		</div>

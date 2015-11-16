@@ -73,14 +73,15 @@ angular.module('stgv2')
 			
 			ctrl.save = function()
 			{
-				var saveData = ctrl.foerdervertrag;
+				var saveData = {data: ""}
+				saveData.data = ctrl.foerdervertrag;
 				$http({
 					method: 'POST',
 					url: './api/studiengang/foerdervertrag/save_foerdervertrag.php',
+					data: $.param(saveData),
 					headers: {
-						'Content-Type': 'application/json'
-					},
-					data: JSON.stringify(saveData)
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
 				}).then(function success(response) {
 					//TODO success 
 					$("#dataGridFoerdervertrag").datagrid('reload');
@@ -93,14 +94,15 @@ angular.module('stgv2')
 			
 			ctrl.update = function()
 			{
-				var updateData = ctrl.foerdervertrag;
+				var updateData = {data: ""}
+				updateData.data = ctrl.foerdervertrag;
 				$http({
 					method: 'POST',
 					url: './api/studiengang/foerdervertrag/update_foerdervertrag.php',
+					data: $.param(updateData),
 					headers: {
-						'Content-Type': 'application/json'
-					},
-					data: JSON.stringify(updateData)
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
 				}).then(function success(response) {
 					//TODO success 
 					$("#dataGridFoerdervertrag").datagrid('reload');
@@ -111,6 +113,7 @@ angular.module('stgv2')
 			
 			ctrl.newFoerdervertrag = function()
 			{
+				$("#dataGridFoerdervertrag").datagrid("unselectAll");
 				ctrl.foerdervertrag = new Foerdervertrag();
 				ctrl.foerdervertrag.studiengang_kz = $scope.stgkz;
 				if(!$("#save").is(":visible"))
@@ -118,17 +121,43 @@ angular.module('stgv2')
 				$("#foerdervertragDetails").show();
 			};
 			
+			ctrl.delete = function()
+			{
+				if(confirm("Wollen Sie den Fördervertrag wirklich Löschen?"))
+				{
+					var deleteData = {data: ""}
+					deleteData.data = ctrl.foerdervertrag;
+					console.log(deleteData);
+					$http({
+						method: 'POST',
+						url: './api/studiengang/foerdervertrag/delete_foerdervertrag.php',
+						data: $.param(deleteData),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response) {
+						//TODO success 
+						$("#dataGridFoerdervertrag").datagrid('reload');
+						ctrl.newFoerdervertrag();
+					}, function error(response) {
+						errorService.setError(getErrorMsg(response));
+					});
+				}
+			}
+			
 			ctrl.changeButtons = function()
 			{
 				if($("#save").is(":visible"))
 				{
 					$("#save").hide();
 					$("#update").show();
+					$("#delete").show();
 				}
 				else
 				{
 					$("#save").show();
 					$("#update").hide();
+					$("#delete").hide();
 				}
 			};
 

@@ -1,0 +1,20 @@
+<div class="contentWrapper"  ng-controller="StplGueltigkeitCtrl as ctrl">
+	<h1>Gültigkeit</h1>
+	
+	<table border="1" width="800px">
+		<thead>
+			<tr>
+				<th width="200">Studiensemester</th>
+				<th width="100" ng-repeat="n in ctrl.range(ctrl.studienplan.regelstudiendauer)">{{n}}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="sem in ctrl.studiensemesterList">
+				<td>{{sem.studiensemester_kurzbz}}</td>
+				<td ng-repeat="n in ctrl.range(ctrl.studienplan.regelstudiendauer)">X</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	
+</div>

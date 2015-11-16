@@ -119,6 +119,11 @@ angular.module('stgv2').config(function($stateProvider, $urlRouterProvider){
 			url: '/eckdaten',
 			templateUrl: './templates/pages/studienplan/eckdaten/stplEckdaten.html'
 		})
+		.state('studienplan.gueltigkeit', {
+			name: 'studienplan.gueltigkeit',
+			url: '/gueltigkeit',
+			templateUrl: './templates/pages/studienplan/gueltigkeit/stplGueltigkeit.html'
+		})
 		.state('studienplan.module', {
 			name: 'studienplan.module',
 			url: '/module',

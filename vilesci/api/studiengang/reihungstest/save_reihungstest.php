@@ -9,8 +9,9 @@ require_once('../../functions.php');
 
 //TODO
 $DEBUG = true;
-//TODO PHP get_last_error()
-$data = json_decode(file_get_contents('php://input'));
+$data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
+$data = (Object) $data["data"];
+
 $reihungstest = mapDataToReihungstest($data);
 if($reihungstest->save())
 {
@@ -33,8 +34,8 @@ function mapDataToReihungstest($data)
     $rt->uhrzeit = $data->uhrzeit;
     $rt->inservon = get_uid();
     $rt->max_teilnehmer = $data->max_teilnehmer;
-    $rt->oeffentlich = $data->oeffentlich;
-    $rt->freigeschaltet = $data->freigeschaltet;
+    $rt->oeffentlich = parseBoolean($data->oeffentlich);
+    $rt->freigeschaltet = parseBoolean($data->freigeschaltet);
     return $rt;
 }
 

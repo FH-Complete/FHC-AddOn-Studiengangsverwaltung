@@ -1,6 +1,6 @@
 <div class="contentWrapper" ng-controller="StgFoerderungenCtrl as ctrl">
 	<div class="col-sm-2">
-		<button class='btn btn-default' ng-click='ctrl.newFoerdervertrag()'>neuer Fördervertrag</button>
+		<button class='btn btn-default btn-sm' ng-click='ctrl.newFoerdervertrag()'>neuer Fördervertrag</button>
 	</div>
 	</br>
 	</br>
@@ -26,13 +26,13 @@
 			<div class="col-sm-1">
 				<div class="form-group">
 					<label class="sr-only" for="foerdervertrag_id">ID</label>
-					<input type="hidden" class="form-control" name="foerdervertrag_id" value="{{ctrl.foerdervertrag.foerdervertrag_id}}" disabled/>
+					<input type="hidden" class="form-control input-sm" name="foerdervertrag_id" value="{{ctrl.foerdervertrag.foerdervertrag_id}}" disabled/>
 				</div>
 			</div>
 			<div class="col-sm-1">
 				<div class="form-group">
 					<label class="sr-only" for="stgkz">Stg KZ</label>
-					<input type="hidden" class="form-control" name="stgkz" value="{{ctrl.foerdervertrag.studiengang_kz}}" disabled/>
+					<input type="hidden" class="form-control input-sm" name="stgkz" value="{{ctrl.foerdervertrag.studiengang_kz}}" disabled/>
 				</div>
 			</div>
 		</div>
@@ -41,13 +41,13 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="foerdergeber">Fördergeber</label>
-					<input type="text" class="form-control" name="foerdergeber" ng-model="ctrl.foerdervertrag.foerdergeber"/>
+					<input type="text" class="form-control input-sm" name="foerdergeber" ng-model="ctrl.foerdervertrag.foerdergeber"/>
 				</div>
 			</div>
 			<div class="col-sm-5">
 				<div class="form-group">
 					<label for="foerdergruppe">Fördergruppe</label>
-					<input type="text" class="form-control" name="foerdergruppe" ng-model="ctrl.foerdervertrag.foerdergruppe"/>
+					<input type="text" class="form-control input-sm" name="foerdergruppe" ng-model="ctrl.foerdervertrag.foerdergruppe"/>
 				</div>
 			</div>
 		</div>
@@ -56,13 +56,13 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="foerdersatz">Fördersatz</label>
-					<input type="text" class="form-control" name="foerdersatz" ng-model="ctrl.foerdervertrag.foerdersatz"/>
+					<input type="text" class="form-control input-sm" name="foerdersatz" ng-model="ctrl.foerdervertrag.foerdersatz"/>
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="gueltigvon">Gültig von</label>
-					<select class="form-control" name="gueltigvon" ng-model="ctrl.foerdervertrag.gueltigvon">
+					<select class="form-control input-sm" name="gueltigvon" ng-model="ctrl.foerdervertrag.gueltigvon">
 						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
 					</select>
 				</div>
@@ -70,7 +70,7 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="gueltigbis">Gültig bis</label>
-					<select class="form-control" name="gueltigbis" ng-model="ctrl.foerdervertrag.gueltigbis">
+					<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.foerdervertrag.gueltigbis">
 						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
 					</select>
 				</div>
@@ -81,17 +81,18 @@
 			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="erlaeuterungen">Erläuterungen</label>
-					<textarea class="form-control" rows="5" name='erlaeuterungen' ng-model="ctrl.foerdervertrag.erlaeuterungen"></textarea>
+					<textarea class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="ctrl.foerdervertrag.erlaeuterungen"></textarea>
 				</div>
 			</div>
 		</div>
 		<!-- Zeile 6 -->
 		<div class="row">
-			<div class="col-sm-1">
+			<div class="col-sm-10">
 				<div class="form-group">
 					<div>
 						<button id="update" type="submit" class="btn btn-default" ng-click="ctrl.update()">Speichern</button>
 						<button id="save" type="submit" class="btn btn-default" ng-click="ctrl.save()" style="display:none;">Speichern</button>
+						<button id="delete" type="submit" class="btn btn-danger" ng-click="ctrl.delete()">Löschen</button>
 					</div>
 				</div>
 			</div>

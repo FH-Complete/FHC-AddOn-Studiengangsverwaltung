@@ -1,13 +1,15 @@
-<div class="contentWrapper" ng-controller="StoMetadatenIndexCtrl as ctrl">
+<div class="contentWrapper" ng-controller="StoMetadatenCtrl as ctrl">
 	<!-- TODO Beschlussdaten -->
 	<form id="stoMetadaten" onsubmit="return false;">
 		<div class="row">
-			<div class="col-sm-2">
+			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="version">Version</label>
-					<input type="text" class="form-control" name="version" value="{{ctrl.data.version}}" disabled/>
+					<input type="text" class="form-control" name="version" value="{{ctrl.data.bezeichnung}}" disabled/>
 				</div>
 			</div>
+		</div>
+		<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="aenderungsvariante">Änderungsvariante</label>

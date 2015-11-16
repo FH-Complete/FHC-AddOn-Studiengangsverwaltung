@@ -30,3 +30,14 @@ function returnAJAX($success, $obj) {
     if ($ret["erfolg"] === false)
 	die("");
 }
+/*
+ * @return TRUE for '1','true','on','yes' and FALSE for '0','false','off','no' NULL for non-boolean
+ */
+function parseBoolean($var)
+{
+    $bool = filter_var($var, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+    if(!is_null($bool))
+	return $bool;
+    else
+	return false;
+}

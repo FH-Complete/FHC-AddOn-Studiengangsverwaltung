@@ -54,15 +54,15 @@ angular.module('stgv2')
 			
 			ctrl.save = function () {
 				//TODO set stgkz
-				var saveData = ctrl.sto;				
-				console.log(saveData);
+				var saveData = {data: ""}
+				saveData.data = ctrl.sto;				
 				$http({
 					method: 'POST',
 					url: './api/studienordnung/create_studienordnung.php',
+					data: $.param(saveData),
 					headers: {
-						'Content-Type': 'application/json'
-					},
-					data: JSON.stringify(saveData)
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
 				}).then(function success(response) {
 					console.log(response);
 					//TODO success

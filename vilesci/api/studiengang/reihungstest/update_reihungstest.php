@@ -9,8 +9,9 @@ require_once('../../functions.php');
 
 //TODO
 $DEBUG = true;
-//TODO PHP get_last_error()
-$data = json_decode(file_get_contents('php://input'));
+$data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
+$data = (Object) $data["data"];
+
 $reihungstest = mapDataToReihungstest($data);
 if($reihungstest->save())
 {
@@ -22,9 +23,6 @@ else
     returnAJAX(false, $error);
 }
 
-
-
-
 function mapDataToReihungstest($data)
 {
     $rt = new reihungstest($data->reihungstest_id);
@@ -34,8 +32,8 @@ function mapDataToReihungstest($data)
     $rt->datum = $data->datum;
     $rt->uhrzeit = $data->uhrzeit;
     $rt->max_teilnehmer = $data->max_teilnehmer;
-    $rt->oeffentlich = $data->oeffentlich;
-    $rt->freigeschaltet = $data->freigeschaltet;
+    $rt->oeffentlich = parseBoolean($data->oeffentlich);
+    $rt->freigeschaltet = parseBoolean($data->freigeschaltet);
     $rt->studiensemester_kurzbz = $data->studiensemester_kurzbz;
     $rt->updatevon = get_uid();
     return $rt;

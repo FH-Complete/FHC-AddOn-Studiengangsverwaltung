@@ -74,34 +74,19 @@ angular.module('stgv2')
 				ctrl.reihungstest = row;
 				$scope.$apply();
 				$("#reihungstestDetails").show();
-				//not needed anymore
-//				$http({
-//					method: "GET",
-//					url: "./api/studiengang/reihungstestDetails.php?reihungstest_id=" + reihungstest_id
-//				}).then(function success(response) {
-//					if (response.data.erfolg)
-//					{
-//						ctrl.reihungstest = response.data.info;
-//						$("#reihungstestDetails").show();
-//					}
-//					else
-//					{
-//						errorService.setError(getErrorMsg(response));
-//					}
-//				}, function error(response) {
-//					errorService.setError(getErrorMsg(response));
-//				});
 			};
 			ctrl.update = function()
 			{
-				var updateData = ctrl.reihungstest;
+				
+				var updateData = { data: ""};
+				updateData.data = ctrl.reihungstest;
 				$http({
 					method: 'POST',
 					url: './api/studiengang/reihungstest/update_reihungstest.php',
+					data: $.param(updateData),
 					headers: {
-						'Content-Type': 'application/json'
-					},
-					data: JSON.stringify(updateData)
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
 				}).then(function success(response) {
 					//TODO success 
 					$("#dataGridReihungstest").datagrid('reload');
@@ -112,14 +97,15 @@ angular.module('stgv2')
 			
 			ctrl.save = function()
 			{
-				var saveData = ctrl.reihungstest;
+				var saveData = {data: ""}
+				saveData.data = ctrl.reihungstest;
 				$http({
 					method: 'POST',
 					url: './api/studiengang/reihungstest/save_reihungstest.php',
+					data: $.param(saveData),
 					headers: {
-						'Content-Type': 'application/json'
-					},
-					data: JSON.stringify(saveData)
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
 				}).then(function success(response) {
 					//TODO success 
 					$("#dataGridReihungstest").datagrid('reload');
@@ -132,6 +118,7 @@ angular.module('stgv2')
 			
 			ctrl.newReihungstest = function()
 			{
+				$("#dataGridReihungstest").datagrid("unselectAll");
 				ctrl.reihungstest = new Reihungstest();
 				ctrl.reihungstest.studiengang_kz = $scope.stgkz;
 				ctrl.reihungstest.studiensemester_kurzbz = ctrl.selectedStudiensemester;

@@ -74,7 +74,9 @@ $(document).ready(function () {
 	}
 });
 
-var stgv2 = angular.module("stgv2", ['ui.router','ngSanitize']);
+var stgv2 = angular.module("stgv2", ['ui.router','ngSanitize'], function($httpProvider){
+	 $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+});
 
 angular.module("stgv2")
 		.controller("TabsCtrl", function ($scope, $state, $compile, $stateParams, errorService) {
@@ -141,6 +143,7 @@ angular.module("stgv2")
 			$scope.tabs = [
 				{label: 'Metadaten', link: '.metadaten'},
 				{label: 'Eckdaten', link: '.eckdaten'},
+				{label: 'Gültigkeit', link: '.gueltigkeit'},
 				{label: 'Module', link: '.module'},
 				{label: 'LVs', link: '.lehrveranstaltungen'},
 				{label: 'Auslandssemeser', link: '.auslandssemester'},

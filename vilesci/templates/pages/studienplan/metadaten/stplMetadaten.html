@@ -1,36 +1,36 @@
-<div class="contentWrapper" ng-controller="StplMetadatenIndexCtrl as ctrl">
+<div class="contentWrapper" ng-controller="StplMetadatenCtrl as ctrl">
 	<form id="stplMetadaten" action="#" onsubmit="return false;">
 		<div class="row">
-			<div class="col-sm-2">
+			<!--<div class="col-sm-2">
 				<div class="form-group">
 					<label for="version">Version</label>
 					<input type="text" class="form-control"  name="version" value="{{ctrl.data.version}}" disabled/>
 				</div>
-			</div>
-			<div class="col-sm-3">
+			</div>-->
+			<div class="col-sm-4">
 				<div class="form-group">
-					<label for="bezeichnung">Bezeichnung</label>
+					<label for="bezeichnung">Version</label>
 					<input type="text" class="form-control"  name="bezeichnung" ng-model="ctrl.data.bezeichnung"/>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-1">
+			<!--<div class="col-sm-2">
 				<div class="form-group">
 					<label for="regelstudiendauer">Regelstudiendauer</label>
 					<input type="text" class="form-control"  name="regelstudiendauer" ng-model="ctrl.data.regelstudiendauer"/>
 				</div>
 			</div>
-			<div class="col-sm-1">
+			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="semesterwochen">Semesterwochen</label>
 					<input type="text" class="form-control"  name="semesterwochen" ng-model="ctrl.data.semesterwochen"/>
 				</div>
-			</div>
+			</div>-->
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="gueltigvon">Orgform</label>
-					<select class="form-control" name="orgform" ng-model="ctrl.data.orgform">
+					<select class="form-control" name="orgform" ng-model="ctrl.data.orgform_kurzbz">
 						<option ng-repeat="orgform in ctrl.orgformList">{{orgform.orgform_kurzbz}}</option>
 					</select>
 				</div>

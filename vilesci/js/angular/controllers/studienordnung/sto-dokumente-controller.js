@@ -1,5 +1,5 @@
 angular.module('stgv2')
-	.controller('StoDokumenteIndexCtrl', function($scope, $http, $state, $stateParams){
+	.controller('StoDokumenteCtrl', function($scope, $http, $state, $stateParams){
 		$scope.stoid = $stateParams.stoid;
 		
 		/*$http({method: 'GET', url:'./json/tree.json'}).success(function(data){

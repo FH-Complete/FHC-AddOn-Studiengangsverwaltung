@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StoMetadatenIndexCtrl', function ($scope, $http, $state, $stateParams, errorService) {
+		.controller('StoMetadatenCtrl', function ($scope, $http, $state, $stateParams, errorService) {
 			$scope.stoid = $stateParams.stoid;
 			var ctrl = this;
 			ctrl.data = "";
@@ -66,14 +66,15 @@ angular.module('stgv2')
 			});
 			
 			ctrl.save = function () {
-				var saveData = ctrl.data;
+				var saveData = {data: ""}
+				saveData.data = ctrl.data;
 				$http({
 					method: 'POST',
 					url: './api/studienordnung/save_metadaten.php',
+					data: $.param(saveData),
 					headers: {
-						'Content-Type': 'application/json'
-					},
-					data: JSON.stringify(saveData)
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
 				}).then(function success(response) {
 					//TODO success
 					$("#treeGrid").treegrid('reload');

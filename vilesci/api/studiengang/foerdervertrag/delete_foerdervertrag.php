@@ -12,28 +12,24 @@ $DEBUG = true;
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
 $data = (Object) $data["data"];
 $foerdervertrag = mapDataToFoerdervertrag($data);
-if($foerdervertrag->save())
+$foerdervertrag_id = $foerdervertrag->foerdervertrag_id;
+ 
+
+if($foerdervertrag->delete($foerdervertrag_id))
 {
-    returnAJAX(true, "Fördervertrag erfolgreich gepspeichert.");
+    returnAJAX(true, "Fördervertrag erfolgreich gelöscht.");
 }
 else
 {
-    $error = array("message"=>"Fehler beim Speichern des Fördervertrags.", "detail"=>$foerdervertrag->errormsg);
+    $error = array("message"=>"Fehler beim Löschen des Fördervertrags.", "detail"=>$foerdervertrag->errormsg);
     returnAJAX(false, $error);
 }
+
 
 function mapDataToFoerdervertrag($data)
 {
     $fv = new foerdervertrag();
-    $fv->new = true;
-    $fv->studiengang_kz = $data->studiengang_kz;
-    $fv->foerdergeber = $data->foerdergeber;
-    $fv->foerdersatz = $data->foerdersatz;
-    $fv->foerdergruppe = $data->foerdergruppe;
-    $fv->gueltigvon = $data->gueltigvon;
-    $fv->gueltigbis = $data->gueltigbis;
-    $fv->erlaeuterungen = $data->erlaeuterungen;
-    $fv->insertvon = get_uid();
+    $fv->foerdervertrag_id = $data->foerdervertrag_id;
     return $fv;
 }
 

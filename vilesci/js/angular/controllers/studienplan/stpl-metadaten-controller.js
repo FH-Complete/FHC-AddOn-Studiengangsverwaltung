@@ -1,5 +1,5 @@
 angular.module('stgv2')
-	.controller('StplMetadatenIndexCtrl', function($scope, $http, $state, $stateParams, errorService){
+	.controller('StplMetadatenCtrl', function($scope, $http, $state, $stateParams, errorService){
 		$scope.stplid = $stateParams.stplid;
 		var ctrl = this;
 		ctrl.data = "";
@@ -26,8 +26,9 @@ angular.module('stgv2')
 
 		$http({
 			method: 'GET',
-			url: './api/studienplan/metadaten.php?stplId='+$scope.stplid
+			url: './api/studienplan/metadaten/metadaten.php?stplId='+$scope.stplid
 		}).then(function success(response) {
+			console.log(response);
 			if (response.data.erfolg)
 			{
 				//TODO Preparation for watcher
@@ -43,14 +44,15 @@ angular.module('stgv2')
 		});
 			
 		ctrl.save = function(){
-			var saveData = ctrl.data;
+			var saveData = {data: ""}
+			saveData.data = ctrl.data;
 			$http({
 				method: 'POST',
-				url: './api/studienplan/save_metadaten.php',
+				url: './api/studienplan/metadaten/save_metadaten.php',
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/x-www-form-urlencoded'
 				},
-				data: JSON.stringify(saveData)
+				data: $.param(saveData)
 			}).then(function success(response){
 				//TODO success
 				$("#treeGrid").treegrid('reload');

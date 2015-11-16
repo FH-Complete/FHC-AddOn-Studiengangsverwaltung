@@ -13,7 +13,8 @@ require_once('../functions.php');
 $DEBUG = true;
 
 //TODO PHP get_last_error()
-$data = json_decode(file_get_contents('php://input'));
+$data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
+$data = (Object) $data["data"];
 $studienordnung = mapDataToStudienordnung($data);
 if($studienordnung->save())
 {
