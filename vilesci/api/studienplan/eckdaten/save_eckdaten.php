@@ -3,7 +3,8 @@
 require_once('../../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
-require_once('../../../../../../include/studienplan.class.php');
+
+require_once('../../../../include/StudienplanAddonStgv.class.php');
 //TODO functions from core?
 require_once('../../functions.php');
 
@@ -25,17 +26,14 @@ else
 
 function mapDataToStudienplan($data)
 {
-    $stpl = new studienplan();
+    $stpl = new StudienplanAddonStgv();
     $stpl->loadStudienplan($data->studienplan_id);
-    //$stpl->version = $data->version;
-    //$stpl->bezeichnung = $data->bezeichnung;
-    //$stpl->aktiv = $data->aktiv;
+    
     $stpl->updatevon = get_uid();
-    //$stpl->orgform_kurzbz = $data->orgform_kurzbz;
     $stpl->regelstudiendauer = $data->regelstudiendauer;
-    //$stpl->semesterwochen = $data->semesterwochen;
     $stpl->sprache = $data->sprache;
-    //$stpl->testtool_sprachwahl = $data->testtool_sprachwahl;
+    $stpl->ects = $data->ects;
+
     return $stpl;
 }
 

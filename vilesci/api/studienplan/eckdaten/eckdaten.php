@@ -3,9 +3,10 @@
 require_once('../../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
-require_once('../../../../../../include/studienplan.class.php');
 require_once('../../../../../../include/akadgrad.class.php');
 require_once('../../../../../../include/studiensemester.class.php');
+
+require_once('../../../../include/StudienplanAddonStgv.class.php');
 //TODO functions from core?
 require_once('../../functions.php');
 
@@ -25,7 +26,7 @@ elseif(($stplId == false))
     returnAJAX(false, "Fehler beim lesen der GET Variablen");    
 }
 
-$studienplan = new studienplan();
+$studienplan = new StudienplanAddonStgv();
 $studienplan->loadStudienplan($stplId);
 
 $data = array(
@@ -38,6 +39,10 @@ $data = array(
     'aktiv' => $studienplan->aktiv,
     'semesterwochen' => $studienplan->semesterwochen,
     'testtool_sprachwahl' => $studienplan->testtool_sprachwahl,
+    'ects' => $studienplan->ects,
+    'pflicht_sws' => $studienplan->pflicht_sws,
+    'pflicht_lvs' => $studienplan->pflicht_lvs,
+    'erlaeuterungen' => $studienplan->erlaeuterungen,
     'updateamum' => $studienplan->updateamum,
     'updatevon' => $studienplan->updatevon,
     'insertamum' => $studienplan->insertamum,

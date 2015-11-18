@@ -87,7 +87,6 @@ angular.module('stgv2')
 			});
 			
 			ctrl.save = function () {
-				//TODO set stgkz
 				var saveData = {data: ""}
 				saveData.data = ctrl.sto;				
 				$http({

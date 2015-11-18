@@ -28,7 +28,6 @@ angular.module('stgv2')
 			method: 'GET',
 			url: './api/studienplan/metadaten/metadaten.php?stplId='+$scope.stplid
 		}).then(function success(response) {
-			console.log(response);
 			if (response.data.erfolg)
 			{
 				//TODO Preparation for watcher

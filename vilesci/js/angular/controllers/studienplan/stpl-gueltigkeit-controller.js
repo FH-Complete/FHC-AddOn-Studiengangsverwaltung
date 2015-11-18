@@ -108,7 +108,6 @@ angular.module('stgv2')
 						}
 					}).then(function success(response) {
 						//TODO success
-						console.log(response);
 						if(response.data.erfolg)
 						{
 							ctrl.loadZuordnung();
@@ -126,7 +125,6 @@ angular.module('stgv2')
 
 			ctrl.delete = function (studiensemester_kurzbz)
 			{
-				console.log(studiensemester_kurzbz);
 				$http({
 					method: 'GET',
 					url: './api/studienplan/gueltigkeit/delete_gueltigkeit.php?studienplan_id='+$scope.stplid+"&studiensemester_kurzbz="+studiensemester_kurzbz,

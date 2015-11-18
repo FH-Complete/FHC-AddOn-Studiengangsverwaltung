@@ -80,7 +80,7 @@ angular.module('stgv2')
 			
 			$http({
 				method: 'GET',
-				url: './api/studienordnung/eckdaten.php?stoId=' + $scope.stoid
+				url: './api/studienordnung/eckdaten/eckdaten.php?stoId=' + $scope.stoid
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{

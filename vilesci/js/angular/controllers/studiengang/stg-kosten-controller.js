@@ -7,7 +7,6 @@ angular.module('stgv2')
 				method: "GET",
 				url: "./api/studiengang/kosten.php"
 			}).then(function success(response) {
-				console.log(response);
 				if (response.data.erfolg)
 				{
 					ctrl.data = response.data.info;

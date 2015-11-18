@@ -1,3 +1,22 @@
-<div class="contentWrapper">
-	<p>Lehrveranstaltungen</p>
+<div class="contentWrapper" ng-controller="StplLehrveranstaltungCtrl as stplCtrl">
+	<div id="stplTree">
+		STPL Tree
+	</div>
+	<div id="lvTree">
+		<table id="lvTreeGrid" class="easyui-treegrid" data-options="url: '', method: 'get', rownumbers: true, idField: 'id', treeField: 'text', fit: true">
+			<thead frozen="true">
+				<tr>
+					<th data-options="field: 'text'" width="250">Lehrveranstaltung</th>
+				</tr>
+			</thead>
+			<thead>
+				<tr>
+					<th data-options="field: 'ects',align: 'right'">ECTS</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	<div id="lvMetadata">
+		LV Metadata
+	</div>
 </div>

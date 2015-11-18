@@ -230,6 +230,54 @@ if (!$result = @$db->db_query("SELECT begruendung FROM lehre.tbl_studienordnung 
     
 }
 
+//Spalte ects in lehre.tbl_studienplan
+if (!$result = @$db->db_query("SELECT ects FROM lehre.tbl_studienplan LIMIT 1;"))
+{
+    $qry = "ALTER TABLE lehre.tbl_studienplan ADD COLUMN ects numeric(5,2);";
+    
+    if (!$db->db_query($qry))
+	echo '<strong>lehre.tbl_studienplan: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' lehre.tbl_studienplan: Spalte ects hinzugefügt.<br>';
+    
+}
+
+//Spalte pflicht_sws in lehre.tbl_studienplan
+if (!$result = @$db->db_query("SELECT pflicht_sws FROM lehre.tbl_studienplan LIMIT 1;"))
+{
+    $qry = "ALTER TABLE lehre.tbl_studienplan ADD COLUMN pflicht_sws integer;";
+    
+    if (!$db->db_query($qry))
+	echo '<strong>lehre.tbl_studienplan: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' lehre.tbl_studienplan: Spalte pflicht_sws hinzugefügt.<br>';
+    
+}
+
+//Spalte pflicht_lvs in lehre.tbl_studienplan
+if (!$result = @$db->db_query("SELECT pflicht_lvs FROM lehre.tbl_studienplan LIMIT 1;"))
+{
+    $qry = "ALTER TABLE lehre.tbl_studienplan ADD COLUMN pflicht_lvs integer;";
+    
+    if (!$db->db_query($qry))
+	echo '<strong>lehre.tbl_studienplan: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' lehre.tbl_studienplan: Spalte pflicht_lvs hinzugefügt.<br>';
+    
+}
+
+//Spalte pflicht_lvs in lehre.tbl_studienplan
+if (!$result = @$db->db_query("SELECT erlaeuterungen FROM lehre.tbl_studienplan LIMIT 1;"))
+{
+    $qry = "ALTER TABLE lehre.tbl_studienplan ADD COLUMN erlaeuterungen text;";
+    
+    if (!$db->db_query($qry))
+	echo '<strong>lehre.tbl_studienplan: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' lehre.tbl_studienplan: Spalte erlaeuterungen hinzugefügt.<br>';
+    
+}
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 

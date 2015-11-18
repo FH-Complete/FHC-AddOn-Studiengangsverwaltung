@@ -127,7 +127,6 @@ angular.module('stgv2')
 				{
 					var deleteData = {data: ""}
 					deleteData.data = ctrl.foerdervertrag;
-					console.log(deleteData);
 					$http({
 						method: 'POST',
 						url: './api/studiengang/foerdervertrag/delete_foerdervertrag.php',

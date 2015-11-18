@@ -1,5 +1,24 @@
 <div class="contentWrapper" ng-controller='StplNeuController as stplCtrl'>
+	{{stoid}}
 	<form id="stplNeu" onsubmit="return false;">
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="bezeichnung">Version</label>
+					<input type="text" class="form-control"  name="bezeichnung" ng-model="stplCtrl.data.version"/>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="gueltigvon">Orgform</label>
+					<select class="form-control" name="orgform" ng-model="stplCtrl.data.orgform_kurzbz" ng-change="stplCtrl.updateVersion()">
+						<option ng-repeat="orgform in stplCtrl.orgformList">{{orgform.orgform_kurzbz}}</option>
+					</select>
+				</div>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col-sm-1">
 				<div class="form-group">

@@ -4,7 +4,8 @@ require_once('../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../include/functions.inc.php');
 require_once('../../../../../include/benutzerberechtigung.class.php');
 //require_once('../../../../../include/studienordnung.class.php');
-require_once('../../../../../include/studienplan.class.php');
+//require_once('../../../../../include/studienplan.class.php');
+require_once ('../../../include/StudienplanAddonStgv.class.php');
 require_once ('../../../include/StudienordnungAddonStgv.class.php');
 //TODO functions from core?
 require_once('../functions.php');
@@ -73,7 +74,7 @@ foreach($studienordnung->result as $key=>$sto)
     array_push($temp->attributes, $attr);
     
     $stpl_array = array();
-    $studienplan = new studienplan();
+    $studienplan = new StudienplanAddonStgv();
     $studienplan->loadStudienplanSTO($sto->studienordnung_id);
     $temp->children = array();
     
@@ -86,7 +87,7 @@ foreach($studienordnung->result as $key=>$sto)
 	$temp_stpl->orgform_kurzbz = $stpl->orgform_kurzbz;
 	$temp_stpl->regelstudiendauer = $stpl->regelstudiendauer;
 	$temp_stpl->sprache = $stpl->sprache;
-	$temp_stpl->aktiv = $stpl->aktiv;
+	$temp_stpl->ects = $stpl->ects;
 	
 	$temp_stpl->attributes = array();
 	$node_attr = new stdClass();

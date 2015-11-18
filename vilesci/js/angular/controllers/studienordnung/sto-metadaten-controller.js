@@ -63,14 +63,13 @@ angular.module('stgv2')
 
 			$http({
 				method: 'GET',
-				url: './api/studienordnung/metadaten.php?stoId=' + $scope.stoid
+				url: './api/studienordnung/metadaten/metadaten.php?stoId=' + $scope.stoid
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
 					//TODO Preparation for watcher
 					ctrl.origin = response.data.info;
 					ctrl.data = response.data.info;
-					console.log(ctrl.data);
 				}
 				else
 				{
@@ -85,7 +84,7 @@ angular.module('stgv2')
 				saveData.data = ctrl.data;
 				$http({
 					method: 'POST',
-					url: './api/studienordnung/save_metadaten.php',
+					url: './api/studienordnung/metadaten/save_metadaten.php',
 					data: $.param(saveData),
 					headers: {
 						'Content-Type': 'application/x-www-form-urlencoded'

@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StplEckdatenCtrl', function ($scope, $http, $state, $stateParams) {
+		.controller('StplEckdatenCtrl', function ($scope, $http, $state, $stateParams, errorService) {
 			$scope.stplid = $stateParams.stplid;
 			var ctrl = this;
 			ctrl.data = "";
@@ -7,7 +7,6 @@ angular.module('stgv2')
 				method: 'GET',
 				url: './api/studienplan/eckdaten/eckdaten.php?stplId=' + $scope.stplid
 			}).then(function success(response) {
-				console.log(response);
 				if (response.data.erfolg)
 				{
 					ctrl.data = response.data.info;

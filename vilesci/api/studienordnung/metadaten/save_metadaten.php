@@ -1,14 +1,14 @@
 <?php
 
-require_once('../../../../../config/vilesci.config.inc.php');
-require_once('../../../../../include/functions.inc.php');
-require_once('../../../../../include/benutzerberechtigung.class.php');
-require_once('../../../../../include/akadgrad.class.php');
-require_once('../../../../../include/studiensemester.class.php');
+require_once('../../../../../../config/vilesci.config.inc.php');
+require_once('../../../../../../include/functions.inc.php');
+require_once('../../../../../../include/benutzerberechtigung.class.php');
+require_once('../../../../../../include/akadgrad.class.php');
+require_once('../../../../../../include/studiensemester.class.php');
 
-require_once('../../../include/StudienordnungAddonStgv.class.php');
+require_once('../../../../include/StudienordnungAddonStgv.class.php');
 //TODO functions from core?
-require_once('../functions.php');
+require_once('../../functions.php');
 
 //TODO
 $DEBUG = true;

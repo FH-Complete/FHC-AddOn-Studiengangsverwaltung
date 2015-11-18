@@ -100,6 +100,7 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-metadaten-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-eckdaten-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-gueltigkeit-controller.js"></script>
+	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-lehrveranstaltung-controller.js"></script>
 
 	<!-- Angular State Controllers -->
 	<script type="text/javascript" src="./js/angular/controllers/state/state-main-controller.js"></script>
@@ -155,7 +156,7 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 		<div id="user">User: Stefan Puraner</div>
 	    </div>
 	    <div id="center" data-options="region:'center'">
-		<div class="easyui-layout" fit="true">
+		<div id="centerLayout" class="easyui-layout" fit="true">
 		    <div id="centerNorth" data-options="region:'north', split:true, height: 200" border="false" ng-controller="TreeGridCtrl as gridCtrl" >
 			<!--<div id="treeGridWrapper" >-->
 			<table id="treeGrid" class="easyui-treegrid" data-options="url: '', method: 'get', rownumbers: true, idField: 'id', treeField: 'text', fit: true">
