@@ -3,9 +3,10 @@
 require_once('../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../include/functions.inc.php');
 require_once('../../../../../include/benutzerberechtigung.class.php');
-require_once('../../../../../include/studienordnung.class.php');
 require_once('../../../../../include/akadgrad.class.php');
 require_once('../../../../../include/studiensemester.class.php');
+
+require_once('../../../include/StudienordnungAddonStgv.class.php');
 //TODO functions from core?
 require_once('../functions.php');
 
@@ -26,7 +27,7 @@ elseif(($stoId == false))
 }
 
 
-$studienordnung = new studienordnung();
+$studienordnung = new StudienordnungAddonStgv();
 $studienordnung->loadStudienordnung($stoId);
 
 $akadgrad = new akadgrad();
@@ -46,6 +47,9 @@ $data = array(
     'studiengangbezeichnung_englisch' => $studienordnung->studiengangbezeichnung_englisch,
     'studiengangkurzbzlang' => $studienordnung->studiengangkurzbzlang,
     'akadgrad_id' => $studienordnung->akadgrad_id,
+    'aenderungsvariante_kurzbz' => $studienordnung->aenderungsvariante_kurzbz,
+    'status_kurzbz' => $studienordnung->status_kurzbz,
+    'begruendung' => $studienordnung->begruendung,
     'updateamum' => $studienordnung->updateamum,
     'updatevon' => $studienordnung->updatevon,
     'insertamum' => $studienordnung->insertamum,

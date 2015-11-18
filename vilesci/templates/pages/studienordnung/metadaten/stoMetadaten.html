@@ -13,8 +13,8 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="aenderungsvariante">Änderungsvariante</label>
-					<select class="form-control" name="aenderungsvariante" ng-model="ctrl.data.aenderungsvariante">
-						<option ng-repeat="av in ctrl.aenderungsvarianteList">{{av.bezeichnung}}</option>
+					<select class="form-control" name="aenderungsvariante" ng-model="ctrl.data.aenderungsvariante_kurzbz">
+						<option ng-repeat="av in ctrl.aenderungsvarianteList" value="{{av.aenderungsvariante_kurzbz}}">{{av.bezeichnung}}</option>
 					</select>
 				</div>
 			</div>
@@ -23,7 +23,7 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="status">Status</label>
-					<input type="text" class="form-control" name="status" ng-model="ctrl.data.status" disabled/>
+					<input type="text" class="form-control" name="status" ng-model="ctrl.data.status_kurzbz" disabled/>
 				</div>
 			</div>
 			<div class="col-sm-2">

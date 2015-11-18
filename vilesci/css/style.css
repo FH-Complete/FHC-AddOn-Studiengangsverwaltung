@@ -203,3 +203,20 @@ h1
 	background-color: black;
 	border: 1px solid black;
 }
+
+.green {
+	color: green;
+}
+
+.red {
+	color: red;
+}
+
+span.glyphicon {
+    font-size: 1.2em;
+}
+
+.table
+{
+	width: auto;
+}

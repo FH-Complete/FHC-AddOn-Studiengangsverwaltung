@@ -8,10 +8,7 @@ angular.module('stgv2')
 			ctrl.studiensemesterList = "";
 			ctrl.akadGradList = "";
 			//TODO list from db or config
-			ctrl.aenderungsvarianteList = [
-				{bezeichnung: "geringfügig"},
-				{bezeichnung: "nicht geringfügig"},
-				{bezeichnung: "akkreditierungspflichtig"}];
+			ctrl.aenderungsvarianteList = "";
 			
 			//loading Studiensemester list
 			$http({
@@ -46,6 +43,23 @@ angular.module('stgv2')
 			}, function error(response) {
 				errorService.setError(getErrorMsg(response));
 			});
+			
+			//loading Aenderungsvariante list
+			$http({
+				method: "GET",
+				url: "./api/helper/aenderungsvariante.php"
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					ctrl.aenderungsvarianteList = response.data.info;
+				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
+			});
 
 			$http({
 				method: 'GET',
@@ -56,6 +70,7 @@ angular.module('stgv2')
 					//TODO Preparation for watcher
 					ctrl.origin = response.data.info;
 					ctrl.data = response.data.info;
+					console.log(ctrl.data);
 				}
 				else
 				{

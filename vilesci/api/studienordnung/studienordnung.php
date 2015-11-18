@@ -3,8 +3,9 @@
 require_once('../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../include/functions.inc.php');
 require_once('../../../../../include/benutzerberechtigung.class.php');
-require_once('../../../../../include/studienordnung.class.php');
+//require_once('../../../../../include/studienordnung.class.php');
 require_once('../../../../../include/studienplan.class.php');
+require_once ('../../../include/StudienordnungAddonStgv.class.php');
 //TODO functions from core?
 require_once('../functions.php');
 
@@ -30,20 +31,16 @@ elseif(($studiengang_kz == false) || ($status == false))
 }
 
 
-$studienordnung = new studienordnung();
+$studienordnung = new StudienordnungAddonStgv();
 
-//TODO Studienordnungen abhängig vom status laden
+
+////TODO Studienordnungen abhängig vom status laden
 switch($status)
 {
-    case "development":
-	$studienordnung->loadStudienordnungSTGInaktiv($studiengang_kz);
-	break;
-    case "approved":
-	$studienordnung->loadStudienordnungSTG($studiengang_kz);
-	break;
     case "all":
 	$studienordnung->loadStudienordnungSTG($studiengang_kz);
     default:
+	$studienordnung->loadStudienordnungWithStatus($studiengang_kz, $status);
 	break;
 }
 
@@ -58,7 +55,7 @@ foreach($studienordnung->result as $key=>$sto)
     else
 	$temp->state = "closed";
     //TODO Status from DB
-    $temp->status = $status;
+    $temp->status = $sto->status_kurzbz;
     $temp->stgkz = $sto->studiengang_kz;
     $temp->ects = $sto->ects;
     $temp->gueltigvon = $sto->gueltigvon;

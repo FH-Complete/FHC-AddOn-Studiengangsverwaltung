@@ -20,8 +20,8 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="aenderungsvariante">Änderungsvariante</label>
-					<select class="form-control" name="aenderungsvariante" ng-model="stoCtrl.aenderungsvariante">
-						<option ng-repeat="av in stoCtrl.aenderungsvarianteList">{{av.bezeichnung}}</option>
+					<select class="form-control" name="aenderungsvariante" ng-model="stoCtrl.sto.aenderungsvariante_kurzbz">
+						<option ng-repeat="av in stoCtrl.aenderungsvarianteList" value="{{av.aenderungsvariante_kurzbz}}">{{av.bezeichnung}}</option>
 					</select>
 				</div>
 			</div>
@@ -30,7 +30,7 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="status">Status</label>
-					<input type="text" class="form-control" name="status" value="{{stoCtrl.sto.status}}" disabled/>
+					<input type="text" class="form-control" name="status" value="{{stoCtrl.initialStatus.bezeichnung}}" disabled/>
 				</div>
 			</div>
 			<div class="col-sm-2">

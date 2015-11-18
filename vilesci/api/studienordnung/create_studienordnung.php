@@ -3,7 +3,8 @@
 require_once('../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../include/functions.inc.php');
 require_once('../../../../../include/benutzerberechtigung.class.php');
-require_once('../../../../../include/studienordnung.class.php');
+//require_once('../../../../../include/studienordnung.class.php');
+require_once('../../../include/StudienordnungAddonStgv.class.php');
 
 //TODO functions from core?
 require_once('../functions.php');
@@ -31,10 +32,14 @@ else
 
 function mapDataToStudienordnung($data)
 {
-    $sto = new studienordnung();
+    $sto = new StudienordnungAddonStgv();
     $sto->new = true;
     $sto->studiengang_kz = $data->stg_kz;
     $sto->version = $data->version;
+    $sto->bezeichnung = $data->version;
+    $sto->aenderungsvariante_kurzbz = $data->aenderungsvariante_kurzbz;
+    $sto->status_kurzbz = $data->status_kurzbz;
+    $sto->begruendung = $data->begruendung;
     $sto->gueltigvon = $data->gueltigvon;
     $sto->gueltigbis = $data->gueltigbis;
     $sto->insertvon = get_uid();

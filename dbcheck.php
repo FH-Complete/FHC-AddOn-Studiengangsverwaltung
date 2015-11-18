@@ -114,14 +114,133 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_foerdervertrag LIMIT
 	echo ' addon.tbl_stgv_foerdervertrag: Tabelle hinzugefuegt<br>';
 }
 
+// Tabelle Studienordnung_Semester
+if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienplan_semester LIMIT 1;")) {
+    $qry = "CREATE TABLE addon.tbl_stgv_studienplan_semester
+			(
+				studienplan_semester_id integer NOT NULL,
+				studienplan_id integer NOT NULL,
+				studiensemester_kurzbz varchar(16) NOT NULL,
+				semester smallint NOT NULL
+			);
+
+		CREATE SEQUENCE addon.tbl_stgv_studienplan_semester_studienplan_semester_id
+		 INCREMENT BY 1
+		 NO MAXVALUE
+		 NO MINVALUE
+		 CACHE 1;
+
+		ALTER TABLE addon.tbl_stgv_studienplan_semester ADD CONSTRAINT pk_studienplan_semester PRIMARY KEY (studienplan_semester_id);
+		ALTER TABLE addon.tbl_stgv_studienplan_semester ALTER COLUMN studienplan_semester_id SET DEFAULT nextval('addon.tbl_stgv_studienplan_semester_studienplan_semester_id');
+
+		ALTER TABLE addon.tbl_stgv_studienplan_semester ADD CONSTRAINT fk_studienplan_semester_studienplan_id FOREIGN KEY (studienplan_id) REFERENCES lehre.tbl_studienplan (studienplan_id) ON DELETE RESTRICT ON UPDATE CASCADE;
+		ALTER TABLE addon.tbl_stgv_studienplan_semester ADD CONSTRAINT fk_studienplan_semester_studiensemester FOREIGN KEY (studiensemester_kurzbz) REFERENCES public.tbl_studiensemester (studiensemester_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+		GRANT SELECT ON addon.tbl_stgv_studienplan_semester TO web;
+		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_studienplan_semester TO vilesci;
+		GRANT SELECT, UPDATE ON addon.tbl_stgv_studienplan_semester_studienplan_semester_id TO vilesci;
+	";
+
+    if (!$db->db_query($qry))
+	echo '<strong>addon.tbl_stgv_studienplan_semester: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' addon.tbl_stgv_studienplan_semester: Tabelle hinzugefuegt<br>';
+}
+
+//Tabelle addon.tbl_stgv_aenderungsvariante
+if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_aenderungsvariante LIMIT 1;")) {
+    $qry = "CREATE TABLE addon.tbl_stgv_aenderungsvariante
+			(
+				aenderungsvariante_kurzbz varchar(32) NOT NULL,
+				bezeichnung varchar(256)
+			);
+
+		ALTER TABLE addon.tbl_stgv_aenderungsvariante ADD CONSTRAINT pk_aenderungsvariante PRIMARY KEY (aenderungsvariante_kurzbz);
+
+		GRANT SELECT ON addon.tbl_stgv_aenderungsvariante TO web;
+		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_aenderungsvariante TO vilesci;
+	";
+
+    if (!$db->db_query($qry))
+	echo '<strong>addon.tbl_stgv_aenderungsvariante: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' addon.tbl_stgv_aenderungsvariante: Tabelle hinzugefuegt<br>';
+}
+
+//Spalte Aenderungsvariante in lehre.tbl_studienordnung
+if (!$result = @$db->db_query("SELECT aenderungsvariante_kurzbz FROM lehre.tbl_studienordnung LIMIT 1;"))
+{
+    $qry = "ALTER TABLE lehre.tbl_studienordnung ADD COLUMN aenderungsvariante_kurzbz varchar(32); 
+	   
+	    ALTER TABLE lehre.tbl_studienordnung ADD CONSTRAINT fk_studienordnung_aenderungsvariante_kurzbz FOREIGN KEY (aenderungsvariante_kurzbz) REFERENCES addon.tbl_stgv_aenderungsvariante (aenderungsvariante_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
+	   ";
+    
+    if (!$db->db_query($qry))
+	echo '<strong>lehre.tbl_studienordnung: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' lehre.tbl_studienordnung: Spalte aenderungsvariante_kurzbz hinzugefügt.<br>';
+    
+}
+
+//Tabelle addon.tbl_stgv_aenderungsvariante
+if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienordnungstatus LIMIT 1;")) {
+    $qry = "CREATE TABLE addon.tbl_stgv_studienordnungstatus
+			(
+				status_kurzbz varchar(32) NOT NULL,
+				bezeichnung varchar(256)
+				reihenfolge integer
+			);
+
+		ALTER TABLE addon.tbl_stgv_studienordnungstatus ADD CONSTRAINT pk_studienordnungstatus PRIMARY KEY (status_kurzbz);
+
+		GRANT SELECT ON addon.tbl_stgv_studienordnungstatus TO web;
+		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_studienordnungstatus TO vilesci;
+	";
+
+    if (!$db->db_query($qry))
+	echo '<strong>addon.tbl_stgv_studienordnungstatus: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' addon.tbl_stgv_studienordnungstatus: Tabelle hinzugefuegt<br>';
+}
+
+//Spalte status_kurzbz in lehre.tbl_studienordnung
+if (!$result = @$db->db_query("SELECT status_kurzbz FROM lehre.tbl_studienordnung LIMIT 1;"))
+{
+    $qry = "ALTER TABLE lehre.tbl_studienordnung ADD COLUMN status_kurzbz varchar(32); 
+	   
+	    ALTER TABLE lehre.tbl_studienordnung ADD CONSTRAINT status_kurzbz FOREIGN KEY (status_kurzbz) REFERENCES addon.tbl_stgv_studienordnungstatus (status_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
+	   ";
+    
+    if (!$db->db_query($qry))
+	echo '<strong>lehre.tbl_studienordnung: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' lehre.tbl_studienordnung: Spalte status_kurzbz hinzugefügt.<br>';
+    
+}
+
+//Spalte Begruendung in lehre.tbl_studienordnung
+if (!$result = @$db->db_query("SELECT begruendung FROM lehre.tbl_studienordnung LIMIT 1;"))
+{
+    $qry = "ALTER TABLE lehre.tbl_studienordnung ADD COLUMN begruendung text;";
+    
+    if (!$db->db_query($qry))
+	echo '<strong>lehre.tbl_studienordnung: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' lehre.tbl_studienordnung: Spalte begruendung hinzugefügt.<br>';
+    
+}
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
 
 // Liste der verwendeten Tabellen / Spalten des Addons
+//TODO check lehre.tbl_studienordnung
 $tabellen = array(
-    "addon.tbl_template_items" => array("template_items_kurzbz", "bezeichnung"),
-    "addon.tbl_stgv_foerdervertrag" => array("foerdervertrag_id","studiengang_kz","foerdergeber","foerdersatz","foerdergruppe","gueltigvon","gueltigbis","erlaeuterungen","insertamum","insertvon","updateamum","updatevon")
+    "addon.tbl_stgv_foerdervertrag" => array("foerdervertrag_id", "studiengang_kz", "foerdergeber", "foerdersatz", "foerdergruppe", "gueltigvon", "gueltigbis", "erlaeuterungen", "insertamum", "insertvon", "updateamum", "updatevon"),
+    "addon.tbl_stgv_studienplan_semester" => array("studienplan_semester_id", "studienplan_id", "studiensemester_kurzbz", "semester"),
+    "addon.tbl_stgv_aenderungsvariante" => array("aenderungsvariante_kurzbz","bezeichnung"),
+    "tbl_stgv_studienordnungstatus" => array("status_kurzbz","bezeichnung","reihenfolge")
 );
 
 
@@ -136,7 +255,7 @@ foreach ($tabellen AS $attribute) {
     if (!@$db->db_query('SELECT ' . $sql_attr . ' FROM ' . $tabs[$i] . ' LIMIT 1;'))
 	echo '<BR><strong>' . $tabs[$i] . ': ' . $db->db_last_error() . ' </strong><BR>';
     else
-	echo $tabs[$i] . ': OK - ';
+	echo $tabs[$i] . ': OK - <BR>';
     flush();
     $i++;
 }

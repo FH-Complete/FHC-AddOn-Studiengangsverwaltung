@@ -5,17 +5,16 @@ angular.module('stgv2')
 			ctrl.studiensemesterList = "";
 			ctrl.studiengangList = "";
 			//TODO list from db or config
-			ctrl.aenderungsvarianteList = [
-				{bezeichnung: "geringfügig"},
-				{bezeichnung: "nicht geringfügig"},
-				{bezeichnung: "akkreditierungspflichtig"}];
+			ctrl.aenderungsvarianteList = "";
+			ctrl.initialStatus = "";
 			ctrl.sto = {
-				status: "in Bearbeitung",
+				status_kurzbz: "development",
 				stg_kz: "",
 				version: "",
 				gueltigvon: "",
 				gueltigbis: "",
-				begruendung: ""
+				begruendung: "",
+				aenderungsvariante_kurzbz: ""
 			};
 			
 			//loading Studiensemester list
@@ -52,6 +51,41 @@ angular.module('stgv2')
 				errorService.setError(getErrorMsg(response));
 			});
 			
+			//loading Aenderungsvariante list
+			$http({
+				method: "GET",
+				url: "./api/helper/aenderungsvariante.php"
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					ctrl.aenderungsvarianteList = response.data.info;
+				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
+			});
+			
+			//loading initial Status
+			$http({
+				method: "GET",
+				url: "./api/helper/studienordnungStatus.php"
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					ctrl.initialStatus = response.data.info[0];
+					ctrl.sto.status_kurzbz = ctrl.initialStatus.status_kurzbz;
+				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
+			});
+			
 			ctrl.save = function () {
 				//TODO set stgkz
 				var saveData = {data: ""}
@@ -64,7 +98,6 @@ angular.module('stgv2')
 						'Content-Type': 'application/x-www-form-urlencoded'
 					}
 				}).then(function success(response) {
-					console.log(response);
 					//TODO success
 					$("#treeGrid").treegrid('reload');
 				}, function error(response) {
