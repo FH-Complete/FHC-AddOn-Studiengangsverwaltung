@@ -114,7 +114,7 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_foerdervertrag LIMIT
 	echo ' addon.tbl_stgv_foerdervertrag: Tabelle hinzugefuegt<br>';
 }
 
-// Tabelle Studienordnung_Semester
+// Tabelle Studienplan_Semester
 if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienplan_semester LIMIT 1;")) {
     $qry = "CREATE TABLE addon.tbl_stgv_studienplan_semester
 			(
@@ -182,7 +182,7 @@ if (!$result = @$db->db_query("SELECT aenderungsvariante_kurzbz FROM lehre.tbl_s
     
 }
 
-//Tabelle addon.tbl_stgv_aenderungsvariante
+//Tabelle addon.tbl_stgv_studienordnungstatus
 if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienordnungstatus LIMIT 1;")) {
     $qry = "CREATE TABLE addon.tbl_stgv_studienordnungstatus
 			(
@@ -230,15 +230,15 @@ if (!$result = @$db->db_query("SELECT begruendung FROM lehre.tbl_studienordnung 
     
 }
 
-//Spalte ects in lehre.tbl_studienplan
-if (!$result = @$db->db_query("SELECT ects FROM lehre.tbl_studienplan LIMIT 1;"))
+//Spalte ects_stpl in lehre.tbl_studienplan
+if (!$result = @$db->db_query("SELECT ects_stpl FROM lehre.tbl_studienplan LIMIT 1;"))
 {
-    $qry = "ALTER TABLE lehre.tbl_studienplan ADD COLUMN ects numeric(5,2);";
+    $qry = "ALTER TABLE lehre.tbl_studienplan ADD COLUMN ects_stpl numeric(5,2);";
     
     if (!$db->db_query($qry))
 	echo '<strong>lehre.tbl_studienplan: ' . $db->db_last_error() . '</strong><br>';
     else
-	echo ' lehre.tbl_studienplan: Spalte ects hinzugefügt.<br>';
+	echo ' lehre.tbl_studienplan: Spalte ects_stpl hinzugefügt.<br>';
     
 }
 
@@ -288,7 +288,7 @@ $tabellen = array(
     "addon.tbl_stgv_foerdervertrag" => array("foerdervertrag_id", "studiengang_kz", "foerdergeber", "foerdersatz", "foerdergruppe", "gueltigvon", "gueltigbis", "erlaeuterungen", "insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_studienplan_semester" => array("studienplan_semester_id", "studienplan_id", "studiensemester_kurzbz", "semester"),
     "addon.tbl_stgv_aenderungsvariante" => array("aenderungsvariante_kurzbz","bezeichnung"),
-    "tbl_stgv_studienordnungstatus" => array("status_kurzbz","bezeichnung","reihenfolge")
+    "addon.tbl_stgv_studienordnungstatus" => array("status_kurzbz","bezeichnung","reihenfolge")
 );
 
 

@@ -32,7 +32,7 @@ function mapDataToStudienplan($data)
     $stpl->updatevon = get_uid();
     $stpl->regelstudiendauer = $data->regelstudiendauer;
     $stpl->sprache = $data->sprache;
-    $stpl->ects = $data->ects;
+    $stpl->ects_stpl = $data->ects_stpl;
 
     return $stpl;
 }

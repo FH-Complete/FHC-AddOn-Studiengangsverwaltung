@@ -2,5 +2,5 @@
 	<ul class="nav nav-tabs" ng-controller="studienplanTabCtrl">
 	  <li ng-repeat="tab in tabs" tab="tab" ng-class="getTabClass(tab)"><a ui-sref="{{tab.link}}" ng-click="setSelectedTab(tab)">{{tab.label}}</a></li>
 	</ul>
-	<div ui-view></div>
+	<div style="height: 100%;" ui-view></div>
 </div>

@@ -5,10 +5,32 @@ angular.module('stgv2')
 		$('#centerLayout').layout('collapse','north');
 		var ctrl = this;
 		ctrl.data = "";
+		ctrl.oeList = "";
+		ctrl.oe_kurzbz = "";
 		
+		//TODO load OES
+		$http({
+			method: 'GET',
+			url: './api/helper/organisationseinheit.php'
+		}).then(function success(response) {
+			console.log(response);
+			if (response.data.erfolg)
+			{
+				ctrl.oeList = response.data.info;
+			}
+			else
+			{
+				errorService.setError(getErrorMsg(response));
+			}
+		}, function error(response) {
+			errorService.setError(getErrorMsg(response));
+		});
+		//TODO load Lehrtypen
+		
+		//TODO load Semester
 		
 		$("#lvTreeGrid").treegrid({
-			url: "./api/studienordnung/studienordnung.php?stgkz=257&state=all",
+			url: "./api/helper/lehrveranstaltung.php",
 			method: 'GET',
 			idField: 'id',
 			treeField: 'text',
@@ -16,6 +38,7 @@ angular.module('stgv2')
 			{
 				if (data.erfolg)
 				{
+					console.log(data.info);
 					return data.info;
 				}
 				else

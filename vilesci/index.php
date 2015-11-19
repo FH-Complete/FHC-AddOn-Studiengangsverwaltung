@@ -171,7 +171,7 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 				    <th data-options="field: 'stgkz',align:'right'">STG KZ</th>
 				    <!--<th data-options="field: 'version',align:'right'">Version</th>-->
 				    <th data-options="field: 'orgform_kurzbz',align:'right'">Orgform</th>
-				    <th data-options="field: 'ects',align:'right'">ECTS</th>
+				    <th data-options="field: 'ects_stpl',align:'right'">ECTS</th>
 				    <th data-options="field: 'gueltigvon',align:'right'">Gültig von</th>
 				    <th data-options="field: 'gueltigbis',align:'right'">gültig bis</th>
 				    <th data-options="field: 'regelstudiendauer',align:'right'">Dauer</th>

@@ -3,6 +3,15 @@
 		STPL Tree
 	</div>
 	<div id="lvTree">
+		<select ng-model="stplCtrl.oe_kurzbz">
+			<option ng-repeat="oe in stplCtrl.oeList" value="{{oe.kurzbz}}">{{oe.organisationseinheittyp_kurzbz}} - {{oe.bezeichnung}}</option>
+		</select>
+		<select>
+			<option>Lehrtyp</option>
+		</select>
+		<select>
+			<option>Semester</option>
+		</select>
 		<table id="lvTreeGrid" class="easyui-treegrid" data-options="url: '', method: 'get', rownumbers: true, idField: 'id', treeField: 'text', fit: true">
 			<thead frozen="true">
 				<tr>

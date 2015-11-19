@@ -87,7 +87,7 @@ foreach($studienordnung->result as $key=>$sto)
 	$temp_stpl->orgform_kurzbz = $stpl->orgform_kurzbz;
 	$temp_stpl->regelstudiendauer = $stpl->regelstudiendauer;
 	$temp_stpl->sprache = $stpl->sprache;
-	$temp_stpl->ects = $stpl->ects;
+	$temp_stpl->ects_stpl = $stpl->ects_stpl;
 	
 	$temp_stpl->attributes = array();
 	$node_attr = new stdClass();

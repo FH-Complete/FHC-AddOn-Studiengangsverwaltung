@@ -28,7 +28,7 @@ require_once(dirname(__FILE__) . '/../../../include/studienplan.class.php');
 class StudienplanAddonStgv extends studienplan
 {
 
-    public $ects;
+    public $ects_stpl;
     public $pflicht_sws;
     public $pflicht_lvs;
     public $erlaeuterungen;
@@ -236,7 +236,7 @@ class StudienplanAddonStgv extends studienplan
 	    //Neuen Datensatz einfuegen
 	    $qry = 'BEGIN;INSERT INTO lehre.tbl_studienplan (studienordnung_id, orgform_kurzbz,version,
 			    bezeichnung, regelstudiendauer, sprache, aktiv, semesterwochen, testtool_sprachwahl, 
-			    pflicht_sws, pflicht_lvs, ects, erlaeuterungen, 
+			    pflicht_sws, pflicht_lvs, ects_stpl, erlaeuterungen, 
 			    insertamum, insertvon) VALUES (' .
 		    $this->db_add_param($this->studienordnung_id, FHC_INTEGER) . ', ' .
 		    $this->db_add_param($this->orgform_kurzbz) . ', ' .
@@ -249,7 +249,7 @@ class StudienplanAddonStgv extends studienplan
 		    $this->db_add_param($this->testtool_sprachwahl, FHC_BOOLEAN) . ', ' .
 		    $this->db_add_param($this->pflicht_sws, FHC_BOOLEAN) . ', ' .
 		    $this->db_add_param($this->pflicht_lvs, FHC_BOOLEAN) . ', ' .
-		    $this->db_add_param($this->ects, FHC_BOOLEAN) . ', ' .
+		    $this->db_add_param($this->ects_stpl, FHC_BOOLEAN) . ', ' .
 		    $this->db_add_param($this->erlaeuterungen, FHC_BOOLEAN) . ', ' .
 		    'now(), ' .
 		    $this->db_add_param($this->insertvon) . ');';
@@ -271,7 +271,7 @@ class StudienplanAddonStgv extends studienplan
 		    ' aktiv=' . $this->db_add_param($this->aktiv, FHC_BOOLEAN) . ', ' .
 		    ' semesterwochen=' . $this->db_add_param($this->semesterwochen, FHC_INTEGER) . ', ' .
 		    ' testtool_sprachwahl=' . $this->db_add_param($this->testtool_sprachwahl, FHC_BOOLEAN) . ',' .
-		    ' ects=' . $this->db_add_param($this->ects) . ',' .
+		    ' ects_stpl=' . $this->db_add_param($this->ects_stpl) . ',' .
 		    ' pflicht_sws=' . $this->db_add_param($this->pflicht_sws, FHC_INTEGER) . ',' .
 		    ' pflicht_lvs=' . $this->db_add_param($this->pflicht_lvs, FHC_INTEGER) . ',' .
 		    ' erlaeuterungen=' . $this->db_add_param($this->erlaeuterungen, FHC_STRING) . ',' .
@@ -397,7 +397,7 @@ class StudienplanAddonStgv extends studienplan
 	    $this->aktiv = $this->db_parse_bool($row->aktiv);
 	    $this->semesterwochen = $row->semesterwochen;
 	    $this->testtool_sprachwahl = $this->db_parse_bool($row->testtool_sprachwahl);
-	    $this->ects = $row->ects;
+	    $this->ects_stpl = $row->ects_stpl;
 	    $this->pflicht_lvs = $row->pflicht_lvs;
 	    $this->pflicht_sws = $row->pflicht_sws;
 	    $this->erlaeuterungen = $row->erlaeuterungen;
@@ -453,7 +453,7 @@ class StudienplanAddonStgv extends studienplan
 		$obj->aktiv = $this->db_parse_bool($row->aktiv);
 		$obj->semesterwochen = $row->semesterwochen;
 		$obj->testtool_sprachwahl = $this->db_parse_bool($row->testtool_sprachwahl);
-		$obj->ects = $row->ects;
+		$obj->ects_stpl = $row->ects_stpl;
 		$obj->pflicht_lvs = $row->pflicht_lvs;
 		$obj->pflicht_sws = $row->pflicht_sws;
 		$obj->erlaeuterungen = $row->erlaeuterungen;
