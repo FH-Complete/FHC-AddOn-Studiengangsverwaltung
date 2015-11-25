@@ -4,21 +4,21 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="stgkz">Stg KZ</label>
-					<input type="text" class="form-control" name="stgkz" value="{{ctrl.data.stgkz}}" disabled/>
+					<input type="text" class="form-control input-sm" name="stgkz" value="{{ctrl.data.stgkz}}" disabled/>
 				</div>
 			</div>
 			<!-- TODO Studiengangsbezeichnung aus Studienordnung-->
 			<div class="col-sm-3">
 				<div class="form-group">
 					<label for="bezeichnung">Studiengangsbezeichnung</label>
-					<input type="text" class="form-control" name="bezeichnung" ng-model="ctrl.data.bezeichnung"/>
+					<input type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.data.bezeichnung"/>
 				</div>
 			</div>
 			<!-- TODO Studiengangskurzbezeichnung aus Studienordnung-->
 			<div class="col-sm-1">
 				<div class="form-group">
 					<label for="kurzbz">Studiengangskurzbezeichnung</label>
-					<input type="text" class="form-control" name="kurzbz" ng-model="ctrl.data.kurzbz"/>
+					<input type="text" class="form-control input-sm" name="kurzbz" ng-model="ctrl.data.kurzbz"/>
 				</div>
 			</div>
 		</div>
@@ -26,13 +26,13 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="art">Studiengangsart</label>
-					<input type="text" class="form-control" name="art" value="{{ctrl.data.art}}" disabled/>
+					<input type="text" class="form-control input-sm" name="art" value="{{ctrl.data.art}}" disabled/>
 				</div>
 			</div>
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="akadGrad">Akademischer Grad</label>
-					<select class="form-control" name="akadGrad" ng-model="ctrl.data.akadgrad_id">
+					<select class="form-control input-sm" name="akadGrad" ng-model="ctrl.data.akadgrad_id">
 						<option ng-repeat="akadGrad in ctrl.akadGradList" value="{{akadGrad.akadgrad_id}}">{{akadGrad.titel}}</option>
 					</select>
 				</div>
@@ -42,13 +42,13 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="gueltigvon">Orgform</label>
-					<input type="text" class="form-control" name="orgform" value="{{ctrl.data.orgform}}" disabled/>
+					<input type="text" class="form-control input-sm" name="orgform" value="{{ctrl.data.orgform}}" disabled/>
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="gueltigbis">Standort</label>
-					<select class="form-control" name="gueltigbis" ng-model="ctrl.data.standort">
+					<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.data.standort">
 						<option ng-repeat="standort in ctrl.standortList">{{standort.bezeichnung}}</option>
 					</select>
 				</div>
@@ -58,7 +58,7 @@
 			<div class="col-sm-1">
 				<div class="form-group">
 					<div>
-						<button type="submit" class="btn btn-default" ng-click="ctrl.save()">Speichern</button>
+						<button type="submit" class="btn btn-success btn-sm" ng-click="ctrl.save()">Speichern</button>
 					</div>
 				</div>
 			</div>

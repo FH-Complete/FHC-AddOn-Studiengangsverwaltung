@@ -48,7 +48,6 @@ $(document).ready(function () {
 	});
 	
 	function writeAttributesFromJson(node) {
-		//console.log(node);
 		if (node.attributes)
 		{
 			node.attributes.forEach(function (attr, value)
@@ -155,7 +154,19 @@ angular.module("stgv2")
 			$scope.selectedTab = $scope.tabs[0];
 			$scope.setSelectedTab = function (tab)
 			{
+				//expand left tree and north treegrid when leaving LV tab
+				if($scope.selectedTab.link === ".lehrveranstaltungen")
+				{
+					$('#layoutWrapper').layout('expand', 'west');
+					$('#centerLayout').layout('expand', 'north');
+				}
 				$scope.selectedTab = tab;
+				//collapse left tree and north treegrid when entering LV tab
+				if(tab.link === ".lehrveranstaltungen")
+				{
+					$('#layoutWrapper').layout('collapse', 'west');
+					$('#centerLayout').layout('collapse', 'north');
+				}
 			}
 
 			$scope.getTabClass = function (tab)

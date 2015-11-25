@@ -38,35 +38,37 @@
 		</div>
 	</div>
 	<div id="lvTree">
-		<div class="col-sm-10">
-			<div class="form-group form-group-sm">
-				<label for="oe">Organisationseinheit</label>
-				<select id="oe" class="form-control input-sm" name="oe" ng-model="stplCtrl.oe_kurzbz">
-					<option ng-repeat="oe in stplCtrl.oeList" value="{{oe.oe_kurzbz}}">{{oe.organisationseinheittyp_kurzbz}} - {{oe.bezeichnung}}</option>
-				</select></br>
+		<div id="stplLvFilter">
+			<div class="col-sm-10">
+				<div class="form-group form-group-sm">
+					<label for="oe">Organisationseinheit</label>
+					<select id="oe" class="form-control input-sm" name="oe" ng-model="stplCtrl.oe_kurzbz">
+						<option ng-repeat="oe in stplCtrl.oeList" value="{{oe.oe_kurzbz}}">{{oe.organisationseinheittyp_kurzbz}} - {{oe.bezeichnung}}</option>
+					</select></br>
+				</div>
 			</div>
-		</div>
-		<div class="col-sm-5">
-			<div class="form-group form-group-sm">
-				<label for="lehrtyp">Lehrtyp</label>
-				<select id="lehrtyp" class="form-control input-sm" name="lehrtyp" ng-model="stplCtrl.lehrtyp_kurzbz">
-					<option ng-repeat="lehrtyp in stplCtrl.lehrtypList" value="{{lehrtyp.lehrtyp_kurzbz}}">{{lehrtyp.bezeichnung}}</option>
-				</select>
+			<div class="col-sm-5">
+				<div class="form-group form-group-sm">
+					<label for="lehrtyp">Lehrtyp</label>
+					<select id="lehrtyp" class="form-control input-sm" name="lehrtyp" ng-model="stplCtrl.lehrtyp_kurzbz">
+						<option ng-repeat="lehrtyp in stplCtrl.lehrtypList" value="{{lehrtyp.lehrtyp_kurzbz}}">{{lehrtyp.bezeichnung}}</option>
+					</select>
+				</div>
 			</div>
-		</div>
-		<div class="col-sm-3">
-			<div class="form-group form-group-sm">
-				<label for="semester">Semester</label>
-				<select id="semester" class="form-control input-sm" name="semester" ng-model="stplCtrl.semester">
-					<option ng-repeat="sem in stplCtrl.semesterList" value="{{sem.key}}">{{sem.value}}</option>
-				</select>
+			<div class="col-sm-3">
+				<div class="form-group form-group-sm">
+					<label for="semester">Semester</label>
+					<select id="semester" class="form-control input-sm" name="semester" ng-model="stplCtrl.semester">
+						<option ng-repeat="sem in stplCtrl.semesterList" value="{{sem.key}}">{{sem.value}}</option>
+					</select>
+				</div>
 			</div>
-		</div>
-		<div class="col-sm-2">
-			<div class="form-group form-group-sm">
-				<label></label>
-				<div>
-					<button type="submit" class="btn btn-default btn-sm" ng-click="stplCtrl.loadLehrveranstaltungen()">Filtern</button>
+			<div class="col-sm-2">
+				<div class="form-group form-group-sm">
+					<label>&nbsp;</label>
+					<div>
+						<button type="submit" class="btn btn-default btn-sm" ng-click="stplCtrl.loadLehrveranstaltungen()">Filtern</button>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -1,8 +1,6 @@
 angular.module('stgv2')
 		.controller('StplLehrveranstaltungCtrl', function ($scope, $http, $state, $stateParams, errorService) {
 			$scope.stplid = $stateParams.stplid;
-			$('#layoutWrapper').layout('collapse', 'west');
-			$('#centerLayout').layout('collapse', 'north');
 			var ctrl = this;
 			ctrl.data = "";
 			ctrl.meta = {

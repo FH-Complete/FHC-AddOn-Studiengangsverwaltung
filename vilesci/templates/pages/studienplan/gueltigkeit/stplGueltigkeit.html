@@ -16,7 +16,7 @@
 				<td ng-repeat="n in ctrl.range(ctrl.studienplan.regelstudiendauer)"><span ng-show="{{sem.ausbildungssemester.indexOf(n.toString()) > -1}}" class='glyphicon glyphicon-ok green' aria-hidden='true'></span><span ng-show="sem.ausbildungssemester.indexOf(n.toString()) == -1" class='glyphicon glyphicon-remove red' aria-hidden='true'></span></td>
 				<td>
 					<div class="btn-group btn-group-xs">
-						<button type="submit" class="btn btn-default btn-" ng-click="ctrl.delete(sem.studiensemester_kurzbz)">Löschen</button>
+						<button type="submit" class="btn btn-danger btn-sm" ng-click="ctrl.delete(sem.studiensemester_kurzbz)">Löschen</button>
 					</div>
 				</td>
 			</tr>
@@ -31,7 +31,7 @@
 				</td>
 				<td>
 					<div class="btn-group btn-group-xs">
-						<button type="submit" class="btn btn-primary" ng-click="ctrl.assign()">Zuordnen</button>
+						<button type="submit" class="btn btn-success" ng-click="ctrl.assign()">Zuordnen</button>
 					</div>
 				</td>
 			</tr>

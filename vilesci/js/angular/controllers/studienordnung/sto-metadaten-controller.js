@@ -7,8 +7,8 @@ angular.module('stgv2')
 			ctrl.changed = false;
 			ctrl.studiensemesterList = "";
 			ctrl.akadGradList = "";
-			//TODO list from db or config
 			ctrl.aenderungsvarianteList = "";
+			ctrl.status= "";
 			
 			//loading Studiensemester list
 			$http({
@@ -70,6 +70,27 @@ angular.module('stgv2')
 					//TODO Preparation for watcher
 					ctrl.origin = response.data.info;
 					ctrl.data = response.data.info;
+					$http({
+						method: "GET",
+						url: "./api/helper/studienordnungStatus.php"
+					}).then(function success(response) {
+						if (response.data.erfolg)
+						{
+							$(response.data.info).each(function(i,v){
+								if(v.status_kurzbz === ctrl.data.status_kurzbz)
+								{
+									ctrl.status = v;
+								}
+							});
+
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+					}, function error(response) {
+						errorService.setError(getErrorMsg(response));
+					});
 				}
 				else
 				{
