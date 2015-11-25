@@ -10,8 +10,19 @@ require_once('../functions.php');
 //TODO
 $DEBUG = true;
 
+$oetyp_kurzbz = filter_input(INPUT_GET, "oetyp_kurzbz");
+
+if(is_null($oetyp_kurzbz))
+{
+    returnAJAX(false, "Variable oetyp_kurzbz nicht gesetzt");    
+}
+elseif($oetyp_kurzbz == false)
+{
+    returnAJAX(false, "Fehler beim lesen der GET Variablen");    
+}
+
 $oe = new organisationseinheit();
-$oe->getAll(true, true);
+$oe->getByTyp($oetyp_kurzbz);
 
 $data =  $oe->result;
 returnAJAX(true, $data);

@@ -241,7 +241,7 @@ class foerdervertrag extends basis_db
 	    
 	    if(!$this->db_query($qry))
 	    {
-		$this->errormsg = 'Fehler beim Speichern der Daten';
+		$this->errormsg = 'Fehler beim Löschen der Daten';
 		return false;
 	    }
 	    

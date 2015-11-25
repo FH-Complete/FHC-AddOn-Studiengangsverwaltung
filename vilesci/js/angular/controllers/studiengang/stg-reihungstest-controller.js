@@ -133,11 +133,36 @@ angular.module('stgv2')
 				{
 					$("#save").hide();
 					$("#update").show();
+					$("#delete").show();
 				}
 				else
 				{
 					$("#save").show();
 					$("#update").hide();
+					$("#delete").hide();
+				}
+			};
+			
+			ctrl.delete = function()
+			{
+				if(confirm("Wollen Sie den Fördervertrag wirklich Löschen?"))
+				{
+					var deleteData = {data: ""}
+					deleteData.data = ctrl.reihungstest;
+					$http({
+						method: 'POST',
+						url: './api/studiengang/reihungstest/delete_reihungstest.php',
+						data: $.param(deleteData),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response) {
+						//TODO success 
+						$("#dataGridReihungstest").datagrid('reload');
+						ctrl.newReihungstest();
+					}, function error(response) {
+						errorService.setError(getErrorMsg(response));
+					});
 				}
 			};
 		});

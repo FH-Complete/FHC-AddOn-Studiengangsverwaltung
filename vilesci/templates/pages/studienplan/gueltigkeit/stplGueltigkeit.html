@@ -1,5 +1,8 @@
 <div class="contentWrapper"  ng-controller="StplGueltigkeitCtrl as ctrl">
-	<table class="table table-striped">
+	<div ng-show="ctrl.studienplan.regelstudiendauer == NULL">
+		Beim gewählten Studienplan fehlt die Regelstudiendauer.
+	</div>
+	<table class="table table-striped" ng-show="ctrl.studienplan.regelstudiendauer != NULL">
 		<thead>
 			<tr>
 				<th width="200">Studiensemester</th>

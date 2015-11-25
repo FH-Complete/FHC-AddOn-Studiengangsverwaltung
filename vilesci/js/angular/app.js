@@ -46,14 +46,6 @@ $(document).ready(function () {
 			return false;
 		}
 	});
-	//TODO for testing drag n drop
-//	$('#test_tree').tree({
-//		onDragEnter: function(target,source){
-//			  return false;
-//		  }
-//	});
-//	
-
 	
 	function writeAttributesFromJson(node) {
 		//console.log(node);
@@ -79,6 +71,14 @@ var stgv2 = angular.module("stgv2", ['ui.router','ngSanitize'], function($httpPr
 });
 
 angular.module("stgv2")
+		.controller("AppCtrl", function ($scope, $state, $compile, $stateParams, errorService)
+		{
+			//TODO get UserData
+			var ctrl = this;
+			ctrl.user = {};
+			ctrl.user.name = "Stefan";
+			ctrl.user.lastname = "Puraner";
+		})
 		.controller("TabsCtrl", function ($scope, $state, $compile, $stateParams, errorService) {
 			var ctrl = this;
 			ctrl.stoid = "";

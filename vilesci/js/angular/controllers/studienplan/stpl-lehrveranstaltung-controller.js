@@ -1,59 +1,395 @@
 angular.module('stgv2')
-	.controller('StplLehrveranstaltungCtrl', function($scope, $http, $state, $stateParams, errorService){
-		$scope.stplid = $stateParams.stplid;
-		$('#layoutWrapper').layout('collapse','west');
-		$('#centerLayout').layout('collapse','north');
-		var ctrl = this;
-		ctrl.data = "";
-		ctrl.oeList = "";
-		ctrl.oe_kurzbz = "";
-		
-		//TODO load OES
-		$http({
-			method: 'GET',
-			url: './api/helper/organisationseinheit.php'
-		}).then(function success(response) {
-			console.log(response);
-			if (response.data.erfolg)
+		.controller('StplLehrveranstaltungCtrl', function ($scope, $http, $state, $stateParams, errorService) {
+			$scope.stplid = $stateParams.stplid;
+			$('#layoutWrapper').layout('collapse', 'west');
+			$('#centerLayout').layout('collapse', 'north');
+			var ctrl = this;
+			ctrl.data = "";
+			ctrl.meta = {
+				name: "",
+				ects: ""
+			};
+			ctrl.studienplan = "";
+			ctrl.oeList = "";
+			ctrl.oe_kurzbz = "";
+			ctrl.lehrtypList = "";
+			ctrl.lehrtyp_kurzbz = "lv";
+			ctrl.semester = "null";
+			ctrl.semesterList = [{
+					"key": "null",
+					"value": "alle"
+				}];
+			
+			ctrl.initSemesterList = function()
 			{
-				ctrl.oeList = response.data.info;
+				for(var j=0; j<=ctrl.studienplan.regelstudiendauer; j++)
+				{
+					var item = {
+						"key": j,
+						"value": j
+					}
+					ctrl.semesterList.push(item);
+				}
+			};
+			
+			ctrl.initStplTree = function ()
+			{
+				$("#stplTreeGrid").treegrid({
+					url: "./api/studienplan/lehrveranstaltungen/lehrveranstaltungTree.php?studienplan_id=" + $scope.stplid,
+					idField: "id",
+					treeField: "name",
+					loadFilter: function (data)
+					{
+						if (data.erfolg)
+						{
+							var tree = [];
+							$(data.info).each(function (i, v)
+							{
+								if (v.stpllv_semester == 0)
+								{
+									tree.push(generateChildren(v));
+								}
+							});
+							for (var i = 1; i <= ctrl.studienplan.regelstudiendauer; i++)
+							{
+								var children = [];
+								$(data.info).each(function (j, v)
+								{
+									if (v.stpllv_semester == i)
+									{
+										children.push(generateChildren(v, i));
+									}
+								});
+								
+								//sort by name
+								children.sort(function(a,b){
+									return a.name > b.name;
+								});
+								
+								//sort by type -> modules after lv
+								children.sort(function(a,b){
+									return a.type > b.type;
+								});
+
+								var node = {};
+								node.id = i + '_sem';
+								node.name = i + '. Semester';
+								node.type = "sem";
+								node.sem = i;
+								if (children.length != 0)
+								{
+									node.children = children;
+									node.state = 'closed';
+								}
+								tree.push(node);
+							}
+
+							return tree;
+						}
+						else
+						{
+							/*
+							 * Dieser Zweig wird ausgeführt bei Drag and Drop
+							 */
+							if (data.erfolg == undefined)
+							{
+								return data;
+							}
+							//TODO Fehler ausgeben data.message
+						}
+					},
+					onLoadSuccess: function (row)
+					{
+						$(this).treegrid("enableDnd", row ? row.id : null);
+					},
+					onClickRow: function (row)
+					{
+						if (row.type != "sem")
+						{
+							ctrl.meta = row;
+							$scope.$apply();
+						}
+					},
+					onBeforeDrag: function (row)
+					{
+						if (row.type === "sem")
+						{
+							return false;
+						}
+						else
+						{
+							row.moving = true;
+						}
+					},
+					onDrop: function (target, source, point)
+					{
+						var data = {};
+						
+						data.semester = target.sem;
+						if(target.type != "sem")
+						{
+							data.studienplan_lehrveranstaltung_id_parent = target.id;
+						}
+						else
+						{
+							data.studienplan_lehrveranstaltung_id_parent = "";
+						}
+						data.pflicht = true;
+						//TODO errorhandling
+						//update moved entry
+						if(source.moving)
+						{
+							data.studienplan_lehrveranstaltung_id = source.id;
+							var updateData = {data: ""};
+							updateData.data = data;
+							$http({
+								method: 'POST',
+								url: './api/studienplan/lehrveranstaltungen/update_studienplanLehrveranstaltung.php',
+								data: $.param(updateData),
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								}
+							}).then(function success(response) {
+								//TODO success
+								if (response.data.erfolg)
+								{
+									//TODO show success in div
+								}
+								else
+								{
+									errorService.setError(getErrorMsg(response));
+								}
+							}, function error(response) {
+								errorService.setError(getErrorMsg(response));
+							});
+						}
+						else
+						{
+							//save new entry moved from other tree
+							data.studienplan_id = $scope.stplid;
+							data.lehrveranstaltung_id = source.id;
+							var saveData = {data: ""};
+							saveData.data = data;
+							$http({
+								method: 'POST',
+								url: './api/studienplan/lehrveranstaltungen/save_studienplanLehrveranstaltung.php',
+								data: $.param(saveData),
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								}
+							}).then(function success(response) {
+								//TODO success
+								if (response.data.erfolg)
+								{
+									//node-id an neue DB-ID anpassen
+									$($('#stplTreeGrid').treegrid('find', source.id)).attr('node-id', response.data.info[0]);
+									$('#datagrid-row-r4-2-' + source.id).attr('node-id', response.data.info[0]);
+									$('#datagrid-row-r4-2-' + source.id).attr('id','datagrid-row-r4-2-' + response.data.info[0]);
+									var  row = $('#stplTreeGrid').treegrid('find', source.id);
+									row.id = response.data.info[0];
+									row.sem = saveData.data.semester;
+									//needed to detect later if node is moved in tree or dropped from another tree
+									row.moving = true;
+								}
+								else
+								{
+									errorService.setError(getErrorMsg(response));
+								}
+							}, function error(response) {
+								errorService.setError(getErrorMsg(response));
+							});
+						}
+					},
+					onContextMenu: function (e, row)
+					{
+						if (row && row.type != "sem") {
+							e.preventDefault();
+							$(this).treegrid('select', row.id);
+							$('#stplTreeGridContextMenu').menu();
+							$('#stplTreeGridContextMenu').menu('show', {
+								left: e.pageX,
+								top: e.pageY
+							});
+						}
+					}
+				});
+			};
+
+			//get Selected Studienplan if selected in TreeGrid
+			var node = $("#treeGrid").treegrid('getSelected');
+			if(node)
+			{
+				ctrl.studienplan = node;
+				ctrl.initSemesterList();
+				ctrl.initStplTree();
 			}
 			else
 			{
-				errorService.setError(getErrorMsg(response));
+				//if not selected get data from DB
+				$http({
+					method: 'GET',
+					url: './api/studienplan/eckdaten/eckdaten.php?stplId=' + $scope.stplid
+				}).then(function success(response) {
+					if (response.data.erfolg)
+					{
+						ctrl.studienplan = response.data.info;
+						ctrl.initSemesterList();
+						ctrl.initStplTree();
+					}
+					else
+					{
+						errorService.setError(getErrorMsg(response));
+					}
+				}, function error(response) {
+					errorService.setError(getErrorMsg(response));
+				});
 			}
-		}, function error(response) {
-			errorService.setError(getErrorMsg(response));
-		});
-		//TODO load Lehrtypen
-		
-		//TODO load Semester
-		
-		$("#lvTreeGrid").treegrid({
-			url: "./api/helper/lehrveranstaltung.php",
-			method: 'GET',
-			idField: 'id',
-			treeField: 'text',
-			loadFilter: function (data)
-			{
-				if (data.erfolg)
+
+			//load organisationseinheiten
+			$http({
+				method: 'GET',
+				url: './api/helper/organisationseinheitByTyp.php?oetyp_kurzbz=Institut'
+			}).then(function success(response) {
+				if (response.data.erfolg)
 				{
-					console.log(data.info);
-					return data.info;
+					ctrl.oeList = response.data.info;
 				}
 				else
 				{
-					//TODO Fehler ausgeben data.message
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
+			});
+
+			//load lehrtypen
+			$http({
+				method: 'GET',
+				url: './api/helper/lehrtyp.php'
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					ctrl.lehrtypList = response.data.info;
+				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
+			});
+			
+			$("#lvTreeGrid").treegrid();
+
+			ctrl.loadLehrveranstaltungen = function ()
+			{
+				var oe_kurzbz = $("#oe").val();
+				if (oe_kurzbz === "? string: ?")
+				{
+					alert("Bitte wählen Sie eine Organisationseinheit aus.");
+					return false;
+				}
+				var lehrtyp_kurzbz = $("#lehrtyp").val();
+				var semester = $("#semester").val();
+				if (semester === "? string: ?")
+				{
+					semester = null;
 				}
 
-			},
-			onClick: function (node)
-			{
-				return true;
-			},
-			onClickRow: function (row)
-			{
+				$("#lvTreeGrid").treegrid({
+					url: "./api/helper/lehrveranstaltungByOe.php?oe_kurzbz=" + oe_kurzbz + "&lehrtyp_kurzbz=" + lehrtyp_kurzbz + "&semester=" + semester,
+					method: 'GET',
+					idField: 'id',
+					treeField: 'name',
+					rownumbers: true,
+					loadFilter: function (data)
+					{
+						if (data.erfolg)
+						{
+							return data.info;
+						}
+						else
+						{
+							/*
+							 * Dieser Zweig wird ausgeführt bei Drag and Drop
+							 */
+							if (data.erfolg == undefined)
+							{
+								return data;
+							}
+							//TODO Fehler ausgeben data.message
+						}
 
-			},
+					},
+					onClick: function (node)
+					{
+						return true;
+					},
+					onClickRow: function (row)
+					{
+						//TODO LV Daten anzeigen
+						console.log(row);
+						ctrl.meta = row;
+					},
+					onLoadSuccess: function (row)
+					{
+						$(this).treegrid("enableDnd", row ? row.id : null);
+					},
+					onDragEnter: function (target, source)
+					{
+						return false;
+					}
+				});
+			};
+
+			ctrl.removeStudienplanLehrveranstaltung = function ()
+			{
+				var node = $('#stplTreeGrid').treegrid('getSelected');
+				if (node){
+					$http({
+						method: 'GET',
+						url: './api/studienplan/lehrveranstaltungen/delete_studienplanLehrveranstaltung.php?studienplan_lehrveranstaltung_id='+node.id
+					}).then(function success(response) {
+						if (response.data.erfolg)
+						{
+							$('#stplTreeGrid').treegrid('remove', node.id);
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+					}, function error(response) {
+						errorService.setError(getErrorMsg(response));
+					});
+				}
+			};
 		});
-	});
+
+function generateChildren(item, sem)
+{
+	var children = [];
+	if (item.children.length != 0)
+	{
+		$(item.children).each(function (i, v)
+		{
+			children.push(generateChildren(v, sem));
+		});
+	}
+	var node = {};
+	node.id = item.studienplan_lehrveranstaltung_id;
+	node.name = item.bezeichnung;
+	node.type = item.lehrtyp_kurzbz;
+	node.sem = sem;
+	node.ects = item.ects;
+	node.semesterstunden = item.semesterstunden;
+	node.lehrform = item.lehrform_kurzbz;
+	node.lvnr = item.lvnr;
+	if (children.length != 0)
+	{
+		node.children = children;
+		node.state = 'closed';
+	}
+
+	return node;
+}
+

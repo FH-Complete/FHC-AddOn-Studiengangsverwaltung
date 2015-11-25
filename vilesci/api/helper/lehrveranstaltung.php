@@ -19,8 +19,10 @@ foreach($lehrveranstaltung->lehrveranstaltungen as $key=>$lv)
 {
     $temp = new stdClass();
     $temp->id = $lv->lehrveranstaltung_id;
-    $temp->text = $lv->bezeichnung;
+    $temp->name = $lv->bezeichnung;
     array_push($lv_array, $temp);
+    if($key==10)
+	break;
 }
 returnAJAX(true, $lv_array)
 

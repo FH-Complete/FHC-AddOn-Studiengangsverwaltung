@@ -55,8 +55,10 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script type="text/javascript" src="./js/jquery-1.11.3.js"></script>
 
 	<!-- Easy UI JS -->
-	<script type="text/javascript" src="./js/jquery-easyui-1.4.4/jquery.min.js"></script>
+	<!--<script type="text/javascript" src="./js/jquery-easyui-1.4.4/jquery.min.js"></script>-->
 	<script type="text/javascript" src="./js/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+	<!-- TreeGrid DnD Extension -->
+	<script type="text/javascript" src="./js/treegrid-dnd/treegrid-dnd.js"></script>
 	
 	<!-- JQuery UI -->
 	<script type="text/javascript" src="./js/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
@@ -111,7 +113,7 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<!-- Directives -->
 	<script type="text/javascript" src="./js/angular/directives/error-directive.js"></script>
     </head>
-    <body>
+    <body ng-controller="AppCtrl as appCtrl">
 	<div id='layoutWrapper' class="easyui-layout">
 	    <div id="north" data-options="region:'north'" ng-controller="TabsCtrl as tabCtrl">
 		<div class="easyui-panel" style="padding:5px;">
@@ -153,7 +155,7 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	    </div>
 	    <div id="footer" data-options="region:'south'" style="height: 5%;">
 		<!--TODO zusätzliche Daten anzeigen; z.B.: Username, DB, etc-->
-		<div id="user">User: Stefan Puraner</div>
+		<div id="user">User: {{appCtrl.user.name}} {{appCtrl.user.lastname}}</div>
 	    </div>
 	    <div id="center" data-options="region:'center'">
 		<div id="centerLayout" class="easyui-layout" fit="true">
