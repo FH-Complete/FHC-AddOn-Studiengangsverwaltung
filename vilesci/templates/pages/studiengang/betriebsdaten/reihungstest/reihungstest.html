@@ -61,7 +61,9 @@
 				<!--TODO ORT aus DB laden-->
 				<div class="form-group">
 					<label for="ort">Ort</label>
-					<input type="text" class="form-control input-sm" name="ort" ng-model="ctrl.reihungstest.ort_kurzbz"/>
+					<select class="form-control input-sm" name="ort" ng-model="ctrl.reihungstest.ort_kurzbz">
+						<option ng-repeat="ort in ctrl.ortList">{{ort.ort_kurzbz}}</option>
+					</select>
 				</div>
 			</div>
 		</div>

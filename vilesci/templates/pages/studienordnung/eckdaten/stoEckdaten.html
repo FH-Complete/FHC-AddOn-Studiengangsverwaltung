@@ -10,15 +10,15 @@
 			<!-- TODO Studiengangsbezeichnung aus Studienordnung-->
 			<div class="col-sm-3">
 				<div class="form-group">
-					<label for="bezeichnung">Studiengangsbezeichnung</label>
-					<input type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.data.bezeichnung"/>
+					<label for="bezeichnung">Studiengangbezeichnung</label>
+					<input type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.data.studiengangbezeichnung"/>
 				</div>
 			</div>
 			<!-- TODO Studiengangskurzbezeichnung aus Studienordnung-->
 			<div class="col-sm-1">
 				<div class="form-group">
 					<label for="kurzbz">Studiengangskurzbezeichnung</label>
-					<input type="text" class="form-control input-sm" name="kurzbz" ng-model="ctrl.data.kurzbz"/>
+					<input type="text" class="form-control input-sm" name="kurzbz" ng-model="ctrl.data.studiengangkurzbzlang"/>
 				</div>
 			</div>
 		</div>
@@ -26,7 +26,7 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="art">Studiengangsart</label>
-					<input type="text" class="form-control input-sm" name="art" value="{{ctrl.data.art}}" disabled/>
+					<input type="text" class="form-control input-sm" name="art" value="{{ctrl.data.studiengangsart}}" disabled/>
 				</div>
 			</div>
 			<div class="col-sm-4">
@@ -40,16 +40,20 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-2">
+				<!-- TODO org_form speichern -->
 				<div class="form-group">
-					<label for="gueltigvon">Orgform</label>
-					<input type="text" class="form-control input-sm" name="orgform" value="{{ctrl.data.orgform}}" disabled/>
+					<label for="orgform">Orgform</label>
+					<select class="form-control input-sm" name="orgform" ng-model="ctrl.data.orgform_kurzbz">
+						<option ng-repeat="orgform in ctrl.orgformList">{{orgform.orgform_kurzbz}}</option>
+					</select>
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
+					<!-- TODO Standort speichern -->
 					<label for="gueltigbis">Standort</label>
-					<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.data.standort">
-						<option ng-repeat="standort in ctrl.standortList">{{standort.bezeichnung}}</option>
+					<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.data.standort_id">
+						<option ng-repeat="standort in ctrl.standortList" value="{{standort.standort_id}}">{{standort.bezeichnung}}</option>
 					</select>
 				</div>
 			</div>

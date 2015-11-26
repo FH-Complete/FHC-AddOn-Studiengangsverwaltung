@@ -7,7 +7,8 @@ angular.module('stgv2')
 			{label: 'Bewerbungstermine', link: '.bewerbung'},
 			{label: 'Reihungstesttermine', link: '.reihungstest'},
 			{label: 'Kosten', link: '.kosten'},
-			{label: 'Förderungen', link: '.foerderungen'}
+			{label: 'Förderungen', link: '.foerderungen'},
+			{label: 'Doktorat', link: '.doktorat'}
 		];
 			
 		$scope.selectedTab = $scope.tabs[0];

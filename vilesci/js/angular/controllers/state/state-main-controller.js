@@ -12,6 +12,16 @@ angular.module('stgv2')
 				{
 					if (data.erfolg)
 					{
+						$(data.info).each(function(i,v){
+							/* removing state for elements without children;
+							 * otherwise treegrid will crash when trying 
+							 * to expand that node
+							 */ 
+							if(v.children.length === 0)
+							{
+								delete v.state;
+							}
+						})
 						return data.info;
 					}
 					else
@@ -26,6 +36,7 @@ angular.module('stgv2')
 				},
 				onClickRow: function (row)
 				{
+					console.log(row);
 					if (row.attributes[0].name !== undefined && row.attributes[0].value !== undefined)
 					{
 						angular.element($("#treeGrid")).scope().load(row);

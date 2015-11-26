@@ -47,6 +47,11 @@ angular.module('stgv2').config(function($stateProvider, $urlRouterProvider){
 			url: '/foerderungen',
 			templateUrl: './templates/pages/studiengang/betriebsdaten/foerderungen/foerderungen.html'
 		})
+		.state('betriebsdaten.doktorat', {
+			name: 'betriebsdaten.doktorat',
+			url: '/doktorat',
+			templateUrl: './templates/pages/studiengang/betriebsdaten/doktorat/doktorat.html'
+		})
 		.state('studienordnung', {
 			name: 'studienordnung',
 			url: '/studienordnung/:stoid',

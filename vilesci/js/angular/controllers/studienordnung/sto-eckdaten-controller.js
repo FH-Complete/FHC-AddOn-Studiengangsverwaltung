@@ -87,6 +87,7 @@ angular.module('stgv2')
 					//TODO Preparation for watcher
 					ctrl.origin = response.data.info;
 					ctrl.data = response.data.info;
+					console.log(ctrl.data);
 				}
 				else
 				{
@@ -98,19 +99,20 @@ angular.module('stgv2')
 
 			ctrl.save = function () {
 				var saveData = ctrl.data;
+				console.log(saveData);
 				//TODO save Data
-//				$http({
-//					method: 'POST',
-//					url: './api/studienordnung/save_metadaten.php',
-//					headers: {
-//						'Content-Type': 'application/json'
-//					},
-//					data: JSON.stringify(saveData)
-//				}).then(function success(response) {
-//					//TODO success
-//					$("#treeGrid").treegrid('reload');
-//				}, function error(response) {
-//					errorService.setError(getErrorMsg(response));
-//				});
+				$http({
+					method: 'POST',
+					url: './api/studienordnung/save_eckdaten.php',
+					headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					data: $.param(saveData)
+				}).then(function success(response) {
+					//TODO success
+					console.log(response);
+				}, function error(response) {
+					errorService.setError(getErrorMsg(response));
+				});
 			};
 		});

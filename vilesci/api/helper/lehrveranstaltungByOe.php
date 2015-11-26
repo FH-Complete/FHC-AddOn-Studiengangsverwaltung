@@ -37,18 +37,23 @@ if($semester == "null")
 }
 
 $lehrveranstaltung = new lehrveranstaltung();
-$lehrveranstaltung->load_lva_oe($oe_kurzbz, true, $lehrtyp_kurzbz, NULL, $semester);
-
-$lv_array = array();
-
-foreach($lehrveranstaltung->lehrveranstaltungen as $key=>$lv)
+if($lehrveranstaltung->load_lva_oe($oe_kurzbz, true, $lehrtyp_kurzbz, NULL, $semester))
 {
-    $temp = new stdClass();
-    $temp->id = $lv->lehrveranstaltung_id;
-    $temp->name = $lv->bezeichnung;
-    $temp->ects = $lv->ects;
-    $temp->type = $lv->lehrtyp_kurzbz;
-    array_push($lv_array, $temp);
+    $lv_array = array();
+
+    foreach($lehrveranstaltung->lehrveranstaltungen as $key=>$lv)
+    {
+	$temp = new stdClass();
+	$temp->id = $lv->lehrveranstaltung_id;
+	$temp->name = $lv->bezeichnung;
+	$temp->ects = $lv->ects;
+	$temp->type = $lv->lehrtyp_kurzbz;
+	array_push($lv_array, $temp);
+    }
+}
+else
+{
+    returnAJAX(false, $lehrveranstaltung->errormsg);
 }
 returnAJAX(true, $lv_array)
 

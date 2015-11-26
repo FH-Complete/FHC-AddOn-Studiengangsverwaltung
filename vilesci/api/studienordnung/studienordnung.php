@@ -31,11 +31,8 @@ elseif(($studiengang_kz == false) || ($status == false))
     returnAJAX(false, "Fehler beim lesen der GET Variablen");    
 }
 
-
 $studienordnung = new StudienordnungAddonStgv();
 
-
-////TODO Studienordnungen abhängig vom status laden
 switch($status)
 {
     case "all":
@@ -55,7 +52,6 @@ foreach($studienordnung->result as $key=>$sto)
 	$temp->state = "open";
     else
 	$temp->state = "closed";
-    //TODO Status from DB
     $temp->status = $sto->status_kurzbz;
     $temp->stgkz = $sto->studiengang_kz;
     $temp->ects = $sto->ects;

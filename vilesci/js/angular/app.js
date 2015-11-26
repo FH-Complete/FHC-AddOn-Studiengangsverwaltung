@@ -78,17 +78,39 @@ angular.module("stgv2")
 			ctrl.user.name = "Stefan";
 			ctrl.user.lastname = "Puraner";
 		})
-		.controller("TabsCtrl", function ($scope, $state, $compile, $stateParams, errorService) {
+		.controller("TabsCtrl", function ($scope, $state, $compile, $stateParams, errorService, $http) {
 			var ctrl = this;
 			ctrl.stoid = "";
-	
-			$('#mm1').menu({
-				onShow:function(){
-					$compile($('#mm1').contents())($scope);
+			ctrl.statusList = "";
+			
+			$http({
+				method: "GET",
+				url: "./api/helper/studienordnungStatus.php"
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					console.log(response.data);
+					ctrl.statusList = response.data.info;
+					$('#mm1').menu({
+						onShow:function(){
+							$compile($('#mm1').contents())($scope);
+						}
+					});
+					$('#mm3').menu({
+						onShow:function(){
+							$compile($('#mm3').contents())($scope);
+						}
+					});
 				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
 			});
 	
-	
+			
 			ctrl.createStudienordnung = function()
 			{
 				$state.go('studienordnungNeu');
@@ -106,6 +128,11 @@ angular.module("stgv2")
 					errorService.setError("Bitte zuerst eine Studienordnung auswählen.", "info");
 				}
 			};
+			
+			ctrl.changeStatus = function (status)
+			{
+				
+			}
 		})
 		.controller("studienordnungTabCtrl", function ($scope) {
 			//TODO tabs from config

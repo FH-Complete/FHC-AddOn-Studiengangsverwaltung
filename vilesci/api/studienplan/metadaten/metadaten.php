@@ -28,7 +28,6 @@ elseif(($stplId == false))
 $studienplan = new studienplan();
 $studienplan->loadStudienplan($stplId);
 
-//TODO Anpassen um nur nötige Felder zu holen
 $data = array(
     'studienplan_id'=> $studienplan->studienplan_id,
     'version'=> $studienplan->version, 				

@@ -86,9 +86,10 @@ class StudienplanAddonStgv extends studienplan
 		return false;
 	    }
 	    return true;
-	} else
+	} 
+	else
 	{
-	    //TODO $zuordnung has to be array
+	    $this->errormsg = 'Der übergebene Parameter ist kein Array.';
 	    return false;
 	}
 	return false;

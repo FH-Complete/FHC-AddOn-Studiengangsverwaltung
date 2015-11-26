@@ -11,8 +11,15 @@ require_once('../functions.php');
 $DEBUG = true;
 
 $oe = new organisationseinheit();
-$oe->getAll(true, true);
+if($oe->getAll(true, true))
+{
+    $data =  $oe->result;
+}
+else
+{
+    returnAJAX(false, $oe->errormsg);
+}
 
-$data =  $oe->result;
+
 returnAJAX(true, $data);
 ?>

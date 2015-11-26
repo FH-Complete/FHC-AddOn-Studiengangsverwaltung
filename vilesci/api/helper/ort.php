@@ -3,21 +3,21 @@
 require_once('../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../include/functions.inc.php');
 require_once('../../../../../include/benutzerberechtigung.class.php');
-require_once('../../../../../include/lehrtyp.class.php');
+require_once('../../../../../include/ort.class.php');
 //TODO functions from core?
 require_once('../functions.php');
 
 //TODO
 $DEBUG = true;
 
-$lehrtyp = new lehrtyp();
-if($lehrtyp->getAll(true, true))
+$ort = new ort();
+if ($ort->getActive())
 {
-    $data =  $lehrtyp->result;
+	$data = $ort->result;
 }
 else
 {
-    returnAJAX(false, $lehrtyp->errormsg);
+	returnAJAX(false, "Methode ".$method." existiert nicht.");
 }
 
 returnAJAX(true, $data);

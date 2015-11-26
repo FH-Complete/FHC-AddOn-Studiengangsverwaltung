@@ -325,9 +325,8 @@ angular.module('stgv2')
 					},
 					onClickRow: function (row)
 					{
-						//TODO LV Daten anzeigen
-						console.log(row);
 						ctrl.meta = row;
+						$scope.$apply();
 					},
 					onLoadSuccess: function (row)
 					{

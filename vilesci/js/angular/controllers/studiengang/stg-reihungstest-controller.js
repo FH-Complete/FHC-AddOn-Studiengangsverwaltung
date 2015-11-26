@@ -6,6 +6,7 @@ angular.module('stgv2')
 			ctrl.reihungstest = new Reihungstest();
 			ctrl.selectedStudiensemester = null;
 			ctrl.studiensemesterList = "";
+			ctrl.ortList = "";
 			
 			//loading Studiensemester list
 			$http({
@@ -15,6 +16,24 @@ angular.module('stgv2')
 				if (response.data.erfolg)
 				{
 					ctrl.studiensemesterList = response.data.info;
+				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
+			});
+			
+			//loading Ort list
+			$http({
+				method: "GET",
+				url: "./api/helper/ort.php"
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					console.log(response);
+					ctrl.ortList = response.data.info;
 				}
 				else
 				{

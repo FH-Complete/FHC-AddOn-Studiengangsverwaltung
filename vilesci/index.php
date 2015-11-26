@@ -90,6 +90,7 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script type="text/javascript" src="./js/angular/controllers/studiengang/stg-bewerbung-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studiengang/stg-kosten-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studiengang/stg-foerderungen-controller.js"></script>
+	<script type="text/javascript" src="./js/angular/controllers/studiengang/stg-doktorat-controller.js"></script>
 
 	<!-- Angular Studienordnung Controllers -->
 	<script type="text/javascript" src="./js/angular/controllers/studienordnung/sto-neu-controller.js"></script>
@@ -134,14 +135,11 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 		    <div>
 			<span>Status ändern zu</span>
 			<div>
-			    <div>in Bearbeitung</div>
-			    <div>in Review</div>
-			    <div>genehmigt</div>
-			    <div>nicht genehmigt</div>
-			    <div>ausgelaufen</div>
+			    <div ng-repeat="status in tabCtrl.statusList" ng-click="tabCtrl.changeStatus()">{{status.bezeichnung}}</div>
 			</div>
 		    </div>
 		</div>
+		{{tabCtrl.statusList}}
 		<div id="mm4" class="menu-content" style="background:#f0f0f0;padding:10px;text-align:left">
 		    <img src="http://fhcomplete.org/img/FHC-LogoOhneText.svg" style="width:38px;height:38px">
 		    <p style="font-size:14px;color:#444;"><a href="http://www.fhcomplete.org" target="_blank">fhcomplete.org</a></p>
