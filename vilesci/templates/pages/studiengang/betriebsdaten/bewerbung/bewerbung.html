@@ -8,7 +8,7 @@
 	<div class="col-sm-2">
 		<label>Studiensemester</label>
 		<select class="form-control input-sm" ng-change="ctrl.loadDataGrid()" ng-model="ctrl.selectedStudiensemester">
-			<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
+			<option ng-repeat="sem in ctrl.studiensemesterList" value="{{sem.studiensemester_kurzbz}}">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
 		</select>
 	</div>
 	</br>
@@ -18,13 +18,13 @@
 	<table id="dataGridBewerbungstermin" class="easyui-datagrid" data-options="url: '', method: 'get', singleSelect:true" style='height: 200px;'>
 		<thead>
 			<tr>
-				<th data-options="field: 'bewerbungstermin_id',align: 'right'">ID</th>
-				<th data-options="field: 'studiengang_kz',align:'right'">STG KZ</th>
-				<th data-options="field: 'studiensemester_kurzbz',align:'right'">Studiensemester</th>
-				<th data-options="field: 'beginn',align:'left'">Beginn</th>
-				<th data-options="field: 'ende',align:'left'">Ende</th>
-				<th data-options="field: 'nachfrist',align:'left'">Nachfrist</th>
-				<th data-options="field: 'nachfrist_ende',align:'left'">Ende Nachfrist</th>
+				<th data-options="field: 'bewerbungstermin_id',align: 'right'"><span class="table-header">ID</span></th>
+				<th data-options="field: 'studiengang_kz',align:'right'"><span class="table-header">STG KZ</span></th>
+				<th data-options="field: 'studiensemester_kurzbz',align:'right'"><span class="table-header">Studiensemester</span></th>
+				<th data-options="field: 'beginn',align:'left'"><span class="table-header">Beginn</span></th>
+				<th data-options="field: 'ende',align:'left'"><span class="table-header">Ende</span></th>
+				<th data-options="field: 'nachfrist',align:'left'"><span class="table-header">Nachfrist</span></th>
+				<th data-options="field: 'nachfrist_ende',align:'left'"><span class="table-header">Ende Nachfrist</span></th>
 			</tr>
 		</thead>
 	</table>

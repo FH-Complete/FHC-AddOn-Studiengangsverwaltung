@@ -1,7 +1,8 @@
 angular.module('stgv2')
-		.controller('StplLehrveranstaltungCtrl', function ($scope, $http, $state, $stateParams, errorService) {
+		.controller('StplLehrveranstaltungCtrl', function ($scope, $http, $state, $stateParams, errorService, $compile) {
 			$scope.stplid = $stateParams.stplid;
 			var ctrl = this;
+			var scope = $scope;
 			ctrl.data = "";
 			ctrl.meta = {
 				name: "",
@@ -280,7 +281,7 @@ angular.module('stgv2')
 			
 			$("#lvTreeGrid").treegrid();
 
-			ctrl.loadLehrveranstaltungen = function ()
+			ctrl.loadLehrveranstaltungen = function (selection)
 			{
 				var oe_kurzbz = $("#oe").val();
 				if (oe_kurzbz === "? string: ?")
@@ -333,6 +334,10 @@ angular.module('stgv2')
 					onLoadSuccess: function (row)
 					{
 						$(this).treegrid("enableDnd", row ? row.id : null);
+						if(selection !== undefined)
+						{
+							$(this).treegrid('select',selection);
+						}
 					},
 					onDragEnter: function (target, source)
 					{
@@ -375,6 +380,43 @@ angular.module('stgv2')
 					}
 				})
 				return returnObject;
+			};
+			
+			ctrl.dialog = function()
+			{
+				$http({
+					method: 'GET',
+					url: './templates/pages/studienplan/lehrveranstaltungen/stplNewLehrveranstaltung.html',
+				}).then(function success(response) {
+					var html = $("#dialog").html(response.data);
+					$compile(html)(scope);
+					$("#dialog").dialog({
+						title: 'Neue Lehrveranstaltung anlegen',
+						width: '80%',
+						height: '80%',
+						closed: false,
+						cache: false,
+						modal: true
+					});
+				}, function error(response) {
+					errorService.setError(getErrorMsg(response));
+				});
+			};
+			
+			ctrl.setFilter = function(lv_id, oe_kurzbz, lehrtyp_kurzbz, semester)
+			{
+				console.log(lv_id);
+				console.log(oe_kurzbz);
+				console.log(lehrtyp_kurzbz);
+				console.log(semester);
+				$("#oe").val(oe_kurzbz);
+				$("#lehrtyp").val(lehrtyp_kurzbz);
+				$("#semester").val(semester);
+				ctrl.oe_kurzbz = oe_kurzbz;
+				ctrl.lehrtyp_kurzbz = lehrtyp_kurzbz;
+				ctrl.semester = semester;
+				ctrl.loadLehrveranstaltungen(lv_id);
+				$("#dialog").dialog('close');
 			}
 		});
 

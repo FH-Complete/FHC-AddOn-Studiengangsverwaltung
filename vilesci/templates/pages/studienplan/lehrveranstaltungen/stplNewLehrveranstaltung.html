@@ -1,370 +1,313 @@
-<!DOCTYPE html>
-<html ng-app="stgv2">
-	<head>
-		<title>Neue Lehrveranstaltung anlegen</title>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" href="../../../../css/bootstrap-3.3.5/dist/css/bootstrap.css">
-		<link rel="stylesheet" href="../../../../css/bootstrap-3.3.5/dist/css/bootstrap-theme.css">
-
-		<!-- JQuery UI CSS -->
-		<link rel="stylesheet" type="text/css" href="../../../../js/jquery-ui-1.11.4.custom/jquery-ui.css">
-
-		<!-- App CSS -->
-		<link rel="stylesheet" type="text/css" href="../../../../css/style.css">
-
-		<!-- jQuery -->
-		<script type="text/javascript" src="../../../../js/jquery-1.11.3.js"></script>
-		
-		<!-- Angular JS -->
-		<script type="text/javascript" src="../../../../js/angular/1.4.7/angular.js"></script>
-		<script type="text/javascript" src="../../../../js/angular/1.4.7/angular-route.js"></script>
-		<script type="text/javascript" src="../../../../js/angular/1.4.7/angular-animate.js"></script>
-		<script type="text/javascript" src="../../../../js/angular/1.4.7/angular-sanitize.js"></script>
-		<script type="text/javascript" src="../../../../js/angular/ui-router/release/angular-ui-router.js"></script>
-		<script type="text/javascript" src="../../../../js/angular/ui.bootstrap/ui-bootstrap-0.14.2.min.js"></script>
-		<!--<script type="text/javascript" src="../../../../js/angular/app.js"></script>-->
-		<!--<script type="text/javascript" src="../../../../js/angular/states.js"></script>-->
-		
-		<!-- Bootstrap JS -->
-		<script src="../../../../css/bootstrap-3.3.5/dist/js/bootstrap.js"></script>
-
-		<!-- JavaScript Helper-->
-		<script type="text/javascript" src="../../../../js/functions.js"></script>
-		
-		<!-- Controller -->
-		<script type="text/javascript" src="../../../../js/angular/controllers/studienplan/stpl-newLehrveranstaltung-controller.js"></script>
-		
-		<!-- Error Controller -->
-		<script type="text/javascript" src="../../../../js/angular/controllers/error-controller.js"></script>
-		
-		<!-- Services -->
-		<script type="text/javascript" src="../../../../js/angular/services/errorService.js"></script>
-
-		<!-- Directives -->
-		<script type="text/javascript" src="../../../../js/angular/directives/error-directive.js"></script>
-		
-		<!-- Colorpicker -->
-		<link rel="stylesheet" href="../../../../../../../skin/colorpicker.css" type="text/css"/>
-		<script type="text/javascript" src="../../../../../../../include/js/colorpicker.js"></script>
-		
-	</head>
-	<body ng-controller="NewLehrveranstaltungCtrl as ctrl">
-		<div class="contentWrapper">
-			<div class="col-sm-6">
-				<h1>Neue Lehrveranstaltung anlegen</h1>
-				<form id="stplMetadaten" action="#" onsubmit="return false;">
-					<div class="row">
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="kurzbz">Kurzbz*</label>
-								<input type="text" class="form-control input-sm" name="kurzbz" ng-model="ctrl.data.kurzbz" ng-change="ctrl.updateLehreverzeichnis()"/>
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label for="bezeichnung">Bezeichnung*</label>
-								<input type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.data.bezeichnung"/>
-							</div>
-						</div>
+<div class="contentWrapper" ng-controller="NewLehrveranstaltungCtrl as newLvCtrl">
+	<div class="col-sm-6">
+		<form id="stplMetadaten" action="#" onsubmit="return false;">
+			<div class="row">
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="kurzbz">Kurzbz*</label>
+						<input type="text" class="form-control input-sm" name="kurzbz" ng-model="newLvCtrl.data.kurzbz" ng-change="newLvCtrl.updateLehreverzeichnis()"/>
 					</div>
-					<div class="row">
-						<div class="col-sm-5">
-							<div class="form-group">
-								<label for="oe">Organistaionseinheit</label>
-								<select class="form-control input-sm" name="oe" ng-model="ctrl.data.oe_kurzbz">
-									<option ng-repeat="oe in ctrl.oeList" value="{{oe.oe_kurzbz}}">{{oe.organisationseinheittyp_kurzbz}} - {{oe.bezeichnung}}</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="form-group">
-								<label for="orgform">Organisationsform*</label>
-								<select class="form-control input-sm" name="orgform" ng-model="ctrl.data.orgform_kurzbz" ng-change="ctrl.updateLehreverzeichnis()">
-									<option ng-repeat="orgform in ctrl.orgformList" value="{{orgform.orgform_kurzbz}}">{{orgform.bezeichnung}}</option>
-								</select>
-							</div>
-						</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label for="bezeichnung">Bezeichnung*</label>
+						<input type="text" class="form-control input-sm" name="bezeichnung" ng-model="newLvCtrl.data.bezeichnung"/>
 					</div>
-					<div class="row">
-						<div class="col-sm-4">
-							<div class="form-group">
-								<label for="studiengang">Studiengang</label>
-								<select class="form-control input-sm" name="studiengang" ng-model="ctrl.data.studiengang_kz">
-									<option ng-repeat="studiengang in ctrl.studiengangList">{{studiengang.bezeichnung}}</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="semester">Semester</label>
-								<select class="form-control input-sm" name="semester" ng-model="ctrl.data.semester">
-									<option ng-repeat="semester in ctrl.semesterList">{{semester}}</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-3">
-							<div class="form-group">
-								<label for="lehrvorm">Lehrform*</label>
-								<select class="form-control input-sm" name="lehrform" ng-model="ctrl.data.lehrform_kurzbz">
-									<option ng-repeat="lehrform in ctrl.lehrformList" value="{{lehrform.lehrform_kurzbz}}">{{lehrform.bezeichnung}}</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<label for="lehrtyp">Lehrtyp*</label>
-								<select class="form-control input-sm" name="lehrtyp" ng-model="ctrl.data.lehrtyp_kurzbz">
-									<option ng-repeat="lehrtyp in ctrl.lehrtypList" value="{{lehrtyp.lehrtyp_kurzbz}}">{{lehrtyp.bezeichnung}}</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="lvverzeichnis">Lehreverzeichnis*</label>
-								<input type="text" class="form-control input-sm"  name="lehreverzeichnis" ng-model="ctrl.data.lehreverzeichnis"/>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="sprache">Sprache</label>
-								<select class="form-control input-sm" name="sprache" ng-model="ctrl.data.sprache">
-									<option ng-repeat="sprache in ctrl.spracheList">{{sprache.sprache}}</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label for="bezeichnung_englisch">Bezeichnung Englisch</label>
-								<input type="text" class="form-control input-sm"  name="bezeichnung_englisch" ng-model="ctrl.data.bezeichnung_english"/>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="ects">ECTS</label>
-								<input type="text" class="form-control input-sm"  name="ects" ng-model="ctrl.data.ects"/>
-							</div>
-						</div>
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="semesterstunden">Semesterstunden</label>
-								<input type="text" class="form-control input-sm"  name="semesterstunden" ng-model="ctrl.data.semesterstunden"/>
-							</div>
-						</div>
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="planlektoren">Planlektoren</label>
-								<input type="text" class="form-control input-sm"  name="planlektoren" ng-model="ctrl.data.planlektoren"/>
-							</div>
-						</div>
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="planpersonalkosten">Planpersonalkosten</label>
-								<input type="text" class="form-control input-sm"  name="planpersonalkosten" ng-model="ctrl.data.planpersonalkosten"/>
-							</div>
-						</div>
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="plankostenprolektor">Plankosten/Lektor</label>
-								<input type="text" class="form-control input-sm"  name="plankostenprolektor" ng-model="ctrl.data.plankostenprolektor"/>
-							</div>
-						</div>
-						<div class="col-sm-2">
-							<div class="checkbox">
-								</br>
-								<label>
-								  <input type="checkbox" name="projektarbeit" ng-model="ctrl.data.projektarbeit"/>
-								  Projektarbeit
-								</label>
-							  </div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="sort">Sort</label>
-								<input type="text" class="form-control input-sm"  name="sort" ng-model="ctrl.data.sort"/>
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="form-group">
-								<label for="anmerkung">Anmerkung</label>
-								<input type="text" class="form-control input-sm"  name="anmerkung" ng-model="ctrl.data.anmerkung"/>
-							</div>
-						</div>
-						<div class="col-sm-2">
-							<div class="checkbox">
-								</br>
-								<label>
-								  <input type="checkbox" name="aktiv" ng-model="ctrl.data.aktiv"/>
-								  Aktiv
-								</label>
-							  </div>
-						</div>
-						<div class="col-sm-2">
-							<div class="checkbox">
-								</br>
-								<label>
-								  <input type="checkbox" name="lehre" ng-model="ctrl.data.lehre"/>
-								  Lehre
-								</label>
-							  </div>
-						</div>
-						<div class="col-sm-2">
-							<div class="checkbox">
-								</br>
-								<label>
-								  <input type="checkbox" name="zeugnis" ng-model="ctrl.data.zeugnis"/>
-								  Zeugnis
-								</label>
-							  </div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="lvnr">LVNR</label>
-								<input type="text" class="form-control input-sm"  name="lvnr" ng-model="ctrl.data.lvnr"/>
-							</div>
-						</div>
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="incomingplaetze">Incomingplätze</label>
-								<input type="text" class="form-control input-sm"  name="incomingplaetze" ng-model="ctrl.data.incoming"/>
-							</div>
-						</div>
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="semester_alternativ">Sem alternativ</label>
-								<input type="text" class="form-control input-sm"  name="semester_alternativ" ng-model="ctrl.data.semester_alternativ"/>
-							</div>
-						</div>
-						<div class="col-sm-5">
-							<div class="form-group">
-								<label for="raumtyp">Raumtyp</label>
-								<select class="form-control input-sm" name="raumtyp" ng-model="ctrl.data.raumtyp_kurzbz">
-									<option ng-repeat="raumtyp in ctrl.raumtypList" value="{{raumtyp.raumtyp_kurzbz}}">{{raumtyp.beschreibung}}</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-2">
-							<!--TODO fix color picker-->
-							<div class="form-group">
-								<label for="farbe">Farbe</label>
-								<div class="input-group">
-									<input id="farbe" type="text" class="form-control input-sm" name="farbe" ng-model="ctrl.data.farbe" ng-change="ctrl.updateColor()"/>
-									<span class="input-group-addon"><span id="farbevorschau" style="background-color: #; border: 1px solid #999999; cursor: default;">&nbsp&nbsp&nbsp&nbsp</span></span>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="anzahlsemester">Anzahl Semester</label>
-								<input type="text" class="form-control input-sm"  name="anzahlsemester" ng-model="ctrl.data.anzahlsemester"/>
-							</div>
-						</div>
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="semesterwochen">Semesterwochen</label>
-								<input type="text" class="form-control input-sm"  name="semesterwochen" ng-model="ctrl.data.semesterwochen"/>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<!--TODO tooltips definieren-->
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="sws">SWS</label>
-								<div class="input-group">
-									<input type="text" class="form-control input-sm" name="sws" ng-model="ctrl.data.sws"/>
-									<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></span></a>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="lvs">LVS</label>
-								<div class="input-group">
-									<input type="text" class="form-control input-sm"  name="lvs" ng-model="ctrl.data.lvs"/>
-									<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></span></a>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="alvs">ALVS</label>
-								<div class="input-group">
-									<input type="text" class="form-control input-sm"  name="alvs" ng-model="ctrl.data.alvs"/>
-									<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></span></a>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="lvps">LVPS</label>
-								<div class="input-group">
-									<input type="text" class="form-control input-sm"  name="lvps" ng-model="ctrl.data.lvps"/>
-									<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></span></a>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label for="las">LAS</label>
-								<div class="input-group">
-									<input type="text" class="form-control input-sm"  name="las" ng-model="ctrl.data.las"/>
-									<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></span></a>
-							
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-1">
-							<div class="form-group">
-								<div>
-									<button type="submit" class="btn btn-success btn-sm" ng-click="ctrl.loadSuggestion()">Vorschlag laden</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</form>
+				</div>
 			</div>
-			<div class="col-sm-6" ng-show="ctrl.lvSuggestionList.length > 0">
-				<h2>Vorschläge</h2>
-				<table class="table">
-					<thead>
-						<tr>
-							<th width="40px"></th>
-							<th>Lehrveranstaltung</th>
-							<th width="60px">ECTS</th>
-							<th width="60px">Lehrtyp</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="lv in ctrl.lvSuggestionList">
-							<td><input type="radio" name="lvSuggestion" value="{{lv.lehrveranstaltung_id}}"/></td>
-							<td>{{lv.bezeichnung}}</td>
-							<td>{{lv.ects}}</td>
-							<td>{{lv.lehrtyp_kurzbz}}</td>
-						</tr>
-						<tr>
-							<td><input type="radio" name="lvSuggestion" value="new"/></td>
-							<td colspan="3">neue Lehrveranstaltung anlegen</td>
-						</tr>
-					</tbody>
-				</table>
+			<div class="row">
+				<div class="col-sm-5">
+					<div class="form-group">
+						<label for="oe">Organistaionseinheit</label>
+						<select class="form-control input-sm" name="oe" ng-model="newLvCtrl.data.oe_kurzbz">
+							<option ng-repeat="oe in newLvCtrl.oeList" value="{{oe.oe_kurzbz}}">{{oe.organisationseinheittyp_kurzbz}} - {{oe.bezeichnung}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label for="orgform">Organisationsform*</label>
+						<select class="form-control input-sm" name="orgform" ng-model="newLvCtrl.data.orgform_kurzbz" ng-change="newLvCtrl.updateLehreverzeichnis()">
+							<option ng-repeat="orgform in newLvCtrl.orgformList" value="{{orgform.orgform_kurzbz}}">{{orgform.bezeichnung}}</option>
+						</select>
+					</div>
+				</div>
 			</div>
-		</div>
-	</body>
-</html>
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label for="studiengang">Studiengang</label>
+						<select class="form-control input-sm" name="studiengang" ng-model="newLvCtrl.data.studiengang_kz">
+							<option ng-repeat="studiengang in newLvCtrl.studiengangList">{{studiengang.bezeichnung}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="semester">Semester</label>
+						<select class="form-control input-sm" name="semester" ng-model="newLvCtrl.data.semester">
+							<option ng-repeat="semester in newLvCtrl.semesterList">{{semester}}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label for="lehrvorm">Lehrform*</label>
+						<select class="form-control input-sm" name="lehrform" ng-model="newLvCtrl.data.lehrform_kurzbz">
+							<option ng-repeat="lehrform in newLvCtrl.lehrformList" value="{{lehrform.lehrform_kurzbz}}">{{lehrform.bezeichnung}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label for="lehrtyp">Lehrtyp*</label>
+						<select class="form-control input-sm" name="lehrtyp" ng-model="newLvCtrl.data.lehrtyp_kurzbz">
+							<option ng-repeat="lehrtyp in newLvCtrl.lehrtypList" value="{{lehrtyp.lehrtyp_kurzbz}}">{{lehrtyp.bezeichnung}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="lvverzeichnis">Lehreverzeichnis*</label>
+						<input type="text" class="form-control input-sm"  name="lehreverzeichnis" ng-model="newLvCtrl.data.lehreverzeichnis"/>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="sprache">Sprache</label>
+						<select class="form-control input-sm" name="sprache" ng-model="newLvCtrl.data.sprache">
+							<option ng-repeat="sprache in newLvCtrl.spracheList">{{sprache.sprache}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label for="bezeichnung_englisch">Bezeichnung Englisch</label>
+						<input type="text" class="form-control input-sm"  name="bezeichnung_englisch" ng-model="newLvCtrl.data.bezeichnung_english"/>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="ects">ECTS</label>
+						<input type="text" class="form-control input-sm"  name="ects" ng-model="newLvCtrl.data.ects"/>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="semesterstunden">Semesterstunden</label>
+						<input type="text" class="form-control input-sm"  name="semesterstunden" ng-model="newLvCtrl.data.semesterstunden"/>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="planlektoren">Planlektoren</label>
+						<input type="text" class="form-control input-sm"  name="planlektoren" ng-model="newLvCtrl.data.planlektoren"/>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="planpersonalkosten">Planpersonalkosten</label>
+						<input type="text" class="form-control input-sm"  name="planpersonalkosten" ng-model="newLvCtrl.data.planpersonalkosten"/>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="plankostenprolektor">Plankosten/Lektor</label>
+						<input type="text" class="form-control input-sm"  name="plankostenprolektor" ng-model="newLvCtrl.data.plankostenprolektor"/>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="checkbox">
+						</br>
+						<label>
+							<input type="checkbox" name="projektarbeit" ng-model="newLvCtrl.data.projektarbeit"/>
+							Projektarbeit
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="sort">Sort</label>
+						<input type="text" class="form-control input-sm"  name="sort" ng-model="newLvCtrl.data.sort"/>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label for="anmerkung">Anmerkung</label>
+						<input type="text" class="form-control input-sm"  name="anmerkung" ng-model="newLvCtrl.data.anmerkung"/>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="checkbox">
+						</br>
+						<label>
+							<input type="checkbox" name="aktiv" ng-model="newLvCtrl.data.aktiv"/>
+							Aktiv
+						</label>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="checkbox">
+						</br>
+						<label>
+							<input type="checkbox" name="lehre" ng-model="newLvCtrl.data.lehre"/>
+							Lehre
+						</label>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="checkbox">
+						</br>
+						<label>
+							<input type="checkbox" name="zeugnis" ng-model="newLvCtrl.data.zeugnis"/>
+							Zeugnis
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="lvnr">LVNR</label>
+						<input type="text" class="form-control input-sm"  name="lvnr" ng-model="newLvCtrl.data.lvnr"/>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="incomingplaetze">Incomingplätze</label>
+						<input type="text" class="form-control input-sm"  name="incomingplaetze" ng-model="newLvCtrl.data.incoming"/>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="semester_alternativ">Sem alternativ</label>
+						<input type="text" class="form-control input-sm"  name="semester_alternativ" ng-model="newLvCtrl.data.semester_alternativ"/>
+					</div>
+				</div>
+				<div class="col-sm-5">
+					<div class="form-group">
+						<label for="raumtyp">Raumtyp</label>
+						<select class="form-control input-sm" name="raumtyp" ng-model="newLvCtrl.data.raumtyp_kurzbz">
+							<option ng-repeat="raumtyp in newLvCtrl.raumtypList" value="{{raumtyp.raumtyp_kurzbz}}">{{raumtyp.beschreibung}}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<!--TODO fix color picker-->
+					<div class="form-group">
+						<label for="farbe">Farbe</label>
+						<div class="input-group">
+							<input id="farbe" type="text" class="form-control input-sm" name="farbe" ng-model="newLvCtrl.data.farbe" ng-change="newLvCtrl.updateColor()"/>
+							<span class="input-group-addon"><span id="farbevorschau" style="background-color: #; border: 1px solid #999999; cursor: default;">&nbsp&nbsp&nbsp&nbsp</span></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="anzahlsemester">Anzahl Semester</label>
+						<input type="text" class="form-control input-sm"  name="anzahlsemester" ng-model="newLvCtrl.data.anzahlsemester"/>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="semesterwochen">Semesterwochen</label>
+						<input type="text" class="form-control input-sm"  name="semesterwochen" ng-model="newLvCtrl.data.semesterwochen"/>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<!--TODO tooltips definieren-->
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="sws">SWS</label>
+						<div class="input-group">
+							<input type="text" class="form-control input-sm" name="sws" ng-model="newLvCtrl.data.sws"/>
+							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="lvs">LVS</label>
+						<div class="input-group">
+							<input type="text" class="form-control input-sm"  name="lvs" ng-model="newLvCtrl.data.lvs"/>
+							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="alvs">ALVS</label>
+						<div class="input-group">
+							<input type="text" class="form-control input-sm"  name="alvs" ng-model="newLvCtrl.data.alvs"/>
+							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="lvps">LVPS</label>
+						<div class="input-group">
+							<input type="text" class="form-control input-sm"  name="lvps" ng-model="newLvCtrl.data.lvps"/>
+							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="las">LAS</label>
+						<div class="input-group">
+							<input type="text" class="form-control input-sm"  name="las" ng-model="newLvCtrl.data.las"/>
+							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-1">
+					<div class="form-group">
+						<div>
+							<button type="submit" class="btn btn-success btn-sm" ng-click="newLvCtrl.loadSuggestion()">Vorschlag laden</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="col-sm-6" ng-show="newLvCtrl.lvSuggestionList.length > 0">
+		<h2>Vorschläge</h2>
+		<table class="table">
+			<thead>
+				<tr>
+					<th width="40px"></th>
+					<th>Lehrveranstaltung</th>
+					<th width="60px">ECTS</th>
+					<th width="60px">Lehrtyp</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="radio" name="lvSuggestion" value="new"/></td>
+					<td colspan="3">neue Lehrveranstaltung anlegen</td>
+				</tr>
+				<tr ng-repeat="lv in newLvCtrl.lvSuggestionList">
+					<td><button ng-show="lv.aktiv" class="btn btn-success btn-sm" ng-click="stplCtrl.setFilter(lv.lehrveranstaltung_id, lv.oe_kurzbz, lv.lehrtyp_kurzbz, lv.semester)">auswählen</button></td>
+					<td>{{lv.bezeichnung}}</td>
+					<td>{{lv.ects}}</td>
+					<td>{{lv.lehrtyp_kurzbz}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

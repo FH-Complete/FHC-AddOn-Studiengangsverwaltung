@@ -76,7 +76,7 @@
 					<label>&nbsp;</label>
 					<div>
 						<!--TODO-->
-						<a ng-href="./templates/pages/studienplan/lehrveranstaltungen/stplNewLehrveranstaltung.html" target="blank"><button type="submit" class="btn btn-default btn-sm">Neu</button></a>
+						<button type="submit" class="btn btn-default btn-sm" ng-click="stplCtrl.dialog()">Neu</button>
 					</div>
 				</div>
 			</div>
@@ -160,5 +160,8 @@
 				<span>LAS: </span><span>{{stplCtrl.meta.las}}</span>
 			</div>
 		</div>
+	</div>
+	<div id="dialog" title="Neue Lehrveranstaltung anlegen">
+
 	</div>
 </div>

@@ -8,7 +8,7 @@
 	<div class="col-sm-2">
 		<label>Studiensemester</label>
 		<select class="form-control input-sm" ng-change="ctrl.loadDataGrid()" ng-model="ctrl.selectedStudiensemester">
-			<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
+			<option ng-repeat="sem in ctrl.studiensemesterList" value="{{sem.studiensemester_kurzbz}}">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
 		</select>
 	</div>
 	</br>
@@ -18,16 +18,16 @@
 	<table id="dataGridReihungstest" class="easyui-datagrid" data-options="url: '', method: 'get', singleSelect:true" style='height: 200px;'>
 		<thead>
 			<tr>
-				<th data-options="field: 'reihungstest_id',align: 'right'">ID</th>
-				<th data-options="field: 'studiengang_kz',align:'right'">STG KZ</th>
-				<th data-options="field: 'ort_kurzbz',align:'right'">Ort</th>
-				<th data-options="field: 'anmerkung',align:'left'">Anmerkung</th>
-				<th data-options="field: 'datum',align:'left'">Datum</th>
-				<th data-options="field: 'uhrzeit',align:'left'">Uhrzeit</th>
-				<th data-options="field: 'max_teilnehmer',align:'left'">max Teilnehmer</th>
-				<th data-options="field: 'freigeschaltet',align:'left'">freigeschaltet</th>
-				<th data-options="field: 'oeffentlich',align:'left'">öffentlich</th>
-				<th data-options="field: 'studiensemester_kurzbz',align:'left'">Studiensemester</th>
+				<th data-options="field: 'reihungstest_id',align: 'right'"><span class="table-header">ID</span></th>
+				<th data-options="field: 'studiengang_kz',align:'right'"><span class="table-header">STG KZ</span></th>
+				<th data-options="field: 'ort_kurzbz',align:'right'"><span class="table-header">Ort</span></th>
+				<th data-options="field: 'anmerkung',align:'left'"><span class="table-header">Anmerkung</span></th>
+				<th data-options="field: 'datum',align:'left'"><span class="table-header">Datum</span></th>
+				<th data-options="field: 'uhrzeit',align:'left'"><span class="table-header">Uhrzeit</span></th>
+				<th data-options="field: 'max_teilnehmer',align:'left'"><span class="table-header">max Teilnehmer</span></th>
+				<th data-options="field: 'freigeschaltet',align:'left'"><span class="table-header">freigeschaltet</span></th>
+				<th data-options="field: 'oeffentlich',align:'left'"><span class="table-header">öffentlich</span></th>
+				<th data-options="field: 'studiensemester_kurzbz',align:'left'"><span class="table-header">Studiensemester</span></th>
 			</tr>
 		</thead>
 	</table>

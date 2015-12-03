@@ -105,6 +105,7 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-eckdaten-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-gueltigkeit-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-lehrveranstaltung-controller.js"></script>
+	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-newLehrveranstaltung-controller.js"></script>
 
 	<!-- Angular State Controllers -->
 	<script type="text/javascript" src="./js/angular/controllers/state/state-main-controller.js"></script>
@@ -115,6 +116,10 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	
 	<!-- Directives -->
 	<script type="text/javascript" src="./js/angular/directives/error-directive.js"></script>
+	
+	<!-- Colorpicker -->
+	<link rel="stylesheet" href="../../../skin/colorpicker.css" type="text/css"/>
+	<script type="text/javascript" src="../../../include/js/colorpicker.js"></script>
     </head>
     <body ng-controller="AppCtrl as appCtrl">
 	<div id='layoutWrapper' class="easyui-layout">

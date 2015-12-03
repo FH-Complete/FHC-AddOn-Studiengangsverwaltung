@@ -5,7 +5,10 @@ angular.module('stgv2')
 			ctrl.data = "";
 			ctrl.reihungstest = new Reihungstest();
 			ctrl.selectedStudiensemester = null;
-			ctrl.studiensemesterList = "";
+			ctrl.studiensemesterList = [{
+					studiensemester_kurzbz : "null",
+					beschreibung: "alle"
+			}];
 			ctrl.ortList = "";
 			
 			//loading Studiensemester list
@@ -15,7 +18,7 @@ angular.module('stgv2')
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
-					ctrl.studiensemesterList = response.data.info;
+					$.merge(ctrl.studiensemesterList, response.data.info);
 				}
 				else
 				{

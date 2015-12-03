@@ -5,7 +5,10 @@ angular.module('stgv2')
 			ctrl.data = "";
 			ctrl.bewerbungstermin = new Bewerbungstermin();
 			ctrl.studiengangList = "";
-			ctrl.studiensemesterList = "";
+			ctrl.studiensemesterList = [{
+					studiensemester_kurzbz : "null",
+					beschreibung: "alle"
+			}];
 			ctrl.selectedStudiensemester = null;
 			
 			//loading Studiensemester list
@@ -15,7 +18,7 @@ angular.module('stgv2')
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
-					ctrl.studiensemesterList = response.data.info;
+					$.merge(ctrl.studiensemesterList, response.data.info);
 				}
 				else
 				{

@@ -33,6 +33,10 @@ if($lehrveranstaltung->search($lv_bezeichnung))
 	$temp->bezeichnung = $lv->bezeichnung;
 	$temp->ects = $lv->ects;
 	$temp->lehrtyp_kurzbz = $lv->lehrtyp_kurzbz;
+	$temp->oe_kurzbz = $lv->oe_kurzbz;
+	$temp->semester = $lv->semester;
+	$temp->aktiv = $lv->aktiv;
+	$temp->lehre = $lv->lehre;
 	array_push($lv_array, $temp);
     }
 }

@@ -1,6 +1,6 @@
-var stgv2 = angular.module("stgv2", [], function($httpProvider){
-	 $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-});
+//var stgv2 = angular.module("stgv2", [], function($httpProvider){
+//	 $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+//});
 
 angular.module('stgv2')
 		.controller('NewLehrveranstaltungCtrl', function ($scope, $http, errorService) {
@@ -19,7 +19,7 @@ angular.module('stgv2')
 			//loading Studiengang list
 			$http({
 				method: "GET",
-				url: "../../../../api/helper/studiengang.php"
+				url: "./api/helper/studiengang.php"
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
@@ -36,7 +36,7 @@ angular.module('stgv2')
 			//loading orgform list
 			$http({
 				method: "GET",
-				url: "../../../../api/helper/orgform.php"
+				url: "./api/helper/orgform.php"
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
@@ -53,7 +53,7 @@ angular.module('stgv2')
 			//load lehrtypen
 			$http({
 				method: 'GET',
-				url: '../../../../api/helper/lehrtyp.php'
+				url: './api/helper/lehrtyp.php'
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
@@ -70,7 +70,7 @@ angular.module('stgv2')
 			//load organisationseinheiten
 			$http({
 				method: 'GET',
-				url: '../../../../api/helper/organisationseinheitByTyp.php?oetyp_kurzbz=Institut'
+				url: './api/helper/organisationseinheitByTyp.php?oetyp_kurzbz=Institut'
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
@@ -87,7 +87,7 @@ angular.module('stgv2')
 			//loading lehrformList
 			$http({
 				method: 'GET',
-				url: '../../../../api/helper/lehrform.php'
+				url: './api/helper/lehrform.php'
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
@@ -104,7 +104,7 @@ angular.module('stgv2')
 			//loading spracheList
 			$http({
 				method: 'GET',
-				url: '../../../../api/helper/sprache.php'
+				url: './api/helper/sprache.php'
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
@@ -121,7 +121,7 @@ angular.module('stgv2')
 			//loading raumtypList
 			$http({
 				method: 'GET',
-				url: '../../../../api/helper/raumtyp.php'
+				url: './api/helper/raumtyp.php'
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
@@ -182,15 +182,28 @@ angular.module('stgv2')
 			
 			ctrl.loadSuggestion = function()
 			{
-				var saveData = {data: ""};
-				saveData.data = ctrl.data;
 				$http({
 					method: 'GET',
-					url: '../../../../api/helper/lehrveranstaltungSearch.php?lv='+ctrl.data.bezeichnung,
+					url: './api/helper/lehrveranstaltungSearch.php?lv='+ctrl.data.bezeichnung,
 				}).then(function success(response) {
 					if (response.data.erfolg)
 					{
-						ctrl.lvSuggestionList = response.data.info;
+						ctrl.lvSuggestionList = [];
+						if(ctrl.data.ects !== undefined)
+						{
+							$(response.data.info).each(function(i,v){
+								var ects = parseInt(ctrl.data.ects);
+								console.log(v);
+								if(v.ects === ects.toFixed(2))
+								{
+									ctrl.lvSuggestionList.push(v);
+								}
+							});
+						}
+						else
+						{
+							ctrl.lvSuggestionList = response.data.info;
+						}
 					}
 					else
 					{
@@ -199,5 +212,5 @@ angular.module('stgv2')
 				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
 				});
-			}
+			};
 		});
