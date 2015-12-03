@@ -79,8 +79,9 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script type="text/javascript" src="./js/angular/app.js"></script>
 	<script type="text/javascript" src="./js/angular/states.js"></script>
 	
-	<!-- Error Controller -->
+	<!-- Other Controller -->
 	<script type="text/javascript" src="./js/angular/controllers/error-controller.js"></script>
+	<script type="text/javascript" src="./js/angular/controllers/success-controller.js"></script>
 	
 	<!-- Angular Studiengang Controllers -->
 	<script type="text/javascript" src="./js/angular/controllers/studiengang/stg-main-controller.js"></script>
@@ -110,6 +111,7 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	
 	<!-- Services -->
 	<script type="text/javascript" src="./js/angular/services/errorService.js"></script>
+	<script type="text/javascript" src="./js/angular/services/successService.js"></script>
 	
 	<!-- Directives -->
 	<script type="text/javascript" src="./js/angular/directives/error-directive.js"></script>
@@ -129,7 +131,7 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 		    <div ng-click='tabCtrl.createStudienplan()'>Studienplan</div>
 		</div>
 		<div id="mm2" style="width:100px;">
-		    <div data-options="iconCls:'icon-remove'">Löschen</div>
+		    <div ng-click='tabCtrl.delete()' data-options="iconCls:'icon-remove'">Löschen</div>
 		</div>
 		<div id="mm3" style="width:150px;">
 		    <div>
@@ -154,6 +156,9 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	    <div id="footer" data-options="region:'south'" style="height: 5%;">
 		<!--TODO zusätzliche Daten anzeigen; z.B.: Username, DB, etc-->
 		<div id="user">User: {{appCtrl.user.name}} {{appCtrl.user.lastname}}</div>
+		<div id="success_data" ng-controller="SuccessCtrl">
+		    {{SuccessCtrl.message}}
+		</div>
 	    </div>
 	    <div id="center" data-options="region:'center'">
 		<div id="centerLayout" class="easyui-layout" fit="true">

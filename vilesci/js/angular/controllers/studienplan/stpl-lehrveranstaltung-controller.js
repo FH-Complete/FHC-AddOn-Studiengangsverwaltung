@@ -105,6 +105,7 @@ angular.module('stgv2')
 						if (row.type != "sem")
 						{
 							ctrl.meta = row;
+							ctrl.meta.oe = ctrl.getOeName(ctrl.meta.oe_kurzbz);
 							$scope.$apply();
 						}
 					},
@@ -326,6 +327,7 @@ angular.module('stgv2')
 					onClickRow: function (row)
 					{
 						ctrl.meta = row;
+						ctrl.meta.oe = ctrl.getOeName(ctrl.meta.oe_kurzbz);
 						$scope.$apply();
 					},
 					onLoadSuccess: function (row)
@@ -360,6 +362,20 @@ angular.module('stgv2')
 					});
 				}
 			};
+			
+			ctrl.getOeName = function(oe_kurzbz)
+			{
+				var returnObject = "not found";
+				$(ctrl.oeList).each(function(i,v)
+				{
+					if(oe_kurzbz == v.oe_kurzbz)
+					{
+						returnObject = v.bezeichnung;
+						return true;
+					}
+				})
+				return returnObject;
+			}
 		});
 
 function generateChildren(item, sem)
@@ -379,8 +395,21 @@ function generateChildren(item, sem)
 	node.sem = sem;
 	node.ects = item.ects;
 	node.semesterstunden = item.semesterstunden;
-	node.lehrform = item.lehrform_kurzbz;
+	node.lehrform_kurzbz = item.lehrform_kurzbz;
 	node.lvnr = item.lvnr;
+	node.kurzbz = item.kurzbz;
+	node.semester = item.semester;
+	node.sprache = item.sprache;
+	node.bezeichnung_english = item.bezeichnung_english;
+	node.sws = item.sws;
+	node.orgform_kurzbz = item.orgform_kurzbz;
+	node.incoming = item.incoming;
+	node.oe_kurzbz = item.oe_kurzbz;
+	node.semesterwochen = item.semesterwochen;
+	node.lvs = item.lvs;
+	node.alvs = item.alvs;
+	node.lvps = item.lvps;
+	node.las = item.las;
 	if (children.length != 0)
 	{
 		node.children = children;

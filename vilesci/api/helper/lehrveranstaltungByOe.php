@@ -48,6 +48,22 @@ if($lehrveranstaltung->load_lva_oe($oe_kurzbz, true, $lehrtyp_kurzbz, NULL, $sem
 	$temp->name = $lv->bezeichnung;
 	$temp->ects = $lv->ects;
 	$temp->type = $lv->lehrtyp_kurzbz;
+	$temp->kurzbz = $lv->kurzbz;
+	$temp->semester = $lv->semester;
+	$temp->sprache = $lv->sprache;
+	$temp->semesterstunden = $lv->semesterstunden;
+	$temp->lehrform_kurzbz = $lv->lehrform_kurzbz;
+	$temp->bezeichnung_english = $lv->bezeichnung_english;
+	$temp->orgform_kurzbz = $lv->orgform_kurzbz;
+	$temp->incoming = $lv->incoming;
+	$temp->oe_kurzbz = $lv->oe_kurzbz;
+	$temp->semesterwochen = $lv->semesterwochen;
+	$temp->lvnr = $lv->lvnr;
+	$temp->sws = $lv->sws;
+	$temp->lvs = $lv->lvs;
+	$temp->alvs = $lv->alvs;
+	$temp->lvps = $lv->lvps;
+	$temp->las = $lv->las;
 	array_push($lv_array, $temp);
     }
 }

@@ -36,7 +36,6 @@ angular.module('stgv2')
 				},
 				onClickRow: function (row)
 				{
-					console.log(row);
 					if (row.attributes[0].name !== undefined && row.attributes[0].value !== undefined)
 					{
 						angular.element($("#treeGrid")).scope().load(row);

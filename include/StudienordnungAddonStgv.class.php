@@ -31,6 +31,9 @@ class StudienordnungAddonStgv extends studienordnung
     public $aenderungsvariante_kurzbz; //varchar(32)
     public $status_kurzbz;  //varchar(32)
     public $begruendung;  //text
+    public $studiengangsart;
+    public $orgform_kurzbz;
+    public $standort_id;
 
     /**
      * Konstruktor
@@ -90,6 +93,9 @@ class StudienordnungAddonStgv extends studienordnung
 	    $obj->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
 	    $obj->status_kurzbz = $row->status_kurzbz;
 	    $obj->begruendung = $row->begruendung;
+	    $obj->studiengangsart = $row->studiengangsart;
+	    $obj->orgform_kurzbz = $row->orgform_kurzbz;
+	    $obj->standort_id = $row->standort_id;
 	    $obj->updateamum = $row->updateamum;
 	    $obj->updatevon = $row->updatevon;
 	    $obj->insertamum = $row->insertamum;
@@ -109,7 +115,7 @@ class StudienordnungAddonStgv extends studienordnung
 	if ($this->new)
 	{
 //Neuen Datensatz einfuegen
-	    $qry = 'BEGIN;INSERT INTO lehre.tbl_studienordnung (studiengang_kz, version, bezeichnung, ects, gueltigvon, gueltigbis, studiengangbezeichnung, studiengangbezeichnung_englisch, studiengangkurzbzlang, akadgrad_id, aenderungsvariante_kurzbz, status_kurzbz, begruendung, insertamum, insertvon) VALUES (' .
+	    $qry = 'BEGIN;INSERT INTO lehre.tbl_studienordnung (studiengang_kz, version, bezeichnung, ects, gueltigvon, gueltigbis, studiengangbezeichnung, studiengangbezeichnung_englisch, studiengangkurzbzlang, akadgrad_id, aenderungsvariante_kurzbz, status_kurzbz, begruendung, studiengangsart, orgform_kurzbz, standort_id, insertamum, insertvon) VALUES (' .
 		    $this->db_add_param($this->studiengang_kz, FHC_INTEGER) . ', ' .
 		    $this->db_add_param($this->version) . ', ' .
 		    $this->db_add_param($this->bezeichnung) . ', ' .
@@ -123,6 +129,9 @@ class StudienordnungAddonStgv extends studienordnung
 		    $this->db_add_param($this->aenderungsvariante_kurzbz) . ', ' .
 		    $this->db_add_param($this->status_kurzbz) . ', ' .
 		    $this->db_add_param($this->begruendung) . ', ' .
+		    $this->db_add_param($this->studiengangsart) . ', ' .
+		    $this->db_add_param($this->orgform_kurzbz) . ', ' .
+		    $this->db_add_param($this->standort_id) . ', ' .
 		    ' now(), ' .
 		    $this->db_add_param($this->insertvon) . ');';
 	} else
@@ -147,6 +156,9 @@ class StudienordnungAddonStgv extends studienordnung
 		    ' aenderungsvariante_kurzbz=' . $this->db_add_param($this->aenderungsvariante_kurzbz) . ', ' .
 		    ' status_kurzbz=' . $this->db_add_param($this->status_kurzbz) . ', ' .
 		    ' begruendung=' . $this->db_add_param($this->begruendung) . ', ' .
+		    ' studiengangsart=' . $this->db_add_param($this->studiengangsart) . ', ' .
+		    ' orgform_kurzbz=' . $this->db_add_param($this->orgform_kurzbz) . ', ' .
+		    ' standort_id=' . $this->db_add_param($this->standort_id) . ', ' .
 		    ' updateamum= now(), ' .
 		    ' updatevon=' . $this->db_add_param($this->updatevon) . ' ' .
 		    ' WHERE studienordnung_id=' . $this->db_add_param($this->studienordnung_id, FHC_INTEGER, false) . ';';
@@ -224,6 +236,9 @@ class StudienordnungAddonStgv extends studienordnung
 	    $this->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
 	    $this->status_kurzbz = $row->status_kurzbz;
 	    $this->begruendung = $row->begruendung;
+	    $this->studiengangsart = $row->studiengangsart;
+	    $this->orgform_kurzbz = $row->orgform_kurzbz;
+	    $this->standort_id = $row->standort_id;
 	    $this->updateamum = $row->updateamum;
 	    $this->updatevon = $row->updatevon;
 	    $this->insertamum = $row->insertamum;
@@ -238,83 +253,155 @@ class StudienordnungAddonStgv extends studienordnung
     }
 
     /**
-	 * Laedt alle Studienordnungen zu einem Studiengang der uebergeben wird
-	 * @param $studiengang_kz Kennzahl des Studiengangs
-	 * @param $studiensemester_kurzbz
-	 * @param $semester
-	 * @return true wenn ok, false im Fehlerfall
-	 */
-	public function loadStudienordnungSTG($studiengang_kz,$studiensemester_kurzbz=null, $semester=null)
+     * Laedt alle Studienordnungen zu einem Studiengang der uebergeben wird
+     * @param $studiengang_kz Kennzahl des Studiengangs
+     * @param $studiensemester_kurzbz
+     * @param $semester
+     * @return true wenn ok, false im Fehlerfall
+     */
+    public function loadStudienordnungSTG($studiengang_kz, $studiensemester_kurzbz = null, $semester = null)
+    {
+	//Pruefen ob studiengang_kz eine gueltige Zahl ist
+	if (!is_numeric($studiengang_kz) || $studiengang_kz === '')
 	{
-		//Pruefen ob studiengang_kz eine gueltige Zahl ist
-		if(!is_numeric($studiengang_kz) || $studiengang_kz === '')
-		{
-			$this->errormsg = 'studiengang_kz muss eine gültige Zahl sein';
-			return false;
-		}
+	    $this->errormsg = 'studiengang_kz muss eine gültige Zahl sein';
+	    return false;
+	}
 
-		if(is_null($studiensemester_kurzbz))
-		{
-			$qry = 'SELECT 
+	if (is_null($studiensemester_kurzbz))
+	{
+	    $qry = 'SELECT 
 						* 
 					FROM 
 						lehre.tbl_studienordnung 
 					WHERE 
-						studiengang_kz='.$this->db_add_param($studiengang_kz, FHC_INTEGER, false);
-		}
-		else
-		{
-			$qry = 'SELECT 
+						studiengang_kz=' . $this->db_add_param($studiengang_kz, FHC_INTEGER, false);
+	} else
+	{
+	    $qry = 'SELECT 
 						* 
 					FROM 
 						lehre.tbl_studienordnung 
 						LEFT JOIN lehre.tbl_studienordnung_semester USING (studienordnung_id) 
 					WHERE 
-						studiengang_kz='.$this->db_add_param($studiengang_kz, FHC_INTEGER, false);
+						studiengang_kz=' . $this->db_add_param($studiengang_kz, FHC_INTEGER, false);
 
-			if (!is_null($studiensemester_kurzbz))
-				$qry.=" AND studiensemester_kurzbz=".$this->db_add_param($studiensemester_kurzbz, FHC_STRING,false);
-			if (!is_null($semester))
-				$qry.=" AND semester=".$this->db_add_param($semester, FHC_INTEGER,false);
-		}
-
-		if(!$this->db_query($qry))
-		{
-			$this->errormsg = 'Fehler bei einer Datenbankabfrage';
-			return false;
-		}
-
-		while($row = $this->db_fetch_object())
-		{
-			$obj = new studienordnung();
-
-			$obj->studienordnung_id	= $row->studienordnung_id;
-			$obj->studiengang_kz	= $row->studiengang_kz;
-			$obj->version			= $row->version;
-			$obj->bezeichnung		= $row->bezeichnung;
-			$obj->ects				= $row->ects;
-			$obj->gueltigvon		= $row->gueltigvon;
-			$obj->gueltigbis		= $row->gueltigbis;
-			$obj->studiengangbezeichnung	= $row->studiengangbezeichnung;
-			$obj->studiengangbezeichnung_englisch	= $row->studiengangbezeichnung_englisch;
-			$obj->studiengangkurzbzlang	= $row->studiengangkurzbzlang;
-			$obj->akadgrad_id		= $row->akadgrad_id;
-			$obj->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
-			$obj->status_kurzbz		= $row->status_kurzbz;
-			$obj->updateamum		= $row->updateamum;
-			$obj->updatevon			= $row->updatevon;
-			$obj->insertamum		= $row->insertamum;
-			$obj->insertvon			= $row->insertvon;
-			$obj->new				= false;
-
-			if(!is_null($studiensemester_kurzbz))
-			{
-				$obj->studiensemester_kurzbz = $row->studiensemester_kurzbz;
-				$obj->semester = $row->semester;
-				$obj->studienordnung_semester_id = $row->studienordnung_semester_id;
-			}
-			$this->result[] = $obj;
-		}
-		return true;
+	    if (!is_null($studiensemester_kurzbz))
+		$qry.=" AND studiensemester_kurzbz=" . $this->db_add_param($studiensemester_kurzbz, FHC_STRING, false);
+	    if (!is_null($semester))
+		$qry.=" AND semester=" . $this->db_add_param($semester, FHC_INTEGER, false);
 	}
+
+	if (!$this->db_query($qry))
+	{
+	    $this->errormsg = 'Fehler bei einer Datenbankabfrage';
+	    return false;
+	}
+
+	while ($row = $this->db_fetch_object())
+	{
+	    $obj = new studienordnung();
+
+	    $obj->studienordnung_id = $row->studienordnung_id;
+	    $obj->studiengang_kz = $row->studiengang_kz;
+	    $obj->version = $row->version;
+	    $obj->bezeichnung = $row->bezeichnung;
+	    $obj->ects = $row->ects;
+	    $obj->gueltigvon = $row->gueltigvon;
+	    $obj->gueltigbis = $row->gueltigbis;
+	    $obj->studiengangbezeichnung = $row->studiengangbezeichnung;
+	    $obj->studiengangbezeichnung_englisch = $row->studiengangbezeichnung_englisch;
+	    $obj->studiengangkurzbzlang = $row->studiengangkurzbzlang;
+	    $obj->akadgrad_id = $row->akadgrad_id;
+	    $obj->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
+	    $obj->status_kurzbz = $row->status_kurzbz;
+	    $obj->begruendung = $row->begruendung;
+	    $obj->studiengangsart = $row->studiengangsart;
+	    $obj->orgform_kurzbz = $row->orgform_kurzbz;
+	    $obj->standort_id = $row->standort_id;
+	    $obj->updateamum = $row->updateamum;
+	    $obj->updatevon = $row->updatevon;
+	    $obj->insertamum = $row->insertamum;
+	    $obj->insertvon = $row->insertvon;
+	    $obj->new = false;
+
+	    if (!is_null($studiensemester_kurzbz))
+	    {
+		$obj->studiensemester_kurzbz = $row->studiensemester_kurzbz;
+		$obj->semester = $row->semester;
+		$obj->studienordnung_semester_id = $row->studienordnung_semester_id;
+	    }
+	    $this->result[] = $obj;
+	}
+	return true;
+    }
+
+    /**
+     * Laedt die Studienordnung zu der uebergebenen studienplan_id
+     * @param  $studienplan_id der zu ladenden Studienordnung
+     * @return true wenn ok, false im Fehlerfall
+     */
+    public function getStudienordnungFromStudienplan($studienplan_id)
+    {
+	//Pruefen ob studienplan_id eine gueltige Zahl ist
+	if (!is_numeric($studienplan_id) || $studienplan_id == '')
+	{
+	    $this->errormsg = 'Studienplan_id muss eine Zahl sein';
+	    return false;
+	}
+
+	//Daten aus der Datenbank lesen
+	$qry = "SELECT tbl_studienordnung.* FROM lehre.tbl_studienordnung JOIN lehre.tbl_studienplan USING (studienordnung_id) WHERE studienplan_id=" . $this->db_add_param($studienplan_id, FHC_INTEGER, false);
+
+	if (!$this->db_query($qry))
+	{
+	    $this->errormsg = 'Fehler bei einer Datenbankabfrage';
+	    return false;
+	}
+
+	if ($row = $this->db_fetch_object())
+	{
+	    $this->studienordnung_id = $row->studienordnung_id;
+	    $this->studiengang_kz = $row->studiengang_kz;
+	    $this->version = $row->version;
+	    $this->bezeichnung = $row->bezeichnung;
+	    $this->ects = $row->ects;
+	    $this->gueltigvon = $row->gueltigvon;
+	    $this->gueltigbis = $row->gueltigbis;
+	    $this->studiengangbezeichnung = $row->studiengangbezeichnung;
+	    $this->studiengangbezeichnung_englisch = $row->studiengangbezeichnung_englisch;
+	    $this->studiengangkurzbzlang = $row->studiengangkurzbzlang;
+	    $this->akadgrad_id = $row->akadgrad_id;
+	    $this->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
+	    $this->status_kurzbz = $row->status_kurzbz;
+	    $this->begruendung = $row->begruendung;
+	    $this->studiengangsart = $row->studiengangsart;
+	    $this->orgform_kurzbz = $row->orgform_kurzbz;
+	    $this->standort_id = $row->standort_id;
+	    $this->updateamum = $row->updateamum;
+	    $this->updatevon = $row->updatevon;
+	    $this->insertamum = $row->insertamum;
+	    $this->insertvon = $row->insertvon;
+	} else
+	{
+	    $this->errormsg = 'Es ist kein Datensatz mit dieser ID vorhanden';
+	    return false;
+	}
+	$this->new = false;
+	return true;
+    }
+    
+    public function changeState($studienordnung_id, $status_kurzbz)
+    {
+	$qry = "UPDATE lehre.tbl_studienordnung SET status_kurzbz=".$this->db_add_param($status_kurzbz)
+		." WHERE studienordnung_id=".$this->db_add_param($studienordnung_id).";";
+	
+	if(!$this->db_query($qry))
+	{
+	    $this->errormsg = "Status konnte nicht geändert werden.";
+	    return false;
+	}
+	return true;
+    }
+
 }

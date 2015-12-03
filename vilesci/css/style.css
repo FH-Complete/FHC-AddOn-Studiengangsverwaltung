@@ -149,6 +149,13 @@ h1
 	height: 100%;
 }
 
+#success_data
+{
+	width: 85%;
+	height: 100%;
+	display: none;
+}
+
 #alrt_box 
 {
 	min-width: 200px;
@@ -201,7 +208,7 @@ h1
 	height: 100%;
 	z-index: 10;
 	opacity: 0.8;
-	background-color: black;
+	background-color: grey;
 	border: 1px solid black;
 }
 
@@ -249,6 +256,11 @@ span.glyphicon {
 	padding: 5px;
 }
 
+#lvMetadata > .row > div span:nth-child(1)
+{
+	font-weight: bold;
+}
+
 #mainView
 {
 	height: 100%;
@@ -276,4 +288,13 @@ span.glyphicon {
  {
 	 margin-bottom: 5px;
  }
+ 
+ label {
+	 font-size: 0.85em;
+ }
+ 
+ .checkbox label {
+	 font-weight: bold;
+ }
+
  

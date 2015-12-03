@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StoEckdatenCtrl', function ($scope, $http, $state, $stateParams, errorService) {
+		.controller('StoEckdatenCtrl', function ($scope, $http, $state, $stateParams, errorService, successService) {
 			$scope.stoid = $stateParams.stoid;
 			var ctrl = this;
 			ctrl.data = "";
@@ -87,7 +87,6 @@ angular.module('stgv2')
 					//TODO Preparation for watcher
 					ctrl.origin = response.data.info;
 					ctrl.data = response.data.info;
-					console.log(ctrl.data);
 				}
 				else
 				{
@@ -98,19 +97,27 @@ angular.module('stgv2')
 			});
 
 			ctrl.save = function () {
-				var saveData = ctrl.data;
+				var saveData = {data: ""}
+				saveData.data = ctrl.data;
 				console.log(saveData);
-				//TODO save Data
 				$http({
 					method: 'POST',
-					url: './api/studienordnung/save_eckdaten.php',
+					url: './api/studienordnung/eckdaten/save_eckdaten.php',
 					headers: {
 					'Content-Type': 'application/x-www-form-urlencoded'
 					},
 					data: $.param(saveData)
 				}).then(function success(response) {
 					//TODO success
-					console.log(response);
+					if(response.data.erfolg)
+					{
+						$("#treeGrid").treegrid("reload");
+						successService.setMessage(response.data.info);
+					}
+					else
+					{
+						errorService.setError(getErrorMsg(response));
+					}
 				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
 				});

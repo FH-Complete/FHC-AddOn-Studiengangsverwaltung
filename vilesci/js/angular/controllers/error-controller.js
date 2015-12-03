@@ -18,12 +18,15 @@ angular.module("stgv2")
 				var bx = $('#alrt_box');
 				var ww = $(window).width();
 				var bw = $('#alrt_box').width();
-				
-				console.log(ww);
+
+				//Fix for first loading of error div
+				if(ww === bw)
+				{
+					bw = 200;
+				}
 				console.log(bw);
-				
 				var x = ww / 2 - bw / 2;
-				console.log(x);
+//				console.log(x);
 				bx.css("left", x + "px");
 				bx.css("top", "200px");
 			};

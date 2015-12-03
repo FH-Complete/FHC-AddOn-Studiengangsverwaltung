@@ -24,20 +24,20 @@
 //require_once('../../../inlcude/basis_db.class.php');
 require_once (dirname(__FILE__).'/../../../include/basis_db.class.php');
 
-class foerdervertrag extends basis_db
+class bewerbungstermin extends basis_db
 {
 	public $new;			//  boolean
 	public $result = array();
 
 	//Tabellenspalten
-	public $foerdervertrag_id;//  integer
-	public $studiengang_kz;	//  integer
-	public $foerdergeber;		//  string
-	public $foerdersatz;		//  integer
-	public $foerdergruppe;		//  string
-	public $gueltigvon;		//  string
-	public $gueltigbis;		//  string
-	public $erlaeuterungen;		//  string
+	public $bewerbungstermin_id;//  integer
+	public $studiengang_kz;	//integer
+	public $studiensemester_kurzbz;	//  string
+	public $beginn;		//  timestamp
+	public $ende;		//  timestamp
+	public $nachfrist;		//  boolean
+	public $nachfrist_ende;		//  timestamp
+	public $anmerkung;		//  string
 	public $insertamum;		//  timestamp
 	public $insertvon;		//  bigint
 	public $updateamum;		//  timestamp
@@ -47,12 +47,12 @@ class foerdervertrag extends basis_db
 	 * Konstruktor
 	 * @param $reihungstest_id ID der Adresse die geladen werden soll (Default=null)
 	 */
-	public function __construct($foerdervertrag_id=null)
+	public function __construct($bewerbungstermin_id=null)
 	{
 		parent::__construct();
 
-		if(!is_null($foerdervertrag_id))
-			$this->load($foerdervertrag_id);
+		if(!is_null($bewerbungstermin_id))
+			$this->load($bewerbungstermin_id);
 	}
 
 	/**
@@ -60,28 +60,28 @@ class foerdervertrag extends basis_db
 	 * @param  $foerdervertrag_id ID des zu ladenden Fördervertrags
 	 * @return true wenn ok, false im Fehlerfall
 	 */
-	public function load($foerdervertrag_id)
+	public function load($bewerbungstermin_id)
 	{
-		if(!is_numeric($foerdervertrag_id))
+		if(!is_numeric($bewerbungstermin_id))
 		{
-			$this->errormsg = 'Foerdervertrag_id ist ungueltig';
+			$this->errormsg = 'bewerbungstermin_id ist ungueltig';
 			return false;
 		}
 
-		$qry = "SELECT * FROM addon.tbl_stgv_foerdervertrag WHERE foerdervertrag_id=".$this->db_add_param($foerdervertrag_id, FHC_INTEGER, false);
+		$qry = "SELECT * FROM addon.tbl_stgv_bewerbungstermine WHERE bewerbungstermin_id=".$this->db_add_param($bewerbungstermin_id, FHC_INTEGER, false);
 
 		if($this->db_query($qry))
 		{
 			if($row = $this->db_fetch_object())
 			{
-				$this->foerdervertrag_id = $row->foerdervertrag_id;
+				$this->bewerbungstermin_id = $row->bewerbungstermin_id;
 				$this->studiengang_kz = $row->studiengang_kz;
-				$this->foerdergeber = $row->foerdergeber;
-				$this->foerdersatz = $row->foerdersatz;
-				$this->foerdergruppe = $row->foerdergruppe;
-				$this->gueltigvon = $row->gueltigvon;
-				$this->gueltigbis = $row->gueltigbis;
-				$this->erlaeuterungen = $row->erlaeuterungen;
+				$this->studiensemester_kurzbz = $row->studiensemester_kurzbz;
+				$this->beginn = $row->beginn;
+				$this->ende = $row->ende;
+				$this->nachfrist = $row->nachfrist;
+				$this->nachfrist_ende = $row->nachfrist_ende;
+				$this->anmerkung = $row->anmerkung;
 				$this->insertamum = $row->insertamum;
 				$this->insertvon = $row->insertvon;
 				$this->updateamum = $row->updateamum;
@@ -90,13 +90,13 @@ class foerdervertrag extends basis_db
 			}
 			else
 			{
-				$this->errormsg = 'Foerdervertrag existiert nicht';
+				$this->errormsg = 'Bewerbungstermin existiert nicht';
 				return false;
 			}
 		}
 		else
 		{
-			$this->errormsg = 'Fehler beim Laden des Foerdervertrags';
+			$this->errormsg = 'Fehler beim Laden des Bewerbungstermins';
 			return false;
 		}
 	}
@@ -104,27 +104,27 @@ class foerdervertrag extends basis_db
 	/**
 	 * Liefert alle Förderverträge
 	 */
-	public function getAll($stg_kz=null)
+	public function getBewerbungstermine($studiengang_kz, $studiensemester_kurzbz=null)
 	{
-		$qry = "SELECT * FROM addon.tbl_stgv_foerdervertrag ";
-		if($stg_kz!=null)
-			$qry.=" WHERE studiengang_kz=".$this->db_add_param($stg_kz);
+		$qry = "SELECT * FROM addon.tbl_stgv_bewerbungstermine WHERE studiengang_kz=".$this->db_add_param($studiengang_kz, FHC_INTEGER);
+		if($studiensemester_kurzbz!=null)
+			$qry.=" AND studiensemester_kurzbz=".$this->db_add_param($studiensemester_kurzbz);
 		$qry.=";";
 
 		if($this->db_query($qry))
 		{
 			while($row = $this->db_fetch_object())
 			{
-				$obj = new foerdervertrag();
+				$obj = new bewerbungstermin();
 
-				$obj->foerdervertrag_id = $row->foerdervertrag_id;
+				$obj->bewerbungstermin_id = $row->bewerbungstermin_id;
 				$obj->studiengang_kz = $row->studiengang_kz;
-				$obj->foerdergeber = $row->foerdergeber;
-				$obj->foerdersatz = $row->foerdersatz;
-				$obj->foerdergruppe = $row->foerdergruppe;
-				$obj->gueltigvon = $row->gueltigvon;
-				$obj->gueltigbis = $row->gueltigbis;
-				$obj->erlaeuterungen = $row->erlaeuterungen;
+				$obj->studiensemester_kurzbz = $row->studiensemester_kurzbz;
+				$obj->beginn = $row->beginn;
+				$obj->ende = $row->ende;
+				$obj->nachfrist = $row->nachfrist;
+				$obj->nachfrist_ende = $row->nachfrist_ende;
+				$obj->anmerkung = $row->anmerkung;
 				$obj->insertamum = $row->insertamum;
 				$obj->insertvon = $row->insertvon;
 				$obj->updateamum = $row->updateamum;
@@ -136,7 +136,7 @@ class foerdervertrag extends basis_db
 		}
 		else
 		{
-			$this->errormsg = 'Fehler beim Laden der Förderverträge.';
+			$this->errormsg = 'Fehler beim Laden der Bewerbungstermine.';
 			return false;
 		}
 	}
@@ -147,14 +147,6 @@ class foerdervertrag extends basis_db
 	 */
 	private function validate()
 	{
-		//Zahlenfelder pruefen
-		if(!is_numeric($this->studiengang_kz))
-		{
-			$this->errormsg='studiengang_kz enthaelt ungueltige Zeichen';
-			return false;
-		}
-
-		$this->errormsg = '';
 		return true;
 	}
 
@@ -173,37 +165,36 @@ class foerdervertrag extends basis_db
 		{
 			//Neuen Datensatz einfuegen
 
-			$qry='BEGIN; INSERT INTO addon.tbl_stgv_foerdervertrag (studiengang_kz, foerdergeber, foerdersatz, foerdergruppe, gueltigvon, gueltigbis, erlaeuterungen,
-				 insertamum, insertvon) VALUES('.
+			$qry='BEGIN; INSERT INTO addon.tbl_stgv_bewerbungstermine(studiensemester_kurzbz, studiengang_kz, beginn, ende, nachfrist, nachfrist_ende, anmerkung, insertamum, insertvon) VALUES('.
+			     $this->db_add_param($this->studiensemester_kurzbz).', '.
 			     $this->db_add_param($this->studiengang_kz, FHC_INTEGER).', '.
-			     $this->db_add_param($this->foerdergeber).', '.
-			     $this->db_add_param($this->foerdersatz).', '.
-			     $this->db_add_param($this->foerdergruppe).', '.
-			     $this->db_add_param($this->gueltigvon).', '.
-			     $this->db_add_param($this->gueltigbis).', '.
-			     $this->db_add_param($this->erlaeuterungen).', now(),'.
+			     $this->db_add_param($this->beginn).', '.
+			     $this->db_add_param($this->ende).', '.
+			     $this->db_add_param($this->nachfrist, FHC_BOOLEAN).', '.
+			     $this->db_add_param($this->nachfrist_ende).', '.
+			     $this->db_add_param($this->anmerkung).', now(),'.
 			     $this->db_add_param($this->insertvon).');';
 		}
 		else
 		{
-			$qry='UPDATE addon.tbl_stgv_foerdervertrag SET '.
-				'studiengang_kz='.$this->db_add_param($this->studiengang_kz, FHC_INTEGER).', '.
-				'foerdergeber='.$this->db_add_param($this->foerdergeber).', '.
-				'foerdersatz='.$this->db_add_param($this->foerdersatz).', '.
-				'foerdergruppe='.$this->db_add_param($this->foerdergruppe).', '.
-				'gueltigvon='.$this->db_add_param($this->gueltigvon).', '.
-				'gueltigbis='.$this->db_add_param($this->gueltigbis).', '.
-				'erlaeuterungen='.$this->db_add_param($this->erlaeuterungen).', '.
+			$qry='UPDATE addon.tbl_stgv_bewerbungstermine SET '.
+				'studiensemester_kurzbz='.$this->db_add_param($this->studiensemester_kurzbz).', '.
+				'studiengang_kz='.$this->db_add_param($this->studiengang_kz,FHC_INTEGER).', '.
+				'beginn='.$this->db_add_param($this->beginn).', '.
+				'ende='.$this->db_add_param($this->ende).', '.
+				'nachfrist='.$this->db_add_param($this->nachfrist, FHC_BOOLEAN).', '.
+				'nachfrist_ende='.$this->db_add_param($this->nachfrist_ende).', '.
+				'anmerkung='.$this->db_add_param($this->anmerkung).', '.
 				'updateamum= now(), '.
 				'updatevon='.$this->db_add_param($this->updatevon).' '.
-				'WHERE foerdervertrag_id='.$this->db_add_param($this->foerdervertrag_id, FHC_INTEGER, false).';';
+				'WHERE bewerbungstermin_id='.$this->db_add_param($this->bewerbungstermin_id, FHC_INTEGER, false).';';
 		}
 		
 		if($this->db_query($qry))
 		{
 			if($this->new)
 			{
-				$qry = "SELECT currval('addon.tbl_stgv_foerdervertrag_foerdervertrag_id_seq') as id";
+				$qry = "SELECT currval('addon.tbl_stgv_bewerbungstermine_bewerbungstermin_id_seq') as id";
 				if($this->db_query($qry))
 				{
 					if($row = $this->db_fetch_object())
@@ -235,9 +226,9 @@ class foerdervertrag extends basis_db
 		}
 	}
 	
-	public function delete($foerdervertrag_id)
+	public function delete($bewerbungstermin_id)
 	{
-	    $qry = "DELETE from addon.tbl_stgv_foerdervertrag WHERE foerdervertrag_id=".$this->db_add_param($foerdervertrag_id);
+	    $qry = "DELETE from addon.tbl_stgv_bewerbungstermine WHERE bewerbungstermin_id=".$this->db_add_param($bewerbungstermin_id);
 	    
 	    if(!$this->db_query($qry))
 	    {

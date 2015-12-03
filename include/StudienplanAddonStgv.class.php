@@ -86,8 +86,7 @@ class StudienplanAddonStgv extends studienplan
 		return false;
 	    }
 	    return true;
-	} 
-	else
+	} else
 	{
 	    $this->errormsg = 'Der übergebene Parameter ist kein Array.';
 	    return false;
@@ -473,6 +472,32 @@ class StudienplanAddonStgv extends studienplan
 	    $this->errormsg = 'Fehler bei einer Datenbankabfrage';
 	    return false;
 	}
+    }
+
+    /**
+     * prüft ob dem Studienplan Semester zugeordnet sind (Gültigkeit)
+     * @param int $studienordnung_id Die ID der Studienordnung
+     */
+    public function hasSemesterZugeordnet($studienplan_id)
+    {
+	if (!is_numeric($studienplan_id))
+	{
+	    $this->errormsg = 'studienordnung_id muss eine gueltige Zahl sein';
+	    return false;
+	}
+
+	$qry = 'SELECT * FROM addon.tbl_stgv_studienplan_semester WHERE 
+			studienplan_id=' . $this->db_add_param($studienplan_id) . ';';
+
+	if ($this->db_query($qry))
+	{
+	    if ($this->db_num_rows() >= 1)
+	    {
+		return true;
+	    }
+	    return false;
+	}
+	return false;
     }
 
 }

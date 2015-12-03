@@ -32,7 +32,6 @@ angular.module('stgv2')
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
-					console.log(response);
 					ctrl.ortList = response.data.info;
 				}
 				else

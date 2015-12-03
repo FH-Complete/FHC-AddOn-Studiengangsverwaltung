@@ -70,15 +70,32 @@ var stgv2 = angular.module("stgv2", ['ui.router','ngSanitize'], function($httpPr
 });
 
 angular.module("stgv2")
-		.controller("AppCtrl", function ($scope, $state, $compile, $stateParams, errorService)
+		.controller("AppCtrl", function ($scope, $state, $compile, $stateParams, errorService, $http)
 		{
-			//TODO get UserData
 			var ctrl = this;
-			ctrl.user = {};
-			ctrl.user.name = "Stefan";
-			ctrl.user.lastname = "Puraner";
+			ctrl.user = {
+				name: "",
+				lastname: ""
+			};
+			
+			$http({
+				method: "GET",
+				url: "./api/helper/user.php"
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					ctrl.user.name = response.data.info.vorname;
+					ctrl.user.lastname = response.data.info.nachname;
+				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
+			});
 		})
-		.controller("TabsCtrl", function ($scope, $state, $compile, $stateParams, errorService, $http) {
+		.controller("TabsCtrl", function ($scope, $state, $compile, $stateParams, errorService, $http, successService) {
 			var ctrl = this;
 			ctrl.stoid = "";
 			ctrl.statusList = "";
@@ -89,18 +106,23 @@ angular.module("stgv2")
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
-					console.log(response.data);
 					ctrl.statusList = response.data.info;
-					$('#mm1').menu({
-						onShow:function(){
-							$compile($('#mm1').contents())($scope);
-						}
+					$compile($('#mm1').contents())($scope);
+					$compile($('#mm2').contents())($scope);
+					
+					var item = $('#mm3').menu('findItem', 'Status ändern zu');
+					
+					$(ctrl.statusList).each(function(i,v){
+						$('#mm3').menu('appendItem',
+						{
+							parent: item.target,
+							text: v.bezeichnung,
+							onclick: function(){
+								ctrl.changeStatus(v.status_kurzbz);
+							}
+						});
 					});
-					$('#mm3').menu({
-						onShow:function(){
-							$compile($('#mm3').contents())($scope);
-						}
-					});
+					
 				}
 				else
 				{
@@ -131,8 +153,83 @@ angular.module("stgv2")
 			
 			ctrl.changeStatus = function (status)
 			{
+				//TODO change STatus
+				var sto = $("#treeGrid").treegrid('getSelected');
+				if((sto != null) && (sto.attributes[0].value == "studienordnung"))
+				{
+					ctrl.stoid = sto.id;
+					$http({
+						method: "GET",
+						url: "./api/studienordnung/changeStatus.php?studienordnung_id="+ctrl.stoid+"&state="+status
+					}).then(function success(response) {
+						if (response.data.erfolg)
+						{
+							$("#treeGrid").treegrid('reload');
+							successService.setMessage(response.data.info);
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+					}, function error(response) {
+						errorService.setError(getErrorMsg(response));
+					});
+				}
+				else
+				{
+					errorService.setError("Bitte zuerst eine Studienordnung auswählen.", "info");
+				}				
+			};
+			
+			ctrl.delete = function()
+			{
+				var node = $('#treeGrid').treegrid('getSelected');
+				switch(node.attributes[0].value)
+				{
+					case "studienplan":
+						$http({
+							method: "GET",
+							url: "./api/studienplan/delete_studienplan.php?studienplan_id="+node.id
+						}).then(function success(response) {
+							if (response.data.erfolg)
+							{
+								$("#treeGrid").treegrid('reload');
+								successService.setMessage(response.data.info);
+							}
+							else
+							{
+								errorService.setError(getErrorMsg(response));
+							}
+						}, function error(response) {
+							errorService.setError(getErrorMsg(response));
+						});
+						break;
+						
+					case "studienordnung":
+						$http({
+							method: "GET",
+							url: "./api/studienordnung/delete_studienordnung.php?studienordnung_id="+node.id
+						}).then(function success(response) {
+							if (response.data.erfolg)
+							{
+								$("#treeGrid").treegrid('reload');
+								successService.setMessage(response.data.info);
+							}
+							else
+							{
+								errorService.setError(getErrorMsg(response));
+							}
+						}, function error(response) {
+							errorService.setError(getErrorMsg(response));
+						});
+						break;
+					default: 
+						alert("Bitte eine Studienordnung oder einen Studienplan auswählen.");
+						break;
+				}
 				
-			}
+				
+			};
 		})
 		.controller("studienordnungTabCtrl", function ($scope) {
 			//TODO tabs from config

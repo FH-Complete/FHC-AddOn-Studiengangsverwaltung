@@ -28,7 +28,7 @@
 					<th data-options="field: 'name'" width="300">Lehrveranstaltung</th>
 					<th data-options="field: 'ects',align: 'right'">ECTS</th>
 					<th data-options="field: 'semesterstunden',align: 'right'">Semesterstunden</th>
-					<th data-options="field: 'lehrform',align: 'right'">Lehrform</th>
+					<th data-options="field: 'lehrform_kurzbz',align: 'right'">Lehrform</th>
 					<th data-options="field: 'lvnr',align: 'right'">LVNR</th>
 				</tr>
 			</thead>
@@ -76,7 +76,7 @@
 					<label>&nbsp;</label>
 					<div>
 						<!--TODO-->
-						<button type="submit" class="btn btn-default btn-sm" onclick="alert('Not implemented yet.')">Neu</button>
+						<a ng-href="./templates/pages/studienplan/lehrveranstaltungen/stplNewLehrveranstaltung.html" target="blank"><button type="submit" class="btn btn-default btn-sm">Neu</button></a>
 					</div>
 				</div>
 			</div>
@@ -98,10 +98,67 @@
 		</table>
 	</div>
 	<div id="lvMetadata">
-		<span class="spanTitle">{{stplCtrl.meta.name}}</span></br>
-		<span>ECTS: </span><span>{{stplCtrl.meta.ects}}</span></br>
-		<span>Semesterstunden: </span><span>{{stplCtrl.meta.semesterstunden}}</span></br>
-		<span>LVNR: </span><span>{{stplCtrl.meta.lvnr}}</span></br>
-		<span>Lehrform: </span><span>{{stplCtrl.meta.lehrform}}</span>
+		<div class="row">
+			<div class="col-sm-10">
+				<span class="spanTitle">{{stplCtrl.meta.name}}</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-1">
+				<span>ECTS: </span><span>{{stplCtrl.meta.ects}}</span>
+			</div>
+			<div class="col-sm-1">
+				<span>Semesterstd: </span><span>{{stplCtrl.meta.semesterstunden}}</span>
+			</div>
+			<div class="col-sm-1">
+				<span>LVNR: </span><span>{{stplCtrl.meta.lvnr}}</span>
+			</div>
+			<div class="col-sm-1">
+				<span>Lehrform: </span><span>{{stplCtrl.meta.lehrform_kurzbz}}</span>
+			</div>
+			<div class="col-sm-1">
+				<span>Kurzbz: </span><span>{{stplCtrl.meta.kurzbz}}</span>
+			</div>
+			<div class="col-sm-1">
+				<span>Semester: </span><span>{{stplCtrl.meta.semester}}</span>
+			</div>
+			<div class="col-sm-1">
+				<span>Sprache: </span><span>{{stplCtrl.meta.sprache}}</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<span>Bezeichnung Englisch: </span><span>{{stplCtrl.meta.bezeichnung_english}}</span>
+			</div>
+			<div class="col-sm-1">
+				<span>Orgform: </span><span>{{stplCtrl.meta.orgform_kurzbz}}</span>
+			</div>
+			<div class="col-sm-1">
+				<span>Incoming: </span><span>{{stplCtrl.meta.incoming}}</span>
+			</div>
+			<div class="col-sm-3">
+				<span>OE: </span><span>{{stplCtrl.meta.oe}}</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-1">
+				<span>Semesterwochen: </span><span>{{stplCtrl.meta.semesterwochen}}</span>
+			</div>
+			<div class="col-sm-1">
+				<span>SWS: </span><span>{{stplCtrl.meta.sws}}</span>
+			</div>
+			<div class="col-sm-1">
+				<span>LVS: </span><span>{{stplCtrl.meta.lvs}}</span>
+			</div>
+			<div class="col-sm-1">
+				<span>ALVS: </span><span>{{stplCtrl.meta.alvs}}</span>
+			</div>
+			<div class="col-sm-1">
+				<span>LVPS: </span><span>{{stplCtrl.meta.lvps}}</span>
+			</div>
+			<div class="col-sm-1">
+				<span>LAS: </span><span>{{stplCtrl.meta.las}}</span>
+			</div>
+		</div>
 	</div>
 </div>

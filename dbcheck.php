@@ -230,6 +230,48 @@ if (!$result = @$db->db_query("SELECT begruendung FROM lehre.tbl_studienordnung 
     
 }
 
+//Spalte Studiengangsart in lehre.tbl_studienordnung
+if (!$result = @$db->db_query("SELECT studiengangsart FROM lehre.tbl_studienordnung LIMIT 1;"))
+{
+    $qry = "ALTER TABLE lehre.tbl_studienordnung ADD COLUMN studiengangsart varchar(64);";
+    
+    if (!$db->db_query($qry))
+	echo '<strong>lehre.tbl_studienordnung: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' lehre.tbl_studienordnung: Spalte studiengangsart hinzugefügt.<br>';
+    
+}
+
+//Spalte orgform_kurzbz in lehre.tbl_studienordnung
+if (!$result = @$db->db_query("SELECT orgform_kurzbz FROM lehre.tbl_studienordnung LIMIT 1;"))
+{
+    $qry = "ALTER TABLE lehre.tbl_studienordnung ADD COLUMN orgform_kurzbz varchar(3);
+	    
+	    ALTER TABLE lehre.tbl_studienordnung ADD CONSTRAINT studienordnung_orgform_kurzbz FOREIGN KEY (orgform_kurzbz) REFERENCES bis.tbl_orgform (orgform_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
+	   ";
+    
+    if (!$db->db_query($qry))
+	echo '<strong>lehre.tbl_studienordnung: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' lehre.tbl_studienordnung: Spalte orgform_kurzbz hinzugefügt.<br>';
+    
+}
+
+//Spalte standort_id in lehre.tbl_studienordnung
+if (!$result = @$db->db_query("SELECT standort_id FROM lehre.tbl_studienordnung LIMIT 1;"))
+{
+    $qry = "ALTER TABLE lehre.tbl_studienordnung ADD COLUMN standort_id integer;
+	    
+	    ALTER TABLE lehre.tbl_studienordnung ADD CONSTRAINT studienordnung_standort_id FOREIGN KEY (standort_id) REFERENCES public.tbl_standort (standort_id) ON DELETE RESTRICT ON UPDATE CASCADE;
+	   ";
+    
+    if (!$db->db_query($qry))
+	echo '<strong>lehre.tbl_studienordnung: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' lehre.tbl_studienordnung: Spalte standort_id hinzugefügt.<br>';
+    
+}
+
 //Spalte ects_stpl in lehre.tbl_studienplan
 if (!$result = @$db->db_query("SELECT ects_stpl FROM lehre.tbl_studienplan LIMIT 1;"))
 {
@@ -278,6 +320,77 @@ if (!$result = @$db->db_query("SELECT erlaeuterungen FROM lehre.tbl_studienplan 
     
 }
 
+//Berechtigung zum löschen von STO
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/deleteStudienordnung' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/deleteStudienordnung','Löschen einer Studienordnung im Addon Studiengangsverwaltung');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/deleteStudienordnung','admin','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Berechtigung zum löschen einer Studienordnung hinzugefügt.<br>';
+    }
+}
+
+//Berechtigung zum löschen von STPL
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/deleteStudienplan' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/deleteStudienplan','Löschen eines Studienplans im Addon Studiengangsverwaltung');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/deleteStudienplan','admin','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Berechtigung zum löschen eines Studienplans hinzugefügt.<br>';
+    }
+}
+
+//Tabelle addon.tbl_stgv_bewerbungstermine
+if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_bewerbungstermine LIMIT 1;")) {
+    $qry = "CREATE TABLE addon.tbl_stgv_bewerbungstermine
+			(
+				bewerbungstermin_id integer NOT NULL,
+				studiengang_kz integer NOT NULL,
+				studiensemester_kurzbz varchar(16) NOT NULL,
+				beginn timestamp,
+				ende timestamp,
+				nachfrist boolean default false,
+				nachfrist_ende timestamp,
+				anmerkung text,
+				insertamum timestamp,
+				insertvon varchar(32),
+				updateamum timestamp,
+				updatevon varchar(32)
+			);
+			
+		    CREATE SEQUENCE addon.tbl_stgv_bewerbungstermine_bewerbungstermin_id_seq
+			INCREMENT BY 1
+			NO MAXVALUE
+			NO MINVALUE
+			CACHE 1;
+
+		ALTER TABLE addon.tbl_stgv_bewerbungstermine ADD CONSTRAINT pk_bewerbungstermin_id PRIMARY KEY (bewerbungstermin_id);
+		ALTER TABLE addon.tbl_stgv_bewerbungstermine ALTER COLUMN bewerbungstermin_id SET DEFAULT nextval('addon.tbl_stgv_bewerbungstermine_bewerbungstermin_id_seq');
+		ALTER TABLE addon.tbl_stgv_bewerbungstermine ADD CONSTRAINT fk_bewerbungstermin_studiensemester FOREIGN KEY (studiensemester_kurzbz) REFERENCES public.tbl_studiensemester (studiensemester_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
+		ALTER TABLE addon.tbl_stgv_bewerbungstermine ADD CONSTRAINT fk_bewerbungstermin_studiengang FOREIGN KEY (studiengang_kz) REFERENCES public.tbl_studiengang (studiengang_kz) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+		GRANT SELECT ON addon.tbl_stgv_bewerbungstermine TO web;
+		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_bewerbungstermine TO vilesci;
+		GRANT SELECT, UPDATE ON addon.tbl_stgv_bewerbungstermine_bewerbungstermin_id_seq TO vilesci;
+	";
+
+    if (!$db->db_query($qry))
+	echo '<strong>addon.tbl_stgv_studienordnungstatus: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' addon.tbl_stgv_studienordnungstatus: Tabelle hinzugefuegt<br>';
+}
+
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
@@ -288,7 +401,8 @@ $tabellen = array(
     "addon.tbl_stgv_foerdervertrag" => array("foerdervertrag_id", "studiengang_kz", "foerdergeber", "foerdersatz", "foerdergruppe", "gueltigvon", "gueltigbis", "erlaeuterungen", "insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_studienplan_semester" => array("studienplan_semester_id", "studienplan_id", "studiensemester_kurzbz", "semester"),
     "addon.tbl_stgv_aenderungsvariante" => array("aenderungsvariante_kurzbz","bezeichnung"),
-    "addon.tbl_stgv_studienordnungstatus" => array("status_kurzbz","bezeichnung","reihenfolge")
+    "addon.tbl_stgv_studienordnungstatus" => array("status_kurzbz","bezeichnung","reihenfolge"),
+    "addon.tbl_stgv_bewerbungstermine" => array("bewerbungstermin_id","studiengang_kz","studiensemester_kurzbz","beginn","ende","nachfrist","nachfrist_ende","anmerkung", "insertamum", "insertvon", "updateamum", "updatevon")
 );
 
 
