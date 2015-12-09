@@ -26,7 +26,7 @@ elseif(is_null($semester))
 {
     returnAJAX(false, "Variable semester nicht gesetzt");   
 }
-elseif($oe_kurzbz == false || $lehrtyp_kurzbz == false || $semester == false)
+elseif($oe_kurzbz === false || $lehrtyp_kurzbz === false || $semester === false)
 {
     returnAJAX(false, "Fehler beim lesen der GET Variablen");    
 }
@@ -64,6 +64,9 @@ if($lehrveranstaltung->load_lva_oe($oe_kurzbz, true, $lehrtyp_kurzbz, NULL, $sem
 	$temp->alvs = $lv->alvs;
 	$temp->lvps = $lv->lvps;
 	$temp->las = $lv->las;
+	$temp->benotung = $lv->benotung;
+	$temp->lvinfo = $lv->lvinfo;
+	$temp->zeugnis = $lv->zeugnis;
 	array_push($lv_array, $temp);
     }
 }

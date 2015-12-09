@@ -302,3 +302,18 @@ span.glyphicon {
 	 font-weight: bold;
  }
  
+ .icon-module 
+ {
+	 background: url('./modul.png') no-repeat center center;
+ }
+ 
+ .icon-lv
+ {
+	 background: url('./lv.png') no-repeat center center;
+ }
+ 
+ .colorpicker
+ {
+	 z-index: 10000;
+ }
+ 

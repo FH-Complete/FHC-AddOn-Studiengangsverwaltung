@@ -103,6 +103,7 @@ angular.module('stgv2')
 					},
 					onClickRow: function (row)
 					{
+						console.log(row);
 						if (row.type != "sem")
 						{
 							ctrl.meta = row;
@@ -136,6 +137,7 @@ angular.module('stgv2')
 						}
 						data.pflicht = true;
 						//TODO errorhandling
+						
 						//update moved entry
 						if(source.moving)
 						{
@@ -202,6 +204,7 @@ angular.module('stgv2')
 					},
 					onContextMenu: function (e, row)
 					{
+						console.log(row);
 						if (row && row.type != "sem") {
 							e.preventDefault();
 							$(this).treegrid('select', row.id);
@@ -327,6 +330,7 @@ angular.module('stgv2')
 					},
 					onClickRow: function (row)
 					{
+						console.log(row);
 						ctrl.meta = row;
 						ctrl.meta.oe = ctrl.getOeName(ctrl.meta.oe_kurzbz);
 						$scope.$apply();
@@ -350,21 +354,32 @@ angular.module('stgv2')
 			{
 				var node = $('#stplTreeGrid').treegrid('getSelected');
 				if (node){
-					$http({
-						method: 'GET',
-						url: './api/studienplan/lehrveranstaltungen/delete_studienplanLehrveranstaltung.php?studienplan_lehrveranstaltung_id='+node.id
-					}).then(function success(response) {
-						if (response.data.erfolg)
-						{
-							$('#stplTreeGrid').treegrid('remove', node.id);
-						}
-						else
-						{
+					if(node.children === undefined || node.children.length === 0)
+					{
+						$http({
+							method: 'GET',
+							url: './api/studienplan/lehrveranstaltungen/delete_studienplanLehrveranstaltung.php?studienplan_lehrveranstaltung_id='+node.id
+						}).then(function success(response) {
+							if (response.data.erfolg)
+							{
+								$('#stplTreeGrid').treegrid('remove', node.id);
+							}
+							else
+							{
+								errorService.setError(getErrorMsg(response));
+							}
+						}, function error(response) {
 							errorService.setError(getErrorMsg(response));
-						}
-					}, function error(response) {
-						errorService.setError(getErrorMsg(response));
-					});
+						});
+					}
+					else
+					{
+						alert("Knoten mit Kind-Elementen kann nicht gelöscht werden.");
+					}
+				}
+				else
+				{
+					console.log("fail");
 				}
 			};
 			
@@ -405,10 +420,6 @@ angular.module('stgv2')
 			
 			ctrl.setFilter = function(lv_id, oe_kurzbz, lehrtyp_kurzbz, semester)
 			{
-				console.log(lv_id);
-				console.log(oe_kurzbz);
-				console.log(lehrtyp_kurzbz);
-				console.log(semester);
 				$("#oe").val(oe_kurzbz);
 				$("#lehrtyp").val(lehrtyp_kurzbz);
 				$("#semester").val(semester);
@@ -417,7 +428,11 @@ angular.module('stgv2')
 				ctrl.semester = semester;
 				ctrl.loadLehrveranstaltungen(lv_id);
 				$("#dialog").dialog('close');
-			}
+			};
+			
+			$scope.$on("setFilter", function(event, args){
+				ctrl.setFilter(args.lv_id, args.oe_kurzbz, args.lehrtyp_kurzbz, args.semester);
+			});
 		});
 
 function generateChildren(item, sem)
@@ -452,6 +467,9 @@ function generateChildren(item, sem)
 	node.alvs = item.alvs;
 	node.lvps = item.lvps;
 	node.las = item.las;
+	node.benotung = item.benotung;
+	node.zeugnis = item.zeugnis;
+	node.lvinfo = item.lvinfo;
 	if (children.length != 0)
 	{
 		node.children = children;
