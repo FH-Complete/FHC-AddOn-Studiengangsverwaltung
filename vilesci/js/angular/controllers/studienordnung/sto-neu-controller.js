@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StoNeuController', function ($scope, $http, $state, $stateParams, errorService, $filter) {
+		.controller('StoNeuController', function ($scope, $http, $state, $stateParams, errorService, $filter, successService) {
 			$scope.stoid = $stateParams.stoid;
 			var ctrl = this;
 			ctrl.studiensemesterList = "";
@@ -97,8 +97,15 @@ angular.module('stgv2')
 						'Content-Type': 'application/x-www-form-urlencoded'
 					}
 				}).then(function success(response) {
-					//TODO success
-					$("#treeGrid").treegrid('reload');
+					if(response.data.erfolg)
+					{
+						$("#treeGrid").treegrid('reload');
+						successService.setMessage(response.data.message);
+					}
+					else
+					{
+						errorService.setError(getErrorMsg(response));
+					}
 				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
 				});

@@ -1,5 +1,5 @@
 angular.module('stgv2')
-	.controller('StplMetadatenCtrl', function($scope, $http, $state, $stateParams, errorService){
+	.controller('StplMetadatenCtrl', function($scope, $http, $state, $stateParams, errorService, successService){
 		$scope.stplid = $stateParams.stplid;
 		var ctrl = this;
 		ctrl.data = "";
@@ -30,6 +30,7 @@ angular.module('stgv2')
 		}).then(function success(response) {
 			if (response.data.erfolg)
 			{
+				console.log(response);
 				//TODO Preparation for watcher
 				ctrl.origin = response.data.info;
 				ctrl.data = response.data.info;
@@ -53,8 +54,15 @@ angular.module('stgv2')
 				},
 				data: $.param(saveData)
 			}).then(function success(response){
-				//TODO success
 				$("#treeGrid").treegrid('reload');
+				if (response.data.erfolg)
+				{
+					successService.setMessage(response.data.info);
+				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
 			}, function error(response){
 				errorService.setError(getErrorMsg(response));
 			});

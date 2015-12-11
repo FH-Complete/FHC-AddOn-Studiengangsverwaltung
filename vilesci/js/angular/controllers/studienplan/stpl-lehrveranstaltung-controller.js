@@ -37,6 +37,10 @@ angular.module('stgv2')
 					url: "./api/studienplan/lehrveranstaltungen/lehrveranstaltungTree.php?studienplan_id=" + $scope.stplid,
 					idField: "id",
 					treeField: "name",
+					rowStyler: function(row)
+					{
+						
+					},
 					loadFilter: function (data)
 					{
 						if (data.erfolg)
@@ -100,6 +104,9 @@ angular.module('stgv2')
 					onLoadSuccess: function (row)
 					{
 						$(this).treegrid("enableDnd", row ? row.id : null);
+						
+						//workaround to change tree icons
+						changeTreeIcons("stplTree", "stplTreeGrid");
 					},
 					onClickRow: function (row)
 					{
@@ -155,7 +162,8 @@ angular.module('stgv2')
 								//TODO success
 								if (response.data.erfolg)
 								{
-									//TODO show success in div
+									//workaround to change icon
+									changeTreeIcons("stplTree", "stplTreeGrid", target);
 								}
 								else
 								{
@@ -184,14 +192,22 @@ angular.module('stgv2')
 								if (response.data.erfolg)
 								{
 									//node-id an neue DB-ID anpassen
+									var root = $('#stplTreeGrid').treegrid('getRoot');
+									var idView1 = $('tr[node-id='+root.id+']:eq(0)').attr("id").replace(root.id,'');
+									var idView2 = $('tr[node-id='+root.id+']:eq(1)').attr("id").replace(root.id,'');
 									$($('#stplTreeGrid').treegrid('find', source.id)).attr('node-id', response.data.info[0]);
-									$('#datagrid-row-r4-2-' + source.id).attr('node-id', response.data.info[0]);
-									$('#datagrid-row-r4-2-' + source.id).attr('id','datagrid-row-r4-2-' + response.data.info[0]);
+									$('#'+idView1 + source.id).attr('node-id', response.data.info[0]);
+									$('#'+idView1 + source.id).attr('id',idView1 + response.data.info[0]);
+									$('#'+idView2 + source.id).attr('node-id', response.data.info[0]);
+									$('#'+idView2 + source.id).attr('id',idView2 + response.data.info[0]);
 									var  row = $('#stplTreeGrid').treegrid('find', source.id);
+									
 									row.id = response.data.info[0];
 									row.sem = saveData.data.semester;
 									//needed to detect later if node is moved in tree or dropped from another tree
 									row.moving = true;
+									
+									changeTreeIcons("stplTree", "stplTreeGrid");
 								}
 								else
 								{
@@ -342,6 +358,7 @@ angular.module('stgv2')
 						{
 							$(this).treegrid('select',selection);
 						}
+						changeTreeIcons("lvTree", "lvTreeGrid");
 					},
 					onDragEnter: function (target, source)
 					{
@@ -363,6 +380,7 @@ angular.module('stgv2')
 							if (response.data.erfolg)
 							{
 								$('#stplTreeGrid').treegrid('remove', node.id);
+								changeTreeIcons("stplTree", "stplTreeGrid");
 							}
 							else
 							{
@@ -477,5 +495,55 @@ function generateChildren(item, sem)
 	}
 
 	return node;
+}
+
+function changeTreeIcons(divId, treeId, target)
+{
+	//workaround to change icon
+	$("#"+divId).find('tr[node-id] td[field]:nth-child(1)').each(function(i,v)
+	{
+		var ele = $("#"+treeId).treegrid('find', $(v).parent().attr("node-id"));
+		if(ele.type !== "sem")
+		{
+			var node = $(v).find("span.tree-icon");
+			if(ele.type === "modul")
+			{
+				$(node).addClass("icon-module");
+			}
+			else if(ele.type === "lv")
+			{
+				$(node).addClass("icon-lv");
+			}
+			else
+			{
+				$(node).addClass("tree-file");
+			}
+		}
+		else
+		{
+			var node = $(v).find("span.tree-icon");
+			//change file icon to empty folder
+			if($(node).hasClass("tree-file"))
+			{
+				$(node).removeClass("tree-file");
+				$(node).addClass("tree-folder");
+			}
+			
+			//change open folder icon to empty folder icon if node has no children
+			if($(node).hasClass("tree-folder-open") && ele.children.length === 0)
+			{
+				$(node).removeClass("tree-folder-open");
+			}
+			
+			//add tree hit if node gets children after drop
+			if((!$(node).hasClass("tree-folder-open")) && (ele.children !== undefined) && (ele.children.length > 0) && (target === ele))
+			{
+				$(node).addClass("tree-folder-open");
+				$(node).prev("span").addClass("tree-hit");
+				$(node).prev("span").addClass("tree-expanded");
+				$(node).prev("span").removeClass("tree-indent");
+			}
+		}
+	});
 }
 

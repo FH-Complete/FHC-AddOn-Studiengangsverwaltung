@@ -12,10 +12,18 @@ require_once('../functions.php');
 //TODO
 $DEBUG = true;
 
+$uid = get_uid();
+$berechtigung = new benutzerberechtigung();
+$berechtigung->getBerechtigungen($uid);
+if(!$berechtigung->isBerechtigt("stgv/createStudienplan",null,"suid"))
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um Studienpläne anzulegen.", "detail"=>"stgv/createStudienplan");
+    returnAJAX(FALSE, $error);
+}
+
 //TODO PHP get_last_error()
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
 $data = (Object) $data["data"];
-
 
 $studienplan = mapDataToStudienplan($data);
 
@@ -28,9 +36,6 @@ else
     $error = array("message"=>"Fehler beim Speichern des Studienplans.", "detail"=>$studienplan->errormsg);
     returnAJAX(false, $error);
 }
-
-
-
 
 function mapDataToStudienplan($data)
 {

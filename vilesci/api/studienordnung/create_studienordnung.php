@@ -12,9 +12,19 @@ require_once('../functions.php');
 //TODO
 $DEBUG = true;
 
+$uid = get_uid();
+$berechtigung = new benutzerberechtigung();
+$berechtigung->getBerechtigungen($uid);
+if(!$berechtigung->isBerechtigt("stgv/createStudienordnung",null,"suid"))
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um Studienordnungen anzulegen.", "detail"=>"stgv/createStudienordnung");
+    returnAJAX(FALSE, $error);
+}
+
 //TODO PHP get_last_error()
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
 $data = (Object) $data["data"];
+
 $studienordnung = mapDataToStudienordnung($data);
 
 if($studienordnung->save())

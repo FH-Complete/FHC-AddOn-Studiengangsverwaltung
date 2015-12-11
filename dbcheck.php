@@ -320,13 +320,87 @@ if (!$result = @$db->db_query("SELECT erlaeuterungen FROM lehre.tbl_studienplan 
     
 }
 
+//Rolle für Addon
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_rolle WHERE rolle_kurzbz='addonStgv' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_rolle(rolle_kurzbz, beschreibung) VALUES ('addonStgv','Rolle für Addon Studiengangsverwaltung');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_rolle: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_rolle: Rolle für Addon Studiengangsverwaltung hinzugefügt.<br>';
+    }
+}
+
+//Berechtigung für Addon
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='addon/studiengangsverwaltung' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('addon/studiengangsverwaltung','Basisrecht für Addon Studiengangsverwaltung');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('addon/studiengangsverwaltung','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Basisrecht für Addon Studiengangsverwaltung hinzugefügt.<br>';
+    }
+}
+
+//Berechtigung zum Erstellen von Studienordnungen
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/createStudienordnung' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/createStudienordnung','Recht zum Erstellen von Studienordnungen.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/createStudienordnung','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Erstellen von Studienordnungen.<br>';
+    }
+}
+
+//Berechtigung zum Erstellen von Studienplänen
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/createStudienplan' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/createStudienplan','Recht zum Erstellen von Studienplänen.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/createStudienplan','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Erstellen von Studienplänen.<br>';
+    }
+}
+
+//Berechtigung zum Ändern von Studienplänen
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/changeStudienplan' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/changeStudienplan','Recht zum Ändern von Studienplänen.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/changeStudienplan','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Ändern von Studienplänen.<br>';
+    }
+}
+
 //Berechtigung zum löschen von STO
 if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/deleteStudienordnung' LIMIT 1"))
 {
     if($db->db_num_rows($result)==0)
     {
 	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/deleteStudienordnung','Löschen einer Studienordnung im Addon Studiengangsverwaltung');
-		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/deleteStudienordnung','admin','suid');";
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/deleteStudienordnung','addonStgv','suid');";
 
 	if (!$db->db_query($qry))
 	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
@@ -341,7 +415,7 @@ if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berecht
     if($db->db_num_rows($result)==0)
     {
 	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/deleteStudienplan','Löschen eines Studienplans im Addon Studiengangsverwaltung');
-		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/deleteStudienplan','admin','suid');";
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/deleteStudienplan','addonStgv','suid');";
 
 	if (!$db->db_query($qry))
 	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';

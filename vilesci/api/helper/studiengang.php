@@ -10,8 +10,19 @@ require_once('../functions.php');
 //TODO
 $DEBUG = true;
 
+$uid = get_uid();
+$uid = "kofler";
+$berechtigung = new benutzerberechtigung();
+$berechtigung->getBerechtigungen($uid);
+if(!$berechtigung->isBerechtigt("addon/studiengangsverwaltung",null,"suid"))
+{
+    $error = array("message"=>"Sie haben keine Berechtigung für diese Anwendung.", "detail"=>"addon/studiengangsverwaltung.");
+    returnAJAX(FALSE, $error);
+}
+$stg_kz_array = $berechtigung->getStgKz("addon/studiengangsverwaltung");
+
 $studiengang = new studiengang();
-$studiengang->getAll("kurzbzlang");
+$studiengang->loadArray($stg_kz_array, "kurzbzlang", true);
 
 $data =  $studiengang->result;
 returnAJAX(true, $data);

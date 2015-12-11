@@ -1,5 +1,6 @@
 function getErrorMsg(error)
 {
+	console.log(error);
 	var message = "";
 	message += "<p>" + error.status + " " + error.statusText + "</p>";
 	message += "<p>" + error.config.url + "</p>";
