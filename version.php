@@ -18,12 +18,12 @@
  */
 
 // Name des Addons
-$addon_name = 'Template';
+$addon_name = 'Studiengangsverwaltung';
 
 // Versionsnummer des Addons
 $addon_version = '0.01';
 
 // FH-Complete Min-Version
-$fhcomplete_target_version = '2.2';
+$fhcomplete_target_version = '3.2';
 
 ?>
