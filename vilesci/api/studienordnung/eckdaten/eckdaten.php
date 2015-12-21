@@ -51,6 +51,7 @@ $data = array(
     'studiengangsart' => $studienordnung->studiengangsart,
     'standort_id' => $studienordnung->standort_id,
     'orgform_kurzbz' => $studienordnung->orgform_kurzbz,
+    'status_kurzbz' => $studienordnung->status_kurzbz,
     'updateamum' => $studienordnung->updateamum,
     'updatevon' => $studienordnung->updatevon,
     'insertamum' => $studienordnung->insertamum,

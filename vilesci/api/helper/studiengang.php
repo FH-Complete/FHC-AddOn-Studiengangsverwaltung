@@ -11,7 +11,6 @@ require_once('../functions.php');
 $DEBUG = true;
 
 $uid = get_uid();
-$uid = "kofler";
 $berechtigung = new benutzerberechtigung();
 $berechtigung->getBerechtigungen($uid);
 if(!$berechtigung->isBerechtigt("addon/studiengangsverwaltung",null,"suid"))

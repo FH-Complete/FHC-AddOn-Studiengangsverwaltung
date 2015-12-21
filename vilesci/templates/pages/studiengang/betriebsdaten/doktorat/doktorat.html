@@ -1,3 +1,94 @@
 <div class="contentWrapper" ng-controller="StgDoktoratCtrl as ctrl">
-	Doktoratsstudienverordnung
+	<div class="col-sm-3">
+		<div>
+			<label>&nbsp;</label>
+			<button class='btn btn-default btn-sm' ng-click='ctrl.newDoktorat()'>neue Doktoratsstudienverordung</button>
+		</div>
+	</div>
+	</br>
+	</br>
+	</br>
+	<table id="dataGridDoktorat" class="easyui-datagrid" data-options="url: '', method: 'get', singleSelect:true" style='height: 200px;'>
+		<thead>
+			<tr>
+				<th data-options="field: 'doktorat_id',align: 'right'"><span class="table-header">ID</span></th>
+				<th data-options="field: 'studiengang_kz',align:'left'"><span class="table-header">STG KZ</span></th>
+				<th data-options="field: 'bezeichnung',align:'left'"><span class="table-header">Bezeichnung</span></th>
+				<th data-options="field: 'datum_erlass',align:'left'"><span class="table-header">Datum</span></th>
+				<th data-options="field: 'gueltigvon',align:'left'"><span class="table-header">gültig von</span></th>
+				<th data-options="field: 'gueltigbis',align:'left'"><span class="table-header">gültig bis</span></th>
+			</tr>
+		</thead>
+	</table>
+	</br>
+	<form id="doktoratDetails" onsubmit="return false;" style="display: none;">
+		<!-- Zeile 1 -->
+		<div class="row">
+			<div class="col-sm-1">
+				<div class="form-group">
+					<label class="sr-only" for="doktorat_id">ID</label>
+					<input type="hidden" class="form-control input-sm" name="doktorat_id" value="{{ctrl.doktorat.doktorat_id}}" disabled/>
+				</div>
+			</div>
+			<div class="col-sm-1">
+				<div class="form-group">
+					<label class="sr-only" for="stgkz">Stg KZ</label>
+					<input type="hidden" class="form-control input-sm" name="stgkz" value="{{ctrl.doktorat.studiengang_kz}}" disabled/>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="bezeichnung">Bezeichnung</label>
+					<input type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.doktorat.bezeichnung"/>
+				</div>
+			</div>
+			<div class="col-sm-1">
+				<div class="form-group">
+					<label for="datum_erlass">Datum</label>
+					<input type="text" class="form-control input-sm" name="datum_erlass" ng-model="ctrl.doktorat.datum_erlass"/>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="gueltigvon">Gültig von</label>
+					<select class="form-control input-sm" name="gueltigvon" ng-model="ctrl.doktorat.gueltigvon">
+						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="gueltigbis">Gültig bis</label>
+					<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.doktorat.gueltigbis">
+						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<!-- Zeile 5 -->
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label for="erlaeuterungen">Erläuterungen</label>
+					<textarea class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="ctrl.doktorat.erlaeuterungen"></textarea>
+				</div>
+			</div>
+		</div>
+		<!-- Zeile 6 -->
+		<div class="row">
+			<div class="col-sm-10">
+				<div class="form-group">
+					<div>
+						<button id="update" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.update()">Speichern</button>
+						<button id="save" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.save()" style="display:none;">Speichern</button>
+						<button id="delete" type="submit" class="btn btn-danger btn-sm" ng-click="ctrl.delete()">Löschen</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 </div>

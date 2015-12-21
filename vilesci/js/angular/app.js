@@ -177,7 +177,7 @@ angular.module("stgv2")
 				}
 				else
 				{
-					errorService.setError("Bitte zuerst eine Studienordnung auswählen.", "info");
+					alert("Bitte zuerst eine Studienordnung auswählen.");
 				}				
 			};
 			

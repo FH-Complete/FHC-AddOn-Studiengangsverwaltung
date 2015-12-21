@@ -10,6 +10,15 @@ require_once('../functions.php');
 //TODO
 $DEBUG = true;
 
+$uid = get_uid();
+$berechtigung = new benutzerberechtigung();
+$berechtigung->getBerechtigungen($uid);
+if((!$berechtigung->isBerechtigt("stgv/changeStoStateSTG",null,"suid")) && (!$berechtigung->isBerechtigt("stgv/changeStoStateAdmin",null,"suid")))
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um den Status einer Studienordnung zu ändern.", "detail"=>"stgv/changeStoStateSTG OR stgv/changeStoStateAdmin");
+    returnAJAX(FALSE, $error);
+}
+
 $sto_array = array();
 
 $studienordnung_id = filter_input(INPUT_GET, "studienordnung_id");
@@ -28,7 +37,11 @@ elseif(($studienordnung_id == false) || ($status == false))
     returnAJAX(false, "Fehler beim lesen der GET Variablen");    
 }
 
-//TODO check berechtigung
+if($berechtigung->isBerechtigt("stgv/changeStoStateSTG",null,"suid") && ($status != "review") && (!$berechtigung->isBerechtigt("stgv/changeStoStateAdmin",null,"suid")))
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um eine Studienordnung in diesen Status zu verschieben.", "detail"=>"stgv/changeStoStateSTG");
+    returnAJAX(FALSE, $error);
+}
 
 $studienordnung = new StudienordnungAddonStgv();
 if($studienordnung->changeState($studienordnung_id, $status))

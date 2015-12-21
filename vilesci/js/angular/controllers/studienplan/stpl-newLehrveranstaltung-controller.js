@@ -278,9 +278,9 @@ angular.module('stgv2')
 		this.ects = null;
 		this.semesterstunden = null;
 		this.anmerkung = null;
-		this.lehre = false;
+		this.lehre = true;
 		this.lehreverzeichnis = null;
-		this.aktiv = false;
+		this.aktiv = true;
 		this.insertvon = null;
 		this.planfaktor = null;
 		this.planlektoren = null;

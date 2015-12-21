@@ -67,8 +67,8 @@ function mapDataToLehrveranstaltung($data)
     $lv->alvs = $data->alvs;
     $lv->lvps = $data->lvps;
     $lv->las = $data->las;
-    $lv->benotung = $data->benotung;
-    $lv->lvinfo = $data->lvinfo;
+    $lv->benotung = parseBoolean($data->benotung);
+    $lv->lvinfo = parseBoolean($data->lvinfo);
 
     return $lv;
 }

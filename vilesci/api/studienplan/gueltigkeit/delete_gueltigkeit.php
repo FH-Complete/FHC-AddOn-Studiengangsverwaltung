@@ -11,6 +11,16 @@ require_once('../../functions.php');
 
 //TODO
 $DEBUG = true;
+
+$uid = get_uid();
+$berechtigung = new benutzerberechtigung();
+$berechtigung->getBerechtigungen($uid);
+if(!$berechtigung->isBerechtigt("stgv/changeStudienplan",null,"suid"))
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um Studienpläne zu ändern.", "detail"=>"stgv/changeStudienplan");
+    returnAJAX(FALSE, $error);
+}
+
 $studienplan_id = filter_input(INPUT_GET, "studienplan_id");
 $studiensemester_kurzbz = filter_input(INPUT_GET, "studiensemester_kurzbz");
 
@@ -28,6 +38,15 @@ elseif($studienplan_id == false || $studiensemester_kurzbz == false)
 }
 
 $studienplan = new StudienplanAddonStgv(); 
+$studienplan->loadStudienplan($studienplan_id);
+$studienordnung = new StudienordnungAddonStgv();
+$studienordnung->loadStudienordnung($studienplan->studienordnung_id);
+
+if($studienordnung->status_kurzbz !== "development")
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um Studienpläne in diesem Status zu ändern.", "detail"=>"stgv/changeStudienplan");
+    returnAJAX(FALSE, $error);
+}
 
 if($studienplan->deleteSemesterZuordnung($studienplan_id, $studiensemester_kurzbz))
 {

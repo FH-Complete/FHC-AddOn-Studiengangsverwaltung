@@ -13,6 +13,15 @@ require_once('../../functions.php');
 //TODO
 $DEBUG = true;
 
+$uid = get_uid();
+$berechtigung = new benutzerberechtigung();
+$berechtigung->getBerechtigungen($uid);
+if(!$berechtigung->isBerechtigt("stgv/changeStudienplan",null,"suid"))
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um Studienpläne zu ändern.", "detail"=>"stgv/changeStudienplan");
+    returnAJAX(FALSE, $error);
+}
+
 $data = filter_input_array(INPUT_POST, array("data" => array('flags' => FILTER_REQUIRE_ARRAY)));
 $data = $data["data"];
 
@@ -20,6 +29,16 @@ $studienplan = new StudienplanAddonStgv();
 
 foreach ($data as $key)
 {
+    $stpl = new StudienplanAddonStgv();
+    $stpl->loadStudienplan($key["studienplan_id"]);
+    $studienordnung = new StudienordnungAddonStgv();
+    $studienordnung->loadStudienordnung($stpl->studienordnung_id);
+
+    if($studienordnung->status_kurzbz !== "development")
+    {
+	$error = array("message"=>"Sie haben nicht die Berechtigung um Studienpläne in diesem Status zu ändern.", "detail"=>"stgv/changeStudienplan");
+	returnAJAX(FALSE, $error);
+    }
     if (!isZuordnungGuelitg($key["studienplan_id"], $key["studiensemester_kurzbz"]))
     {
 	$error = array("message" => "Studiensemester liegt ausßerhalb der Gültigkeit der Studienordnung.");

@@ -129,6 +129,15 @@ angular.module('stgv2')
 							row.moving = true;
 						}
 					},
+					onDragEnter: function (target, source)
+					{
+						//TODO
+						console.log(ctrl.studienplan.status_kurzbz);
+						if(ctrl.studienplan.status_kurzbz !== "development")
+						{
+							return false;
+						}
+					},
 					onDrop: function (target, source, point)
 					{
 						var data = {};
@@ -160,10 +169,11 @@ angular.module('stgv2')
 								}
 							}).then(function success(response) {
 								//TODO success
+								changeTreeIcons("stplTree", "stplTreeGrid", target);
 								if (response.data.erfolg)
 								{
 									//workaround to change icon
-									changeTreeIcons("stplTree", "stplTreeGrid", target);
+									
 								}
 								else
 								{
@@ -189,6 +199,7 @@ angular.module('stgv2')
 								}
 							}).then(function success(response) {
 								//TODO success
+								changeTreeIcons("stplTree", "stplTreeGrid", target);
 								if (response.data.erfolg)
 								{
 									//node-id an neue DB-ID anpassen
@@ -206,8 +217,6 @@ angular.module('stgv2')
 									row.sem = saveData.data.semester;
 									//needed to detect later if node is moved in tree or dropped from another tree
 									row.moving = true;
-									
-									changeTreeIcons("stplTree", "stplTreeGrid");
 								}
 								else
 								{
@@ -221,7 +230,7 @@ angular.module('stgv2')
 					onContextMenu: function (e, row)
 					{
 						console.log(row);
-						if (row && row.type != "sem") {
+						if (row && row.type != "sem" && ctrl.studienplan.status_kurzbz === "development") {
 							e.preventDefault();
 							$(this).treegrid('select', row.id);
 							$('#stplTreeGridContextMenu').menu();
@@ -238,6 +247,7 @@ angular.module('stgv2')
 			var node = $("#treeGrid").treegrid('getSelected');
 			if(node)
 			{
+				console.log(node);
 				ctrl.studienplan = node;
 				ctrl.initSemesterList();
 				ctrl.initStplTree();

@@ -546,6 +546,77 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_lehrtyp_lehrform LIM
 	echo ' addon.tbl_stgv_lehrtyp_lehrform: Tabelle hinzugefuegt<br>';
 }
 
+//Tabelle addon.tbl_stgv_doktorat
+if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_doktorat LIMIT 1;")) {
+    $qry = "CREATE TABLE addon.tbl_stgv_doktorat
+			(
+				doktorat_id integer NOT NULL,
+				studiengang_kz integer NOT NULL,
+				bezeichnung varchar(256),
+				datum_erlass timestamp,
+				gueltigvon varchar(16),
+				gueltigbis varchar(16),
+				erlaeuterungen text,
+				insertamum timestamp,
+				insertvon varchar(32),
+				updateamum timestamp,
+				updatevon varchar(32)
+			);
+
+		CREATE SEQUENCE addon.tbl_stgv_doktorat_doktorat_id_seq
+		 INCREMENT BY 1
+		 NO MAXVALUE
+		 NO MINVALUE
+		 CACHE 1;
+
+		ALTER TABLE addon.tbl_stgv_doktorat ADD CONSTRAINT pk_doktorat PRIMARY KEY (doktorat_id);
+		ALTER TABLE addon.tbl_stgv_doktorat ALTER COLUMN doktorat_id SET DEFAULT nextval('addon.tbl_stgv_doktorat_doktorat_id_seq');
+
+		ALTER TABLE addon.tbl_stgv_doktorat ADD CONSTRAINT fk_doktorat_studiengang FOREIGN KEY (studiengang_kz) REFERENCES public.tbl_studiengang (studiengang_kz) ON DELETE RESTRICT ON UPDATE CASCADE;
+		ALTER TABLE addon.tbl_stgv_doktorat ADD CONSTRAINT fk_doktorat_studiensemester_gueltigvon FOREIGN KEY (gueltigvon) REFERENCES public.tbl_studiensemester (studiensemester_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
+		ALTER TABLE addon.tbl_stgv_doktorat ADD CONSTRAINT fk_doktorat_studiensemester_gueltigbis FOREIGN KEY (gueltigbis) REFERENCES public.tbl_studiensemester (studiensemester_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+		GRANT SELECT ON addon.tbl_stgv_doktorat TO web;
+		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_doktorat TO vilesci;
+		GRANT SELECT, UPDATE ON addon.tbl_stgv_doktorat_doktorat_id_seq TO vilesci;
+	";
+
+    if (!$db->db_query($qry))
+	echo '<strong>addon.tbl_stgv_doktorat: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' addon.tbl_stgv_doktorat: Tabelle hinzugefuegt<br>';
+}
+
+//Berechtigung zum Ändern des Sto Status
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/changeStoStateSTG' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/changeStoStateSTG','Ändern des Sto Status im Addon Studiengangsverwaltung von Development zu Review');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/changeStoStateSTG','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Berechtigung zum Ändern des Sto Status hinzugefügt.<br>';
+    }
+}
+
+//Berechtigung zum Ändern des Sto Status
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/changeStoStateAdmin' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/changeStoStateAdmin','Ändern des Sto Status im Addon Studiengangsverwaltung in alle Stati');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/changeStoStateAdmin','admin','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Berechtigung zum Ändern des Sto Status hinzugefügt.<br>';
+    }
+}
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
@@ -557,7 +628,8 @@ $tabellen = array(
     "addon.tbl_stgv_studienplan_semester" => array("studienplan_semester_id", "studienplan_id", "studiensemester_kurzbz", "semester"),
     "addon.tbl_stgv_aenderungsvariante" => array("aenderungsvariante_kurzbz","bezeichnung"),
     "addon.tbl_stgv_studienordnungstatus" => array("status_kurzbz","bezeichnung","reihenfolge"),
-    "addon.tbl_stgv_bewerbungstermine" => array("bewerbungstermin_id","studiengang_kz","studiensemester_kurzbz","beginn","ende","nachfrist","nachfrist_ende","anmerkung", "insertamum", "insertvon", "updateamum", "updatevon")
+    "addon.tbl_stgv_bewerbungstermine" => array("bewerbungstermin_id","studiengang_kz","studiensemester_kurzbz","beginn","ende","nachfrist","nachfrist_ende","anmerkung", "insertamum", "insertvon", "updateamum", "updatevon"),
+    "addon.tbl_stgv_doktorat" => array("doktorat_id", "studiengang_kz", "bezeichnung", "datum_erlass", "gueltigvon", "gueltigbis", "erlaeuterungen", "insertamum", "insertvon", "updateamum", "updatevon")
 );
 
 
