@@ -187,7 +187,7 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienordnungstatus
     $qry = "CREATE TABLE addon.tbl_stgv_studienordnungstatus
 			(
 				status_kurzbz varchar(32) NOT NULL,
-				bezeichnung varchar(256)
+				bezeichnung varchar(256),
 				reihenfolge integer
 			);
 
