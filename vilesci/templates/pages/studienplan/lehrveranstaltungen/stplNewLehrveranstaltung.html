@@ -315,7 +315,10 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+			{{form.$pristine}}
+			{{form.$dirty}}
+			{{form.$submitted}}
+				<tr ng-show="form.$pristine && !form.$dirty && form.$submitted">
 					<td><input form="newLehrveranstaltung" type="submit" class="btn btn-success btn-sm" ng-click="newLvCtrl.saveLehrveranstaltung()" value="erstellen" /></td>
 					<td colspan="3">neue Lehrveranstaltung anlegen</td>
 				</tr>

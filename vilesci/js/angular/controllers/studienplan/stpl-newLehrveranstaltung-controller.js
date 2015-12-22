@@ -2,6 +2,8 @@
 //	 $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 //});
 
+//TODO check if lehreverzeichnis exists
+
 angular.module('stgv2')
 		.controller('NewLehrveranstaltungCtrl', function ($scope, $http, errorService, successService) {
 			var ctrl = this;
@@ -161,12 +163,12 @@ angular.module('stgv2')
 				var orgform = ($('select[name="orgform"]').val() === "? undefined:undefined ?") ? "" : "_"+$('select[name="orgform"]').val();
 				var string = (kurzbz+orgform).toLowerCase();;
 				$("input[name=\'lehreverzeichnis\']").val(string);
-				console.log(ctrl.data.lehreverzeichnis);
 				ctrl.data.lehreverzeichnis = string;
 			};
 			
 			ctrl.loadSuggestion = function()
 			{
+				$scope.form.$setPristine();
 				$http({
 					method: 'GET',
 					url: './api/helper/lehrveranstaltungSearch.php?lv='+ctrl.data.bezeichnung
@@ -174,7 +176,7 @@ angular.module('stgv2')
 					if (response.data.erfolg)
 					{
 						ctrl.lvSuggestionList = [];
-						if(ctrl.data.ects !== undefined)
+						if(ctrl.data.ects !== null)
 						{
 							$(response.data.info).each(function(i,v){
 								var ects = parseInt(ctrl.data.ects);
@@ -219,18 +221,13 @@ angular.module('stgv2')
 			};
 			
 			//set predefined OE
-			console.log($("#oe").val());
-			console.log($("#lehrtyp").val());
 			ctrl.data.oe_kurzbz = $("#oe").val();
 			ctrl.data.lehrtyp_kurzbz = $("#lehrtyp").val();
-			console.log(ctrl.data);
 			ctrl.loadLehrform();
 			
 			
 			ctrl.saveLehrveranstaltung = function()
 			{
-				console.log($scope.form);
-				console.log($scope.form.$valid);
 				if($scope.form.$valid)
 				{
 					var saveData = {data: ""}
@@ -256,7 +253,6 @@ angular.module('stgv2')
 						{
 							errorService.setError(getErrorMsg(response));
 						}
-						console.log(response);
 					}, function error(response){
 						errorService.setError(getErrorMsg(response));
 					});
