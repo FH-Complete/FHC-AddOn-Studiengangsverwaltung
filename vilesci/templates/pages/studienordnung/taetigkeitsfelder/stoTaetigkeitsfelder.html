@@ -1,108 +1,65 @@
-<div class="contentWrapper">
+<div class="contentWrapper" ng-controller="StoTaetigkeitsfelderCtrl as ctrl">
 	<form id="stoNeu" onsubmit="return false;">
 		<div class="row">
-			<div class="col-sm-10">
+			<div class="col-sm-8">
 				<h4>Überblick</h4>
 				<div class="form-group">
-					<textarea class="form-control" rows="5" name='ueberblick' ng-model="stoCtrl.sto.ueberblick"></textarea>
+					<textarea class="form-control" rows="5" name='ueberblick' ng-model="ctrl.data.ueberblick"></textarea>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-4">
+			<div class="col-sm-8">
 				<h4>Branchen und Sektoren</h4>
 				<p>AbsolventInnen des Studienganges können in folgenden Kernbranchen tätig sein:</p>
-				<div class="form-group">
-					<input type="text" class="form-control" name="branche"/>
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="" ng-model="ctrl.temp.branchen"/>
+					<span class="input-group-btn">
+						<button class="btn btn-primary" type="button" ng-click="ctrl.addListItem('list_branchen', 'branchen')">hinzufügen</button>
+					</span>
 				</div>
-			</div>
-			<div class="col-sm-4">
-				<h4>Positionen und Funktionen</h4>
-				<p>Aufgrund der Qualifikationsziele des Studienganges können die AbsolventInnen beispielhaft die folgenden Positionen und Funktionen wahrnehmen:</p>
-				<div class="form-group">
-					<input type="text" class="form-control" name="position"/>
-				</div>
-			</div>
-			<div class="col-sm-4">
-				<h4>Aufgaben und Tätigkeiten</h4>
-				<p>Aufgrund der Qualifikationsziele des Studienganges können die AbsolventInnen beispielhaft die folgenden Positionen und Funktionen wahrnehmen:</p>
-				<div class="form-group">
-					<input type="text" class="form-control" name="aufgaben"/>
-				</div>
+				<ul id="list_branchen" class="list-group">
+					
+				</ul>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-4">
-				<ul class="list-group">
-					<li class="list-group-item">Aufzählung 1
-						<span class="badge">
-							<span class="glyphicon glyphicon-trash"></span>
-						</span>
-					</li>
-					<li class="list-group-item">Aufzählung 2
-						<span class="badge">
-							<span class="glyphicon glyphicon-trash"></span>
-						</span>
-					</li>
-					<li class="list-group-item">Aufzählung 3
-						<span class="badge">
-							<span class="glyphicon glyphicon-trash"></span>
-						</span>
-					</li>
-					<li class="list-group-item">Aufzählung 4
-						<span class="badge">
-							<span class="glyphicon glyphicon-trash"></span>
-						</span>
-					</li>
+			<div class="col-sm-8">
+				<h4>Positionen und Funktionen</h4>
+				<p>Aufgrund der Qualifikationsziele des Studienganges können die AbsolventInnen beispielhaft die folgenden Positionen und Funktionen wahrnehmen:</p>
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="" ng-model="ctrl.temp.positionen"/>
+					<span class="input-group-btn">
+						<button class="btn btn-primary" type="button" ng-click="ctrl.addListItem('list_positionen', 'positionen')">hinzufügen</button>
+					</span>
+				</div>
+				<ul id="list_positionen" class="list-group">
+					
 				</ul>
 			</div>
-			<div class="col-sm-4">
-				<ul class="list-group">
-					<li class="list-group-item">Aufzählung 1
-						<span class="badge">
-							<span class="glyphicon glyphicon-trash"></span>
-						</span>
-					</li>
-					<li class="list-group-item">Aufzählung 2
-						<span class="badge">
-							<span class="glyphicon glyphicon-trash"></span>
-						</span>
-					</li>
-					<li class="list-group-item">Aufzählung 3
-						<span class="badge">
-							<span class="glyphicon glyphicon-trash"></span>
-						</span>
-					</li>
-					<li class="list-group-item">Aufzählung 4
-						<span class="badge">
-							<span class="glyphicon glyphicon-trash"></span>
-						</span>
-					</li>
+		</div>
+		<div class="row">
+			<div class="col-sm-8">
+				<h4>Aufgaben und Tätigkeiten</h4>
+				<p>Aufgrund der Qualifikationsziele des Studienganges können die AbsolventInnen beispielhaft die folgenden Positionen und Funktionen wahrnehmen:</p>
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="" ng-model="ctrl.temp.aufgaben"/>
+					<span class="input-group-btn">
+						<button class="btn btn-primary" type="button" ng-click="ctrl.addListItem('list_aufgaben', 'aufgaben')">hinzufügen</button>
+					</span>
+				</div>
+				<ul id="list_aufgaben" class="list-group">
+					
 				</ul>
 			</div>
-			<div class="col-sm-4">
-				<ul class="list-group">
-					<li class="list-group-item">Aufzählung 1
-						<span class="badge">
-							<span class="glyphicon glyphicon-trash"></span>
-						</span>
-					</li>
-					<li class="list-group-item">Aufzählung 2
-						<span class="badge">
-							<span class="glyphicon glyphicon-trash"></span>
-						</span>
-					</li>
-					<li class="list-group-item">Aufzählung 3
-						<span class="badge">
-							<span class="glyphicon glyphicon-trash"></span>
-						</span>
-					</li>
-					<li class="list-group-item">Aufzählung 4
-						<span class="badge">
-							<span class="glyphicon glyphicon-trash"></span>
-						</span>
-					</li>
-				</ul>
+		</div>
+		<div class="row">
+			<div class="col-sm-10">
+				<div class="form-group">
+					<div>
+						<button id="save" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.save()">Speichern</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</form>

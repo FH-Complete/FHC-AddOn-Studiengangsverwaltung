@@ -195,6 +195,12 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienordnungstatus
 
 		GRANT SELECT ON addon.tbl_stgv_studienordnungstatus TO web;
 		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_studienordnungstatus TO vilesci;
+		
+		INSERT INTO addon.tbl_stgv_studienordnungstatus (status_kurzbz, bezeichnung, reihenfolge) VALUES ('development', 'in Bearbeitung', 1);
+		INSERT INTO addon.tbl_stgv_studienordnungstatus (status_kurzbz, bezeichnung, reihenfolge) VALUES ('review', 'in Review', 2);
+		INSERT INTO addon.tbl_stgv_studienordnungstatus (status_kurzbz, bezeichnung, reihenfolge) VALUES ('approved', 'genehmigt', 3);
+		INSERT INTO addon.tbl_stgv_studienordnungstatus (status_kurzbz, bezeichnung, reihenfolge) VALUES ('expired', 'ausgelaufen', 4);
+		INSERT INTO addon.tbl_stgv_studienordnungstatus (status_kurzbz, bezeichnung, reihenfolge) VALUES ('notApproved', 'nicht genehmigt', 5);
 	";
 
     if (!$db->db_query($qry))
@@ -209,6 +215,7 @@ if (!$result = @$db->db_query("SELECT status_kurzbz FROM lehre.tbl_studienordnun
     $qry = "ALTER TABLE lehre.tbl_studienordnung ADD COLUMN status_kurzbz varchar(32); 
 	   
 	    ALTER TABLE lehre.tbl_studienordnung ADD CONSTRAINT status_kurzbz FOREIGN KEY (status_kurzbz) REFERENCES addon.tbl_stgv_studienordnungstatus (status_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
+	    UPDATE lehre.tbl_studienordnung SET status_kurzbz = 'approved';
 	   ";
     
     if (!$db->db_query($qry))
@@ -617,6 +624,42 @@ if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berecht
     }
 }
 
+//Tabelle addon.tbl_stgv_doktorat
+if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_taetigkeitsfelder LIMIT 1;")) {
+    $qry = "CREATE TABLE addon.tbl_stgv_taetigkeitsfelder
+			(
+				taetigkeitsfeld_id integer NOT NULL,
+				studienordnung_id integer NOT NULL,
+				ueberblick text,
+				data jsonb,
+				insertamum timestamp,
+				insertvon varchar(32),
+				updateamum timestamp,
+				updatevon varchar(32)
+			);
+
+		CREATE SEQUENCE addon.tbl_stgv_taetigkeitsfelder_taetigkeitsfeld_id_seq
+		 INCREMENT BY 1
+		 NO MAXVALUE
+		 NO MINVALUE
+		 CACHE 1;
+
+		ALTER TABLE addon.tbl_stgv_taetigkeitsfelder ADD CONSTRAINT pk_taetigkeitsfelder PRIMARY KEY (taetigkeitsfeld_id);
+		ALTER TABLE addon.tbl_stgv_taetigkeitsfelder ALTER COLUMN taetigkeitsfeld_id SET DEFAULT nextval('addon.tbl_stgv_taetigkeitsfelder_taetigkeitsfeld_id_seq');
+
+		ALTER TABLE addon.tbl_stgv_taetigkeitsfelder ADD CONSTRAINT fk_taetigkeitsfelder_studienordnung FOREIGN KEY (studienordnung_id) REFERENCES lehre.tbl_studienordnung (studienordnung_id) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+		GRANT SELECT ON addon.tbl_stgv_taetigkeitsfelder TO web;
+		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_taetigkeitsfelder TO vilesci;
+		GRANT SELECT, UPDATE ON addon.tbl_stgv_taetigkeitsfelder_taetigkeitsfeld_id_seq TO vilesci;
+	";
+
+    if (!$db->db_query($qry))
+	echo '<strong>addon.tbl_stgv_taetigkeitsfelder: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' addon.tbl_stgv_taetigkeitsfelder: Tabelle hinzugefuegt<br>';
+}
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
@@ -629,7 +672,8 @@ $tabellen = array(
     "addon.tbl_stgv_aenderungsvariante" => array("aenderungsvariante_kurzbz","bezeichnung"),
     "addon.tbl_stgv_studienordnungstatus" => array("status_kurzbz","bezeichnung","reihenfolge"),
     "addon.tbl_stgv_bewerbungstermine" => array("bewerbungstermin_id","studiengang_kz","studiensemester_kurzbz","beginn","ende","nachfrist","nachfrist_ende","anmerkung", "insertamum", "insertvon", "updateamum", "updatevon"),
-    "addon.tbl_stgv_doktorat" => array("doktorat_id", "studiengang_kz", "bezeichnung", "datum_erlass", "gueltigvon", "gueltigbis", "erlaeuterungen", "insertamum", "insertvon", "updateamum", "updatevon")
+    "addon.tbl_stgv_doktorat" => array("doktorat_id", "studiengang_kz", "bezeichnung", "datum_erlass", "gueltigvon", "gueltigbis", "erlaeuterungen", "insertamum", "insertvon", "updateamum", "updatevon"),
+    "addon.tbl_stgv_taetigkeitsfelder" => array("taetigkeitsfeld_id", "studienordnung_id", "ueberblick", "data","insertamum", "insertvon", "updateamum", "updatevon") 
 );
 
 

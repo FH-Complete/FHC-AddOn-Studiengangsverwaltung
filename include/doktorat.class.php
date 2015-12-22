@@ -44,7 +44,7 @@ class doktorat extends basis_db
 
 	/**
 	 * Konstruktor
-	 * @param $reihungstest_id ID der Adresse die geladen werden soll (Default=null)
+	 * @param $doktorat_id ID der Adresse die geladen werden soll (Default=null)
 	 */
 	public function __construct($doktorat_id=null)
 	{
@@ -55,8 +55,8 @@ class doktorat extends basis_db
 	}
 
 	/**
-	 * Laedt den Fördervertrag mit der ID $doktorat_id
-	 * @param  $doktorat_id ID des zu ladenden Fördervertrags
+	 * Laedt die Doktoratsstudienverordnung mit der ID $doktorat_id
+	 * @param  $doktorat_id ID der zu ladenden Doktoratsstudienverordnung
 	 * @return true wenn ok, false im Fehlerfall
 	 */
 	public function load($doktorat_id)
@@ -158,7 +158,7 @@ class doktorat extends basis_db
 	/**
 	 * Speichert den aktuellen Datensatz in die Datenbank
 	 * Wenn $neu auf true gesetzt ist wird ein neuer Datensatz angelegt
-	 * andernfalls wird der Datensatz mit der ID in $reihungstest_id aktualisiert
+	 * andernfalls wird der Datensatz mit der ID in $doktorat_id aktualisiert
 	 * @return true wenn ok, false im Fehlerfall
 	 */
 	public function save()

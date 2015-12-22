@@ -98,6 +98,7 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script type="text/javascript" src="./js/angular/controllers/studienordnung/sto-metadaten-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studienordnung/sto-dokumente-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studienordnung/sto-eckdaten-controller.js"></script>
+	<script type="text/javascript" src="./js/angular/controllers/studienordnung/sto-taetigkeitsfelder-controller.js"></script>
 
 	<!-- Angular Studienplan Controllers -->
 	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-neu-controller.js"></script>

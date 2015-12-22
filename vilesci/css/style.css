@@ -317,3 +317,7 @@ span.glyphicon {
 	 z-index: 10000;
  }
  
+ .glyphicon-trash
+ {
+	 cursor: pointer;
+ }
