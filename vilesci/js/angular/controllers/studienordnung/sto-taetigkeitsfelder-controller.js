@@ -20,6 +20,8 @@ angular.module('stgv2')
 					if (response.data.info.length > 0)
 					{
 						ctrl.data = response.data.info[0];
+//						ctrl.data.data = JSON.parse(ctrl.data.data);
+						console.log(ctrl.data);
 						$(ctrl.data.data.branchen.elements).each(function(key, value)
 						{
 							ctrl.drawListItem("list_branchen",value);
@@ -121,17 +123,6 @@ angular.module('stgv2')
 				var branchen = [];
 				var positionen = [];
 				var aufgaben = [];
-				ctrl.data.data = {
-					"branchen": {
-						"fixed": "AbsolventInnen des Studienganges können in folgenden Kernbranchen tätig sein:",
-						"elements": []},
-					"positionen": {
-						"fixed": "Aufgrund der Qualifikationsziele des Studienganges können die AbsolventInnen beispielhaft die folgenden Positionen und Funktionen wahrnehmen:",
-						"elements": []},
-					"aufgaben": {
-						"fixed": "Aufgrund der Qualifikationsziele des Studienganges können die AbsolventInnen beispielhaft die folgenden Positionen und Funktionen wahrnehmen:",
-						"elements": []},
-				};
 				$("#list_branchen li").each(function (key, value)
 				{
 					branchen.push($(value).text());
@@ -157,5 +148,18 @@ function Taetigkeitsfeld()
 	this.taetigkeitsfeld_id = null;
 	this.studienordnung_id = null;
 	this.ueberblick = "";
-	this.data = [];
+	this.data = {
+			"branchen": {
+				"fixed": "AbsolventInnen des Studienganges können in folgenden Kernbranchen tätig sein:",
+				"elements": []
+			},
+			"positionen": {
+				"fixed": "Aufgrund der Qualifikationsziele des Studienganges können die AbsolventInnen beispielhaft die folgenden Positionen und Funktionen wahrnehmen:",
+				"elements": []
+			},
+			"aufgaben": {
+				"fixed": "Aufgrund der Qualifikationsziele des Studienganges können die AbsolventInnen beispielhaft die folgenden Positionen und Funktionen wahrnehmen:",
+				"elements": []
+			}
+		}
 }

@@ -73,7 +73,7 @@ class taetigkeitsfeld extends basis_db
 				$this->taetigkeitsfeld_id = $row->taetigkeitsfeld_id;
 				$this->studienordnung_id = $row->studienordnung_id;
 				$this->ueberblick = $row->ueberblick;
-				$this->data = $row->data;
+				$this->data = json_decode($row->data);
 				$this->insertamum = $row->insertamum;
 				$this->insertvon = $row->insertvon;
 				$this->updateamum = $row->updateamum;
