@@ -1,19 +1,58 @@
-<div class="contentWrapper" ng-controller="StgStammdatenCtrl">
-	<h1>Stammdaten</h1>
-	<h2>Fächergruppe gemäß Statistik Austria</h2>
-	<div style="width: 600px;">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
-		nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, 
-		sed diam voluptua. At vero eos et accusam et justo duo dolores et ea 
-		rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem 
-		ipsum dolor sit amet.
-	</div>
+<div class="contentWrapper" ng-controller="StgStammdatenCtrl as ctrl">
+	<h1>Studiengangsgruppen</h1>	
 	
-	<h2>Fächergruppe gemäß ISCED</h2>
-	<div style="width: 600px;">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-		nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, 
-		sed diam voluptua. At vero eos et accusam et justo duo dolores et ea 
-		rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem 
-		ipsum dolor sit amet.
+	<div ng-if="!ctrl.zuordnung.stgkz">
+		<div ng-repeat="root in ctrl.data track by $index">
+			<h2>{{root.data[0].label}}</h2>
+			<select ng-if="root.data[0].children" ng-model='ctrl.model.data[$index][$index]'>
+				<option ng-repeat="child in root.data[0].children">{{child.code}} - {{child.label}}</option>
+			</select>
+			<select ng-if="ctrl.model.data[$index]" ng-model='ctrl.model.data[$index][$index+1]'>
+				<option ng-repeat="child in root.data[0].children[0].children">{{child.code}} - {{child.label}}</option>
+			</select>
+			<select ng-if="ctrl.model.data[$index][$index+1] &&(root.data[0].children[0].children[0].children).length" ng-model='ctrl.model.data[$index][$index+2]'>
+				<option ng-repeat="child in root.data[0].children[0].children[0].children">{{child.code}} - {{child.label}}</option>
+			</select>
+		</div>
+		<div class="row">
+			<div class="col-sm-1">
+				<div class="form-group">
+					<div>
+						<button type="submit" class="btn btn-success btn-sm" ng-click="ctrl.save()">Speichern</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
+	<div ng-if="ctrl.zuordnung.stgkz">
+		<div ng-repeat="root in ctrl.zuordnung.data">
+			<ul>
+				<li ng-repeat="group in root">{{group}}</li>
+			</ul>
+		</div>
+		<div class="row">
+			<div class="col-sm-1">
+				<div class="form-group">
+					<div>
+						<button type="submit" class="btn btn-danger btn-sm" ng-click="ctrl.deleteZuordnung()">Löschen</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--
+	<div id="div_{{root.studiengangsgruppe_id}}" ng-repeat="root in ctrl.data | filter: {studiengangsgruppe_parent_id : '!'} track by $index">
+		<h2>{{root.text}}{{root.studiengangsgruppe_parent_id}}</h2>
+		<select ng-if="root.children" ng-model='ctrl.model[$index][$index]'>
+			<option ng-repeat="child in root.children | filter : {studiengangsgruppe_parent_id : root.studiengangsgruppe_id}" value='{{child.studiengangsgruppe_id}}'>{{child.code}} - {{child.text}}</option>
+		</select>
+		<select ng-if="ctrl.model[$index]" ng-model='ctrl.model[$index][$index+1]'>
+			<option ng-repeat="child in ctrl.data | filter : {studiengangsgruppe_parent_id : ctrl.model[$index][$index]} : true" value='{{child.studiengangsgruppe_id}}'>{{child.code}} - {{child.text}}</option>
+		</select>
+		<select ng-if="ctrl.model[$index][$index+1] && (ctrl.data | filter : {studiengangsgruppe_parent_id : ctrl.model[$index][$index+1]} : true).length" ng-model='ctrl.model[$index][$index+2]'>
+			<option ng-repeat="child in ctrl.data | filter : {studiengangsgruppe_parent_id : ctrl.model[$index][$index+1]} : true" value='{{child.studiengangsgruppe_id}}'>{{child.code}} - {{child.text}}</option>
+		</select>
+	</div>-->
 	
 </div>

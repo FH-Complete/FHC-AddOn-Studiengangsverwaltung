@@ -4,11 +4,8 @@ require_once('../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../include/functions.inc.php');
 require_once('../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../include/Aenderungsvariante.class.php');
-//TODO functions from core?
-require_once('../functions.php');
 
-//TODO
-$DEBUG = true;
+require_once('../functions.php');
 
 $method = filter_input(INPUT_GET, "method");
 
@@ -20,8 +17,6 @@ elseif(($method == false))
 {
     returnAJAX(false, "Fehler beim lesen der GET Variablen");    
 }
-
-
 
 $aenderungsvariante = new Aenderungsvariante();
 if (method_exists($aenderungsvariante, $method))

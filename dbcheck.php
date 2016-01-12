@@ -624,7 +624,7 @@ if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berecht
     }
 }
 
-//Tabelle addon.tbl_stgv_doktorat
+//Tabelle addon.tbl_stgv_taetigkeitsfelder
 if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_taetigkeitsfelder LIMIT 1;")) {
     $qry = "CREATE TABLE addon.tbl_stgv_taetigkeitsfelder
 			(
@@ -660,6 +660,73 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_taetigkeitsfelder LI
 	echo ' addon.tbl_stgv_taetigkeitsfelder: Tabelle hinzugefuegt<br>';
 }
 
+//Tabelle addon.tbl_stgv_studiengangsgruppen
+if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studiengangsgruppen LIMIT 1;")) {
+    $qry = "CREATE TABLE addon.tbl_stgv_studiengangsgruppen
+			(
+				studiengangsgruppe_id integer NOT NULL,
+				data jsonb,
+				insertamum timestamp,
+				insertvon varchar(32),
+				updateamum timestamp,
+				updatevon varchar(32)
+			);
+
+		CREATE SEQUENCE addon.tbl_stgv_studiengangsgruppen_studiengangsgruppe_id_seq
+		 INCREMENT BY 1
+		 NO MAXVALUE
+		 NO MINVALUE
+		 CACHE 1;
+
+		ALTER TABLE addon.tbl_stgv_studiengangsgruppen ADD CONSTRAINT pk_studiengangsgruppen PRIMARY KEY (studiengangsgruppe_id);
+		ALTER TABLE addon.tbl_stgv_studiengangsgruppen ALTER COLUMN studiengangsgruppe_id SET DEFAULT nextval('addon.tbl_stgv_studiengangsgruppen_studiengangsgruppe_id_seq');
+
+		GRANT SELECT ON addon.tbl_stgv_studiengangsgruppen TO web;
+		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_studiengangsgruppen TO vilesci;
+		GRANT SELECT, UPDATE ON addon.tbl_stgv_studiengangsgruppen_studiengangsgruppe_id_seq TO vilesci;
+	";
+
+    if (!$db->db_query($qry))
+	echo '<strong>addon.tbl_stgv_studiengangsgruppen: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' addon.tbl_stgv_studiengangsgruppen: Tabelle hinzugefuegt<br>';
+}
+
+//Tabelle addon.tbl_stgv_studiengangsgruppen
+if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studiengangsgruppe_studiengang LIMIT 1;")) {
+    $qry = "CREATE TABLE addon.tbl_stgv_studiengangsgruppe_studiengang
+			(
+				studiengangsgruppe_studiengang_id integer NOT NULL,
+				studiengang_kz integer NOT NULL,
+				data jsonb,
+				insertamum timestamp,
+				insertvon varchar(32),
+				updateamum timestamp,
+				updatevon varchar(32)
+			);
+
+		CREATE SEQUENCE addon.tbl_stgv_studiengangsgruppe_studiengang_studiengangsgruppe_studiengang_id_seq
+		 INCREMENT BY 1
+		 NO MAXVALUE
+		 NO MINVALUE
+		 CACHE 1;
+
+		ALTER TABLE addon.tbl_stgv_studiengangsgruppe_studiengang ADD CONSTRAINT pk_studiengangsgruppe_studiengang PRIMARY KEY (studiengangsgruppe_studiengang_id);
+		ALTER TABLE addon.tbl_stgv_studiengangsgruppe_studiengang ALTER COLUMN studiengangsgruppe_studiengang_id SET DEFAULT nextval('addon.tbl_stgv_studiengangsgruppe_studiengang_studiengangsgruppe_studiengang_id_seq');
+		
+		ALTER TABLE addon.tbl_stgv_studiengangsgruppe_studiengang ADD CONSTRAINT fk_studiengangsgruppe_studiengang FOREIGN KEY (studiengang_kz) REFERENCES public.tbl_studiengang (studiengang_kz) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+		GRANT SELECT ON addon.tbl_stgv_studiengangsgruppe_studiengang TO web;
+		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_studiengangsgruppe_studiengang TO vilesci;
+		GRANT SELECT, UPDATE ON addon.tbl_stgv_studiengangsgruppe_studiengang_studiengangsgruppe_studiengang_id_seq TO vilesci;
+	";
+
+    if (!$db->db_query($qry))
+	echo '<strong>addon.tbl_stgv_studiengangsgruppe_studiengang: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' addon.tbl_stgv_studiengangsgruppe_studiengang: Tabelle hinzugefuegt<br>';
+}
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
@@ -673,7 +740,9 @@ $tabellen = array(
     "addon.tbl_stgv_studienordnungstatus" => array("status_kurzbz","bezeichnung","reihenfolge"),
     "addon.tbl_stgv_bewerbungstermine" => array("bewerbungstermin_id","studiengang_kz","studiensemester_kurzbz","beginn","ende","nachfrist","nachfrist_ende","anmerkung", "insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_doktorat" => array("doktorat_id", "studiengang_kz", "bezeichnung", "datum_erlass", "gueltigvon", "gueltigbis", "erlaeuterungen", "insertamum", "insertvon", "updateamum", "updatevon"),
-    "addon.tbl_stgv_taetigkeitsfelder" => array("taetigkeitsfeld_id", "studienordnung_id", "ueberblick", "data","insertamum", "insertvon", "updateamum", "updatevon") 
+    "addon.tbl_stgv_taetigkeitsfelder" => array("taetigkeitsfeld_id", "studienordnung_id", "ueberblick", "data","insertamum", "insertvon", "updateamum", "updatevon"), 
+    "addon.tbl_stgv_studiengangsgruppen" => array("studiengangsgruppe_id", "data","insertamum", "insertvon", "updateamum", "updatevon"), 
+    "addon.tbl_stgv_studiengangsgruppe_studiengang" => array("studiengangsgruppe_studiengang_id", "studiengang_kz", "data","insertamum", "insertvon", "updateamum", "updatevon")
 );
 
 

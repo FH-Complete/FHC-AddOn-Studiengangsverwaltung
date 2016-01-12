@@ -7,11 +7,7 @@ require_once('../../../../../../include/akadgrad.class.php');
 require_once('../../../../../../include/studiensemester.class.php');
 
 require_once('../../../../include/StudienordnungAddonStgv.class.php');
-//TODO functions from core?
 require_once('../../functions.php');
-
-//TODO
-$DEBUG = true;
 
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
 $data = (Object) $data["data"];

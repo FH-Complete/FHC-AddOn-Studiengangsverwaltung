@@ -7,11 +7,8 @@ require_once('../../../../../../include/akadgrad.class.php');
 require_once('../../../../../../include/studiensemester.class.php');
 
 require_once('../../../../include/StudienordnungAddonStgv.class.php');
-//TODO functions from core?
-require_once('../../functions.php');
 
-//TODO
-$DEBUG = true;
+require_once('../../functions.php');
 
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
 $data = (Object) $data["data"];
@@ -29,7 +26,6 @@ else
 
 function mapDataToStudienordnung($data)
 {
-    //TODO add attribute studiengangsart, orgform_kurzbz, standort_id to save script
     $sto = new StudienordnungAddonStgv();
     $sto->loadStudienordnung($data->studienordnung_id);
     $sto->studiengangbezeichnung = $data->studiengangbezeichnung;
