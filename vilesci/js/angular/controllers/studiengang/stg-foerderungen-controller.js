@@ -1,11 +1,14 @@
 angular.module('stgv2')
-		.controller('StgFoerderungenCtrl', function ($scope, $http, $state, $stateParams, errorService) {
+		.controller('StgFoerderungenCtrl', function ($scope, $http, $state, $stateParams, errorService, FileUploader) {
 			$scope.stgkz = $stateParams.stgkz;
 			var ctrl = this;
 			ctrl.data = "";
 			ctrl.foerdervertrag = new Foerdervertrag();
 			ctrl.selectedStudiensemester = null;
 			ctrl.studiensemesterList = "";
+			ctrl.fileExtensionWhiteList = ["PDF"];
+			ctrl.dokumente = "";
+			ctrl.lastSelectedIndex = null;
 
 			//loading Studiensemester list
 			$http({
@@ -32,6 +35,13 @@ angular.module('stgv2')
 					method: 'GET',
 					onLoadSuccess: function (data)
 					{
+						if(ctrl.lastSelectedIndex !== null)
+						{
+							$("#dataGridFoerdervertrag").datagrid('selectRow', ctrl.lastSelectedIndex);
+							var row = $("#dataGridFoerdervertrag").datagrid("getSelected");
+							ctrl.foerdervertrag = row;
+							$scope.$apply();
+						}
 						//Error Handling happens in loadFilter
 					},
 					onLoadError: function () {
@@ -52,9 +62,9 @@ angular.module('stgv2')
 							return result;
 						}
 					},
-					onClickRow: function()
+					onClickRow: function(index, row)
 					{
-						var row = $("#dataGridFoerdervertrag").datagrid("getSelected");
+						ctrl.lastSelectedIndex = index;
 						ctrl.loadFoerdervertragDetails(row);
 						if ($("#save").is(":visible"))
 							ctrl.changeButtons();
@@ -84,9 +94,14 @@ angular.module('stgv2')
 					}
 				}).then(function success(response) {
 					//TODO success 
-					$("#dataGridFoerdervertrag").datagrid('reload');
-					//TODO select recently added Reihungstest in Datagrid
 					ctrl.foerdervertrag = new Foerdervertrag();
+					ctrl.foerdervertrag.foerdervertrag_id = response.data.info;
+//					$("#dataGridFoerdervertrag").datagrid('reload');
+					$($scope.uploader.queue).each(function(k,v){
+						v.upload();
+					});
+					//TODO select recently added Reihungstest in Datagrid
+					
 				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
 				});
@@ -151,15 +166,93 @@ angular.module('stgv2')
 					$("#save").hide();
 					$("#update").show();
 					$("#delete").show();
+					$("#upload").show();
 				}
 				else
 				{
 					$("#save").show();
 					$("#update").hide();
 					$("#delete").hide();
+					$("#upload").hide();
 				}
 			};
 
+			$scope.uploader = new FileUploader({
+				url: './api/helper/upload_dokument.php',
+				formData: [{
+					foerdervertrag_id: $scope.stoid
+				}],
+				filters: [{
+					name: 'extensionFilter',
+					fn: function (item, options) {
+						var extension = item.name.split(".").pop();
+						if ($.inArray(extension.toUpperCase(), ctrl.fileExtensionWhiteList) === 0)
+						{
+							return true;
+						}
+						return false;
+					}
+				}],
+				onSuccessItem: function(item, response, status, headers)
+				{
+					var data = {
+						foerdervertrag_id : ctrl.foerdervertrag.foerdervertrag_id,
+						dms_id : response.info
+					}
+					if(response.erfolg)
+					{
+						$http({
+							method: 'POST',
+							url: './api/studiengang/foerdervertrag/add_document.php',
+							data: $.param(data),
+							headers: {
+								'Content-Type': 'application/x-www-form-urlencoded'
+							}
+						}).then(function success(response) {
+							if(response.data.erfolg)
+							{
+								$("#dataGridFoerdervertrag").datagrid('reload');
+							}
+						}, function error(response) {
+							errorService.setError(getErrorMsg(response));
+						});
+					}
+				}
+			});
+			
+			ctrl.deleteDokument = function (dms_id)
+			{
+				var data = {
+					foerdervertrag_id : ctrl.foerdervertrag.foerdervertrag_id,
+					dms_id : dms_id
+				}
+				$http({
+					method: "POST",
+					url: "./api/studiengang/foerdervertrag/delete_dokument.php",
+					data: $.param(data),
+				}).then(function success(response) {
+					if (response.data.erfolg)
+					{
+						var dokumente = ctrl.foerdervertrag.dokumente.filter(function(obj){
+							return obj.dms_id !== dms_id;
+						});
+						ctrl.foerdervertrag.dokumente = dokumente;
+					}
+					else
+					{
+						errorService.setError(getErrorMsg(response));
+					}
+				}, function error(response) {
+					errorService.setError(getErrorMsg(response));
+				});
+			}
+			
+			ctrl.uploadDokument = function()
+			{
+				$($scope.uploader.queue).each(function(k,v){
+					v.upload();
+				});
+			}
 		});
 
 function Foerdervertrag()
@@ -176,4 +269,5 @@ function Foerdervertrag()
 	this.insertvon = "";
 	this.updateamum = "";
 	this.updatevon = "";
+	this.dokumente = "";
 }

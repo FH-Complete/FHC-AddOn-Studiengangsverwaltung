@@ -19,6 +19,7 @@ elseif($foerdervertrag_id == false)
 }
 
 $foerdervertrag = new foerdervertrag($foerdervertrag_id);
+$foerdervertrag->getDokumente($foerdervertrag_id);
 
 
 
@@ -36,7 +37,8 @@ $data = array(
     'insertamum' => $foerdervertrag->insertamum,
     'insertvon' => $foerdervertrag->insertvon,
     'updateamum' => $foerdervertrag->updateamum,
-    'updatevon' => $foerdervertrag->updatevon
+    'updatevon' => $foerdervertrag->updatevon,
+    'dokumente'=> $foerdervertrag->dokumente
 );
 
 returnAJAX(true, $data);

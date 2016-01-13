@@ -42,6 +42,8 @@ class foerdervertrag extends basis_db
 	public $insertvon;		//  bigint
 	public $updateamum;		//  timestamp
 	public $updatevon;		//  bigint
+	
+	public $dokumente = array();
 
 	/**
 	 * Konstruktor
@@ -247,4 +249,92 @@ class foerdervertrag extends basis_db
 	    
 	    return true;
 	}
+	
+	/**
+     * Speichert ein Dokument zum Fördervertrag
+     * @param int $dms_id
+     * @return boolean
+     */
+    public function saveDokument($dms_id)
+    {
+	$qry = "INSERT INTO addon.tbl_stgv_foerdervertrag_dokument(foerdervertrag_id, dms_id) VALUES(" .
+		$this->db_add_param($this->foerdervertrag_id, FHC_INTEGER) . ',' .
+		$this->db_add_param($dms_id, FHC_INTEGER) . ');';
+
+	if ($this->db_query($qry))
+	{
+	    return true;
+	} else
+	{
+	    $this->errormsg = 'Fehler beim Speichern der Daten';
+	    return false;
+	}
+    }
+
+    /**
+     * Laedt die Dokumente des Fördervertrags
+     * @return boolean
+     */
+    public function getDokumente($foerdervertrag_id)
+    {
+	$qry = "SELECT dms_id FROM addon.tbl_stgv_foerdervertrag_dokument WHERE foerdervertrag_id=" . $this->db_add_param($foerdervertrag_id, FHC_INTEGER);
+
+	if ($this->db_query($qry))
+	{
+	    while ($row = $this->db_fetch_object())
+	    {
+		$this->dokumente[] = $row->dms_id;
+	    }
+
+	    return true;
+	} else
+	{
+	    $this->errormsg = 'Fehler beim Laden der Daten';
+	    return false;
+	}
+    }
+
+    /**
+     * Löscht ein Dokument
+     * @param  $foerdervertrag_id
+     * @param  $dms_id
+     * @return true wenn ok, false im Fehlerfall
+     */
+    public function deleteDokument($foerdervertrag_id, $dms_id)
+    {
+	if (!is_numeric($foerdervertrag_id))
+	{
+	    $this->errormsg = 'foerdervertrag_id ist ungueltig';
+	    return false;
+	}
+	
+	if (!is_numeric($dms_id))
+	{
+	    $this->errormsg = 'dms_id ist ungueltig';
+	    return false;
+	}
+
+	// Dokument löschen
+	$dms = new dms();
+	if($dms->deleteDms($dms_id))
+	{
+	    $qry = "Delete FROM addon.tbl_stgv_foerdervertrag_dokument "
+		    . "WHERE foerdervertrag_id=" . $this->db_add_param($foerdervertrag_id, FHC_INTEGER)
+		    . " AND dms_id=".$this->db_add_param($dms_id, FHC_INTEGER);
+
+	    if (!$this->db_query($qry))
+	    {
+		$this->errormsg = 'Fehler beim Loeschen der Daten';
+		return false;
+	    }
+	    return true;
+	}
+	else
+	{
+	    $this->errormsg = 'Fehler beim Loeschen des Dokuments.';
+	    return false;
+	}
+
+	
+    }
 }

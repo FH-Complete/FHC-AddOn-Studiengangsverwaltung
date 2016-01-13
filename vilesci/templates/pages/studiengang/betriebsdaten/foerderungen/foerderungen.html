@@ -1,4 +1,4 @@
-<div class="contentWrapper" ng-controller="StgFoerderungenCtrl as ctrl">
+<div class="contentWrapper" ng-controller="StgFoerderungenCtrl as ctrl" uploader="uploader" filters="queueLimit, extensionFilter">
 	<div class="col-sm-2">
 		<div>
 			<label>&nbsp;</label>
@@ -23,7 +23,7 @@
 		</thead>
 	</table>
 	</br>
-	<form id="foerdervertragDetails" onsubmit="return false;" style="display: none;">
+	<form id="foerdervertragDetails" onsubmit="return true;" style="display: none;">
 		<!-- Zeile 1 -->
 		<div class="row">
 			<div class="col-sm-1">
@@ -80,24 +80,67 @@
 			</div>
 		</div>
 		<!-- Zeile 5 -->
-		<div class="row">
-			<div class="col-sm-6">
-				<div class="form-group">
-					<label for="erlaeuterungen">Erläuterungen</label>
-					<textarea class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="ctrl.foerdervertrag.erlaeuterungen"></textarea>
+		<div class="row col-sm-6">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-group">
+						<label for="erlaeuterungen">Erläuterungen</label>
+						<textarea class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="ctrl.foerdervertrag.erlaeuterungen"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="row col-sm-12">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label for="dokument">Dokument</label>
+							<input type="file" nv-file-select="" uploader="uploader" />
+							<button id="upload" class="btn btn-primary btn-sm" ng-click="ctrl.uploadDokument()">Upload</button>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<div>
+								<button id="update" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.update()">Speichern</button>
+								<button id="save" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.save()" style="display:none;">Speichern</button>
+								<button id="delete" type="submit" class="btn btn-danger btn-sm" ng-click="ctrl.delete()">Löschen</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-		<!-- Zeile 6 -->
-		<div class="row">
-			<div class="col-sm-10">
-				<div class="form-group">
-					<div>
-						<button id="update" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.update()">Speichern</button>
-						<button id="save" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.save()" style="display:none;">Speichern</button>
-						<button id="delete" type="submit" class="btn btn-danger btn-sm" ng-click="ctrl.delete()">Löschen</button>
-					</div>
-				</div>
+		<div class="row col-sm-6">
+			<div class="col-sm-6">
+				<table class="table doctable">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th width="100px" style="text-align: center">Download</th>
+							<th width="100px" style="text-align: center">Löschen</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-if="ctrl.foerdervertrag.dokumente ==''">
+							<td colspan="3">Keine Dokumente vorhanden.</td>
+						</tr>
+						<tr ng-repeat="dok in ctrl.foerdervertrag.dokumente">
+							<td>
+								{{dok.name}}
+							</td>
+							<td style="text-align: center">
+								<a href="./api/helper/download_dokument.php?dms_id={{dok.dms_id}}">
+									<button type="submit" class="btn btn-primary btn-sm">Download</button>
+								</a>
+							</td>
+							<td style="text-align: center">
+								<button class="btn btn-danger btn-sm" ng-click="ctrl.deleteDokument(dok.dms_id)">Löschen</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</form>

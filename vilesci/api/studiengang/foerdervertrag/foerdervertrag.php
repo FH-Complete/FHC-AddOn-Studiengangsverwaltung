@@ -3,6 +3,7 @@
 require_once('../../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
+require_once('../../../../../../include/dms.class.php');
 require_once('../../../../include/foerdervertrag.class.php');
 
 require_once('../../functions.php');
@@ -23,6 +24,22 @@ if($studiengang_kz == "null")
 
 $foerdervertrag = new foerdervertrag();
 $foerdervertrag->getAll($studiengang_kz);
+
+
+
+foreach($foerdervertrag->result as $f)
+{
+    $dokumente = array();
+    $f->getDokumente($f->foerdervertrag_id);
+    foreach($f->dokumente as $dms_id)
+    {
+	$dms = new dms();
+	$dms->load($dms_id);
+	array_push($dokumente, $dms);
+    }
+    $f->dokumente = $dokumente;
+}
+
 $data = $foerdervertrag->result;
 
 returnAJAX(true, $data);

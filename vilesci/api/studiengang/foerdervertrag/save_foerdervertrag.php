@@ -12,7 +12,7 @@ $data = (Object) $data["data"];
 $foerdervertrag = mapDataToFoerdervertrag($data);
 if($foerdervertrag->save())
 {
-    returnAJAX(true, "Fördervertrag erfolgreich gepspeichert.");
+    returnAJAX(true, $foerdervertrag->foerdervertrag_id);
 }
 else
 {

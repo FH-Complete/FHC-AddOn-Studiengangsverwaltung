@@ -766,6 +766,32 @@ if(!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienordnung_dokume
 	else
 		echo ' Tabellen fuer Dokumentenupload fuer Studienordnung hinzugefuegt!<br>';
 }
+
+// Dokumentenupload für Studienordnung
+if(!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_foerdervertrag_dokument LIMIT 1;"))
+{
+	$qry = "
+
+	CREATE TABLE addon.tbl_stgv_foerdervertrag_dokument
+	(
+		foerdervertrag_id integer NOT NULL,
+		dms_id integer NOT NULL
+	);
+
+	ALTER TABLE addon.tbl_stgv_foerdervertrag_dokument ADD CONSTRAINT pk_foerdervertrag_dokument PRIMARY KEY (foerdervertrag_id, dms_id);
+
+	ALTER TABLE addon.tbl_stgv_foerdervertrag_dokument ADD CONSTRAINT fk_foerdervertrag_dokument_foerervertrag FOREIGN KEY (foerdervertrag_id) REFERENCES addon.tbl_stgv_foerdervertrag (foerdervertrag_id) ON UPDATE CASCADE ON DELETE CASCADE;
+	ALTER TABLE addon.tbl_stgv_foerdervertrag_dokument ADD CONSTRAINT fk_foerdervertrag_dokument_dms FOREIGN KEY (dms_id) REFERENCES campus.tbl_dms (dms_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+	GRANT SELECT, INSERT, UPDATE, DELETE ON addon.tbl_stgv_foerdervertrag_dokument TO vilesci;
+	GRANT SELECT, INSERT, UPDATE, DELETE ON addon.tbl_stgv_foerdervertrag_dokument TO web;
+	";
+
+	if(!$db->db_query($qry))
+		echo '<strong>Dokumentenupload fuer Foerdervertrag: '.$db->db_last_error().'</strong><br>';
+	else
+		echo ' Tabellen fuer Dokumentenupload fuer Foerdervertrag hinzugefuegt!<br>';
+}
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
