@@ -99,7 +99,6 @@ angular.module('stgv2')
 			ctrl.save = function () {
 				var saveData = {data: ""}
 				saveData.data = ctrl.data;
-				console.log(saveData);
 				$http({
 					method: 'POST',
 					url: './api/studienordnung/eckdaten/save_eckdaten.php',

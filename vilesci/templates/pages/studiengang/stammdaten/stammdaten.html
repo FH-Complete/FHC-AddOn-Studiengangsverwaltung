@@ -2,17 +2,31 @@
 	<h1>Studiengangsgruppen</h1>	
 	
 	<div ng-if="!ctrl.zuordnung.stgkz">
-		<div ng-repeat="root in ctrl.data track by $index">
-			<h2>{{root.data[0].label}}</h2>
-			<select ng-if="root.data[0].children" ng-model='ctrl.model.data[$index][$index]'>
-				<option ng-repeat="child in root.data[0].children">{{child.code}} - {{child.label}}</option>
-			</select>
-			<select ng-if="ctrl.model.data[$index]" ng-model='ctrl.model.data[$index][$index+1]'>
-				<option ng-repeat="child in root.data[0].children[0].children">{{child.code}} - {{child.label}}</option>
-			</select>
-			<select ng-if="ctrl.model.data[$index][$index+1] &&(root.data[0].children[0].children[0].children).length" ng-model='ctrl.model.data[$index][$index+2]'>
-				<option ng-repeat="child in root.data[0].children[0].children[0].children">{{child.code}} - {{child.label}}</option>
-			</select>
+		<div ng-repeat="root in ctrl.data track by $index" class="row">
+			<div class="col-sm-3">
+				<h2>{{root.data[0].label}}</h2>
+				<div class="form-group">
+					<select ng-if="root.data[0].children" ng-model='ctrl.model.data[$index][$index]' class="form-control input-sm">
+						<option ng-repeat="child in root.data[0].children">{{child.code}} - {{child.label}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<h2>&nbsp;</h2>
+				<div class="form-group">
+					<select ng-if="ctrl.model.data[$index]" ng-model='ctrl.model.data[$index][$index+1]' class="form-control input-sm">
+						<option ng-repeat="child in root.data[0].children[0].children">{{child.code}} - {{child.label}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<h2>&nbsp;</h2>
+				<div class="form-group">
+					<select ng-if="ctrl.model.data[$index][$index+1] &&(root.data[0].children[0].children[0].children).length" ng-model='ctrl.model.data[$index][$index+2]' class="form-control input-sm">
+						<option ng-repeat="child in root.data[0].children[0].children[0].children">{{child.code}} - {{child.label}}</option>
+					</select>
+				</div>
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-1">
@@ -25,12 +39,14 @@
 		</div>
 	</div>
 	<div ng-if="ctrl.zuordnung.stgkz">
-		<div ng-repeat="root in ctrl.zuordnung.data">
-			<ul>
-				<li ng-repeat="group in root">{{group}}</li>
+		<div ng-repeat="root in ctrl.zuordnung.data track by $index">
+			<h2 ng-if="$index==0" style="padding-left: 40px;">Statistik Austria</h2>
+			<h2 ng-if="$index==1" style="padding-left: 40px;">ISCED</h2>
+			<ul class=list-group"">
+				<li class="list-group-item" ng-repeat="group in root">{{group}}</li>
 			</ul>
 		</div>
-		<div class="row">
+		<div class="row" style="padding-left: 40px;">
 			<div class="col-sm-1">
 				<div class="form-group">
 					<div>

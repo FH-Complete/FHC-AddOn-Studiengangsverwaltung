@@ -100,8 +100,8 @@ h2
 	height: 100%;
 	//min-height: 100%;
 	padding: 0px;
-/*	overflow-y: scroll;
-	overflow-x: hidden;*/
+	/*	overflow-y: scroll;
+		overflow-x: hidden;*/
 }
 
 #centerNorth  > .panel > .panel-body
@@ -271,53 +271,71 @@ span.glyphicon {
 	margin: 0px;
 }
 
- .spanTitle
- {
-	 font-weight: bold;
-	 font-size: 1.1em;
- }
- 
- #stplLvFilter
- {
-	 margin-bottom: 10px;
-	 padding-top: 10px;
-	 height: 130px;
- }
- 
- .row
- {
-	 margin-bottom: 5px;
- }
- 
- label {
-	 font-size: 0.85em;
- }
- 
- .checkbox label {
-	 font-weight: bold;
- }
+.spanTitle
+{
+	font-weight: bold;
+	font-size: 1.1em;
+}
 
- .table-header
- {
-	 font-weight: bold;
- }
- 
- .icon-module 
- {
-	 background: url('./modul.png') no-repeat center center;
- }
- 
- .icon-lv
- {
-	 background: url('./lv.png') no-repeat center center;
- }
- 
- .colorpicker
- {
-	 z-index: 10000;
- }
- 
- .glyphicon-trash
- {
-	 cursor: pointer;
- }
+#stplLvFilter
+{
+	margin-bottom: 10px;
+	padding-top: 10px;
+	height: 130px;
+}
+
+.row
+{
+	margin-bottom: 5px;
+}
+
+label {
+	font-size: 0.85em;
+}
+
+.checkbox label {
+	font-weight: bold;
+}
+
+.table-header
+{
+	font-weight: bold;
+}
+
+.icon-module 
+{
+	background: url('./modul.png') no-repeat center center;
+}
+
+.icon-lv
+{
+	background: url('./lv.png') no-repeat center center;
+}
+
+.colorpicker
+{
+	z-index: 10000;
+}
+
+.glyphicon-trash
+{
+	cursor: pointer;
+}
+
+.drop-zone 
+{ 
+	border: dotted 3px lightgray;
+}
+.nv-file-over
+{ 
+	border: dotted 3px red;
+} 
+.another-file-over-class 
+{
+	border: dotted 3px green; 
+}
+
+.doctable
+{
+	min-width: 500px;
+}

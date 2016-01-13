@@ -12,6 +12,8 @@ $DEBUG = true;
 
 $studiengang_kz = filter_input(INPUT_GET, "stgkz");
 $studiensemester_kurzbz = filter_input(INPUT_GET, "studiensemester_kurzbz");
+$sort = filter_input(INPUT_GET, "sort");
+$order = filter_input(INPUT_GET, "order");
 
 if(is_null($studiengang_kz))
 {
@@ -26,7 +28,7 @@ if($studiensemester_kurzbz == "null")
     $studiensemester_kurzbz = null;
 
 $bewerbungstermin = new bewerbungstermin();
-$bewerbungstermin->getBewerbungstermine($studiengang_kz, $studiensemester_kurzbz);
+$bewerbungstermin->getBewerbungstermine($studiengang_kz, $studiensemester_kurzbz, $sort, $order);
 $data = $bewerbungstermin->result;
 
 returnAJAX(true, $data);

@@ -727,6 +727,45 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studiengangsgruppe_s
 	echo ' addon.tbl_stgv_studiengangsgruppe_studiengang: Tabelle hinzugefuegt<br>';
 }
 
+//DMS Kategorie studiengangsverwaltung hinzufügen
+if($result = @$db->db_query("SELECT 1 FROM campus.tbl_dms_kategorie WHERE kategorie_kurzbz='studiengangsverwaltung' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO campus.tbl_dms_kategorie(kategorie_kurzbz, bezeichnung, beschreibung, parent_kategorie_kurzbz) VALUES ('studiengangsverwaltung','Studiengangsverwaltung', 'Dokumente aus Addon Studiengangsverwaltung 2','dokumente');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>campus.tbl_dms_kategorie: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' campus.tbl_dms_kategorie: DMS Dokumentkategorie "studiengangsverwaltung" hinzugefügt.<br>';
+    }
+}
+
+// Dokumentenupload für Studienordnung
+if(!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienordnung_dokument LIMIT 1;"))
+{
+	$qry = "
+
+	CREATE TABLE addon.tbl_stgv_studienordnung_dokument
+	(
+		studienordnung_id integer NOT NULL,
+		dms_id integer NOT NULL
+	);
+
+	ALTER TABLE addon.tbl_stgv_studienordnung_dokument ADD CONSTRAINT pk_studienordnung_dokument PRIMARY KEY (studienordnung_id, dms_id);
+
+	ALTER TABLE addon.tbl_stgv_studienordnung_dokument ADD CONSTRAINT fk_studienordnung_dokument_studienordnung FOREIGN KEY (studienordnung_id) REFERENCES lehre.tbl_studienordnung (studienordnung_id) ON UPDATE CASCADE ON DELETE CASCADE;
+	ALTER TABLE addon.tbl_stgv_studienordnung_dokument ADD CONSTRAINT fk_studienordnung_dokument_dms FOREIGN KEY (dms_id) REFERENCES campus.tbl_dms (dms_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+	GRANT SELECT, INSERT, UPDATE, DELETE ON addon.tbl_stgv_studienordnung_dokument TO vilesci;
+	GRANT SELECT, INSERT, UPDATE, DELETE ON addon.tbl_stgv_studienordnung_dokument TO web;
+	";
+
+	if(!$db->db_query($qry))
+		echo '<strong>Dokumentenupload fuer Studienordnung: '.$db->db_last_error().'</strong><br>';
+	else
+		echo ' Tabellen fuer Dokumentenupload fuer Studienordnung hinzugefuegt!<br>';
+}
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
@@ -742,7 +781,8 @@ $tabellen = array(
     "addon.tbl_stgv_doktorat" => array("doktorat_id", "studiengang_kz", "bezeichnung", "datum_erlass", "gueltigvon", "gueltigbis", "erlaeuterungen", "insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_taetigkeitsfelder" => array("taetigkeitsfeld_id", "studienordnung_id", "ueberblick", "data","insertamum", "insertvon", "updateamum", "updatevon"), 
     "addon.tbl_stgv_studiengangsgruppen" => array("studiengangsgruppe_id", "data","insertamum", "insertvon", "updateamum", "updatevon"), 
-    "addon.tbl_stgv_studiengangsgruppe_studiengang" => array("studiengangsgruppe_studiengang_id", "studiengang_kz", "data","insertamum", "insertvon", "updateamum", "updatevon")
+    "addon.tbl_stgv_studiengangsgruppe_studiengang" => array("studiengangsgruppe_studiengang_id", "studiengang_kz", "data","insertamum", "insertvon", "updateamum", "updatevon"),
+    "tbl_stgv_studienordnung_dokument" => array("studienordnung_id","dms_id")
 );
 
 

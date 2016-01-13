@@ -34,11 +34,11 @@ class StudienordnungAddonStgv extends studienordnung
     public $studiengangsart;
     public $orgform_kurzbz;
     public $standort_id;
+    public $dokumente = array();
 
     /**
      * Konstruktor
      */
-
     public function __construct()
     {
 	parent::__construct();
@@ -390,18 +390,106 @@ class StudienordnungAddonStgv extends studienordnung
 	$this->new = false;
 	return true;
     }
-    
+
     public function changeState($studienordnung_id, $status_kurzbz)
     {
-	$qry = "UPDATE lehre.tbl_studienordnung SET status_kurzbz=".$this->db_add_param($status_kurzbz)
-		." WHERE studienordnung_id=".$this->db_add_param($studienordnung_id).";";
-	
-	if(!$this->db_query($qry))
+	$qry = "UPDATE lehre.tbl_studienordnung SET status_kurzbz=" . $this->db_add_param($status_kurzbz)
+		. " WHERE studienordnung_id=" . $this->db_add_param($studienordnung_id) . ";";
+
+	if (!$this->db_query($qry))
 	{
 	    $this->errormsg = "Status konnte nicht geändert werden.";
 	    return false;
 	}
 	return true;
+    }
+
+    /**
+     * Speichert ein Dokument zur Studienordnung
+     * @param int $dms_id
+     * @return boolean
+     */
+    public function saveDokument($dms_id)
+    {
+	$qry = "INSERT INTO addon.tbl_stgv_studienordnung_dokument(studienordnung_id, dms_id) VALUES(" .
+		$this->db_add_param($this->studienordnung_id, FHC_INTEGER) . ',' .
+		$this->db_add_param($dms_id, FHC_INTEGER) . ');';
+
+	if ($this->db_query($qry))
+	{
+	    return true;
+	} else
+	{
+	    $this->errormsg = 'Fehler beim Speichern der Daten';
+	    return false;
+	}
+    }
+
+    /**
+     * Laedt die Dokumente der Studienordnung
+     * @return boolean
+     */
+    public function getDokumente($studienordnung_id)
+    {
+	$qry = "SELECT dms_id FROM addon.tbl_stgv_studienordnung_dokument WHERE studienordnung_id=" . $this->db_add_param($studienordnung_id, FHC_INTEGER);
+
+	if ($this->db_query($qry))
+	{
+	    while ($row = $this->db_fetch_object())
+	    {
+		$this->dokumente[] = $row->dms_id;
+	    }
+
+	    return true;
+	} else
+	{
+	    $this->errormsg = 'Fehler beim Laden der Daten';
+	    return false;
+	}
+    }
+
+    /**
+     * Löscht ein Dokument
+     * @param  $studienordnung_id
+     * @param  $dms_id
+     * @return true wenn ok, false im Fehlerfall
+     */
+    public function deleteDokument($studienordnung_id, $dms_id)
+    {
+	if (!is_numeric($studienordnung_id))
+	{
+	    $this->errormsg = 'studienordnung_id ist ungueltig';
+	    return false;
+	}
+	
+	if (!is_numeric($dms_id))
+	{
+	    $this->errormsg = 'dms_id ist ungueltig';
+	    return false;
+	}
+
+	// Dokument löschen
+	$dms = new dms();
+	if($dms->deleteDms($dms_id))
+	{
+	    $qry = "Delete FROM addon.tbl_stgv_studienordnung_dokument "
+		    . "WHERE studienordnung_id=" . $this->db_add_param($studienordnung_id, FHC_INTEGER)
+		    . " AND dms_id=".$this->db_add_param($dms_id, FHC_INTEGER);
+
+	    if (!$this->db_query($qry))
+	    {
+		$this->errormsg = 'Fehler beim Loeschen der Daten';
+		return false;
+	    }
+	    return true;
+	}
+	else
+	{
+	    $this->errormsg = 'Fehler beim Loeschen des Dokuments.';
+	    return false;
+	}
+
+	
     }
 
 }

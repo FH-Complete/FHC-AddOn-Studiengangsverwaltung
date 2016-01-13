@@ -65,7 +65,7 @@ $(document).ready(function () {
 	}
 });
 
-var stgv2 = angular.module("stgv2", ['ui.router','ngSanitize'], function($httpProvider){
+var stgv2 = angular.module("stgv2", ['ui.router','ngSanitize','angularFileUpload'], function($httpProvider){
 	 $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 });
 

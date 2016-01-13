@@ -53,7 +53,4 @@ else
     $error = array("message"=> "Status konnte nicht geändert werden.", "detail"=>$studienordnung->errormsg);
     returnAJAX(true, $error);
 }
-
-
-
 ?>
