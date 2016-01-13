@@ -792,6 +792,18 @@ if(!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_foerdervertrag_dokume
 	else
 		echo ' Tabellen fuer Dokumentenupload fuer Foerdervertrag hinzugefuegt!<br>';
 }
+
+//Spalte studiensemester_kurzbz für Reihungstest
+if(!$result = @$db->db_query("SELECT studiensemester_kurzbz FROM public.tbl_reihungstest LIMIT 1"))
+{
+    $qry = "ALTER TABLE public.tbl_reihungstest ADD COLUMN studiensemester_kurzbz varchar(16);
+	   ALTER TABLE public.tbl_reihungstest ADD CONSTRAINT fk_reihungsteset_studiensemester FOREIGN KEY (studiensemester_kurzbz) REFERENCES public.tbl_studiensemester (studiensemester_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;";
+
+    if(!$db->db_query($qry))
+	    echo '<strong>public.tbl_reihungstest: '.$db->db_last_error().'</strong><br>';
+	else
+	    echo 'public.tbl_reihungstest: Spalte studiensemester_kurzbz hinzugefuegt';
+}
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
@@ -808,7 +820,7 @@ $tabellen = array(
     "addon.tbl_stgv_taetigkeitsfelder" => array("taetigkeitsfeld_id", "studienordnung_id", "ueberblick", "data","insertamum", "insertvon", "updateamum", "updatevon"), 
     "addon.tbl_stgv_studiengangsgruppen" => array("studiengangsgruppe_id", "data","insertamum", "insertvon", "updateamum", "updatevon"), 
     "addon.tbl_stgv_studiengangsgruppe_studiengang" => array("studiengangsgruppe_studiengang_id", "studiengang_kz", "data","insertamum", "insertvon", "updateamum", "updatevon"),
-    "tbl_stgv_studienordnung_dokument" => array("studienordnung_id","dms_id")
+    "addon.tbl_stgv_studienordnung_dokument" => array("studienordnung_id","dms_id")
 );
 
 

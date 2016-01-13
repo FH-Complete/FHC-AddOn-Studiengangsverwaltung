@@ -269,7 +269,7 @@ angular.module("stgv2")
 				{label: 'Gültigkeit', link: '.gueltigkeit'},
 				{label: 'Module', link: '.module'},
 				{label: 'LVs', link: '.lehrveranstaltungen'},
-				{label: 'Auslandssemeser', link: '.auslandssemester'},
+				{label: 'Auslandssemester', link: '.auslandssemester'},
 				{label: 'Berufspraktikum', link: '.berufspraktikum'},
 				{label: 'Studienjahr', link: '.studienjahr'},
 				{label: 'Studienprogramm', link: '.studienprogramm'}
