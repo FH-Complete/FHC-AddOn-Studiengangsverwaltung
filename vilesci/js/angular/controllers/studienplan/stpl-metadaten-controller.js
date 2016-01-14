@@ -30,7 +30,6 @@ angular.module('stgv2')
 		}).then(function success(response) {
 			if (response.data.erfolg)
 			{
-				console.log(response);
 				//TODO Preparation for watcher
 				ctrl.origin = response.data.info;
 				ctrl.data = response.data.info;

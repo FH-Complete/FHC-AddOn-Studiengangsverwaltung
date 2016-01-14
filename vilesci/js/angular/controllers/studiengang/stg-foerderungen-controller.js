@@ -142,7 +142,6 @@ angular.module('stgv2')
 					},
 					onClickRow: function(index, row)
 					{
-						console.log(row);
 						ctrl.lastSelectedIndex = index;
 						ctrl.loadFoerdervertragDetails(row);
 						if ($("#save").is(":visible"))

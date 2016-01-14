@@ -21,7 +21,6 @@ angular.module('stgv2')
 					{
 						ctrl.data = response.data.info[0];
 //						ctrl.data.data = JSON.parse(ctrl.data.data);
-						console.log(ctrl.data);
 						$(ctrl.data.data.branchen.elements).each(function(key, value)
 						{
 							ctrl.drawListItem("list_branchen",value);

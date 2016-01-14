@@ -132,7 +132,6 @@ angular.module('stgv2')
 					onDragEnter: function (target, source)
 					{
 						//TODO
-						console.log(ctrl.studienplan.status_kurzbz);
 						if(ctrl.studienplan.status_kurzbz !== "development")
 						{
 							return false;
@@ -247,7 +246,6 @@ angular.module('stgv2')
 			var node = $("#treeGrid").treegrid('getSelected');
 			if(node)
 			{
-				console.log(node);
 				ctrl.studienplan = node;
 				ctrl.initSemesterList();
 				ctrl.initStplTree();
