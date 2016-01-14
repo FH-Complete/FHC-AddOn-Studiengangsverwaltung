@@ -1,14 +1,92 @@
 angular.module('stgv2')
-		.controller('StgFoerderungenCtrl', function ($scope, $http, $state, $stateParams, errorService, FileUploader) {
+		.controller('StgFoerderungenCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, FileUploader, $filter) {
 			$scope.stgkz = $stateParams.stgkz;
 			var ctrl = this;
 			ctrl.data = "";
+			$scope.foerdergeber = "";
+			$scope.foerdergruppe = "";
+			$scope.foerdersatz = "";
 			ctrl.foerdervertrag = new Foerdervertrag();
 			ctrl.selectedStudiensemester = null;
 			ctrl.studiensemesterList = "";
 			ctrl.fileExtensionWhiteList = ["PDF"];
 			ctrl.dokumente = "";
 			ctrl.lastSelectedIndex = null;
+			ctrl.foerdergeberList = ["BMWFW","FMMI","Sonstige"];
+			ctrl.foerdergruppeList = [
+				{
+					foerdergruppe: "Studienplätze in Studiengängen mit einem Technikanteil von mindestens 50 %",
+					foerdersatz: [{
+						"label": "7.940",
+						"value": "7940.00"
+					},
+					{
+						"label": "8.850",
+						"value": "8850.00"
+					}]
+				},
+				{
+					foerdergruppe: "Studienplätze in Studiengängen mit einem Technikanteil von mindestens 25 %",
+					foerdersatz: [{
+						"label": "6.990",
+						"value": "6990.00"
+					},
+					{
+						"label": "7.550",
+						"value": "7550.00"
+					}]
+				},
+				{
+					foerdergruppe: "Studienplätze in Studiengängen mit dem Schwerpunkt Tourismus",
+					foerdersatz: [{
+						"label": "6.580",
+						"value": "6580.00"
+					},
+					{
+						"label": "7.550",
+						"value": "7550.00"
+					}]
+				},
+				{
+					foerdergruppe: "Studienplätze in allen anderen Studiengängen",
+					foerdersatz: [{
+						"label": "6.510",
+						"value": "6510.00"
+					},
+					{
+						"label": "6.970",
+						"value": "6970.00"
+					}]
+				}
+			];
+			ctrl.foerdersatzList = [];
+			
+			$scope.$watch('foerdergeber', function(data, old){
+				if(data !== "Sonstige")
+				{
+					ctrl.foerdervertrag.foerdergeber = data;
+				}
+				else
+				{
+					if(ctrl.foerdergeberList.indexOf(ctrl.foerdervertrag.foerdergeber) != -1)
+					{
+						ctrl.foerdervertrag.foerdergeber = "";
+					}
+				}
+			});
+			
+			$scope.$watch('foerdergruppe', function(data){
+				var foerdergruppe = $filter('filter')(ctrl.foerdergruppeList, {foerdergruppe : data});
+				if(foerdergruppe.length == 1)
+				{
+					ctrl.foerdervertrag.foerdergruppe = data;
+					ctrl.foerdersatzList = foerdergruppe[0].foerdersatz;
+				}
+			});
+			
+			$scope.$watch('foerdersatz', function(data){
+				ctrl.foerdervertrag.foerdersatz = data;
+			});
 
 			//loading Studiensemester list
 			$http({
@@ -64,6 +142,7 @@ angular.module('stgv2')
 					},
 					onClickRow: function(index, row)
 					{
+						console.log(row);
 						ctrl.lastSelectedIndex = index;
 						ctrl.loadFoerdervertragDetails(row);
 						if ($("#save").is(":visible"))
@@ -76,6 +155,25 @@ angular.module('stgv2')
 			
 			ctrl.loadFoerdervertragDetails = function(row)
 			{
+				//needed to show data in dropdowns
+				if(ctrl.foerdergeberList.indexOf(row.foerdergeber) != -1)
+				{
+					$scope.foerdergeber = row.foerdergeber;
+				}
+				else
+				{
+					$scope.foerdergeber = "Sonstige";
+				}
+				$scope.foerdergruppe = row.foerdergruppe;
+				if($scope.foerdergeber == "BMWFW")
+				{
+//					var f = row.foerdersatz.substring(0,row.foerdersatz.indexOf("."));
+					$scope.foerdersatz = row.foerdersatz;
+				}
+				else
+				{
+					$scope.foerdersatz = row.foerdersatz;
+				}
 				ctrl.foerdervertrag = row;
 				$scope.$apply();
 				$("#foerdervertragDetails").show();
@@ -85,26 +183,36 @@ angular.module('stgv2')
 			{
 				var saveData = {data: ""}
 				saveData.data = ctrl.foerdervertrag;
-				$http({
-					method: 'POST',
-					url: './api/studiengang/foerdervertrag/save_foerdervertrag.php',
-					data: $.param(saveData),
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					}
-				}).then(function success(response) {
-					//TODO success 
-					ctrl.foerdervertrag = new Foerdervertrag();
-					ctrl.foerdervertrag.foerdervertrag_id = response.data.info;
-//					$("#dataGridFoerdervertrag").datagrid('reload');
-					$($scope.uploader.queue).each(function(k,v){
-						v.upload();
+				if($scope.form_foerdervertrag.$valid)
+				{
+					$http({
+						method: 'POST',
+						url: './api/studiengang/foerdervertrag/save_foerdervertrag.php',
+						data: $.param(saveData),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response) {
+						//TODO success 
+						ctrl.foerdervertrag = new Foerdervertrag();
+						ctrl.foerdervertrag.studiengang_kz = $scope.stgkz;
+						ctrl.foerdervertrag.foerdervertrag_id = response.data.info;
+	//					$("#dataGridFoerdervertrag").datagrid('reload');
+						$($scope.uploader.queue).each(function(k,v){
+							v.upload();
+						});
+						//TODO select recently added Reihungstest in Datagrid
+						$scope.form_foerdervertrag.$setPristine();
+						$("#dataGridFoerdervertrag").datagrid('reload');
+						successService.setMessage(response.data.info);
+					}, function error(response) {
+						errorService.setError(getErrorMsg(response));
 					});
-					//TODO select recently added Reihungstest in Datagrid
-					
-				}, function error(response) {
-					errorService.setError(getErrorMsg(response));
-				});
+				}
+				else
+				{
+					$scope.form_foerdervertrag.$setPristine();
+				}
 			};
 			
 			ctrl.update = function()
@@ -121,6 +229,8 @@ angular.module('stgv2')
 				}).then(function success(response) {
 					//TODO success 
 					$("#dataGridFoerdervertrag").datagrid('reload');
+					$scope.form_foerdervertrag.$setPristine();
+					successService.setMessage(response.data.info);
 				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
 				});
@@ -151,8 +261,10 @@ angular.module('stgv2')
 						}
 					}).then(function success(response) {
 						//TODO success 
+						ctrl.lastSelectedIndex = null;
 						$("#dataGridFoerdervertrag").datagrid('reload');
 						ctrl.newFoerdervertrag();
+						$scope.form_foerdervertrag.$setPristine();
 					}, function error(response) {
 						errorService.setError(getErrorMsg(response));
 					});
@@ -252,7 +364,31 @@ angular.module('stgv2')
 				$($scope.uploader.queue).each(function(k,v){
 					v.upload();
 				});
-			}
+			};
+			
+			$scope.validate = function(evt)
+			{
+				evt.preventDefault();
+				var value = String.fromCharCode(evt.keyCode);
+				if(!isNaN(value) && evt.keyCode > 48)
+				{
+					ctrl.foerdervertrag.foerdersatz += value;
+					return true;
+				}
+				else if(!isNaN(evt.key) && evt.keyCode != 32)
+				{
+					ctrl.foerdervertrag.foerdersatz += evt.key;
+					return true;
+				}
+				else if(evt.keyCode == 8)
+				{
+					var length = ctrl.foerdervertrag.foerdersatz.length;
+					var newValue = ctrl.foerdervertrag.foerdersatz.substring(0,length-1);
+					ctrl.foerdervertrag.foerdersatz = newValue;
+					return true;
+				}
+				return false;
+			};
 		});
 
 function Foerdervertrag()
@@ -270,4 +406,8 @@ function Foerdervertrag()
 	this.updateamum = "";
 	this.updatevon = "";
 	this.dokumente = "";
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }

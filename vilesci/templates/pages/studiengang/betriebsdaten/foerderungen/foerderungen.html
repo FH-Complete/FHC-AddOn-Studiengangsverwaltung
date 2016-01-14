@@ -23,7 +23,7 @@
 		</thead>
 	</table>
 	</br>
-	<form id="foerdervertragDetails" onsubmit="return true;" style="display: none;">
+	<form id="foerdervertragDetails" name="form_foerdervertrag" onsubmit="return true;" style="display: none;" novalidate>
 		<!-- Zeile 1 -->
 		<div class="row">
 			<div class="col-sm-1">
@@ -40,32 +40,48 @@
 			</div>
 		</div>
 		<!-- Zeile 2 -->
+		
 		<div class="row">
 			<div class="col-sm-4">
-				<div class="form-group">
-					<label for="foerdergeber">Fördergeber</label>
-					<input type="text" class="form-control input-sm" name="foerdergeber" ng-model="ctrl.foerdervertrag.foerdergeber"/>
+				<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && form_foerdervertrag.foerdergeber_select.$error.required)}">
+					<label for="foerdergeber_select">Fördergeber</label>
+					<select class="form-control input-sm" name="foerdergeber_select" ng-model="foerdergeber" required>
+						<option ng-repeat="f in ctrl.foerdergeberList">{{f}}</option>
+					</select>
 				</div>
 			</div>
+			<div class="col-sm-4">
+				<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && form_foerdervertrag.foerdergeber.$error.required)}">
+					<label for="foerdergeber">&nbsp;</label>
+					<input ng-if="foerdergeber =='Sonstige'" type="text" placeholder="Bitte ergänzen ..." class="form-control input-sm" name="foerdergeber" ng-model="ctrl.foerdervertrag.foerdergeber" ng-required="$parent.foerdergeber =='Sonstige'"/>
+				</div>
+			</div>
+		</div>
+		<div class="row" ng-if="ctrl.foerdervertrag.foerdergeber=='BMWFW'">
 			<div class="col-sm-5">
-				<div class="form-group">
-					<label for="foerdergruppe">Fördergruppe</label>
-					<input type="text" class="form-control input-sm" name="foerdergruppe" ng-model="ctrl.foerdervertrag.foerdergruppe"/>
+				<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && (form_foerdervertrag.foerdergruppe_select.$error.required || form_foerdervertrag.foerdergruppe.$error.required))}">
+					<label for="foerdergruppe_select">Fördergruppe</label>
+					<select class="form-control input-sm" name="foerdergruppe_select" ng-model="$parent.foerdergruppe" ng-required="ctrl.foerdervertrag.foerdergeber=='BMWFW'">
+						<option ng-repeat="f in ctrl.foerdergruppeList">{{f.foerdergruppe}}</option>
+					</select>
 				</div>
 			</div>
 		</div>
 		<!-- Zeile 4 -->
 		<div class="row">
 			<div class="col-sm-2">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && (form_foerdervertrag.foerdersatz_select.$error.required || form_foerdervertrag.foerdersatz.$error.required))}">
 					<label for="foerdersatz">Fördersatz</label>
-					<input type="text" class="form-control input-sm" name="foerdersatz" ng-model="ctrl.foerdervertrag.foerdersatz"/>
+					<select ng-if="ctrl.foerdervertrag.foerdergeber=='BMWFW'" class="form-control input-sm" name="foerdersatz_select" ng-model="$parent.foerdersatz" ng-required="ctrl.foerdervertrag.foerdergeber=='BMWFW'">
+						<option ng-repeat="f in ctrl.foerdersatzList" value="{{f.value}}">{{f.label}}</option>
+					</select>
+					<input ng-if="ctrl.foerdervertrag.foerdergeber!='BMWFW'" type="text" class="form-control input-sm" name="foerdersatz" ng-model="$parent.ctrl.foerdervertrag.foerdersatz" ng-required="ctrl.foerdervertrag.foerdergeber!='BMWFW'" ng-keydown="$parent.validate($event)"/>
 				</div>
 			</div>
 			<div class="col-sm-2">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && form_foerdervertrag.gueltigvon.$error.required)}">
 					<label for="gueltigvon">Gültig von</label>
-					<select class="form-control input-sm" name="gueltigvon" ng-model="ctrl.foerdervertrag.gueltigvon">
+					<select class="form-control input-sm" name="gueltigvon" ng-model="ctrl.foerdervertrag.gueltigvon" required>
 						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
 					</select>
 				</div>

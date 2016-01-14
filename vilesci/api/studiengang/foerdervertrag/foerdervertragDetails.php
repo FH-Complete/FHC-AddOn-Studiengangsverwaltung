@@ -21,10 +21,6 @@ elseif($foerdervertrag_id == false)
 $foerdervertrag = new foerdervertrag($foerdervertrag_id);
 $foerdervertrag->getDokumente($foerdervertrag_id);
 
-
-
-
-
 $data = array(
     'foerdervertrag_id' => $foerdervertrag->foerdervertrag_id,
     'studiengang_kz' => $foerdervertrag->studiengang_kz,

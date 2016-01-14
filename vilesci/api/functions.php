@@ -41,3 +41,16 @@ function parseBoolean($var)
     else
 	return false;
 }
+
+function fhc_formatNumber($number)
+{
+    $number = str_replace(".","",$number);
+    $number = str_replace(",",".",$number);
+    return $number;
+}
+
+function fhc_reformatNumber($number, $dec)
+{
+    $number = number_format($number,$dec,",", ".");
+    return $number;
+}

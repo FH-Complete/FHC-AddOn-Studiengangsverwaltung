@@ -12,6 +12,15 @@ $data = (Object) $data["data"];
 $foerdervertrag = mapDataToFoerdervertrag($data);
 $foerdervertrag_id = $foerdervertrag->foerdervertrag_id;
  
+$foerdervertrag->getDokumente($foerdervertrag_id);
+foreach($foerdervertrag->dokumente as $dms_id)
+{
+    if(!$foerdervertrag->deleteDokument($foerdervertrag_id, $dms_id))
+    {
+	$error = array("message"=>"Fehler beim Löschen der Dokumente.", "detail"=>$foerdervertrag->errormsg);
+	returnAJAX(false, $error);
+    }
+}
 
 if($foerdervertrag->delete($foerdervertrag_id))
 {

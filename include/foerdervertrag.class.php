@@ -23,6 +23,7 @@
  */
 //require_once('../../../inlcude/basis_db.class.php');
 require_once (dirname(__FILE__).'/../../../include/basis_db.class.php');
+require_once (dirname(__FILE__).'/../../../include/dms.class.php');
 
 class foerdervertrag extends basis_db
 {

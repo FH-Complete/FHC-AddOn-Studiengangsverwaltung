@@ -117,6 +117,8 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	
 	<!-- Directives -->
 	<script type="text/javascript" src="./js/angular/directives/error-directive.js"></script>
+	<script type="text/javascript" src="./js/angular/directives/numericOnly-directive.js"></script>
+	<script type="text/javascript" src="./js/angular/directives/currency-directive.js"></script>
 	
 	<!-- Colorpicker -->
 	<link rel="stylesheet" href="../../../skin/colorpicker.css" type="text/css"/>

@@ -9,6 +9,7 @@ require_once('../../functions.php');
 
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
 $data = (Object) $data["data"];
+
 $foerdervertrag = mapDataToFoerdervertrag($data);
 if($foerdervertrag->save())
 {

@@ -25,8 +25,6 @@ if($studiengang_kz == "null")
 $foerdervertrag = new foerdervertrag();
 $foerdervertrag->getAll($studiengang_kz);
 
-
-
 foreach($foerdervertrag->result as $f)
 {
     $dokumente = array();
