@@ -6,7 +6,7 @@
 			<div class="col-sm-3">
 				<h2>{{root.data[0].label}}</h2>
 				<div class="form-group">
-					<select ng-if="root.data[0].children" ng-model='ctrl.model.data[$index][$index]' class="form-control input-sm">
+					<select ng-if="root.data[0].children" ng-model='ctrl.model.data[$index][$index]' class="form-control input-sm" ng-change="ctrl.changed()">
 						<option ng-repeat="child in root.data[0].children">{{child.code}} - {{child.label}}</option>
 					</select>
 				</div>
@@ -15,7 +15,7 @@
 				<h2>&nbsp;</h2>
 				<div class="form-group">
 					<select ng-if="ctrl.model.data[$index]" ng-model='ctrl.model.data[$index][$index+1]' class="form-control input-sm">
-						<option ng-repeat="child in root.data[0].children[0].children">{{child.code}} - {{child.label}}</option>
+						<option ng-repeat="child in (children = (root.data[0].children | filter : {code : (ctrl.model.data[$index][$index]).split(' ')[0]}:true))[0].children">{{child.code}} - {{child.label}}</option>
 					</select>
 				</div>
 			</div>
@@ -23,7 +23,7 @@
 				<h2>&nbsp;</h2>
 				<div class="form-group">
 					<select ng-if="ctrl.model.data[$index][$index+1] &&(root.data[0].children[0].children[0].children).length" ng-model='ctrl.model.data[$index][$index+2]' class="form-control input-sm">
-						<option ng-repeat="child in root.data[0].children[0].children[0].children">{{child.code}} - {{child.label}}</option>
+						<option ng-repeat="child in (((children = (root.data[0].children | filter : {code : (ctrl.model.data[$index][$index]).substring(0,1)}:true))[0].children) | filter : {code : (ctrl.model.data[$index][$index+1]).split(' ')[0]} : true)[0].children">{{child.code}} - {{child.label}}</option>
 					</select>
 				</div>
 			</div>
@@ -55,20 +55,5 @@
 				</div>
 			</div>
 		</div>
-	</div>
-
-	<!--
-	<div id="div_{{root.studiengangsgruppe_id}}" ng-repeat="root in ctrl.data | filter: {studiengangsgruppe_parent_id : '!'} track by $index">
-		<h2>{{root.text}}{{root.studiengangsgruppe_parent_id}}</h2>
-		<select ng-if="root.children" ng-model='ctrl.model[$index][$index]'>
-			<option ng-repeat="child in root.children | filter : {studiengangsgruppe_parent_id : root.studiengangsgruppe_id}" value='{{child.studiengangsgruppe_id}}'>{{child.code}} - {{child.text}}</option>
-		</select>
-		<select ng-if="ctrl.model[$index]" ng-model='ctrl.model[$index][$index+1]'>
-			<option ng-repeat="child in ctrl.data | filter : {studiengangsgruppe_parent_id : ctrl.model[$index][$index]} : true" value='{{child.studiengangsgruppe_id}}'>{{child.code}} - {{child.text}}</option>
-		</select>
-		<select ng-if="ctrl.model[$index][$index+1] && (ctrl.data | filter : {studiengangsgruppe_parent_id : ctrl.model[$index][$index+1]} : true).length" ng-model='ctrl.model[$index][$index+2]'>
-			<option ng-repeat="child in ctrl.data | filter : {studiengangsgruppe_parent_id : ctrl.model[$index][$index+1]} : true" value='{{child.studiengangsgruppe_id}}'>{{child.code}} - {{child.text}}</option>
-		</select>
-	</div>-->
-	
+	</div>	
 </div>
