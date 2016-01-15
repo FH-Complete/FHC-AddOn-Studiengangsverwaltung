@@ -58,6 +58,11 @@ angular.module('stgv2').config(function($stateProvider, $urlRouterProvider){
 			url: '/studienordnungNeu',
 			templateUrl: './templates/pages/studienordnung/newStudienordnung.html'
 		})
+		.state('studienordnungDiff', {
+			name: 'studienordnungDiff',
+			url: '/studienordnungDiff/:stoid/:stgkz',
+			templateUrl: './templates/pages/studienordnung/diffStudienordnung.html'
+		})
 		.state('studienordnung.metadaten', {
 			name: 'studienordnung.metadaten',
 			url: '/metadaten',

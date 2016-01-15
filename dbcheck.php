@@ -804,6 +804,42 @@ if(!$result = @$db->db_query("SELECT studiensemester_kurzbz FROM public.tbl_reih
 	else
 	    echo 'public.tbl_reihungstest: Spalte studiensemester_kurzbz hinzugefuegt';
 }
+
+//Tabelle addon.tbl_stgv_taetigkeitsfelder
+if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_qualifikationsziele LIMIT 1;")) {
+    $qry = "CREATE TABLE addon.tbl_stgv_qualifikationsziele
+			(
+				qualifikationsziel_id integer NOT NULL,
+				studienordnung_id integer NOT NULL,
+				data jsonb,
+				insertamum timestamp,
+				insertvon varchar(32),
+				updateamum timestamp,
+				updatevon varchar(32)
+			);
+
+		CREATE SEQUENCE addon.tbl_stgv_qualifikationsziele_qualifikationsziel_id_seq
+		 INCREMENT BY 1
+		 NO MAXVALUE
+		 NO MINVALUE
+		 CACHE 1;
+
+		ALTER TABLE addon.tbl_stgv_qualifikationsziele ADD CONSTRAINT pk_qualifikationsziele PRIMARY KEY (qualifikationsziel_id);
+		ALTER TABLE addon.tbl_stgv_qualifikationsziele ALTER COLUMN qualifikationsziel_id SET DEFAULT nextval('addon.tbl_stgv_qualifikationsziele_qualifikationsziel_id_seq');
+
+		ALTER TABLE addon.tbl_stgv_qualifikationsziele ADD CONSTRAINT fk_qualifikationsziele_studienordnung FOREIGN KEY (studienordnung_id) REFERENCES lehre.tbl_studienordnung (studienordnung_id) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+		GRANT SELECT ON addon.tbl_stgv_qualifikationsziele TO web;
+		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_qualifikationsziele TO vilesci;
+		GRANT SELECT, UPDATE ON addon.tbl_stgv_qualifikationsziele_qualifikationsziel_id_seq TO vilesci;
+	";
+
+    if (!$db->db_query($qry))
+	echo '<strong>addon.tbl_stgv_qualifikationsziele: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' addon.tbl_stgv_qualifikationsziele: Tabelle hinzugefuegt<br>';
+}
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
@@ -820,7 +856,8 @@ $tabellen = array(
     "addon.tbl_stgv_taetigkeitsfelder" => array("taetigkeitsfeld_id", "studienordnung_id", "ueberblick", "data","insertamum", "insertvon", "updateamum", "updatevon"), 
     "addon.tbl_stgv_studiengangsgruppen" => array("studiengangsgruppe_id", "data","insertamum", "insertvon", "updateamum", "updatevon"), 
     "addon.tbl_stgv_studiengangsgruppe_studiengang" => array("studiengangsgruppe_studiengang_id", "studiengang_kz", "data","insertamum", "insertvon", "updateamum", "updatevon"),
-    "addon.tbl_stgv_studienordnung_dokument" => array("studienordnung_id","dms_id")
+    "addon.tbl_stgv_studienordnung_dokument" => array("studienordnung_id","dms_id"),
+    "addon.tbl_stgv_qualifikationsziele" => array("qualifikationsziel_id", "studienordnung_id", "data","insertamum", "insertvon", "updateamum", "updatevon")
 );
 
 

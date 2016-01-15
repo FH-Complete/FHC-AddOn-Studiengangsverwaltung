@@ -65,7 +65,7 @@ class StudienordnungAddonStgv extends studienordnung
 
     public function loadStudienordnungWithStatus($studiengang_kz, $status_kurzbz)
     {
-	$qry = "SELECT * FROM lehre.tbl_studienordnung WHERE "
+	$qry = "SELECT sto.*, s.bezeichnung as status_bezeichnung FROM lehre.tbl_studienordnung sto JOIN addon.tbl_stgv_studienordnungstatus s USING(status_kurzbz) WHERE "
 		. "status_kurzbz=" . $this->db_add_param($status_kurzbz, FHC_STRING) . ""
 		. " AND studiengang_kz=" . $this->db_add_param($studiengang_kz, FHC_INTEGER) . ";";
 
@@ -92,6 +92,7 @@ class StudienordnungAddonStgv extends studienordnung
 	    $obj->akadgrad_id = $row->akadgrad_id;
 	    $obj->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
 	    $obj->status_kurzbz = $row->status_kurzbz;
+	    $obj->status_bezeichnung = $row->status_bezeichnung;
 	    $obj->begruendung = $row->begruendung;
 	    $obj->studiengangsart = $row->studiengangsart;
 	    $obj->orgform_kurzbz = $row->orgform_kurzbz;

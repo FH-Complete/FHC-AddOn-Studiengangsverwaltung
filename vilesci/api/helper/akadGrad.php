@@ -10,6 +10,6 @@ require_once('../functions.php');
 $akadgrad = new akadgrad();
 $akadgrad->getAll();
 
-$data =  $akadgrad->result;
+$data =  array_unique($akadgrad->result);
 returnAJAX(true, $data);
 ?>

@@ -48,7 +48,7 @@ angular.module('stgv2')
 
 			ctrl.save = function () {
 				var saveData = {data: ""}
-				saveData.data = ctrl.data;
+				saveData.data = angular.copy(ctrl.data);
 				saveData.data.data = JSON.stringify(saveData.data.data);
 				$http({
 					method: 'POST',
@@ -62,6 +62,7 @@ angular.module('stgv2')
 					{
 						successService.setMessage("Daten erfolgreich gespeichert.");
 						ctrl.data.taetigkeitsfeld_id = response.data.info[0];
+						console.log(ctrl.data.data);
 					}
 					else
 					{

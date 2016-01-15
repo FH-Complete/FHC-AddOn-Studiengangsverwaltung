@@ -99,7 +99,9 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script type="text/javascript" src="./js/angular/controllers/studienordnung/sto-dokumente-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studienordnung/sto-eckdaten-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studienordnung/sto-taetigkeitsfelder-controller.js"></script>
-
+	<script src="js/angular/controllers/studienordnung/sto-qualifikationsziele-controller.js" type="text/javascript"></script>
+	<script src="js/angular/controllers/studienordnung/sto-diff-controller.js" type="text/javascript"></script>
+	
 	<!-- Angular Studienplan Controllers -->
 	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-neu-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-metadaten-controller.js"></script>
@@ -136,7 +138,8 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm1'">Neu</a>
 		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm2'">Bearbeiten</a>
 		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm3'">Status</a>
-		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm4',iconCls:'icon-help'">About</a>
+		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm4'">Diff</a>
+		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm5',iconCls:'icon-help'">About</a>
 		</div>
 		<div id="mm1" style="width:150px;">
 		    <div ng-click='tabCtrl.createStudienordnung()'>Studienordnung</div>
@@ -153,14 +156,13 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 			</div>
 		    </div>
 		</div>
-		{{tabCtrl.statusList}}
-		<div id="mm4" class="menu-content" style="background:#f0f0f0;padding:10px;text-align:left">
+		<div id="mm4" style="width:100px;">
+		    <div ng-click='tabCtrl.diff()'>Diff</div>
+		</div>
+		<div id="mm5" class="menu-content" style="background:#f0f0f0;padding:10px;text-align:left">
 		    <img src="http://fhcomplete.org/img/FHC-LogoOhneText.svg" style="width:38px;height:38px">
 		    <p style="font-size:14px;color:#444;"><a href="http://www.fhcomplete.org" target="_blank">fhcomplete.org</a></p>
 		</div>
-		<!--<ul class="nav nav-pills" ng-controller="TabsCtrl">
-		    <li ng-repeat="tab in tabs" tab="tab" ng-class="getTabClass(tab)"><button type="button" class="btn btn-default" ng-click="setSelectedTab(tab)">{{tab.label}}</button></li>
-		</ul>-->
 	    </div>
 	    <div id="west"data-options="region:'west', split: true, maxWidth: 400" ng-controller="TreeCtrl">
 		<ul id="west_tree"class="easyui-tree"></ul>

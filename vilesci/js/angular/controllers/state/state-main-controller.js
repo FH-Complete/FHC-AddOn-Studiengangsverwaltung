@@ -10,6 +10,7 @@ angular.module('stgv2')
 				treeField: 'text',
 				loadFilter: function (data)
 				{
+					console.log(data);
 					if (data.erfolg)
 					{
 						$(data.info).each(function(i,v){

@@ -1,0 +1,63 @@
+<div class="contentWrapper" ng-controller='StoDiffController as stoCtrl'>
+	<form id="stoDiff" onsubmit="return false;">
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="studiengang">Studiengang</label>
+					<select class="form-control input-sm" name="studiengang" ng-model="stoCtrl.old.stgkz" ng-change="stoCtrl.loadStudienordnungList(stoCtrl.old)">
+						<option ng-repeat="stg in stoCtrl.studiengangList" value="{{stg.studiengang_kz}}">{{stg.kurzbzlang}} - {{stg.bezeichnung}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="studiengang">Studiengang</label>
+					<select class="form-control input-sm" name="studiengang" ng-model="stoCtrl.new.stgkz" ng-change="stoCtrl.loadStudienordnungList(stoCtrl.new)">
+						<option ng-repeat="stg in stoCtrl.studiengangList" value="{{stg.studiengang_kz}}">{{stg.kurzbzlang}} - {{stg.bezeichnung}}</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group" ng-show="stoCtrl.old.studienordnungList.length > 0">
+					<label for="studienordnung">Studienordnung</label>
+					<select class="form-control input-sm" name="studiengang" ng-model="stoCtrl.old.stoid">
+						<option ng-repeat="sto in stoCtrl.old.studienordnungList" value="{{sto.studienordnung_id}}">{{sto.bezeichnung}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" ng-show="stoCtrl.new.studienordnungList.length > 0">
+					<label for="studienordnung">Studienordnung</label>
+					<select class="form-control input-sm" name="studiengang" ng-model="stoCtrl.new.stoid">
+						<option ng-repeat="sto in stoCtrl.new.studienordnungList" value="{{sto.studienordnung_id}}">{{sto.bezeichnung}}</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-1">
+				<div class="form-group">
+					<div>
+						<button type="submit" class="btn btn-success btn-sm" ng-click="stoCtrl.loadDiff()">Vergleich laden</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<table class="table" width="800" ng-show="stoCtrl.diff != null">
+		<thead>
+			<th width="250">Eigenschaft</th>
+			<th width="350">{{stoCtrl.diff.bezeichnung.old}}</th>
+			<th width="350">{{stoCtrl.diff.bezeichnung.new}}</th>
+		</thead>
+		<tbody>
+			<tr ng-repeat="(prop,diff) in stoCtrl.diff">
+				<td>{{prop}}</td>
+				<td ng-bind-html="diff.old"></td>
+				<td ng-bind-html="diff.diff"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

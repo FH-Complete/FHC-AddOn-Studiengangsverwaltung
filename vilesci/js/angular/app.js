@@ -72,6 +72,7 @@ var stgv2 = angular.module("stgv2", ['ui.router','ngSanitize','angularFileUpload
 angular.module("stgv2")
 		.controller("AppCtrl", function ($scope, $state, $compile, $stateParams, errorService, $http)
 		{
+			console.log($state);
 			var ctrl = this;
 			ctrl.user = {
 				name: "",
@@ -123,6 +124,8 @@ angular.module("stgv2")
 						});
 					});
 					
+					$compile($('#mm4').contents())($scope);
+					
 				}
 				else
 				{
@@ -142,7 +145,7 @@ angular.module("stgv2")
 				var sto = $("#treeGrid").treegrid('getSelected');
 				if((sto != null) && (sto.attributes[0].value == "studienordnung"))
 				{
-					ctrl.stoid = sto.id;
+					ctrl.stoid = sto.stoid;
 					$state.go('studienplanNeu', {"stoid": ctrl.stoid});
 				}
 				else
@@ -227,19 +230,33 @@ angular.module("stgv2")
 						alert("Bitte eine Studienordnung oder einen Studienplan auswählen.");
 						break;
 				}
-				
-				
+			};
+			
+			ctrl.diff = function()
+			{
+				var sto = $("#treeGrid").treegrid('getSelected');
+				if((sto != null) && (sto.attributes[0].value == "studienordnung"))
+				{
+					console.log(sto);
+					ctrl.stoid = sto.stoid;
+					$state.go('studienordnungDiff', {"stoid": ctrl.stoid, "stgkz": sto.stgkz});
+				}
+				else
+				{
+					$state.go('studienordnungDiff');
+				}
 			};
 		})
-		.controller("studienordnungTabCtrl", function ($scope) {
+		.controller("studienordnungTabCtrl", function ($scope, $stateParams, $state) {
 			//TODO tabs from config
+	console.log($state);
 			$scope.tabs = [
 				{label: 'Metadaten', link: '.metadaten'},
 				{label: 'Dokumente', link: '.dokumente'},
 				{label: 'Eckdaten', link: '.eckdaten'},
 				{label: 'Tätigkeitsfelder', link: '.taetigkeitsfelder'},
 				{label: 'Qualifikationsziele', link: '.qualifikationsziele'},
-				{label: 'ZGV', link: '.zgv'},
+				{label: 'Zugangsvoraussetzungen', link: '.zgv'},
 				{label: 'Aufnahmeverfahren', link: '.aufnahmeverfahren'}
 			];
 

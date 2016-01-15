@@ -1,3 +1,48 @@
-<div class="contentWrapper">
-	<p>Qualifikationsziele</p>
+<div class="contentWrapper" ng-controller="StoQualifikationszieleCtrl as ctrl">
+	<form id="stoQualifikationsziele" onsubmit="return false;">
+		<div ng-repeat="ele in ctrl.data.data">
+			<div class="row">
+				<div class="col-sm-8">
+					<h4>{{ele.header}}</h4>
+				</div>
+			</div>
+			<div class="row" ng-if="ele.header=='Qualifikationsziele'">
+				<div class="col-sm-8">
+					<div class="form-group">
+						<textarea  class="form-control" rows="5"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-8">
+					<div class="form-group">
+						<textarea class="form-control" rows="5" ng-model="ele.fixed[0]"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="row" ng-repeat="item in ele.fixed.slice(1, ele.fixed.length) track by $index">
+				<div class="col-sm-8">
+					<textarea class="form-control" rows="5" ng-model="ele.fixed[$index+1]"></textarea>
+					<div class="input-group">
+						<input type="text" class="form-control" ng-model="ctrl.temp[$index]"/>
+						<span class="input-group-btn">
+							<button class="btn btn-primary" type="button" ng-click="ctrl.addListItem('list_'+($index+1), $index+1)">hinzufügen</button>
+						</span>
+					</div>
+					<ul id="zielList_{{$index+1}}" class="list-group">
+					
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-10">
+				<div class="form-group">
+					<div>
+						<button id="save" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.save()">Speichern</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 </div>

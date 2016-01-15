@@ -47,13 +47,14 @@ foreach($studienordnung->result as $key=>$sto)
     $temp = new stdClass();
     $temp->id = $id;
     $id++;
+    $temp->stoid = $sto->studienordnung_id;
     $temp->version = $sto->version;
     $temp->text = $sto->bezeichnung;
     if($key == 0 && $DEBUG)
 	$temp->state = "open";
     else
 	$temp->state = "closed";
-    $temp->status = $sto->status_kurzbz;
+    $temp->status = $sto->status_bezeichnung;
     $temp->stgkz = $sto->studiengang_kz;
     $temp->ects = $sto->ects;
     $temp->gueltigvon = $sto->gueltigvon;
@@ -80,6 +81,7 @@ foreach($studienordnung->result as $key=>$sto)
 	$temp_stpl = new stdClass();
 	$temp_stpl->id = $id;
 	$id++;
+	$temp_stpl->stplid = $stpl->studienplan_id;
 	$temp_stpl->text = $stpl->bezeichnung;
 	$temp_stpl->version = $stpl->version;
 	$temp_stpl->orgform_kurzbz = $stpl->orgform_kurzbz;
