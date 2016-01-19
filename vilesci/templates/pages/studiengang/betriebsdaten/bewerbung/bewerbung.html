@@ -66,7 +66,6 @@
 		<!-- Zeile 2 -->
 		<div class="row">
 			<div class="col-sm-2">
-				{{form.beginn.$error}}
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.beginn.$error.required || form.beginn.$error.date))}">
 					<label for="beginn">Beginn</label>
 					<input type="date" class="form-control input-sm datepicker" name="beginn" ng-model="ctrl.bewerbungstermin.beginn" required/>
@@ -74,7 +73,6 @@
 				</div>
 			</div>
 			<div class="col-sm-2">
-				{{form.ende.$error}}
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.ende.$error.required || form.ende.$error.date))}">
 					<label for="ende">Ende</label>
 					<input type="date" class="form-control input-sm datepicker" name="ende" ng-model="ctrl.bewerbungstermin.ende" required/>

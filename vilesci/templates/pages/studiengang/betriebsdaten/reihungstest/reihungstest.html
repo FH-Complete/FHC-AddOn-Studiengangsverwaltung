@@ -1,4 +1,10 @@
 <div class="contentWrapper" ng-controller="StgReihungstestCtrl as ctrl">
+	<script type='text/javascript'>
+		function timeFormatter(val)
+		{
+			return val.substring(0,5);
+		}
+	</script>
 	<div class="col-sm-2">
 		<label>&nbsp;</label>
 		<div>
@@ -23,7 +29,7 @@
 				<th data-options="field: 'ort_kurzbz',align:'right'"><span class="table-header">Ort</span></th>
 				<th data-options="field: 'anmerkung',align:'left'"><span class="table-header">Anmerkung</span></th>
 				<th data-options="field: 'datum',align:'left'"><span class="table-header">Datum</span></th>
-				<th data-options="field: 'uhrzeit',align:'left'"><span class="table-header">Uhrzeit</span></th>
+				<th data-options="field: 'uhrzeit',align:'left'" formatter='timeFormatter'><span class="table-header">Uhrzeit</span></th>
 				<th data-options="field: 'max_teilnehmer',align:'left'"><span class="table-header">max Teilnehmer</span></th>
 				<th data-options="field: 'freigeschaltet',align:'left'"><span class="table-header">freigeschaltet</span></th>
 				<th data-options="field: 'oeffentlich',align:'left'"><span class="table-header">öffentlich</span></th>
@@ -32,7 +38,7 @@
 		</thead>
 	</table>
 	</br>
-	<form id="reihungstestDetails" onsubmit="return false;" style="display: none;">
+	<form id="reihungstestDetails" name="form" onsubmit="return false;" style="display: none;" novalidate>
 		<!-- Zeile 1 -->
 		<div class="row">
 			<div class="col-sm-1">
@@ -50,18 +56,18 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-2">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.studiensemester.$error.required)}">
 					<label for="studiensemester">Studiensemester</label>
-					<select class="form-control input-sm" name="studiensemester" ng-model="ctrl.reihungstest.studiensemester_kurzbz">
+					<select class="form-control input-sm" name="studiensemester" ng-model="ctrl.reihungstest.studiensemester_kurzbz" required>
 						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
 					</select>
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<!--TODO ORT aus DB laden-->
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.ort.$error.required)}">
 					<label for="ort">Ort</label>
-					<select class="form-control input-sm" name="ort" ng-model="ctrl.reihungstest.ort_kurzbz">
+					<select class="form-control input-sm" name="ort" ng-model="ctrl.reihungstest.ort_kurzbz" required>
 						<option ng-repeat="ort in ctrl.ortList">{{ort.ort_kurzbz}}</option>
 					</select>
 				</div>
@@ -70,15 +76,17 @@
 		<!-- Zeile 2 -->
 		<div class="row">
 			<div class="col-sm-2">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.datum.$error.required || form.datum.$error.date))}">
 					<label for="datum">Datum</label>
-					<input type="text" class="form-control input-sm" name="datum" ng-model="ctrl.reihungstest.datum"/>
+					<input type="date" class="form-control input-sm" name="datum" ng-model="ctrl.reihungstest.datum" required/>
+					<span ng-show="form.datum.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
 			<div class="col-sm-1">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.uhrzeit.$error.required || form.uhrzeit.$error.time))}">
 					<label for="uhrzeit">Uhrzeit</label>
-					<input type="text" class="form-control input-sm" name="uhrzeit" ng-model="ctrl.reihungstest.uhrzeit"/>
+					<input type="time" class="form-control input-sm" name="uhrzeit" placeholder="HH:mm" ng-model="ctrl.reihungstest.uhrzeit" required/>
+					<span ng-show="form.uhrzeit.$error.time">Keine gültige Uhrzeit!</span>
 				</div>
 			</div>
 			<div class="col-sm-2">

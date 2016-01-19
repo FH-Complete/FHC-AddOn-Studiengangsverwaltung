@@ -339,3 +339,11 @@ label {
 {
 	min-width: 500px;
 }
+
+input::-webkit-calendar-picker-indicator{
+    display: none;
+}
+
+input[type="date"]::-webkit-input-placeholder{ 
+    visibility: hidden !important;
+}

@@ -14,6 +14,14 @@ function getErrorMsg(error)
 }
 
 function formatDateToString(val,row){
+	if(val instanceof Date)
+	{
+		var date = val;
+		var month = ("0"+(date.getMonth()+1)).slice(-2);
+		var day = ("0"+date.getDate()).slice(-2);
+		var dateString = date.getFullYear()+"-"+month+"-"+day;
+		return dateString;
+	}
 	if(val != null)
 	{
 		var date = new Date(Date.parse(val.split(" ")[0]));
@@ -27,4 +35,24 @@ function formatDateToString(val,row){
 function formatStringToDate(val){
 	var date = new Date(Date.parse(val));
 	return date;
+}
+
+function formatStringToTime(val, separator)
+{
+	var time = val.split(separator);
+	if(time.length >= 2)
+		return new Date(0,0,0,time[0],time[1]);
+	return new Date();
+}
+
+function formatTimeToString(val)
+{
+	if(val instanceof Date)
+	{
+		var date = val;
+		var hour = ("0"+date.getHours()).slice(-2);
+		var min = ("0"+date.getMinutes()).slice(-2);
+		var timeString = hour+":"+min;
+		return timeString;
+	}
 }

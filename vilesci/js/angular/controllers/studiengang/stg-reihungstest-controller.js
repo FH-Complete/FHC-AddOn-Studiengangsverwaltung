@@ -1,6 +1,8 @@
 angular.module('stgv2')
-		.controller('StgReihungstestCtrl', function ($scope, $http, $state, $stateParams,errorService) {
+		.controller('StgReihungstestCtrl', function ($scope, $http, $state, $stateParams,errorService,successService) {
 			$scope.stgkz = $stateParams.stgkz;
+			$scope.minTime = "08:00:00";
+			$scope.maxTime = "21:00:00";
 			var ctrl = this;
 			ctrl.data = "";
 			ctrl.reihungstest = new Reihungstest();
@@ -73,9 +75,9 @@ angular.module('stgv2')
 							return result;
 						}					
 					},
-					onClickRow: function (row)
+					onClickRow: function (index, row)
 					{
-						var row = $("#dataGridReihungstest").datagrid("getSelected");
+//						var row = $("#dataGridReihungstest").datagrid("getSelected");
 						ctrl.loadReihungstestDetails(row);
 						if($("#save").is(":visible"))
 							ctrl.changeButtons();
@@ -92,6 +94,9 @@ angular.module('stgv2')
 			
 			ctrl.loadReihungstestDetails = function(row)
 			{
+				console.log(row);
+				row.datum = formatStringToDate(row.datum);
+				row.uhrzeit = formatStringToTime(row.uhrzeit, ":");
 				ctrl.reihungstest = row;
 				$scope.$apply();
 				$("#reihungstestDetails").show();
@@ -118,29 +123,46 @@ angular.module('stgv2')
 			
 			ctrl.save = function()
 			{
-				var saveData = {data: ""}
-				saveData.data = ctrl.reihungstest;
-				$http({
-					method: 'POST',
-					url: './api/studiengang/reihungstest/save_reihungstest.php',
-					data: $.param(saveData),
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					}
-				}).then(function success(response) {
-					//TODO success 
-					$("#dataGridReihungstest").datagrid('reload');
-					//TODO select recently added Reihungstest in Datagrid
-					ctrl.reihungstest = new Reihungstest();
-				}, function error(response) {
-					errorService.setError(getErrorMsg(response));
-				});
+				console.log(ctrl.reihungstest);
+				
+				if($scope.form.$valid)
+				{
+					var saveData = {data: ""}
+					saveData.data = angular.copy(ctrl.reihungstest);
+					saveData.data.datum = formatDateToString(saveData.data.datum);
+					saveData.data.uhrzeit = formatTimeToString(saveData.data.uhrzeit);
+					$http({
+						method: 'POST',
+						url: './api/studiengang/reihungstest/save_reihungstest.php',
+						data: $.param(saveData),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response) {
+						console.log(response);
+						if(response.data.erfolg)
+						{
+							$("#dataGridReihungstest").datagrid('reload');
+							//TODO select recently added Reihungstest in Datagrid
+							ctrl.reihungstest = new Reihungstest();
+							successService.setMessage(response.data.info);
+							$scope.form.$setPristine();
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+					}, function error(response) {
+						errorService.setError(getErrorMsg(response));
+					});
+				}
 			};
 			
 			ctrl.newReihungstest = function()
 			{
 				$("#dataGridReihungstest").datagrid("unselectAll");
 				ctrl.reihungstest = new Reihungstest();
+				$scope.form.$setPristine();
 				ctrl.reihungstest.studiengang_kz = $scope.stgkz;
 				ctrl.reihungstest.studiensemester_kurzbz = ctrl.selectedStudiensemester;
 				if(!$("#save").is(":visible"))
@@ -178,9 +200,17 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						//TODO success 
-						$("#dataGridReihungstest").datagrid('reload');
-						ctrl.newReihungstest();
+						console.log(response);
+						if(response.data.erfolg)
+						{
+							$("#dataGridReihungstest").datagrid('reload');
+							ctrl.newReihungstest();
+							successService.setMessage(response.data.info);
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
 					}, function error(response) {
 						errorService.setError(getErrorMsg(response));
 					});
@@ -194,8 +224,8 @@ function Reihungstest()
 	this.studiengang_kz = "";
 	this.ort_kurzbz = "";
 	this.anmerkung = "";
-	this.datum = "";
-	this.uhrzeit = "";
+	this.datum = new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate());
+	this.uhrzeit;
 	this.ext_id = "";
 	this.insertamum = "";
 	this.insertvon = "";

@@ -11,7 +11,7 @@ require_once('../../functions.php');
 $DEBUG = true;
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
 $data = (Object) $data["data"];
-var_dump($data);
+
 $reihungstest = mapDataToReihungstest($data);
 if($reihungstest->save())
 {
