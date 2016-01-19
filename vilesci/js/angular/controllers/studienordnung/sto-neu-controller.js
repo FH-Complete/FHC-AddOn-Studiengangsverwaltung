@@ -4,6 +4,7 @@ angular.module('stgv2')
 			var ctrl = this;
 			ctrl.studiensemesterList = "";
 			ctrl.studiengangList = "";
+			ctrl.studienordnungList = "";
 			//TODO list from db or config
 			ctrl.aenderungsvarianteList = "";
 			ctrl.initialStatus = "";
@@ -14,7 +15,8 @@ angular.module('stgv2')
 				gueltigvon: "",
 				gueltigbis: "",
 				begruendung: "",
-				aenderungsvariante_kurzbz: ""
+				aenderungsvariante_kurzbz: "",
+				vorlage_stoid: ''
 			};
 			
 			//loading Studiensemester list
@@ -42,6 +44,13 @@ angular.module('stgv2')
 				if (response.data.erfolg)
 				{
 					ctrl.studiengangList = response.data.info;
+					var node = $('#west_tree').tree("getSelected");
+					if(node && node.attributes)
+					{
+						ctrl.sto.stg_kz = node.attributes[0].urlParams[0].stgkz;
+						ctrl.loadStudienordnungList();
+						ctrl.updateVersion();
+					}
 				}
 				else
 				{
@@ -51,6 +60,26 @@ angular.module('stgv2')
 				errorService.setError(getErrorMsg(response));
 			});
 			
+			ctrl.loadStudienordnungList = function ()
+			{
+				//loading Studienordnung list
+				$http({
+					method: "GET",
+					url: "./api/helper/studienordnung.php?stgkz=" + ctrl.sto.stg_kz + "&state=all"
+				}).then(function success(response) {
+					if (response.data.erfolg)
+					{
+						ctrl.studienordnungList = response.data.info;
+					}
+					else
+					{
+						errorService.setError(getErrorMsg(response));
+					}
+				}, function error(response) {
+					errorService.setError(getErrorMsg(response));
+				});
+			}
+			
 			//loading Aenderungsvariante list
 			$http({
 				method: "GET",
@@ -58,6 +87,7 @@ angular.module('stgv2')
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
+					console.log(ctrl.aenderungsvarianteList);
 					ctrl.aenderungsvarianteList = response.data.info;
 				}
 				else
@@ -87,29 +117,37 @@ angular.module('stgv2')
 			});
 			
 			ctrl.save = function () {
-				var saveData = {data: ""}
-				saveData.data = ctrl.sto;				
-				$http({
-					method: 'POST',
-					url: './api/studienordnung/create_studienordnung.php',
-					data: $.param(saveData),
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					}
-				}).then(function success(response) {
-					if(response.data.erfolg)
-					{
-						$("#treeGrid").treegrid('reload');
-						successService.setMessage(response.data.message);
-					}
-					else
-					{
+				if($scope.form.$valid)
+				{
+					var saveData = {data: ""}
+					saveData.data = ctrl.sto;				
+					$http({
+						method: 'POST',
+						url: './api/studienordnung/create_studienordnung.php',
+						data: $.param(saveData),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response) {
+						if(response.data.erfolg)
+						{
+							$("#treeGrid").treegrid('reload');
+							successService.setMessage(response.data.message);
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+					}, function error(response) {
 						errorService.setError(getErrorMsg(response));
-					}
-				}, function error(response) {
-					errorService.setError(getErrorMsg(response));
-				});
+					});
+				}
+				else
+				{
+					$scope.form.$setPristine();
+				}
 			};
+			
 			
 			ctrl.updateVersion = function()
 			{

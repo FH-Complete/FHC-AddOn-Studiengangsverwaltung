@@ -170,7 +170,7 @@ class qualifikationsziel extends basis_db
 				'data='.$this->db_add_param($this->data).', '.
 				'updateamum= now(), '.
 				'updatevon='.$this->db_add_param($this->updatevon).' '.
-				'WHERE qualifikationsziel_id='.$this->db_add_param($this->$qualifikationsziel_id, FHC_INTEGER, false).';';
+				'WHERE qualifikationsziel_id='.$this->db_add_param($this->qualifikationsziel_id, FHC_INTEGER, false).';';
 		}
 		
 		if($this->db_query($qry))

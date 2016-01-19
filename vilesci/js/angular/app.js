@@ -187,12 +187,13 @@ angular.module("stgv2")
 			ctrl.delete = function()
 			{
 				var node = $('#treeGrid').treegrid('getSelected');
+				console.log(node);
 				switch(node.attributes[0].value)
 				{
 					case "studienplan":
 						$http({
 							method: "GET",
-							url: "./api/studienplan/delete_studienplan.php?studienplan_id="+node.id
+							url: "./api/studienplan/delete_studienplan.php?studienplan_id="+node.stplid
 						}).then(function success(response) {
 							if (response.data.erfolg)
 							{
@@ -211,7 +212,7 @@ angular.module("stgv2")
 					case "studienordnung":
 						$http({
 							method: "GET",
-							url: "./api/studienordnung/delete_studienordnung.php?studienordnung_id="+node.id
+							url: "./api/studienordnung/delete_studienordnung.php?studienordnung_id="+node.stoid
 						}).then(function success(response) {
 							if (response.data.erfolg)
 							{

@@ -21,15 +21,15 @@
 				<th data-options="field: 'bewerbungstermin_id',align: 'right'"><span class="table-header">ID</span></th>
 				<th data-options="field: 'studiengang_kz',align:'right', sortable: 'true'"><span class="table-header">STG KZ</span></th>
 				<th data-options="field: 'studiensemester_kurzbz',align:'right', sortable: 'true'"><span class="table-header">Studiensemester</span></th>
-				<th data-options="field: 'beginn',align:'left'"><span class="table-header">Beginn</span></th>
-				<th data-options="field: 'ende',align:'left'"><span class="table-header">Ende</span></th>
+				<th data-options="field: 'beginn',align:'left'" formatter='formatDateToString'><span class="table-header">Beginn</span></th>
+				<th data-options="field: 'ende',align:'left'" formatter='formatDateToString'><span class="table-header">Ende</span></th>
 				<th data-options="field: 'nachfrist',align:'left'"><span class="table-header">Nachfrist</span></th>
-				<th data-options="field: 'nachfrist_ende',align:'left'"><span class="table-header">Ende Nachfrist</span></th>
+				<th data-options="field: 'nachfrist_ende',align:'left'" formatter='formatDateToString'><span class="table-header">Ende Nachfrist</span></th>
 			</tr>
 		</thead>
 	</table>
 	</br>
-	<form id="bewerbungsterminDetails" onsubmit="return false;" style="display: none;">
+	<form id="bewerbungsterminDetails" name="form" onsubmit="return false;" style="display: none;" novalidate>
 		<!-- Zeile 1 -->
 		<div class="row">
 			<div class="col-sm-1">
@@ -47,17 +47,17 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-2">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.studiensemester.$error.required)}">
 					<label for="studiensemester">Studiensemester</label>
-					<select class="form-control input-sm" name="studiensemester" ng-model="ctrl.bewerbungstermin.studiensemester_kurzbz">
+					<select class="form-control input-sm" name="studiensemester" ng-model="ctrl.bewerbungstermin.studiensemester_kurzbz" required>
 						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
 					</select>
 				</div>
 			</div>
 			<div class="col-sm-4">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.studiengang.$error.required)}">
 					<label for="studiengang">Studiengang</label>
-					<select class="form-control input-sm" name="studiengang" ng-model="ctrl.bewerbungstermin.studiengang_kz">
+					<select class="form-control input-sm" name="studiengang" ng-model="ctrl.bewerbungstermin.studiengang_kz" required>
 						<option ng-repeat="stg in ctrl.studiengangList" value="{{stg.studiengang_kz}}">{{stg.kurzbzlang}} - {{stg.bezeichnung}}</option>
 					</select>
 				</div>
@@ -66,15 +66,19 @@
 		<!-- Zeile 2 -->
 		<div class="row">
 			<div class="col-sm-2">
-				<div class="form-group">
+				{{form.beginn.$error}}
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.beginn.$error.required || form.beginn.$error.date))}">
 					<label for="beginn">Beginn</label>
-					<input type="text" class="form-control input-sm datepicker" name="beginn" ng-model="ctrl.bewerbungstermin.beginn"/>
+					<input type="date" class="form-control input-sm datepicker" name="beginn" ng-model="ctrl.bewerbungstermin.beginn" required/>
+					<span ng-show="form.beginn.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
 			<div class="col-sm-2">
-				<div class="form-group">
+				{{form.ende.$error}}
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.ende.$error.required || form.ende.$error.date))}">
 					<label for="ende">Ende</label>
-					<input type="text" class="form-control input-sm datepicker" name="ende" ng-model="ctrl.bewerbungstermin.ende"/>
+					<input type="date" class="form-control input-sm datepicker" name="ende" ng-model="ctrl.bewerbungstermin.ende" required/>
+					<span ng-show="form.ende.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
 			<div class="col-sm-1">
@@ -87,9 +91,10 @@
 				  </div>
 			</div>
 			<div class="col-sm-2">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.nachfrist_ende.$error.required || form.nachfrist_ende.$error.date))}">
 					<label for="nachfrist_ende">Nachfrist Ende</label>
-					<input type="text" class="form-control input-sm datepicker" name="nachfrist_ende" ng-model="ctrl.bewerbungstermin.nachfrist_ende"/>
+					<input type="date" class="form-control input-sm datepicker" name="nachfrist_ende" ng-model="ctrl.bewerbungstermin.nachfrist_ende" ng-disabled="!ctrl.bewerbungstermin.nachfrist" ng-required="ctrl.bewerbungstermin.nachfrist"/>
+					<span ng-show="form.nachfrist_ende.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
 		</div>

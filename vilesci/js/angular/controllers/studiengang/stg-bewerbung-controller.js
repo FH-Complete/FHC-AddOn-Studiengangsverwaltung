@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StgBewerbungCtrl', function ($scope, $http, $state, $stateParams, errorService, successService) {
+		.controller('StgBewerbungCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, $filter) {
 			$scope.stgkz = $stateParams.stgkz;
 			var ctrl = this;
 			ctrl.data = "";
@@ -73,9 +73,8 @@ angular.module('stgv2')
 							return result;
 						}					
 					},
-					onClickRow: function (row)
+					onClickRow: function (index, row)
 					{
-						var row = $("#dataGridBewerbungstermin").datagrid("getSelected");
 						ctrl.loadBewerbungsterminDetails(row);
 						if($("#save").is(":visible"))
 							ctrl.changeButtons();
@@ -92,6 +91,7 @@ angular.module('stgv2')
 
 			ctrl.newBewerbungstermin = function()
 			{
+				$scope.form.$setPristine();
 				$("#dataGridBewerbungstermin").datagrid("unselectAll");
 				ctrl.bewerbungstermin = new Bewerbungstermin();
 				ctrl.bewerbungstermin.studiengang_kz = $scope.stgkz;
@@ -119,33 +119,39 @@ angular.module('stgv2')
 			
 			ctrl.save = function()
 			{
-				var saveData = {data: ""}
-				saveData.data = ctrl.bewerbungstermin;
-				$http({
-					method: 'POST',
-					url: './api/studiengang/bewerbungstermin/save_bewerbungstermin.php',
-					data: $.param(saveData),
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					}
-				}).then(function success(response) {
-					if(response.data.erfolg)
-					{
-						$("#dataGridBewerbungstermin").datagrid('reload');
-						ctrl.bewerbungstermin = new Bewerbungstermin();
-						successService.setMessage(response.data.info);
-					}
-					else
-					{
+				if($scope.form.$valid)
+				{
+					var saveData = {data: ""}
+					saveData.data = ctrl.bewerbungstermin;
+					$http({
+						method: 'POST',
+						url: './api/studiengang/bewerbungstermin/save_bewerbungstermin.php',
+						data: $.param(saveData),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response) {
+						if(response.data.erfolg)
+						{
+							$("#dataGridBewerbungstermin").datagrid('reload');
+							ctrl.bewerbungstermin = new Bewerbungstermin();
+							successService.setMessage(response.data.info);
+							$scope.form.$setPristine();
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+					}, function error(response) {
 						errorService.setError(getErrorMsg(response));
-					}
-				}, function error(response) {
-					errorService.setError(getErrorMsg(response));
-				});
+					});
+				}
 			};
 			
 			ctrl.loadBewerbungsterminDetails = function(row)
 			{
+				row.beginn = formatStringToDate(row.beginn.split(" ")[0]);
+				row.ende = formatStringToDate(row.ende.split(" ")[0]);
 				ctrl.bewerbungstermin = row;
 				$scope.$apply();
 				$("#bewerbungsterminDetails").show();
@@ -153,30 +159,33 @@ angular.module('stgv2')
 			
 			ctrl.update = function()
 			{
-				
-				var updateData = { data: ""};
-				updateData.data = ctrl.bewerbungstermin;
-				$http({
-					method: 'POST',
-					url: './api/studiengang/bewerbungstermin/update_bewerbungstermin.php',
-					data: $.param(updateData),
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					}
-				}).then(function success(response) {
-					if(response.data.erfolg)
-					{
-						$("#dataGridBewerbungstermin").datagrid('reload');
-						ctrl.bewerbungstermin = new Bewerbungstermin();
-						successService.setMessage(response.data.info);
-					}
-					else
-					{
+				if($scope.form.$valid)
+				{
+					var updateData = { data: ""};
+					updateData.data = ctrl.bewerbungstermin;
+					$http({
+						method: 'POST',
+						url: './api/studiengang/bewerbungstermin/update_bewerbungstermin.php',
+						data: $.param(updateData),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response) {
+						if(response.data.erfolg)
+						{
+							$("#dataGridBewerbungstermin").datagrid('reload');
+							ctrl.bewerbungstermin = new Bewerbungstermin();
+							successService.setMessage(response.data.info);
+							$scope.form.$setPristine();
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+					}, function error(response) {
 						errorService.setError(getErrorMsg(response));
-					}
-				}, function error(response) {
-					errorService.setError(getErrorMsg(response));
-				});
+					});
+				}
 			};
 			
 			ctrl.delete = function()
@@ -207,7 +216,20 @@ angular.module('stgv2')
 						errorService.setError(getErrorMsg(response));
 					});
 				}
-			};
+			};	
+			
+			$scope.$watch('ctrl.bewerbungstermin.nachfrist', function(newValue, oldValue){
+				if(newValue)
+				{
+					var date = new Date(ctrl.bewerbungstermin.ende);
+					date.setDate(date.getDate()+ 30);
+					ctrl.bewerbungstermin.nachfrist_ende = date;
+				}
+				else
+				{
+					ctrl.bewerbungstermin.nachfrist_ende = "";
+				}
+			});
 		});
 		
 function Bewerbungstermin()
@@ -215,9 +237,9 @@ function Bewerbungstermin()
 	this.bewerbungstermin_id = "";
 	this.studiengang_kz = "";
 	this.studiensemester_kurzbz = "";
-	this.beginn = "";
-	this.ende = "";
-	this.nachfrist = "";
+	this.beginn = new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate());
+	this.ende = new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()+30);
+	this.nachfrist = false;
 	this.nachfrist_ende = "";
 	this.anmerkung = "";
 	this.insertvon = "";

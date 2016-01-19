@@ -159,6 +159,10 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_aenderungsvariante L
 
 		GRANT SELECT ON addon.tbl_stgv_aenderungsvariante TO web;
 		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_aenderungsvariante TO vilesci;
+		
+		INSERT INTO addon.tbl_stgv_aenderungsvariante (aenderungsvariante_kurzbz, bezeichnung) VALUES ('nichtGering','nicht geringfügig');
+		INSERT INTO addon.tbl_stgv_aenderungsvariante (aenderungsvariante_kurzbz, bezeichnung) VALUES ('akkreditierungspflichtig','akkreditierungspflichtig');
+		INSERT INTO addon.tbl_stgv_aenderungsvariante (aenderungsvariante_kurzbz, bezeichnung) VALUES ('gering','geringfügig');
 	";
 
     if (!$db->db_query($qry))

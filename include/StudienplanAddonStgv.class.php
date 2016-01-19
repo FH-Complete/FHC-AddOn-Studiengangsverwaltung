@@ -98,7 +98,7 @@ class StudienplanAddonStgv extends studienplan
      * lädt alle zugeordneten Semester eines Studienplans
      * @param int $studienplan ID
      */
-    public function loadStudiensemesterFromStudienordnung($studienplan_id)
+    public function loadStudiensemesterFromStudienplan($studienplan_id)
     {
 	if (!is_numeric($studienplan_id))
 	{
@@ -476,13 +476,13 @@ class StudienplanAddonStgv extends studienplan
 
     /**
      * prüft ob dem Studienplan Semester zugeordnet sind (Gültigkeit)
-     * @param int $studienordnung_id Die ID der Studienordnung
+     * @param int $studienplan_id Die ID des Studienplans
      */
     public function hasSemesterZugeordnet($studienplan_id)
     {
 	if (!is_numeric($studienplan_id))
 	{
-	    $this->errormsg = 'studienordnung_id muss eine gueltige Zahl sein';
+	    $this->errormsg = 'studienplan_id muss eine gueltige Zahl sein';
 	    return false;
 	}
 

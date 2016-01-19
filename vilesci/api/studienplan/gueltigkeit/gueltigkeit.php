@@ -24,7 +24,7 @@ if (is_null($studienplan_id)) {
 
 $studienplan = new StudienplanAddonStgv();
 $result = array();
-$studiensemester = $studienplan->loadStudiensemesterFromStudienordnung($studienplan_id);
+$studiensemester = $studienplan->loadStudiensemesterFromStudienplan($studienplan_id);
 if ($studiensemester != FALSE) {
     foreach ($studiensemester as $sem) {
 	$semester = $studienplan->loadAusbildungsemesterFromStudiensemester($studienplan_id, $sem);

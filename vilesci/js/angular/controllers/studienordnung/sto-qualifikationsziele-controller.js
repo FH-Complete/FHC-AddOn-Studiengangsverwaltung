@@ -13,8 +13,8 @@ angular.module('stgv2')
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
-					ctrl.drawListItem("zielList_1", "test");
-					ctrl.drawListItem("zielList_1", "test");
+//					ctrl.drawListItem("zielList_1", "test");
+//					ctrl.drawListItem("zielList_1", "test");
 					if (response.data.info.length > 0)
 					{
 						ctrl.data = response.data.info[0];
@@ -25,10 +25,12 @@ angular.module('stgv2')
 								$(value).each(function(i, v)
 								{
 									console.log(v);
-//									ctrl.drawListItem("zielList_"+key, v);
-									ctrl.drawListItem("zielList_1", "test");
+									ctrl.drawListItem("zielList_"+key, v);
+//									ctrl.drawListItem("zielList_1", "test");
 								});
+								$compile($("#zielList_"+key))(scope);
 							}
+							
 						});
 					}
 				}
@@ -71,7 +73,7 @@ angular.module('stgv2')
 				var listItem = '<li class="list-group-item">' + text + '<span class="badge" ng-click="ctrl.removeListItem($event)"><span class="glyphicon glyphicon-trash"></span></span></li>';
 				var html = $("#" + list_id).append(listItem);
 				console.log(html);
-				$compile(html)(scope);
+//				$compile($("#" + list_id))(scope);
 				ctrl.temp = [];
 			};
 
@@ -80,6 +82,7 @@ angular.module('stgv2')
 				if ((ctrl.temp[index-1] !== "") && (ctrl.temp[index-1] != undefined))
 				{
 					ctrl.drawListItem(list_id, ctrl.temp[index-1]);
+					$compile($("#" + list_id))(scope);
 					ctrl.parseJson();
 				}
 			};

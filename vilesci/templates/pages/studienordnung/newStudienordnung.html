@@ -1,26 +1,37 @@
 <div class="contentWrapper" ng-controller='StoNeuController as stoCtrl'>
-	<form id="stoNeu" onsubmit="return false;">
+	<form id="stoNeu" name="form" onsubmit="return false;" novalidate>
 		<div class="row">
 			<div class="col-sm-4">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.studiengang.$error.required)}">
 					<label for="studiengang">Studiengang</label>
-					<select class="form-control input-sm" name="studiengang" ng-model="stoCtrl.sto.stg_kz" ng-change="stoCtrl.updateVersion()">
+					<select class="form-control input-sm" name="studiengang" ng-model="stoCtrl.sto.stg_kz" ng-change="stoCtrl.updateVersion(); stoCtrl.loadStudienordnungList()" required>
 						<option ng-repeat="stg in stoCtrl.studiengangList" value="{{stg.studiengang_kz}}">{{stg.kurzbzlang}} - {{stg.bezeichnung}}</option>
 					</select>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-2">
+			<div class="col-sm-4">
 				<div class="form-group">
+					<label for="studienordnung">Vorlage Studienordnung</label>
+					<select class="form-control input-sm" name="studienordnung" ng-model="stoCtrl.sto.vorlage_stoid">
+						<option value="" selected>keine</option>
+						<option ng-repeat="sto in stoCtrl.studienordnungList" value="{{sto.studienordnung_id}}">{{sto.bezeichnung}}</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.version.$error.required)}">
 					<label for="version">Version</label>
-					<input type="text" class="form-control input-sm" name="version" value="{{stoCtrl.sto.version}}" disabled/>
+					<input type="text" class="form-control input-sm" name="version" value="{{stoCtrl.sto.version}}" disabled required/>
 				</div>
 			</div>
 			<div class="col-sm-4">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.aenderungsvariante.$error.required)}">
 					<label for="aenderungsvariante">Änderungsvariante</label>
-					<select class="form-control input-sm" name="aenderungsvariante" ng-model="stoCtrl.sto.aenderungsvariante_kurzbz">
+					<select class="form-control input-sm" name="aenderungsvariante" ng-model="stoCtrl.sto.aenderungsvariante_kurzbz" required>
 						<option ng-repeat="av in stoCtrl.aenderungsvarianteList" value="{{av.aenderungsvariante_kurzbz}}">{{av.bezeichnung}}</option>
 					</select>
 				</div>
@@ -28,15 +39,15 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-2">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.status.$error.required)}">
 					<label for="status">Status</label>
-					<input type="text" class="form-control input-sm" name="status" value="{{stoCtrl.initialStatus.bezeichnung}}" disabled/>
+					<input type="text" class="form-control input-sm" name="status" value="{{stoCtrl.initialStatus.bezeichnung}}" disabled required/>
 				</div>
 			</div>
 			<div class="col-sm-2">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.gueltigvon.$error.required)}">
 					<label for="gueltigvon">Gültig von</label>
-					<select class="form-control input-sm" name="gueltigvon" ng-model="stoCtrl.sto.gueltigvon" ng-change="stoCtrl.updateVersion()">
+					<select class="form-control input-sm" name="gueltigvon" ng-model="stoCtrl.sto.gueltigvon" ng-change="stoCtrl.updateVersion()" required>
 						<option ng-repeat="sem in stoCtrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
 					</select>
 				</div>

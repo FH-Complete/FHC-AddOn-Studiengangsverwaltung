@@ -22,7 +22,7 @@
 			<div class="col-sm-4">
 				<div class="form-group" ng-show="stoCtrl.old.studienordnungList.length > 0">
 					<label for="studienordnung">Studienordnung</label>
-					<select class="form-control input-sm" name="studiengang" ng-model="stoCtrl.old.stoid">
+					<select class="form-control input-sm" name="studienordnung" ng-model="stoCtrl.old.stoid">
 						<option ng-repeat="sto in stoCtrl.old.studienordnungList" value="{{sto.studienordnung_id}}">{{sto.bezeichnung}}</option>
 					</select>
 				</div>
@@ -30,7 +30,7 @@
 			<div class="col-sm-4">
 				<div class="form-group" ng-show="stoCtrl.new.studienordnungList.length > 0">
 					<label for="studienordnung">Studienordnung</label>
-					<select class="form-control input-sm" name="studiengang" ng-model="stoCtrl.new.stoid">
+					<select class="form-control input-sm" name="studienordnung" ng-model="stoCtrl.new.stoid">
 						<option ng-repeat="sto in stoCtrl.new.studienordnungList" value="{{sto.studienordnung_id}}">{{sto.bezeichnung}}</option>
 					</select>
 				</div>
