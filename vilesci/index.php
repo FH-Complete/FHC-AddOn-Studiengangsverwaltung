@@ -109,7 +109,8 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-gueltigkeit-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-lehrveranstaltung-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-newLehrveranstaltung-controller.js"></script>
-
+	<script src="js/angular/controllers/studienplan/stpl-auslandssemester-controller.js" type="text/javascript"></script>
+	
 	<!-- Angular State Controllers -->
 	<script type="text/javascript" src="./js/angular/controllers/state/state-main-controller.js"></script>
 	

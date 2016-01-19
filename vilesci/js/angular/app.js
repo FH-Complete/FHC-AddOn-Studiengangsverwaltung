@@ -69,10 +69,6 @@ var stgv2 = angular.module("stgv2", ['ui.router','ngSanitize','angularFileUpload
 	 $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 });
 
-var stgv2 = angular.module("stgv2", [], function($httpProvider){
-	 $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-});
-
 angular.module("stgv2")
 		.controller("AppCtrl", function ($scope, $state, $compile, $stateParams, errorService, $http)
 		{

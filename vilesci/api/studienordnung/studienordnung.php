@@ -7,6 +7,9 @@ require_once ('../../../include/StudienplanAddonStgv.class.php');
 require_once ('../../../include/StudienordnungAddonStgv.class.php');
 require_once('../functions.php');
 
+//TODO
+$DEBUG = true;
+
 $sto_array = array();
 
 $studiengang_kz = filter_input(INPUT_GET, "stgkz");

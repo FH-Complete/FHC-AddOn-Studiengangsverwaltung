@@ -4,37 +4,37 @@ require_once('../../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
 
-require_once('../../../../include/Taetigkeitsfeld.class.php');
+require_once('../../../../include/Auslandssemester.class.php');
 require_once('../../functions.php');
 
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
 $data = (Object) $data["data"];
 
-$taetigkeitsfelder = mapDataToTaetigkeitsfelder($data);
+$auslandssemester = mapDataToAuslandssemester($data);
 
-if($taetigkeitsfelder->save())
+if($auslandssemester->save())
 {
-    returnAJAX(true, array($taetigkeitsfelder->taetigkeitsfeld_id));
+    returnAJAX(true, array($auslandssemester->auslandssemester_id));
 }
 else
 {
-    $error = array("message"=>"Fehler beim Speichern der Tätigkeitsfelder.", "detail"=>$studienordnung->errormsg);
+    $error = array("message"=>"Fehler beim Speichern der Auslandssemester.", "detail"=>$auslandssemester->errormsg);
     returnAJAX(false, $error);
 }
 
-function mapDataToTaetigkeitsfelder($data)
+function mapDataToAuslandssemester($data)
 {
-    $t = new taetigkeitsfeld();
-    if($data->taetigkeitsfeld_id === "")
+    $t = new auslandssemester();
+    if($data->auslandssemester_id === "")
 	$t->new = true;
     else
     {
 	$t->new = false;
-	$t->load($data->taetigkeitsfeld_id);
+	$t->load($data->auslandssemester_id);
     }
     
-    $t->studienordnung_id = $data->studienordnung_id;
-    $t->ueberblick = $data->ueberblick;
+    $t->studienplan_id = $data->studienplan_id;
+    $t->erlaeuterungen = $data->erlaeuterungen;
     $t->data = $data->data;
     $t->insertvon = get_uid();
     return $t;

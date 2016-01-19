@@ -18,7 +18,7 @@
  * Authors: Stefan Puraner <stefan.puraner@technikum-wien.at>
  */
 /**
- * Klasse Fördervertrag
+ * Klasse Tätigkeitsfeld
  * @create 10-01-2007
  */
 //require_once('../../../inlcude/basis_db.class.php');

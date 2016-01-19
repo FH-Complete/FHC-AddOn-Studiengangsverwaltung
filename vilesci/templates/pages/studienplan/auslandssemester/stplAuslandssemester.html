@@ -1,3 +1,48 @@
-<div class="contentWrapper">
-	<p>Auslandssemester</p>
+<div class="contentWrapper" ng-controller="stplAuslandssemesterCtrl as ctrl">
+	<form name="form" onsubmit="return false;" novalidate>
+		<table class="table">
+			<thead>
+				<tr>
+					<th width="100">Auslandssemester</th>
+					<th width="100" ng-repeat="n in ctrl.range(ctrl.studienplan.regelstudiendauer)">{{n}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<span>optional</span>
+						
+					</td>
+					<td ng-repeat="n in ctrl.range(ctrl.studienplan.regelstudiendauer) track by $index">
+						<input type="checkbox" ng-model="ctrl.auslandssemester.data[$index].optional" ng-change="ctrl.changed($index, 'optional')"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span>verpflichtend</span>
+					</td>
+					<td ng-repeat="n in ctrl.range(ctrl.studienplan.regelstudiendauer) track by $index">
+						<input type="checkbox" ng-model="ctrl.auslandssemester.data[$index].verpflichtend" ng-change="ctrl.changed($index, 'verpflichtend')" /></br>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="erlaeuterungen">Erläuterungen</label>
+					<textarea class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="ctrl.auslandssemester.erlaeuterungen"></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="row"  ng-show="ctrl.studienplan.status_kurzbz == 'development'">
+			<div class="col-sm-1">
+				<div class="form-group">
+					<div>
+						<button type="submit" class="btn btn-success btn-sm" ng-click="ctrl.save()">Speichern</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 </div>

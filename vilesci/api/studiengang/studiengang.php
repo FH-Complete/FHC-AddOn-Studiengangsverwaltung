@@ -6,6 +6,9 @@ require_once('../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../include/studiengang.class.php');
 require_once('../functions.php');
 
+//TODO
+$DEBUG = true;
+
 $uid = get_uid();
 $berechtigung = new benutzerberechtigung();
 $berechtigung->getBerechtigungen($uid);

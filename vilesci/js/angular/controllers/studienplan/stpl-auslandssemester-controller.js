@@ -1,42 +1,25 @@
 angular.module('stgv2')
-		.controller('StoTaetigkeitsfelderCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, $compile) {
-			$scope.stoid = $stateParams.stoid;
+		.controller('stplAuslandssemesterCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, $compile) {
+			$scope.stplid = $stateParams.stplid;
 			var ctrl = this;
 			var scope = $scope;
-			ctrl.data = new Taetigkeitsfeld();
-			ctrl.data.studienordnung_id = $scope.stoid;
-			ctrl.temp = {
-				branchen: "",
-				positionen: "",
-				aufgaben: ""
-			}
 
+			ctrl.studienplan = "";
+			ctrl.auslandssemester = new Auslandssemester();
+			ctrl.auslandssemester.studienplan_id = $scope.stplid;
+
+			//loading Studienplan (regelstudiendauer needed)
 			$http({
 				method: 'GET',
-				url: './api/studienordnung/taetigkeitsfelder/taetigkeitsfelder.php?stoId=' + $scope.stoid
+				url: './api/studienplan/eckdaten/eckdaten.php?stplId=' + $scope.stplid
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
-					if (response.data.info.length > 0)
-					{
-						ctrl.data = response.data.info[0];
-//						ctrl.data.data = JSON.parse(ctrl.data.data);
-						$(ctrl.data.data.branchen.elements).each(function(key, value)
-						{
-							ctrl.drawListItem("list_branchen",value);
-						});
-						
-						$(ctrl.data.data.positionen.elements).each(function(key, value)
-						{
-							ctrl.drawListItem("list_positionen",value);
-						});
-						
-						$(ctrl.data.data.aufgaben.elements).each(function(key, value)
-						{
-							ctrl.drawListItem("list_aufgaben",value);
-						});
-						
-					}
+					ctrl.studienplan = response.data.info;
+					angular.forEach(ctrl.range(ctrl.studienplan.regelstudiendauer), function (value, index) {
+						ctrl.auslandssemester.data.push({optional: false, verpflichtend: false});
+					});
+
 				}
 				else
 				{
@@ -46,120 +29,82 @@ angular.module('stgv2')
 				errorService.setError(getErrorMsg(response));
 			});
 
-			ctrl.save = function () {
-				var saveData = {data: ""}
-				saveData.data = angular.copy(ctrl.data);
-				saveData.data.data = JSON.stringify(saveData.data.data);
-				$http({
-					method: 'POST',
-					url: './api/studienordnung/taetigkeitsfelder/save_taetigkeitsfelder.php',
-					data: $.param(saveData),
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					}
-				}).then(function success(response) {
-					if (response.data.erfolg)
-					{
-						successService.setMessage("Daten erfolgreich gespeichert.");
-						ctrl.data.taetigkeitsfeld_id = response.data.info[0];
-						console.log(ctrl.data.data);
-					}
-					else
-					{
-						errorService.setError(getErrorMsg(response));
-					}
-				}, function error(response) {
+			$http({
+				method: 'GET',
+				url: './api/studienplan/auslandssemester/auslandssemester.php?stplid=' + $scope.stplid
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					ctrl.auslandssemester = response.data.info[0];
+				}
+				else
+				{
 					errorService.setError(getErrorMsg(response));
-				});
-			};
-
-			ctrl.drawListItem = function (list_id, text)
-			{
-				var listItem = '<li class="list-group-item">' + text + '<span class="badge" ng-click="ctrl.removeListItem($event)"><span class="glyphicon glyphicon-trash"></span></span></li>';
-				var html = $("#" + list_id).append(listItem);
-				$compile(html)(scope);
-				ctrl.temp = {
-					branchen: "",
-					positionen: "",
-					aufgaben: ""
-				};
-			};
-
-			ctrl.addListItem = function (list_id, name)
-			{
-				var text = "";
-				switch (name)
-				{
-					case "branchen":
-						text = ctrl.temp.branchen;
-						break;
-					case "positionen":
-						text = ctrl.temp.positionen;
-						break;
-					case "aufgaben":
-						text = ctrl.temp.aufgaben;
-						break;
-					default:
-						break;
 				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
+			});
 
-				if (text !== "")
+			ctrl.range = function (max)
+			{
+				var values = [];
+				for (i = 1; i <= max; i++)
 				{
-					ctrl.drawListItem(list_id, text);
-					ctrl.parseJson();
-//					ctrl.save();
+					values.push(i);
+				}
+				return values;
+			}
+
+			ctrl.save = function ()
+			{
+				if ($scope.form.$valid)
+				{
+					var saveData = {data: ""}
+					saveData.data = angular.copy(ctrl.auslandssemester);
+					saveData.data.data = JSON.stringify(saveData.data.data);
+					$http({
+						method: 'POST',
+						url: './api/studienplan/auslandssemester/save_auslandssemester.php',
+						data: $.param(saveData),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response) {
+						if (response.data.erfolg)
+						{
+							successService.setMessage("Daten erfolgreich gespeichert.");
+							ctrl.auslandssemester.auslandssemester_id = response.data.info[0];
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+					}, function error(response) {
+						errorService.setError(getErrorMsg(response));
+					});
 				}
 			};
-
-			ctrl.removeListItem = function (event)
+			
+			ctrl.changed = function(index, val)
 			{
-				$(event.target).parent().parent().remove();
-				ctrl.parseJson();
-				ctrl.save();
-			};
-
-			ctrl.parseJson = function ()
-			{
-				var branchen = [];
-				var positionen = [];
-				var aufgaben = [];
-				$("#list_branchen li").each(function (key, value)
+				if(val === 'optional')
 				{
-					branchen.push($(value).text());
-				});
-				ctrl.data.data.branchen.elements = branchen;
-
-				$("#list_positionen li").each(function (key, value)
+					if(ctrl.auslandssemester.data[index][val])
+						ctrl.auslandssemester.data[index].verpflichtend = false;
+				}
+				
+				if(val === 'verpflichtend')
 				{
-					positionen.push($(value).text());
-				});
-				ctrl.data.data.positionen.elements = positionen;
-
-				$("#list_aufgaben li").each(function (key, value)
-				{
-					aufgaben.push($(value).text());
-				});
-				ctrl.data.data.aufgaben.elements = aufgaben;
+					if(ctrl.auslandssemester.data[index][val])
+						ctrl.auslandssemester.data[index].optional = false;
+				}
 			};
 		});
 
-function Taetigkeitsfeld()
+function Auslandssemester()
 {
-	this.taetigkeitsfeld_id = null;
-	this.studienordnung_id = null;
-	this.ueberblick = "";
-	this.data = {
-			"branchen": {
-				"fixed": "AbsolventInnen des Studienganges können in folgenden Kernbranchen tätig sein:",
-				"elements": []
-			},
-			"positionen": {
-				"fixed": "Aufgrund der Qualifikationsziele des Studienganges können die AbsolventInnen beispielhaft die folgenden Positionen und Funktionen wahrnehmen:",
-				"elements": []
-			},
-			"aufgaben": {
-				"fixed": "Aufgrund der Qualifikationsziele des Studienganges können die AbsolventInnen beispielhaft die folgenden Positionen und Funktionen wahrnehmen:",
-				"elements": []
-			}
-		}
+	this.auslandssemester_id = null;
+	this.studienplan_id = null;
+	this.erlaeuterungen = null;
+	this.data = [];
 }

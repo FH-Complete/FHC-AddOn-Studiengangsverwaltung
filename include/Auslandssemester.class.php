@@ -18,21 +18,21 @@
  * Authors: Stefan Puraner <stefan.puraner@technikum-wien.at>
  */
 /**
- * Klasse Fördervertrag
+ * Klasse Auslandsemester
  * @create 10-01-2007
  */
 //require_once('../../../inlcude/basis_db.class.php');
 require_once (dirname(__FILE__).'/../../../include/basis_db.class.php');
 
-class taetigkeitsfeld extends basis_db
+class auslandssemester extends basis_db
 {
 	public $new;			//  boolean
 	public $result = array();
 
 	//Tabellenspalten
-	public $taetigkeitsfeld_id;//  integer
-	public $studienordnung_id;	//  integer
-	public $ueberblick;	//string
+	public $auslandssemester_id;//  integer
+	public $studienplan_id;	//  integer
+	public $erlaeuterungen;	//string
 	public $data;	//jsonb
 	public $insertamum;		//  timestamp
 	public $insertvon;		//  string
@@ -41,38 +41,38 @@ class taetigkeitsfeld extends basis_db
 
 	/**
 	 * Konstruktor
-	 * @param $taetigkeitsfeld_id ID der Adresse die geladen werden soll (Default=null)
+	 * @param $auslandssemester_id ID der Adresse die geladen werden soll (Default=null)
 	 */
-	public function __construct($taetigkeitsfeld_id=null)
+	public function __construct($auslandssemester_id=null)
 	{
 		parent::__construct();
 
-		if(!is_null($taetigkeitsfeld_id))
-			$this->load($taetigkeitsfeld_id);
+		if(!is_null($auslandssemester_id))
+			$this->load($auslandssemester_id);
 	}
 
 	/**
-	 * Laedt die Tätigkeitsfelder mit der ID $taetigkeitsfeld_id
-	 * @param  $taetigkeitsfeld_id ID der zu ladenden Tätigkeitsfelder
+	 * Laedt die Auslandssemester mit der ID $auslandssemester_id
+	 * @param  $auslandssemester_id ID der zu ladenden Auslandssemester
 	 * @return true wenn ok, false im Fehlerfall
 	 */
-	public function load($taetigkeitsfeld_id)
+	public function load($auslandssemester_id)
 	{
-		if(!is_numeric($taetigkeitsfeld_id))
+		if(!is_numeric($auslandssemester_id))
 		{
-			$this->errormsg = 'taetigkeitsfeld_id ist ungueltig';
+			$this->errormsg = 'auslandssemester_id ist ungueltig';
 			return false;
 		}
 
-		$qry = "SELECT * FROM addon.tbl_stgv_taetigkeitsfelder WHERE taetigkeitsfeld_id=".$this->db_add_param($taetigkeitsfeld_id, FHC_INTEGER, false);
+		$qry = "SELECT * FROM addon.tbl_stgv_auslandssemester WHERE auslandssemester_id=".$this->db_add_param($auslandssemester_id, FHC_INTEGER, false);
 
 		if($this->db_query($qry))
 		{
 			if($row = $this->db_fetch_object())
 			{
-				$this->taetigkeitsfeld_id = $row->taetigkeitsfeld_id;
-				$this->studienordnung_id = $row->studienordnung_id;
-				$this->ueberblick = $row->ueberblick;
+				$this->auslandssemester_id = $row->auslandssemester_id;
+				$this->studienplan_id = $row->studienplan_id;
+				$this->erlaeuterungen = $row->erlaeuterungen;
 				$this->data = json_decode($row->data);
 				$this->insertamum = $row->insertamum;
 				$this->insertvon = $row->insertvon;
@@ -82,13 +82,13 @@ class taetigkeitsfeld extends basis_db
 			}
 			else
 			{
-				$this->errormsg = 'Taetigkeitsfeld existiert nicht';
+				$this->errormsg = 'Auslandssemester existiert nicht';
 				return false;
 			}
 		}
 		else
 		{
-			$this->errormsg = 'Fehler beim Laden der Taetigkeitsfelder';
+			$this->errormsg = 'Fehler beim Laden der Auslandssemester';
 			return false;
 		}
 	}
@@ -96,22 +96,22 @@ class taetigkeitsfeld extends basis_db
 	/**
 	 * Liefert alle Tätigkeitsfelder
 	 */
-	public function getAll($studienordnung_id=null)
+	public function getAll($studienplan_id=null)
 	{
-		$qry = "SELECT * FROM addon.tbl_stgv_taetigkeitsfelder ";
-		if($studienordnung_id!=null)
-			$qry.=" WHERE studienordnung_id=".$this->db_add_param($studienordnung_id);
+		$qry = "SELECT * FROM addon.tbl_stgv_auslandssemester ";
+		if($studienplan_id!=null)
+			$qry.=" WHERE studienplan_id=".$this->db_add_param($studienplan_id);
 		$qry.=";";
 
 		if($this->db_query($qry))
 		{
 			while($row = $this->db_fetch_object())
 			{
-				$obj = new taetigkeitsfeld();
+				$obj = new auslandssemester();
 
-				$obj->taetigkeitsfeld_id = $row->taetigkeitsfeld_id;
-				$obj->studienordnung_id = $row->studienordnung_id;
-				$obj->ueberblick = $row->ueberblick;
+				$obj->auslandssemester_id = $row->auslandssemester_id;
+				$obj->studienplan_id = $row->studienplan_id;
+				$obj->erlaeuterungen = $row->erlaeuterungen;
 				$obj->data = json_decode($row->data);
 				$obj->insertamum = $row->insertamum;
 				$obj->insertvon = $row->insertvon;
@@ -124,7 +124,7 @@ class taetigkeitsfeld extends basis_db
 		}
 		else
 		{
-			$this->errormsg = 'Fehler beim Laden der Taetigkeitsfelder.';
+			$this->errormsg = 'Fehler beim Laden der Auslandssemester.';
 			return false;
 		}
 	}
@@ -136,9 +136,9 @@ class taetigkeitsfeld extends basis_db
 	private function validate()
 	{
 		//Zahlenfelder pruefen
-		if(!is_numeric($this->studienordnung_id))
+		if(!is_numeric($this->studienplan_id))
 		{
-			$this->errormsg='studienordnung_id enthaelt ungueltige Zeichen';
+			$this->errormsg='studienplan_id enthaelt ungueltige Zeichen';
 			return false;
 		}
 
@@ -161,33 +161,33 @@ class taetigkeitsfeld extends basis_db
 		{
 			//Neuen Datensatz einfuegen
 
-			$qry='BEGIN; INSERT INTO addon.tbl_stgv_taetigkeitsfelder (studienordnung_id, ueberblick, data, insertamum, insertvon) VALUES('.
-			     $this->db_add_param($this->studienordnung_id, FHC_INTEGER).', '.
-			     $this->db_add_param($this->ueberblick).', '.
+			$qry='BEGIN; INSERT INTO addon.tbl_stgv_auslandssemester (studienplan_id, erlaeuterungen, data, insertamum, insertvon) VALUES('.
+			     $this->db_add_param($this->studienplan_id, FHC_INTEGER).', '.
+			     $this->db_add_param($this->erlaeuterungen).', '.
 			     $this->db_add_param($this->data).', now(),'.
 			     $this->db_add_param($this->insertvon).');';
 		}
 		else
 		{
-			$qry='UPDATE addon.tbl_stgv_taetigkeitsfelder SET '.
-				'studienordnung_id='.$this->db_add_param($this->studienordnung_id, FHC_INTEGER).', '.
-				'ueberblick='.$this->db_add_param($this->ueberblick).', '.
+			$qry='UPDATE addon.tbl_stgv_auslandssemester SET '.
+				'studienplan_id='.$this->db_add_param($this->studienplan_id, FHC_INTEGER).', '.
+				'erlaeuterungen='.$this->db_add_param($this->erlaeuterungen).', '.
 				'data='.$this->db_add_param($this->data).', '.
 				'updateamum= now(), '.
 				'updatevon='.$this->db_add_param($this->updatevon).' '.
-				'WHERE taetigkeitsfeld_id='.$this->db_add_param($this->taetigkeitsfeld_id, FHC_INTEGER, false).';';
+				'WHERE auslandssemester_id='.$this->db_add_param($this->auslandssemester_id, FHC_INTEGER, false).';';
 		}
 		
 		if($this->db_query($qry))
 		{
 			if($this->new)
 			{
-				$qry = "SELECT currval('addon.tbl_stgv_taetigkeitsfelder_taetigkeitsfeld_id_seq') as id";
+				$qry = "SELECT currval('addon.tbl_stgv_auslandssemester_auslandssemester_id_seq') as id";
 				if($this->db_query($qry))
 				{
 					if($row = $this->db_fetch_object())
 					{
-						$this->taetigkeitsfeld_id = $row->id;
+						$this->auslandssemester_id = $row->id;
 						$this->db_query('COMMIT');
 						return true;
 					}
@@ -214,9 +214,9 @@ class taetigkeitsfeld extends basis_db
 		}
 	}
 	
-	public function delete($taetigkeitsfeld_id)
+	public function delete($auslandssemester_id)
 	{
-	    $qry = "DELETE from addon.tbl_stgv_taetigkeitsfelder WHERE taetigkeitsfeld_id=".$this->db_add_param($taetigkeitsfeld_id);
+	    $qry = "DELETE from addon.tbl_stgv_auslandssemester WHERE auslandssemester_id=".$this->db_add_param($auslandssemester_id);
 	    
 	    if(!$this->db_query($qry))
 	    {
