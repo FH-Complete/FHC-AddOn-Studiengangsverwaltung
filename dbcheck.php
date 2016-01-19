@@ -880,6 +880,42 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_auslandssemester LIM
 	echo ' addon.tbl_stgv_auslandssemester: Tabelle hinzugefuegt<br>';
 }
 
+//Tabelle addon.tbl_stgv_berufspraktikum
+if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_berufspraktikum LIMIT 1;")) {
+    $qry = "CREATE TABLE addon.tbl_stgv_berufspraktikum
+			(
+				berufspraktikum_id integer NOT NULL,
+				studienplan_id integer NOT NULL,
+				erlaeuterungen text,
+				data jsonb,
+				insertamum timestamp,
+				insertvon varchar(32),
+				updateamum timestamp,
+				updatevon varchar(32)
+			);
+
+		CREATE SEQUENCE addon.tbl_stgv_berufspraktikum_berufspraktikum_id_seq
+		 INCREMENT BY 1
+		 NO MAXVALUE
+		 NO MINVALUE
+		 CACHE 1;
+
+		ALTER TABLE addon.tbl_stgv_berufspraktikum ADD CONSTRAINT pk_berufspraktikum PRIMARY KEY (berufspraktikum_id);
+		ALTER TABLE addon.tbl_stgv_berufspraktikum ALTER COLUMN berufspraktikum_id SET DEFAULT nextval('addon.tbl_stgv_berufspraktikum_berufspraktikum_id_seq');
+
+		ALTER TABLE addon.tbl_stgv_berufspraktikum ADD CONSTRAINT fk_berufspraktikum_studienplan FOREIGN KEY (studienplan_id) REFERENCES lehre.tbl_studienplan (studienplan_id) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+		GRANT SELECT ON addon.tbl_stgv_berufspraktikum TO web;
+		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_berufspraktikum TO vilesci;
+		GRANT SELECT, UPDATE ON addon.tbl_stgv_berufspraktikum_berufspraktikum_id_seq TO vilesci;
+	";
+
+    if (!$db->db_query($qry))
+	echo '<strong>addon.tbl_stgv_berufspraktikum: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' addon.tbl_stgv_berufspraktikum: Tabelle hinzugefuegt<br>';
+}
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
@@ -898,7 +934,8 @@ $tabellen = array(
     "addon.tbl_stgv_studiengangsgruppe_studiengang" => array("studiengangsgruppe_studiengang_id", "studiengang_kz", "data","insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_studienordnung_dokument" => array("studienordnung_id","dms_id"),
     "addon.tbl_stgv_qualifikationsziele" => array("qualifikationsziel_id", "studienordnung_id", "data","insertamum", "insertvon", "updateamum", "updatevon"),
-    "addon.tbl_stgv_auslandssemester" => array("auslandssemester_id", "studienplan_id", "erlaeuterungen", "data","insertamum", "insertvon", "updateamum", "updatevon")
+    "addon.tbl_stgv_auslandssemester" => array("auslandssemester_id", "studienplan_id", "erlaeuterungen", "data","insertamum", "insertvon", "updateamum", "updatevon"),
+    "addon.tbl_stgv_berufspraktikum" => array("berufspraktikum_id", "studienplan_id", "erlaeuterungen", "data","insertamum", "insertvon", "updateamum", "updatevon")
 );
 
 

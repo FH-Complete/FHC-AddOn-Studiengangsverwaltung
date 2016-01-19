@@ -1,3 +1,69 @@
-<div class="contentWrapper">
-	<p>Berufspraktikum</p>
+<div class="contentWrapper" ng-controller="stplBerufspraktikumCtrl as stplCtrl">
+	<form name="form" onsubmit="return false;" novalidate>
+		<table id="auslandssemester" class="table">
+			<thead>
+				<tr>
+					<th width="100">Berufspraktikum</th>
+					<th width="150" style="text-align: center;" ng-repeat="n in stplCtrl.range(stplCtrl.studienplan.regelstudiendauer)">{{n}}. Semester</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<span>Semester</span>
+					</td>
+					<td ng-repeat="n in stplCtrl.range(stplCtrl.studienplan.regelstudiendauer) track by $index" style="text-align: center;">
+						<input type="checkbox" ng-model="stplCtrl.berufspraktikum.data[$index].semester"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span>Dauer</span>
+					</td>
+					<td ng-repeat="n in stplCtrl.range(stplCtrl.studienplan.regelstudiendauer) track by $index">
+						<div class="form-group">
+							<input type="text" class="form-control input-sm" ng-model="stplCtrl.berufspraktikum.data[$index].dauer"/>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span>Umfang ECTS</span>
+					</td>
+					<td ng-repeat="n in stplCtrl.range(stplCtrl.studienplan.regelstudiendauer) track by $index">
+						<div class="form-group">
+							<input type="text" class="form-control input-sm" ng-model="stplCtrl.berufspraktikum.data[$index].ects"/>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span>Umfang Stunden</span>
+					</td>
+					<td ng-repeat="n in stplCtrl.range(stplCtrl.studienplan.regelstudiendauer) track by $index">
+						<div class="form-group">
+							<input type="text" class="form-control input-sm" ng-model="stplCtrl.berufspraktikum.data[$index].stunden"/>	
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="erlaeuterungen">Erläuterungen</label>
+					<textarea class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="stplCtrl.berufspraktikum.erlaeuterungen"></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="row"  ng-show="stplCtrl.studienplan.status_kurzbz == 'development'">
+			<div class="col-sm-1">
+				<div class="form-group">
+					<div>
+						<button type="submit" class="btn btn-success btn-sm" ng-click="stplCtrl.save()">Speichern</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 </div>

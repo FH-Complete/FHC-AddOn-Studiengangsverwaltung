@@ -1,12 +1,12 @@
 angular.module('stgv2')
-		.controller('stplAuslandssemesterCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, $compile) {
+		.controller('stplBerufspraktikumCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, $compile) {
 			$scope.stplid = $stateParams.stplid;
 			var ctrl = this;
 			var scope = $scope;
 
 			ctrl.studienplan = "";
-			ctrl.auslandssemester = new Auslandssemester();
-			ctrl.auslandssemester.studienplan_id = $scope.stplid;
+			ctrl.berufspraktikum = new Berufspraktikum();
+			ctrl.berufspraktikum.studienplan_id = $scope.stplid;
 
 			//loading Studienplan (regelstudiendauer needed)
 			$http({
@@ -16,8 +16,9 @@ angular.module('stgv2')
 				if (response.data.erfolg)
 				{
 					ctrl.studienplan = response.data.info;
+					console.log(ctrl);
 					angular.forEach(ctrl.range(ctrl.studienplan.regelstudiendauer), function (value, index) {
-						ctrl.auslandssemester.data.push({optional: false, verpflichtend: false});
+						ctrl.berufspraktikum.data.push({semester: false, dauer: "", ects: "", stunden: ""});
 					});
 					ctrl.loadData();
 				}
@@ -29,17 +30,16 @@ angular.module('stgv2')
 				errorService.setError(getErrorMsg(response));
 			});
 
-
 			ctrl.loadData = function()
 			{
 				$http({
 					method: 'GET',
-					url: './api/studienplan/auslandssemester/auslandssemester.php?stplid=' + $scope.stplid
+					url: './api/studienplan/berufspraktikum/berufspraktikum.php?stplid=' + $scope.stplid
 				}).then(function success(response) {
 					if (response.data.erfolg)
 					{
 						if(response.data.info.length > 0)
-							ctrl.auslandssemester = response.data.info[0];
+							ctrl.berufspraktikum = response.data.info[0];
 					}
 					else
 					{
@@ -49,7 +49,7 @@ angular.module('stgv2')
 					errorService.setError(getErrorMsg(response));
 				});
 			};
-			
+
 			ctrl.range = function (max)
 			{
 				var values = [];
@@ -58,18 +58,36 @@ angular.module('stgv2')
 					values.push(i);
 				}
 				return values;
-			}
+			};
 
 			ctrl.save = function ()
 			{
+				angular.forEach(ctrl.berufspraktikum.data, function(value, index)
+				{
+					if(value.semester)
+					{
+						if((value.dauer == "") || (value.ects == "") || (value.stunden == ""))
+						{
+							$scope.form.$valid = false;
+							$scope.form.$invalid = true;
+//							console.log($("#auslandssemester tr td:nth-child("+(index+2)+")").find("div"));
+							$("#auslandssemester tr td:nth-child("+(index+2)+")").find("div").each(function(i,v){
+								console.log($(v));
+								$(v).addClass("has-error");
+							});
+						}
+					}
+				});
+				console.log(ctrl.berufspraktikum);
+				console.log($scope.form);
 				if ($scope.form.$valid)
 				{
 					var saveData = {data: ""}
-					saveData.data = angular.copy(ctrl.auslandssemester);
+					saveData.data = angular.copy(ctrl.berufspraktikum);
 					saveData.data.data = JSON.stringify(saveData.data.data);
 					$http({
 						method: 'POST',
-						url: './api/studienplan/auslandssemester/save_auslandssemester.php',
+						url: './api/studienplan/berufspraktikum/save_berufspraktikum.php',
 						data: $.param(saveData),
 						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded'
@@ -78,7 +96,8 @@ angular.module('stgv2')
 						if (response.data.erfolg)
 						{
 							successService.setMessage("Daten erfolgreich gespeichert.");
-							ctrl.auslandssemester.auslandssemester_id = response.data.info[0];
+							ctrl.berufspraktikum.berufspraktikum_id = response.data.info[0];
+							$scope.form.$setPristine();
 						}
 						else
 						{
@@ -89,26 +108,26 @@ angular.module('stgv2')
 					});
 				}
 			};
-			
-			ctrl.changed = function(index, val)
+
+			ctrl.changed = function (index, val)
 			{
-				if(val === 'optional')
+				if (val === 'optional')
 				{
-					if(ctrl.auslandssemester.data[index][val])
-						ctrl.auslandssemester.data[index].verpflichtend = false;
+					if (ctrl.berufspraktikum.data[index][val])
+						ctrl.berufspraktikum.data[index].verpflichtend = false;
 				}
-				
-				if(val === 'verpflichtend')
+
+				if (val === 'verpflichtend')
 				{
-					if(ctrl.auslandssemester.data[index][val])
-						ctrl.auslandssemester.data[index].optional = false;
+					if (ctrl.berufspraktikum.data[index][val])
+						ctrl.berufspraktikum.data[index].optional = false;
 				}
 			};
 		});
 
-function Auslandssemester()
+function Berufspraktikum()
 {
-	this.auslandssemester_id = null;
+	this.berufspraktikum_id = null;
 	this.studienplan_id = null;
 	this.erlaeuterungen = null;
 	this.data = [];
