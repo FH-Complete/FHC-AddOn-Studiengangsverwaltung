@@ -5,13 +5,8 @@ require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../../include/akadgrad.class.php');
 require_once('../../../../../../include/studiensemester.class.php');
-
 require_once('../../../../include/Qualifikationsziel.class.php');
-//TODO functions from core?
 require_once('../../functions.php');
-
-//TODO
-$DEBUG = true;
 
 $stoId = filter_input(INPUT_GET, "stoId");
 

@@ -108,7 +108,6 @@ angular.module('stgv2')
 			ctrl.loadDataGrid = function ()
 			{
 				$("#dataGridFoerdervertrag").datagrid({
-					//TODO format Time in column
 					url: "./api/studiengang/foerdervertrag/foerdervertrag.php?stgkz=" + $stateParams.stgkz,
 					method: 'GET',
 					onLoadSuccess: function (data)
@@ -192,18 +191,24 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						//TODO success 
-						ctrl.foerdervertrag = new Foerdervertrag();
-						ctrl.foerdervertrag.studiengang_kz = $scope.stgkz;
-						ctrl.foerdervertrag.foerdervertrag_id = response.data.info;
-	//					$("#dataGridFoerdervertrag").datagrid('reload');
-						$($scope.uploader.queue).each(function(k,v){
-							v.upload();
-						});
-						//TODO select recently added Reihungstest in Datagrid
-						$scope.form_foerdervertrag.$setPristine();
-						$("#dataGridFoerdervertrag").datagrid('reload');
-						successService.setMessage(response.data.info);
+						if(response.data.erfolg)
+						{
+							ctrl.foerdervertrag = new Foerdervertrag();
+							ctrl.foerdervertrag.studiengang_kz = $scope.stgkz;
+							ctrl.foerdervertrag.foerdervertrag_id = response.data.info;
+		//					$("#dataGridFoerdervertrag").datagrid('reload');
+							$($scope.uploader.queue).each(function(k,v){
+								v.upload();
+							});
+							//TODO select recently added Reihungstest in Datagrid
+							$scope.form_foerdervertrag.$setPristine();
+							$("#dataGridFoerdervertrag").datagrid('reload');
+							successService.setMessage(response.data.info);
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
 					}, function error(response) {
 						errorService.setError(getErrorMsg(response));
 					});
@@ -218,21 +223,32 @@ angular.module('stgv2')
 			{
 				var updateData = {data: ""}
 				updateData.data = ctrl.foerdervertrag;
-				$http({
-					method: 'POST',
-					url: './api/studiengang/foerdervertrag/update_foerdervertrag.php',
-					data: $.param(updateData),
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					}
-				}).then(function success(response) {
-					//TODO success 
-					$("#dataGridFoerdervertrag").datagrid('reload');
-					$scope.form_foerdervertrag.$setPristine();
-					successService.setMessage(response.data.info);
-				}, function error(response) {
-					errorService.setError(getErrorMsg(response));
-				});
+				if($scope.form_foerdervertrag.$valid)
+				{
+					$http({
+						method: 'POST',
+						url: './api/studiengang/foerdervertrag/update_foerdervertrag.php',
+						data: $.param(updateData),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response) {
+						//TODO success 
+						if(response.data.erfolg)
+						{
+							$("#dataGridFoerdervertrag").datagrid('reload');
+							$scope.form_foerdervertrag.$setPristine();
+							successService.setMessage(response.data.info);
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+						
+					}, function error(response) {
+						errorService.setError(getErrorMsg(response));
+					});
+				}
 			};
 			
 			ctrl.newFoerdervertrag = function()
@@ -259,11 +275,18 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						//TODO success 
-						ctrl.lastSelectedIndex = null;
-						$("#dataGridFoerdervertrag").datagrid('reload');
-						ctrl.newFoerdervertrag();
-						$scope.form_foerdervertrag.$setPristine();
+						if(response.data.erfolg)
+						{
+							ctrl.lastSelectedIndex = null;
+							$("#dataGridFoerdervertrag").datagrid('reload');
+							ctrl.newFoerdervertrag();
+							$scope.form_foerdervertrag.$setPristine();
+							successService.setMessage(response.data.info);
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
 					}, function error(response) {
 						errorService.setError(getErrorMsg(response));
 					});

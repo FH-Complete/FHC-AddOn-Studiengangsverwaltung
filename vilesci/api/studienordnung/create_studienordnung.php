@@ -56,7 +56,6 @@ if ($studienordnung->save())
 	    $taetigkeitsfeld->taetigkeitsfeld_id = null;
 	    $taetigkeitsfeld->studienordnung_id = $studienordnung->studienordnung_id;
 	    $taetigkeitsfeld->data = json_encode($taetigkeitsfeld->data);
-	    //TODO 
 	    $taetigkeitsfeld->save();
 	}
 
@@ -69,7 +68,6 @@ if ($studienordnung->save())
 	    $qualifikationsziel->qualifikationsziel_id = null;
 	    $qualifikationsziel->studienordnung_id = $studienordnung->studienordnung_id;
 	    $qualifikationsziel->data = json_encode($qualifikationsziel->data);
-	    //TODO 
 	    $qualifikationsziel->save();
 	}
 

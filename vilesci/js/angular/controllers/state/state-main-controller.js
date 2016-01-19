@@ -10,7 +10,6 @@ angular.module('stgv2')
 				treeField: 'text',
 				loadFilter: function (data)
 				{
-					console.log(data);
 					if (data.erfolg)
 					{
 						$(data.info).each(function(i,v){
@@ -27,7 +26,9 @@ angular.module('stgv2')
 					}
 					else
 					{
-						//TODO
+						var response = {};
+						response.data = data;
+						errorService.setError(getErrorMsg(response));
 					}
 
 				},
@@ -50,7 +51,7 @@ angular.module('stgv2')
 					}
 				},
 				onLoadError: function (arguments) {
-					//TODO
+					//TODO error handling
 					console.log(arguments);
 				}
 			});

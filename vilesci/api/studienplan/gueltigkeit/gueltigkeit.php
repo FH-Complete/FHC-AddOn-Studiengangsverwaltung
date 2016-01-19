@@ -7,13 +7,6 @@ require_once('../../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../include/StudienplanAddonStgv.class.php');
 require_once('../../functions.php');
 
-/*
- * TODO
- * prüfen ob innerhalb gültigkeit von STO
- * prüfen ob noch nicht zugeordnet
- * speichern
- * 
- */
 $studienplan_id = filter_input(INPUT_GET, "studienplan_id");
 
 if (is_null($studienplan_id)) {

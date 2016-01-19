@@ -1,7 +1,3 @@
-//var stgv2 = angular.module("stgv2", [], function($httpProvider){
-//	 $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-//});
-
 //TODO check if lehreverzeichnis exists
 
 angular.module('stgv2')

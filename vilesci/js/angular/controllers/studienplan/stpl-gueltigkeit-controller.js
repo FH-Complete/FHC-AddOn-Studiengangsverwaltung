@@ -47,7 +47,6 @@ angular.module('stgv2')
 			ctrl.loadFutureStudiensemester = function ()
 			{
 				//loading Studiensemester list
-				//TODO semester ab gueltig von laden
 				$http({
 					method: "GET",
 					url: "./api/helper/futureStudiensemester.php"
@@ -107,7 +106,6 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						//TODO success
 						if(response.data.erfolg)
 						{
 							ctrl.loadZuordnung();

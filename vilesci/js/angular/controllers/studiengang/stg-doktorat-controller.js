@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StgDoktoratCtrl', function ($scope, $http, $state, $stateParams,errorService) {
+		.controller('StgDoktoratCtrl', function ($scope, $http, $state, $stateParams,errorService,successService) {
 			$scope.stgkz = $stateParams.stgkz;
 			var ctrl = this;
 			ctrl.data = "";
@@ -27,7 +27,6 @@ angular.module('stgv2')
 			ctrl.loadDataGrid = function ()
 			{
 				$("#dataGridDoktorat").datagrid({
-					//TODO format Time in column
 					url: "./api/studiengang/doktorat/doktorat.php?stgkz=" + $stateParams.stgkz,
 					method: 'GET',
 					onLoadSuccess: function (data)
@@ -52,9 +51,9 @@ angular.module('stgv2')
 							return result;
 						}
 					},
-					onClickRow: function()
+					onClickRow: function(index, row)
 					{
-						var row = $("#dataGridDoktorat").datagrid("getSelected");
+//						var row = $("#dataGridDoktorat").datagrid("getSelected");
 						ctrl.loadDoktoratDetails(row);
 						if ($("#save").is(":visible"))
 							ctrl.changeButtons();
@@ -71,6 +70,7 @@ angular.module('stgv2')
 			
 			ctrl.loadDoktoratDetails = function(row)
 			{
+				row.datum_erlass = formatStringToDate(row.datum_erlass.split(" ")[0]);
 				ctrl.doktorat = row;
 				$scope.$apply();
 				$("#doktoratDetails").show();
@@ -78,23 +78,34 @@ angular.module('stgv2')
 			
 			ctrl.save = function()
 			{
-				var saveData = {data: ""}
-				saveData.data = ctrl.doktorat;
-				$http({
-					method: 'POST',
-					url: './api/studiengang/doktorat/save_doktorat.php',
-					data: $.param(saveData),
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					}
-				}).then(function success(response) {
-					//TODO success 
-					$("#dataGridDoktorat").datagrid('reload');
-					//TODO select recently added Reihungstest in Datagrid
-					ctrl.doktorat = new Doktorat();
-				}, function error(response) {
-					errorService.setError(getErrorMsg(response));
-				});
+				if($scope.form.$valid)
+				{
+					var saveData = {data: ""}
+					saveData.data = ctrl.doktorat;
+					$http({
+						method: 'POST',
+						url: './api/studiengang/doktorat/save_doktorat.php',
+						data: $.param(saveData),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response) {
+						if(response.data.erfolg)
+						{
+							$("#dataGridDoktorat").datagrid('reload');
+							//TODO select recently added Doktorat in Datagrid
+							ctrl.doktorat = new Doktorat();
+							$scope.form.$setPristine();
+							successService.setMessage(response.data.info);
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+					}, function error(response) {
+						errorService.setError(getErrorMsg(response));
+					});
+				}
 			};
 			
 			ctrl.update = function()
@@ -109,8 +120,15 @@ angular.module('stgv2')
 						'Content-Type': 'application/x-www-form-urlencoded'
 					}
 				}).then(function success(response) {
-					//TODO success 
-					$("#dataGridDoktorat").datagrid('reload');
+					if(response.data.erfolg)
+					{
+						$("#dataGridDoktorat").datagrid('reload');
+						successService.setMessage(response.data.info);
+					}
+					else
+					{
+						errorService.setError(getErrorMsg(response));
+					}
 				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
 				});
@@ -120,6 +138,7 @@ angular.module('stgv2')
 			{
 				$("#dataGridDoktorat").datagrid("unselectAll");
 				ctrl.doktorat = new Doktorat();
+				$scope.form.$setPristine();
 				ctrl.doktorat.studiengang_kz = $scope.stgkz;
 				if(!$("#save").is(":visible"))
 					ctrl.changeButtons();
@@ -140,9 +159,16 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						//TODO success 
-						$("#dataGridDoktorat").datagrid('reload');
-						ctrl.newDoktorat();
+						if(response.data.erfolg)
+						{
+							$("#dataGridDoktorat").datagrid('reload');
+							ctrl.newDoktorat();
+							successService.setMessage(response.data.info);
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
 					}, function error(response) {
 						errorService.setError(getErrorMsg(response));
 					});

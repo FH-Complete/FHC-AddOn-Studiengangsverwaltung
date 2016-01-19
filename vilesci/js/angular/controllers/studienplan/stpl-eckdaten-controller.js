@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StplEckdatenCtrl', function ($scope, $http, $state, $stateParams, errorService) {
+		.controller('StplEckdatenCtrl', function ($scope, $http, $state, $stateParams, errorService, successService) {
 			$scope.stplid = $stateParams.stplid;
 			var ctrl = this;
 			ctrl.data = "";
@@ -30,8 +30,15 @@ angular.module('stgv2')
 						'Content-Type': 'application/x-www-form-urlencoded'
 					}
 				}).then(function success(response){
-					//TODO success
-					$("#treeGrid").treegrid('reload');
+					if(response.data.erfolg)
+					{
+						$("#treeGrid").treegrid('reload');
+						successService.setMessage(response.data.info);
+					}
+					else
+					{
+						errorService.setError(getErrorMsg(response));
+					}
 				}, function error(response){
 					errorService.setError(getErrorMsg(response));
 				});

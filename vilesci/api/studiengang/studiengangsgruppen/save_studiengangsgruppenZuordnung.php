@@ -7,8 +7,6 @@ require_once('../../../../include/Studiengangsgruppe.class.php');
 
 require_once('../../functions.php');
 
-//TODO
-$DEBUG = true;
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
 $data = (Object) $data["data"];
 $studiengangsgruppe = mapDataToStudiengangsgruppe($data);

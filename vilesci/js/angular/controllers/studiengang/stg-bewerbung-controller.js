@@ -48,7 +48,6 @@ angular.module('stgv2')
 			ctrl.loadDataGrid = function()
 			{
 				$("#dataGridBewerbungstermin").datagrid({
-					//TODO format Time in column
 					url: "./api/studiengang/bewerbungstermin/bewerbungstermin.php?stgkz=" + $stateParams.stgkz+"&studiensemester_kurzbz="+ctrl.selectedStudiensemester,
 					method: 'GET',
 					onLoadSuccess: function(data)

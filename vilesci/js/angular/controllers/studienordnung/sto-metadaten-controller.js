@@ -3,7 +3,6 @@ angular.module('stgv2')
 			$scope.stoid = $stateParams.stoid;
 			var ctrl = this;
 			ctrl.data = "";
-			ctrl.origin = "";
 			ctrl.changed = false;
 			ctrl.studiensemesterList = "";
 			ctrl.akadGradList = "";
@@ -67,8 +66,6 @@ angular.module('stgv2')
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
-					//TODO Preparation for watcher
-					ctrl.origin = response.data.info;
 					ctrl.data = response.data.info;
 					$http({
 						method: "GET",

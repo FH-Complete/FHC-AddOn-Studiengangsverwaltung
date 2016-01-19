@@ -131,7 +131,6 @@ angular.module('stgv2')
 					},
 					onDragEnter: function (target, source)
 					{
-						//TODO
 						if(ctrl.studienplan.status_kurzbz !== "development")
 						{
 							return false;
@@ -167,12 +166,10 @@ angular.module('stgv2')
 									'Content-Type': 'application/x-www-form-urlencoded'
 								}
 							}).then(function success(response) {
-								//TODO success
 								changeTreeIcons("stplTree", "stplTreeGrid", target);
 								if (response.data.erfolg)
 								{
-									//workaround to change icon
-									
+									//TODO workaround to change icon
 								}
 								else
 								{
@@ -197,7 +194,6 @@ angular.module('stgv2')
 									'Content-Type': 'application/x-www-form-urlencoded'
 								}
 							}).then(function success(response) {
-								//TODO success
 								changeTreeIcons("stplTree", "stplTreeGrid", target);
 								if (response.data.erfolg)
 								{

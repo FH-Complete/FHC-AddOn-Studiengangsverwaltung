@@ -7,11 +7,7 @@ require_once('../../../../../../include/studiensemester.class.php');
 
 require_once('../../../../include/StudienplanAddonStgv.class.php');
 require_once('../../../../include/StudienordnungAddonStgv.class.php');
-//TODO functions from core?
 require_once('../../functions.php');
-
-//TODO
-$DEBUG = true;
 
 $uid = get_uid();
 $berechtigung = new benutzerberechtigung();
@@ -60,14 +56,6 @@ if ($studienplan->saveSemesterZuordnung($data))
     $error = array("message" => "Fehler beim Speichern der Zuordnung.", "detail" => $studienplan->errormsg);
     returnAJAX(false, $error);
 }
-
-/*
- * TODO
- * prüfen ob innerhalb gültigkeit von STO
- * prüfen ob noch nicht zugeordnet
- * speichern
- * 
- */
 
 function isZuordnungGuelitg($studienplan_id, $studiensemester_kurzbz)
 {

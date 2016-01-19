@@ -14,14 +14,14 @@
 				<th data-options="field: 'doktorat_id',align: 'right'"><span class="table-header">ID</span></th>
 				<th data-options="field: 'studiengang_kz',align:'left'"><span class="table-header">STG KZ</span></th>
 				<th data-options="field: 'bezeichnung',align:'left'"><span class="table-header">Bezeichnung</span></th>
-				<th data-options="field: 'datum_erlass',align:'left'"><span class="table-header">Erlassdatum</span></th>
+				<th data-options="field: 'datum_erlass',align:'left'" formatter="formatDateToString"><span class="table-header">Erlassdatum</span></th>
 				<th data-options="field: 'gueltigvon',align:'left'"><span class="table-header">gültig von</span></th>
 				<th data-options="field: 'gueltigbis',align:'left'"><span class="table-header">gültig bis</span></th>
 			</tr>
 		</thead>
 	</table>
 	</br>
-	<form id="doktoratDetails" onsubmit="return false;" style="display: none;">
+	<form id="doktoratDetails" name="form" onsubmit="return false;" style="display: none;" novalidate>
 		<!-- Zeile 1 -->
 		<div class="row">
 			<div class="col-sm-1">
@@ -39,31 +39,32 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-4">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.bezeichnung.$error.required)}">
 					<label for="bezeichnung">Bezeichnung</label>
-					<input type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.doktorat.bezeichnung"/>
+					<input type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.doktorat.bezeichnung" required/>
 				</div>
 			</div>
 			<div class="col-sm-1">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.datum_erlass.$error.required || form.datum_erlass.$error.date))}">
 					<label for="datum_erlass">Erlassdatum</label>
-					<input type="text" class="form-control input-sm" name="datum_erlass" ng-model="ctrl.doktorat.datum_erlass"/>
+					<input type="date" class="form-control input-sm" name="datum_erlass" ng-model="ctrl.doktorat.datum_erlass" required/>
+					<span ng-show="form.datum_erlass.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-2">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.gueltigvon.$error.required)}">
 					<label for="gueltigvon">Gültig von</label>
-					<select class="form-control input-sm" name="gueltigvon" ng-model="ctrl.doktorat.gueltigvon">
+					<select class="form-control input-sm" name="gueltigvon" ng-model="ctrl.doktorat.gueltigvon" required>
 						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
 					</select>
 				</div>
 			</div>
 			<div class="col-sm-2">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.gueltigbis.$error.required)}">
 					<label for="gueltigbis">Gültig bis</label>
-					<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.doktorat.gueltigbis">
+					<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.doktorat.gueltigbis" required>
 						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
 					</select>
 				</div>

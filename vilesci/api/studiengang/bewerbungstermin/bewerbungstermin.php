@@ -4,11 +4,7 @@ require_once('../../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../include/bewerbungstermin.class.php');
-//TODO functions from core?
 require_once('../../functions.php');
-
-//TODO
-$DEBUG = true;
 
 $studiengang_kz = filter_input(INPUT_GET, "stgkz");
 $studiensemester_kurzbz = filter_input(INPUT_GET, "studiensemester_kurzbz");

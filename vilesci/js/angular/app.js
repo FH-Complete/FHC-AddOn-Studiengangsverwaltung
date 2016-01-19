@@ -69,6 +69,10 @@ var stgv2 = angular.module("stgv2", ['ui.router','ngSanitize','angularFileUpload
 	 $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 });
 
+var stgv2 = angular.module("stgv2", [], function($httpProvider){
+	 $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+});
+
 angular.module("stgv2")
 		.controller("AppCtrl", function ($scope, $state, $compile, $stateParams, errorService, $http)
 		{
@@ -156,7 +160,6 @@ angular.module("stgv2")
 			
 			ctrl.changeStatus = function (status)
 			{
-				//TODO change STatus
 				var sto = $("#treeGrid").treegrid('getSelected');
 				if((sto != null) && (sto.attributes[0].value == "studienordnung"))
 				{
@@ -250,7 +253,6 @@ angular.module("stgv2")
 		})
 		.controller("studienordnungTabCtrl", function ($scope, $stateParams, $state) {
 			//TODO tabs from config
-	console.log($state);
 			$scope.tabs = [
 				{label: 'Metadaten', link: '.metadaten'},
 				{label: 'Dokumente', link: '.dokumente'},

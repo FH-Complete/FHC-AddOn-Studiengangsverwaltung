@@ -7,14 +7,12 @@
 					<input type="text" class="form-control input-sm" name="stgkz" value="{{ctrl.data.stgkz}}" disabled/>
 				</div>
 			</div>
-			<!-- TODO Studiengangsbezeichnung aus Studienordnung-->
 			<div class="col-sm-3">
 				<div class="form-group">
 					<label for="bezeichnung">Studiengangbezeichnung</label>
 					<input type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.data.studiengangbezeichnung"/>
 				</div>
 			</div>
-			<!-- TODO Studiengangskurzbezeichnung aus Studienordnung-->
 			<div class="col-sm-1">
 				<div class="form-group">
 					<label for="kurzbz">Studiengangskurzbezeichnung</label>
@@ -40,7 +38,6 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-2">
-				<!-- TODO org_form speichern -->
 				<div class="form-group">
 					<label for="orgform">Orgform</label>
 					<select class="form-control input-sm" name="orgform" ng-model="ctrl.data.orgform_kurzbz">
@@ -50,7 +47,6 @@
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
-					<!-- TODO Standort speichern -->
 					<label for="gueltigbis">Standort</label>
 					<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.data.standort_id">
 						<option ng-repeat="standort in ctrl.standortList" value="{{standort.standort_id}}">{{standort.bezeichnung}}</option>

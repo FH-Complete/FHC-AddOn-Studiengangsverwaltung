@@ -5,7 +5,6 @@ angular.module('stgv2')
 			ctrl.studiensemesterList = "";
 			ctrl.studiengangList = "";
 			ctrl.studienordnungList = "";
-			//TODO list from db or config
 			ctrl.aenderungsvarianteList = "";
 			ctrl.initialStatus = "";
 			ctrl.sto = {
