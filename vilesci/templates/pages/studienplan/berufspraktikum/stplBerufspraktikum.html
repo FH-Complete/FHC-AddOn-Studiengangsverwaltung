@@ -13,7 +13,7 @@
 						<span>Semester</span>
 					</td>
 					<td ng-repeat="n in stplCtrl.range(stplCtrl.studienplan.regelstudiendauer) track by $index" style="text-align: center;">
-						<input type="checkbox" ng-model="stplCtrl.berufspraktikum.data[$index].semester"/>
+						<input type="checkbox" ng-model="stplCtrl.berufspraktikum.data[$index].semester" ng-change="stplCtrl.changed($index)"/>
 					</td>
 				</tr>
 				<tr>

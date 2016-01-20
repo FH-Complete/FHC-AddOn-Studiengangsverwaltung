@@ -7,6 +7,9 @@ angular.module('stgv2')
 			ctrl.studienplan = "";
 			ctrl.berufspraktikum = new Berufspraktikum();
 			ctrl.berufspraktikum.studienplan_id = $scope.stplid;
+			ctrl.old = {
+				berufspraktikum: new Berufspraktikum()
+			};
 
 			//loading Studienplan (regelstudiendauer needed)
 			$http({
@@ -16,9 +19,9 @@ angular.module('stgv2')
 				if (response.data.erfolg)
 				{
 					ctrl.studienplan = response.data.info;
-					console.log(ctrl);
 					angular.forEach(ctrl.range(ctrl.studienplan.regelstudiendauer), function (value, index) {
 						ctrl.berufspraktikum.data.push({semester: false, dauer: "", ects: "", stunden: ""});
+						ctrl.old.berufspraktikum.data.push({semester: false, dauer: "", ects: "", stunden: ""});
 					});
 					ctrl.loadData();
 				}
@@ -30,7 +33,7 @@ angular.module('stgv2')
 				errorService.setError(getErrorMsg(response));
 			});
 
-			ctrl.loadData = function()
+			ctrl.loadData = function ()
 			{
 				$http({
 					method: 'GET',
@@ -38,7 +41,7 @@ angular.module('stgv2')
 				}).then(function success(response) {
 					if (response.data.erfolg)
 					{
-						if(response.data.info.length > 0)
+						if (response.data.info.length > 0)
 							ctrl.berufspraktikum = response.data.info[0];
 					}
 					else
@@ -62,24 +65,22 @@ angular.module('stgv2')
 
 			ctrl.save = function ()
 			{
-				angular.forEach(ctrl.berufspraktikum.data, function(value, index)
+				//manually validate form
+				angular.forEach(ctrl.berufspraktikum.data, function (value, index)
 				{
-					if(value.semester)
+					if (value.semester)
 					{
-						if((value.dauer == "") || (value.ects == "") || (value.stunden == ""))
+						if ((value.dauer == "") || (value.ects == "") || (value.stunden == ""))
 						{
 							$scope.form.$valid = false;
 							$scope.form.$invalid = true;
-//							console.log($("#auslandssemester tr td:nth-child("+(index+2)+")").find("div"));
-							$("#auslandssemester tr td:nth-child("+(index+2)+")").find("div").each(function(i,v){
-								console.log($(v));
+							$("#auslandssemester tr td:nth-child(" + (index + 2) + ")").find("div").each(function (i, v) {
 								$(v).addClass("has-error");
 							});
 						}
 					}
 				});
-				console.log(ctrl.berufspraktikum);
-				console.log($scope.form);
+				
 				if ($scope.form.$valid)
 				{
 					var saveData = {data: ""}
@@ -110,17 +111,19 @@ angular.module('stgv2')
 			};
 
 			ctrl.changed = function (index, val)
-			{
-				if (val === 'optional')
+			{				
+				if(ctrl.berufspraktikum.data[index].semester)
 				{
-					if (ctrl.berufspraktikum.data[index][val])
-						ctrl.berufspraktikum.data[index].verpflichtend = false;
+					ctrl.berufspraktikum.data[index].dauer = angular.copy(ctrl.old.berufspraktikum.data[index].dauer);
+					ctrl.berufspraktikum.data[index].ects = angular.copy(ctrl.old.berufspraktikum.data[index].ects);
+					ctrl.berufspraktikum.data[index].stunden = angular.copy(ctrl.old.berufspraktikum.data[index].stunden);
 				}
-
-				if (val === 'verpflichtend')
+				else
 				{
-					if (ctrl.berufspraktikum.data[index][val])
-						ctrl.berufspraktikum.data[index].optional = false;
+					ctrl.old.berufspraktikum.data[index].dauer = angular.copy(ctrl.berufspraktikum.data[index].dauer);
+					ctrl.old.berufspraktikum.data[index].ects = angular.copy(ctrl.berufspraktikum.data[index].ects);
+					ctrl.old.berufspraktikum.data[index].stunden = angular.copy(ctrl.berufspraktikum.data[index].stunden);
+					ctrl.berufspraktikum.data[index] = {semester: false, dauer: "", ects: "", stunden: ""};
 				}
 			};
 		});
