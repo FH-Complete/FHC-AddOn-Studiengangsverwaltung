@@ -126,10 +126,11 @@ angular.module("stgv2")
 				errorService.setError(getErrorMsg(response));
 			});
 		})
-		.controller("TabsCtrl", function ($scope, $state, $compile, $stateParams, errorService, $http, successService) {
+		.controller("MenuCtrl", function ($scope, $state, $compile, $stateParams, errorService, $http, successService) {
 			var ctrl = this;
 			ctrl.studienordnung_id = "";
 			ctrl.statusList = "";
+			console.log($stateParams);
 
 			$http({
 				method: "GET",
@@ -176,6 +177,11 @@ angular.module("stgv2")
 				if ((sto != null) && (sto.attributes[0].value == "studienordnung"))
 				{
 					ctrl.studienordnung_id = sto.studienordnung_id;
+					$state.go('studienplanNeu', {"studienordnung_id": ctrl.studienordnung_id});
+				}
+				else if($stateParams.studienordnung_id != null)
+				{
+					ctrl.studienordnung_id = $stateParams.studienordnung_id
 					$state.go('studienplanNeu', {"studienordnung_id": ctrl.studienordnung_id});
 				}
 				else

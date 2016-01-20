@@ -135,7 +135,7 @@ if (!$rechte->isBerechtigt('basis/addon')) {
     </head>
     <body ng-controller="AppCtrl as appCtrl">
 	<div id='layoutWrapper' class="easyui-layout">
-	    <div id="north" data-options="region:'north'" ng-controller="TabsCtrl as tabCtrl">
+	    <div id="north" data-options="region:'north'" ng-controller="MenuCtrl as menuCtrl">
 		<div class="easyui-panel" style="padding:5px;">
 		    <!--<a ng-repeat="button in buttons" href="#" class="easyui-linkbutton" data-options="plain:true">{{button.label}}</a>-->
 		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm1'">Neu</a>
@@ -145,22 +145,22 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm5',iconCls:'icon-help'">About</a>
 		</div>
 		<div id="mm1" style="width:150px;">
-		    <div ng-click='tabCtrl.createStudienordnung()'>Studienordnung</div>
-		    <div ng-click='tabCtrl.createStudienplan()'>Studienplan</div>
+		    <div ng-click='menuCtrl.createStudienordnung()'>Studienordnung</div>
+		    <div ng-click='menuCtrl.createStudienplan()'>Studienplan</div>
 		</div>
 		<div id="mm2" style="width:100px;">
-		    <div ng-click='tabCtrl.delete()' data-options="iconCls:'icon-remove'">Löschen</div>
+		    <div ng-click='menuCtrl.delete()' data-options="iconCls:'icon-remove'">Löschen</div>
 		</div>
 		<div id="mm3" style="width:150px;">
 		    <div>
 			<span>Status ändern zu</span>
 			<div>
-			    <div ng-repeat="status in tabCtrl.statusList" ng-click="tabCtrl.changeStatus()">{{status.bezeichnung}}</div>
+			    <div ng-repeat="status in menuCtrl.statusList" ng-click="menuCtrl.changeStatus()">{{status.bezeichnung}}</div>
 			</div>
 		    </div>
 		</div>
 		<div id="mm4" style="width:100px;">
-		    <div ng-click='tabCtrl.diff()'>Diff</div>
+		    <div ng-click='menuCtrl.diff()'>Diff</div>
 		</div>
 		<div id="mm5" class="menu-content" style="background:#f0f0f0;padding:10px;text-align:left">
 		    <img src="http://fhcomplete.org/img/FHC-LogoOhneText.svg" style="width:38px;height:38px">

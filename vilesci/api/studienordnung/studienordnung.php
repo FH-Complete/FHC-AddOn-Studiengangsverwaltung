@@ -52,6 +52,7 @@ foreach($studienordnung->result as $key=>$sto)
     else
 	$temp->state = "closed";
     $temp->status = $sto->status_bezeichnung;
+    $temp->status_kurzbz = $sto->status_kurzbz;
     $temp->stgkz = $sto->studiengang_kz;
     $temp->ects = $sto->ects;
     $temp->gueltigvon = $sto->gueltigvon;

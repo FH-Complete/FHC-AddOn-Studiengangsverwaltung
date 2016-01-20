@@ -4,7 +4,7 @@
 			<div class="col-sm-4">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.version.$error.required)}">
 					<label for="version">Version</label>
-					<input type="text" class="form-control input-sm" name="version" ng-model="stplCtrl.data.version" ng-change="stplCtrl.versionChanged()" required/>
+					<input type="text" class="form-control input-sm" name="version" ng-model="stplCtrl.data.version" ng-change="stplCtrl.versionChanged()" required ng-disabled="stplCtrl.studienordnung.status_kurzbz !='development'"/>
 				</div>
 			</div>
 		</div>
@@ -12,18 +12,25 @@
 			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.orgform.$error.required)}">
 					<label for="orgform">Orgform</label>
-					<select class="form-control input-sm" name="orgform" ng-model="stplCtrl.data.orgform_kurzbz" ng-change="stplCtrl.updateVersion()" required>
+					<select class="form-control input-sm" name="orgform" ng-model="stplCtrl.data.orgform_kurzbz" ng-change="stplCtrl.updateVersion()" required ng-disabled="stplCtrl.studienordnung.status_kurzbz !='development'">
 						<option ng-repeat="orgform in stplCtrl.orgformList">{{orgform.orgform_kurzbz}}</option>
 					</select>
 				</div>
 			</div>
 		</div>
+		
+		{{stplCtrl.studienordnung.status_kurzbz}}
 		<div class="row">
-			<div class="col-sm-1">
+			<div class="col-sm-1" ng-if="stplCtrl.studienordnung.status_kurzbz =='development'">
 				<div class="form-group">
 					<div>
 						<button type="submit" class="btn btn-success btn-sm" ng-click="stplCtrl.save()">Speichern</button>
 					</div>
+				</div>
+			</div>
+			<div class="col-sm-4" ng-if="stplCtrl.studienordnung.status_kurzbz !='development'">
+				<div class="alert alert-danger">
+					Studienplan kann in diesem Status keiner hinzugefügt werden.
 				</div>
 			</div>
 		</div>

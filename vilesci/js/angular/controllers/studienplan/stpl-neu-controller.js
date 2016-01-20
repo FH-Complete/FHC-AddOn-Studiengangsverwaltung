@@ -11,6 +11,7 @@ angular.module('stgv2')
 				ctrl.data.version = ctrl.studienordnung.version + "-";
 				ctrl.version_origin = ctrl.studienordnung.version;
 				ctrl.data.studienordnung_id = ctrl.studienordnung.studienordnung_id;
+				console.log(ctrl.studienordnung);
 			}
 			else
 			{
@@ -24,7 +25,7 @@ angular.module('stgv2')
 						ctrl.data.version = ctrl.studienordnung.version + "-";
 						ctrl.version_origin = ctrl.studienordnung.version;
 						ctrl.data.studienordnung_id = ctrl.studienordnung.studienordnung_id;
-
+						console.log(ctrl.studienordnung);
 					}
 					else
 					{
@@ -39,14 +40,8 @@ angular.module('stgv2')
 
 			ctrl.versionChanged = function ()
 			{
-				console.log("test");
-			}
-
-			$scope.$watch('ctrl.data.version', function (newValue, oldValue)
-			{
-				console.log(newValue);
-				console.log(oldValue);
-			}, true);
+				ctrl.version_origin = ctrl.data.version;
+			};
 
 			//loading orgform list
 			$http({
