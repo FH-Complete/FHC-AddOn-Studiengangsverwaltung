@@ -70,8 +70,140 @@ var stgv2 = angular.module("stgv2", ['ui.router', 'ngSanitize', 'angularFileUplo
 });
 
 angular.module("stgv2")
-		.controller("AppCtrl", function ($scope, $state, $compile, $stateParams, errorService, $http)
+		.controller("AppCtrl", function ($rootScope, $scope, $state, $compile, $stateParams, errorService, $http)
 		{
+			$rootScope.studienordnung = null;
+			$rootScope.studienplan = null;
+			$rootScope.studiensemesterList = [];
+			$rootScope.aenderungsvarianteList = [];
+			$rootScope.akadGradList = [];
+			$rootScope.orgformList = [];
+			$rootScope.standortList = [];
+			
+			//loading studiensemesterList
+			$http({
+				method: "GET",
+				url: "./api/helper/studiensemester.php"
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					$rootScope.studiensemesterList = response.data.info;
+				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
+			});
+			
+			//loading aenderungsvarianteList
+			$http({
+				method: "GET",
+				url: "./api/helper/aenderungsvariante.php"
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					$rootScope.aenderungsvarianteList = response.data.info;
+				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
+			});
+			
+			//loading akadgradList
+			$http({
+				method: "GET",
+				url: "./api/helper/akadGrad.php"
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					$rootScope.akadGradList = response.data.info;
+				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
+			});
+			
+			//loading orgform list
+			$http({
+				method: "GET",
+				url: "./api/helper/orgform.php"
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					$rootScope.orgformList = response.data.info;
+				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
+			});
+			
+			//loading standortList
+			$http({
+				method: "GET",
+				url: "./api/helper/standort.php"
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					$rootScope.standortList = response.data.info;
+				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
+			});
+			
+			$rootScope.setStudienordnung = function(studienordnung_id) 
+			{
+				$http({
+					method: 'GET',
+					url: './api/studienordnung/metadaten/metadaten.php?studienordnung_id=' + studienordnung_id
+				}).then(function success(response) {
+					if (response.data.erfolg)
+					{
+						$rootScope.studienordnung = response.data.info;
+					}
+					else
+					{
+						errorService.setError(getErrorMsg(response));
+					}
+				}, function error(response) {
+					errorService.setError(getErrorMsg(response));
+				});
+			};
+			
+			$rootScope.setStudienplan = function(studienplan_id)
+			{
+				$http({
+					method: 'GET',
+					url: './api/studienplan/eckdaten/eckdaten.php?studienplan_id=' + studienplan_id
+				}).then(function success(response) {
+					if (response.data.erfolg)
+					{
+						$rootScope.studienplan = response.data.info;
+					}
+					else
+					{
+						errorService.setError(getErrorMsg(response));
+					}
+				}, function error(response) {
+					errorService.setError(getErrorMsg(response));
+				});
+			};
+			
+			
 			function detectIE() {
 				var ua = window.navigator.userAgent;
 
@@ -97,12 +229,13 @@ angular.module("stgv2")
 				// other browser
 				return false;
 			}
-			
-			if(detectIE() !== false)
+
+			if (detectIE() !== false)
 			{
 				//TODO EXCLUDE INTERNET EXPLORER
 //				alert("Internet Explorer is not Supported now. Please try Firefox or Google Chrome.");
 			}
+			
 			var ctrl = this;
 			ctrl.user = {
 				name: "",
@@ -130,7 +263,6 @@ angular.module("stgv2")
 			var ctrl = this;
 			ctrl.studienordnung_id = "";
 			ctrl.statusList = "";
-			console.log($stateParams);
 
 			$http({
 				method: "GET",
@@ -179,7 +311,7 @@ angular.module("stgv2")
 					ctrl.studienordnung_id = sto.studienordnung_id;
 					$state.go('studienplanNeu', {"studienordnung_id": ctrl.studienordnung_id});
 				}
-				else if($stateParams.studienordnung_id != null)
+				else if ($stateParams.studienordnung_id != null)
 				{
 					ctrl.studienordnung_id = $stateParams.studienordnung_id
 					$state.go('studienplanNeu', {"studienordnung_id": ctrl.studienordnung_id});
@@ -366,11 +498,12 @@ angular.module("stgv2")
 				var params = node.attributes[0].urlParams;
 				$state.go(target, params[0]);
 			};
-		}).controller("TreeGridCtrl", function ($scope, $state) {
-	$scope.load = function (row)
-	{
-		var target = row.attributes[0].value
-		var params = row.attributes[0].urlParams;
-		$state.go(target, params[0]);
-	};
-});
+		})
+		.controller("TreeGridCtrl", function ($scope, $state){
+			$scope.load = function (row)
+			{
+				var target = row.attributes[0].value;
+				var params = row.attributes[0].urlParams;
+				$state.go(target, params[0]);
+			};
+		});

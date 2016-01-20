@@ -1,65 +1,25 @@
 angular.module('stgv2')
-		.controller('StoMetadatenCtrl', function ($scope, $http, $state, $stateParams, errorService, successService) {
+		.controller('StoMetadatenCtrl', function ($rootScope, $scope, $http, $state, $stateParams, errorService, successService) {
 			$scope.studienordnung_id = $stateParams.studienordnung_id;
 			var ctrl = this;
 			ctrl.data = "";
 			ctrl.changed = false;
 			ctrl.studiensemesterList = "";
-			ctrl.akadGradList = "";
 			ctrl.aenderungsvarianteList = "";
 			ctrl.status= "";
 			
+			if($stateParams.studienordnung_id !== undefined && $rootScope.studienordnung === null)
+			{
+				$rootScope.setStudienordnung($stateParams.studienordnung_id);
+			};
+						
 			//loading Studiensemester list
-			$http({
-				method: "GET",
-				url: "./api/helper/studiensemester.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.studiensemesterList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
-			
-			//loading akadGrad list
-			$http({
-				method: "GET",
-				url: "./api/helper/akadGrad.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.akadGradList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
+			ctrl.studiensemesterList = $rootScope.studiensemesterList;
 			
 			//loading Aenderungsvariante list
-			$http({
-				method: "GET",
-				url: "./api/helper/aenderungsvariante.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.aenderungsvarianteList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
+			ctrl.aenderungsvarianteList = $rootScope.aenderungsvarianteList;
 
+			//TODO load data if not in $rootscope
 			$http({
 				method: 'GET',
 				url: './api/studienordnung/metadaten/metadaten.php?studienordnung_id=' + $scope.studienordnung_id

@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StoEckdatenCtrl', function ($scope, $http, $state, $stateParams, errorService, successService) {
+		.controller('StoEckdatenCtrl', function ($rootScope, $scope, $http, $state, $stateParams, errorService, successService) {
 			$scope.studienordnung_id = $stateParams.studienordnung_id;
 			var ctrl = this;
 			ctrl.data = "";
@@ -10,73 +10,18 @@ angular.module('stgv2')
 			ctrl.standortList = "";
 			
 			//loading Studiensemester list
-			$http({
-				method: "GET",
-				url: "./api/helper/studiensemester.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.studiensemesterList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
+			ctrl.studiensemesterList = $rootScope.studiensemesterList;
 			
 			//loading akadGrad list
-			$http({
-				method: "GET",
-				url: "./api/helper/akadGrad.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.akadGradList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
+			ctrl.akadGradList = $rootScope.akadGradList;
 			
-			//loading orgform list
-			$http({
-				method: "GET",
-				url: "./api/helper/orgform.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.orgformList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
+			//loading orgformList
+			ctrl.orgformList = $rootScope.orgformList;
 			
 			//loading standort list
-			$http({
-				method: "GET",
-				url: "./api/helper/standort.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.standortList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
+			ctrl.standortList = $rootScope.standortList;
 			
+			//TODO load data if not in $rootscope
 			$http({
 				method: 'GET',
 				url: './api/studienordnung/eckdaten/eckdaten.php?studienordnung_id=' + $scope.studienordnung_id
