@@ -1,6 +1,6 @@
 angular.module('stgv2')
 		.controller('StoDokumenteCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, FileUploader) {
-			$scope.stoid = $stateParams.stoid;
+			$scope.studienordnung_id = $stateParams.studienordnung_id;
 			var ctrl = this;
 			ctrl.fileExtensionWhiteList = ["PDF"];
 			ctrl.dokumente = "";
@@ -9,7 +9,7 @@ angular.module('stgv2')
 			{
 				$http({
 					method: "GET",
-					url: "./api/studienordnung/dokumente/dokumente.php?studienordnung_id=" + $scope.stoid
+					url: "./api/studienordnung/dokumente/dokumente.php?studienordnung_id=" + $scope.studienordnung_id
 				}).then(function success(response) {
 					if (response.data.erfolg)
 					{
@@ -28,7 +28,7 @@ angular.module('stgv2')
 			{
 				$http({
 					method: "GET",
-					url: "./api/studienordnung/dokumente/delete_dokument.php?dms_id=" + dms_id +"&studienordnung_id=" + $scope.stoid
+					url: "./api/studienordnung/dokumente/delete_dokument.php?dms_id=" + dms_id +"&studienordnung_id=" + $scope.studienordnung_id
 				}).then(function success(response) {
 					if (response.data.erfolg)
 					{
@@ -48,7 +48,7 @@ angular.module('stgv2')
 			$scope.uploader = new FileUploader({
 				url: './api/studienordnung/dokumente/upload_dokument.php',
 				formData: [{
-					studienordnung_id: $scope.stoid
+					studienordnung_id: $scope.studienordnung_id
 				}],
 				filters: [{
 					name: 'extensionFilter',

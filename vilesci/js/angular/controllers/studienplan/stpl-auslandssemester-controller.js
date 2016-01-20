@@ -1,17 +1,17 @@
 angular.module('stgv2')
 		.controller('stplAuslandssemesterCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, $compile) {
-			$scope.stplid = $stateParams.stplid;
+			$scope.studienplan_id = $stateParams.studienplan_id;
 			var ctrl = this;
 			var scope = $scope;
 
 			ctrl.studienplan = "";
 			ctrl.auslandssemester = new Auslandssemester();
-			ctrl.auslandssemester.studienplan_id = $scope.stplid;
+			ctrl.auslandssemester.studienplan_id = $scope.studienplan_id;
 
 			//loading Studienplan (regelstudiendauer needed)
 			$http({
 				method: 'GET',
-				url: './api/studienplan/eckdaten/eckdaten.php?stplId=' + $scope.stplid
+				url: './api/studienplan/eckdaten/eckdaten.php?studienplan_id=' + $scope.studienplan_id
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
@@ -34,7 +34,7 @@ angular.module('stgv2')
 			{
 				$http({
 					method: 'GET',
-					url: './api/studienplan/auslandssemester/auslandssemester.php?stplid=' + $scope.stplid
+					url: './api/studienplan/auslandssemester/auslandssemester.php?studienplan_id=' + $scope.studienplan_id
 				}).then(function success(response) {
 					if (response.data.erfolg)
 					{

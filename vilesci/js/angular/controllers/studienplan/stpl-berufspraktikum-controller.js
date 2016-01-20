@@ -1,12 +1,12 @@
 angular.module('stgv2')
 		.controller('stplBerufspraktikumCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, $compile) {
-			$scope.stplid = $stateParams.stplid;
+			$scope.studienplan_id = $stateParams.studienplan_id;
 			var ctrl = this;
 			var scope = $scope;
 
 			ctrl.studienplan = "";
 			ctrl.berufspraktikum = new Berufspraktikum();
-			ctrl.berufspraktikum.studienplan_id = $scope.stplid;
+			ctrl.berufspraktikum.studienplan_id = $scope.studienplan_id;
 			ctrl.old = {
 				berufspraktikum: new Berufspraktikum()
 			};
@@ -14,7 +14,7 @@ angular.module('stgv2')
 			//loading Studienplan (regelstudiendauer needed)
 			$http({
 				method: 'GET',
-				url: './api/studienplan/eckdaten/eckdaten.php?stplId=' + $scope.stplid
+				url: './api/studienplan/eckdaten/eckdaten.php?studienplan_id=' + $scope.studienplan_id
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
@@ -37,7 +37,7 @@ angular.module('stgv2')
 			{
 				$http({
 					method: 'GET',
-					url: './api/studienplan/berufspraktikum/berufspraktikum.php?stplid=' + $scope.stplid
+					url: './api/studienplan/berufspraktikum/berufspraktikum.php?studienplan_id=' + $scope.studienplan_id
 				}).then(function success(response) {
 					if (response.data.erfolg)
 					{

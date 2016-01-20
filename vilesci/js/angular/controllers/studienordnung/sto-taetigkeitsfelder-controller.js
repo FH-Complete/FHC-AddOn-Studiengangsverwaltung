@@ -1,10 +1,10 @@
 angular.module('stgv2')
 		.controller('StoTaetigkeitsfelderCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, $compile) {
-			$scope.stoid = $stateParams.stoid;
+			$scope.studienordnung_id = $stateParams.studienordnung_id;
 			var ctrl = this;
 			var scope = $scope;
 			ctrl.data = new Taetigkeitsfeld();
-			ctrl.data.studienordnung_id = $scope.stoid;
+			ctrl.data.studienordnung_id = $scope.studienordnung_id;
 			ctrl.temp = {
 				branchen: "",
 				positionen: "",
@@ -13,7 +13,7 @@ angular.module('stgv2')
 
 			$http({
 				method: 'GET',
-				url: './api/studienordnung/taetigkeitsfelder/taetigkeitsfelder.php?stoId=' + $scope.stoid
+				url: './api/studienordnung/taetigkeitsfelder/taetigkeitsfelder.php?studienordnung_id=' + $scope.studienordnung_id
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
@@ -62,7 +62,6 @@ angular.module('stgv2')
 					{
 						successService.setMessage("Daten erfolgreich gespeichert.");
 						ctrl.data.taetigkeitsfeld_id = response.data.info[0];
-						console.log(ctrl.data.data);
 					}
 					else
 					{

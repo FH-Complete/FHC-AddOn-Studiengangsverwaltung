@@ -44,7 +44,7 @@ foreach($studienordnung->result as $key=>$sto)
     $temp = new stdClass();
     $temp->id = $id;
     $id++;
-    $temp->stoid = $sto->studienordnung_id;
+    $temp->studienordnung_id = $sto->studienordnung_id;
     $temp->version = $sto->version;
     $temp->text = $sto->bezeichnung;
     if($key == 0 && $DEBUG)
@@ -64,7 +64,7 @@ foreach($studienordnung->result as $key=>$sto)
     $attr->value = "studienordnung";
     $attr->urlParams = array();
     $urlParam = new stdClass();
-    $urlParam->stoid = $sto->studienordnung_id;
+    $urlParam->studienordnung_id = $sto->studienordnung_id;
     array_push($attr->urlParams, $urlParam);
     array_push($temp->attributes, $attr);
     
@@ -78,7 +78,7 @@ foreach($studienordnung->result as $key=>$sto)
 	$temp_stpl = new stdClass();
 	$temp_stpl->id = $id;
 	$id++;
-	$temp_stpl->stplid = $stpl->studienplan_id;
+	$temp_stpl->studienplan_id = $stpl->studienplan_id;
 	$temp_stpl->text = $stpl->bezeichnung;
 	$temp_stpl->version = $stpl->version;
 	$temp_stpl->orgform_kurzbz = $stpl->orgform_kurzbz;
@@ -93,7 +93,7 @@ foreach($studienordnung->result as $key=>$sto)
 	$node_attr->value = "studienplan";
 	$node_attr->urlParams = array();
 	$node_urlParam = new stdClass();
-	$node_urlParam->stplid = $stpl->studienplan_id;
+	$node_urlParam->studienplan_id = $stpl->studienplan_id;
 	array_push($node_attr->urlParams, $node_urlParam);
 	array_push($temp_stpl->attributes, $node_attr);
 	array_push($temp->children, $temp_stpl);

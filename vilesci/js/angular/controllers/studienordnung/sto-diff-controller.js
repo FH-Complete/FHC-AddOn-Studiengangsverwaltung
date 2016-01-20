@@ -1,6 +1,6 @@
 angular.module('stgv2')
 		.controller('StoDiffController', function ($scope, $http, $state, $stateParams, errorService, $filter, successService) {
-			$scope.stoid = $stateParams.stoid;
+			$scope.studienordnung_id = $stateParams.studienordnung_id;
 			$scope.stgkz = $stateParams.stgkz;
 			var ctrl = this;
 			ctrl.studiengangList = [];
@@ -16,11 +16,10 @@ angular.module('stgv2')
 				if (response.data.erfolg)
 				{
 					ctrl.studiengangList = response.data.info;
-					console.log($scope);
 					if($scope.stgkz !== "")
 					{
 						ctrl.old.stgkz = $scope.stgkz;
-						ctrl.old.stoid = $scope.stoid;
+						ctrl.old.studienordnung_id = $scope.studienordnung_id;
 						ctrl.loadStudienordnungList(ctrl.old);
 					}
 				}
@@ -43,7 +42,6 @@ angular.module('stgv2')
 					if (response.data.erfolg)
 					{
 						selection.studienordnungList = response.data.info;
-						console.log(response.data.info);
 					}
 					else
 					{
@@ -56,16 +54,13 @@ angular.module('stgv2')
 
 			ctrl.loadDiff = function () {
 				//loading diff
-				console.log(ctrl.old);
-				console.log(ctrl.new);
 				$http({
 					method: "GET",
-					url: "./api/helper/diff.php?studienordnung_id_old=" + ctrl.old.stoid+"&studienordnung_id_new="+ctrl.new.stoid
+					url: "./api/helper/diff.php?studienordnung_id_old=" + ctrl.old.studienordnung_id+"&studienordnung_id_new="+ctrl.new.studienordnung_id
 				}).then(function success(response) {
 					if (response.data.erfolg)
 					{
 						ctrl.diff = response.data.info;
-						console.log(ctrl.diff);
 					}
 					else
 					{
@@ -81,6 +76,6 @@ angular.module('stgv2')
 function Studienordnung()
 {
 	this.stgkz = "";
-	this.stoid = "";
+	this.studienordnung_id = "";
 	this.studienordnungList = [];
 }

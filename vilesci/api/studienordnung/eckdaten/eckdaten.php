@@ -10,20 +10,20 @@ require_once('../../functions.php');
 
 $sto_array = array();
 
-$stoId = filter_input(INPUT_GET, "stoId");
+$studienordnung_id = filter_input(INPUT_GET, "studienordnung_id");
 
-if(is_null($stoId))
+if(is_null($studienordnung_id))
 {
-    returnAJAX(false, "Variable stoId nicht gesetzt");    
+    returnAJAX(false, "Variable studienordnung_id nicht gesetzt");    
 }
-elseif(($stoId == false))
+elseif(($studienordnung_id == false))
 {
     returnAJAX(false, "Fehler beim lesen der GET Variablen");    
 }
 
 
 $studienordnung = new StudienordnungAddonStgv();
-$studienordnung->loadStudienordnung($stoId);
+$studienordnung->loadStudienordnung($studienordnung_id);
 
 $akadgrad = new akadgrad();
 $akadgrad->load($studienordnung->akadgrad_id);

@@ -47,7 +47,7 @@ angular.module('stgv2').config(function($stateProvider, $urlRouterProvider){
 		})
 		.state('studienordnung', {
 			name: 'studienordnung',
-			url: '/studienordnung/:stoid',
+			url: '/studienordnung/:studienordnung_id',
 			templateUrl: './templates/pages/studienordnung/studienordnung.html',
 			controller: function($scope, $state, $stateParams){
 				$state.go('studienordnung.metadaten');
@@ -60,7 +60,7 @@ angular.module('stgv2').config(function($stateProvider, $urlRouterProvider){
 		})
 		.state('studienordnungDiff', {
 			name: 'studienordnungDiff',
-			url: '/studienordnungDiff/:stoid/:stgkz',
+			url: '/studienordnungDiff/:studienordnung_id/:stgkz',
 			templateUrl: './templates/pages/studienordnung/diffStudienordnung.html'
 		})
 		.state('studienordnung.metadaten', {
@@ -100,7 +100,7 @@ angular.module('stgv2').config(function($stateProvider, $urlRouterProvider){
 		})
 		.state('studienplan', {
 			name: 'studienplan',
-			url: '/studienplan/:stplid',
+			url: '/studienplan/:studienplan_id',
 			templateUrl: './templates/pages/studienplan/studienplan.html',
 			controller: function($scope, $state, $stateParams){
 				$state.go('studienplan.metadaten');
@@ -108,7 +108,7 @@ angular.module('stgv2').config(function($stateProvider, $urlRouterProvider){
 		})
 		.state('studienplanNeu', {
 			name: 'studienplanNeu',
-			url: '/studienplanNeu/:stoid',
+			url: '/studienplanNeu/:studienordnung_id',
 			templateUrl: './templates/pages/studienplan/newStudienplan.html'
 		})
 		.state('studienplan.metadaten', {

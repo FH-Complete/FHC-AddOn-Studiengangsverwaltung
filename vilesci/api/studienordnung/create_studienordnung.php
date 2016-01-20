@@ -26,10 +26,10 @@ $data = (Object) $data["data"];
 
 $studienordnung = mapDataToStudienordnung($data);
 
-if (($data->vorlage_stoid != 'null') && $data->vorlage_stoid != "")
+if (($data->vorlage_studienordnung_id != 'null') && $data->vorlage_studienordnung_id != "")
 {
     $sto_vorlage = new StudienordnungAddonStgv();
-    $sto_vorlage->loadStudienordnung($data->vorlage_stoid);
+    $sto_vorlage->loadStudienordnung($data->vorlage_studienordnung_id);
 
     $studienordnung->studiengangsart = $sto_vorlage->studiengangsart;
     $studienordnung->orgform_kurzbz = $sto_vorlage->orgform_kurzbz;
@@ -45,7 +45,7 @@ if (($data->vorlage_stoid != 'null') && $data->vorlage_stoid != "")
 
 if ($studienordnung->save())
 {
-    if (($data->vorlage_stoid != 'null') && $data->vorlage_stoid != "")
+    if (($data->vorlage_studienordnung_id != 'null') && $data->vorlage_studienordnung_id != "")
     {
 	$taetigkeitsfeld = new taetigkeitsfeld();
 	$taetigkeitsfeld->getAll($sto_vorlage->studienordnung_id);

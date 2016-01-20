@@ -1,15 +1,15 @@
 angular.module('stgv2')
 		.controller('StoQualifikationszieleCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, $compile) {
-			$scope.stoid = $stateParams.stoid;
+			$scope.studienordnung_id = $stateParams.studienordnung_id;
 			var ctrl = this;
 			var scope = $scope;
 			ctrl.data = new Qualifikationsziel();
-			ctrl.data.studienordnung_id = $scope.stoid;
+			ctrl.data.studienordnung_id = $scope.studienordnung_id;
 			ctrl.temp = [];
 
 			$http({
 				method: 'GET',
-				url: './api/studienordnung/qualifikationsziele/qualifikationsziele.php?stoId=' + $scope.stoid
+				url: './api/studienordnung/qualifikationsziele/qualifikationsziele.php?studienordnung_id=' + $scope.studienordnung_id
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{

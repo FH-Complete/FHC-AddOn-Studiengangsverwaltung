@@ -14,7 +14,7 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="studienordnung">Vorlage Studienordnung</label>
-					<select class="form-control input-sm" name="studienordnung" ng-model="stoCtrl.sto.vorlage_stoid">
+					<select class="form-control input-sm" name="studienordnung" ng-model="stoCtrl.sto.vorlage_studienordnung_id">
 						<option value="" selected>keine</option>
 						<option ng-repeat="sto in stoCtrl.studienordnungList" value="{{sto.studienordnung_id}}">{{sto.bezeichnung}}</option>
 					</select>

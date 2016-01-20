@@ -1,6 +1,6 @@
 angular.module('stgv2')
 		.controller('StoEckdatenCtrl', function ($scope, $http, $state, $stateParams, errorService, successService) {
-			$scope.stoid = $stateParams.stoid;
+			$scope.studienordnung_id = $stateParams.studienordnung_id;
 			var ctrl = this;
 			ctrl.data = "";
 			ctrl.changed = false;
@@ -79,7 +79,7 @@ angular.module('stgv2')
 			
 			$http({
 				method: 'GET',
-				url: './api/studienordnung/eckdaten/eckdaten.php?stoId=' + $scope.stoid
+				url: './api/studienordnung/eckdaten/eckdaten.php?studienordnung_id=' + $scope.studienordnung_id
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{

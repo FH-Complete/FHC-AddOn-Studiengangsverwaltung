@@ -1,6 +1,6 @@
 angular.module('stgv2')
 		.controller('StplLehrveranstaltungCtrl', function ($scope, $http, $state, $stateParams, errorService, $compile) {
-			$scope.stplid = $stateParams.stplid;
+			$scope.studienplan_id = $stateParams.studienplan_id;
 			var ctrl = this;
 			var scope = $scope;
 			ctrl.data = "";
@@ -34,7 +34,7 @@ angular.module('stgv2')
 			ctrl.initStplTree = function ()
 			{
 				$("#stplTreeGrid").treegrid({
-					url: "./api/studienplan/lehrveranstaltungen/lehrveranstaltungTree.php?studienplan_id=" + $scope.stplid,
+					url: "./api/studienplan/lehrveranstaltungen/lehrveranstaltungTree.php?studienplan_id=" + $scope.studienplan_id,
 					idField: "id",
 					treeField: "name",
 					rowStyler: function(row)
@@ -182,7 +182,7 @@ angular.module('stgv2')
 						else
 						{
 							//save new entry moved from other tree
-							data.studienplan_id = $scope.stplid;
+							data.studienplan_id = $scope.studienplan_id;
 							data.lehrveranstaltung_id = source.id;
 							var saveData = {data: ""};
 							saveData.data = data;
@@ -251,7 +251,7 @@ angular.module('stgv2')
 				//if not selected get data from DB
 				$http({
 					method: 'GET',
-					url: './api/studienplan/eckdaten/eckdaten.php?stplId=' + $scope.stplid
+					url: './api/studienplan/eckdaten/eckdaten.php?studienplan_id=' + $scope.studienplan_id
 				}).then(function success(response) {
 					if (response.data.erfolg)
 					{

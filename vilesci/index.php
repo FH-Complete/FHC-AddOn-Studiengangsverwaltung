@@ -167,8 +167,8 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 		    <p style="font-size:14px;color:#444;"><a href="http://www.fhcomplete.org" target="_blank">fhcomplete.org</a></p>
 		</div>
 	    </div>
-	    <div id="west"data-options="region:'west', split: true, maxWidth: 400" ng-controller="TreeCtrl">
-		<ul id="west_tree"class="easyui-tree"></ul>
+	    <div id="west" data-options="region:'west', split: true, maxWidth: 400" ng-controller="TreeCtrl">
+		<ul id="west_tree" class="easyui-tree"></ul>
 	    </div>
 	    <div id="footer" data-options="region:'south'" style="height: 5%;">
 		<!--TODO zusätzliche Daten anzeigen; z.B.: Username, DB, etc-->

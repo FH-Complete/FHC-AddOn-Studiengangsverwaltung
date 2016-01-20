@@ -1,19 +1,18 @@
 <div class="contentWrapper" ng-controller='StplNeuController as stplCtrl'>
-	{{stoid}}
-	<form id="stplNeu" onsubmit="return false;">
+	<form id="stplNeu" name="form" onsubmit="return false;" novalidate>
 		<div class="row">
 			<div class="col-sm-4">
-				<div class="form-group">
-					<label for="bezeichnung">Version</label>
-					<input type="text" class="form-control input-sm"  name="bezeichnung" ng-model="stplCtrl.data.version"/>
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.version.$error.required)}">
+					<label for="version">Version</label>
+					<input type="text" class="form-control input-sm" name="version" ng-model="stplCtrl.data.version" ng-change="stplCtrl.versionChanged()" required/>
 				</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-2">
-				<div class="form-group">
-					<label for="gueltigvon">Orgform</label>
-					<select class="form-control input-sm" name="orgform" ng-model="stplCtrl.data.orgform_kurzbz" ng-change="stplCtrl.updateVersion()">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.orgform.$error.required)}">
+					<label for="orgform">Orgform</label>
+					<select class="form-control input-sm" name="orgform" ng-model="stplCtrl.data.orgform_kurzbz" ng-change="stplCtrl.updateVersion()" required>
 						<option ng-repeat="orgform in stplCtrl.orgformList">{{orgform.orgform_kurzbz}}</option>
 					</select>
 				</div>

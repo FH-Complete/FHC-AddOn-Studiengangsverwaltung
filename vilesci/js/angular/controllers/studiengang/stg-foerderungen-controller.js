@@ -314,7 +314,7 @@ angular.module('stgv2')
 			$scope.uploader = new FileUploader({
 				url: './api/helper/upload_dokument.php',
 				formData: [{
-					foerdervertrag_id: $scope.stoid
+					foerdervertrag_id: $scope.studienordnung_id
 				}],
 				filters: [{
 					name: 'extensionFilter',

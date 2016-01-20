@@ -40,7 +40,7 @@
 			</div>
 		</div>
 		<!-- Zeile 2 -->
-		
+
 		<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && form_foerdervertrag.foerdergeber_select.$error.required)}">
@@ -53,11 +53,11 @@
 			<div class="col-sm-4">
 				<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && form_foerdervertrag.foerdergeber.$error.required)}">
 					<label for="foerdergeber">&nbsp;</label>
-					<input ng-if="foerdergeber =='Sonstige'" type="text" placeholder="Bitte ergänzen ..." class="form-control input-sm" name="foerdergeber" ng-model="ctrl.foerdervertrag.foerdergeber" ng-required="$parent.foerdergeber =='Sonstige'"/>
+					<input ng-if="foerdergeber == 'Sonstige'" type="text" placeholder="Bitte ergänzen ..." class="form-control input-sm" name="foerdergeber" ng-model="ctrl.foerdervertrag.foerdergeber" ng-required="$parent.foerdergeber =='Sonstige'"/>
 				</div>
 			</div>
 		</div>
-		<div class="row" ng-if="ctrl.foerdervertrag.foerdergeber=='BMWFW'">
+		<div class="row" ng-if="ctrl.foerdervertrag.foerdergeber == 'BMWFW'">
 			<div class="col-sm-5">
 				<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && (form_foerdervertrag.foerdergruppe_select.$error.required || form_foerdervertrag.foerdergruppe.$error.required))}">
 					<label for="foerdergruppe_select">Fördergruppe</label>
@@ -72,10 +72,10 @@
 			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && (form_foerdervertrag.foerdersatz_select.$error.required || form_foerdervertrag.foerdersatz.$error.required))}">
 					<label for="foerdersatz">Fördersatz</label>
-					<select ng-if="ctrl.foerdervertrag.foerdergeber=='BMWFW'" class="form-control input-sm" name="foerdersatz_select" ng-model="$parent.foerdersatz" ng-required="ctrl.foerdervertrag.foerdergeber=='BMWFW'">
+					<select ng-if="ctrl.foerdervertrag.foerdergeber == 'BMWFW'" class="form-control input-sm" name="foerdersatz_select" ng-model="$parent.foerdersatz" ng-required="ctrl.foerdervertrag.foerdergeber=='BMWFW'">
 						<option ng-repeat="f in ctrl.foerdersatzList" value="{{f.value}}">{{f.label}}</option>
 					</select>
-					<input ng-if="ctrl.foerdervertrag.foerdergeber!='BMWFW'" type="text" class="form-control input-sm" name="foerdersatz" ng-model="$parent.ctrl.foerdervertrag.foerdersatz" ng-required="ctrl.foerdervertrag.foerdergeber!='BMWFW'" ng-keydown="$parent.validate($event)"/>
+					<input ng-if="ctrl.foerdervertrag.foerdergeber != 'BMWFW'" type="text" class="form-control input-sm" name="foerdersatz" ng-model="$parent.ctrl.foerdervertrag.foerdersatz" ng-required="ctrl.foerdervertrag.foerdergeber!='BMWFW'" ng-keydown="$parent.validate($event)"/>
 				</div>
 			</div>
 			<div class="col-sm-2">
@@ -128,36 +128,36 @@
 				</div>
 			</div>
 		</div>
-		<div class="row col-sm-6">
-			<div class="col-sm-6">
-				<table class="table doctable">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th width="100px" style="text-align: center">Download</th>
-							<th width="100px" style="text-align: center">Löschen</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-if="ctrl.foerdervertrag.dokumente ==''">
-							<td colspan="3">Keine Dokumente vorhanden.</td>
-						</tr>
-						<tr ng-repeat="dok in ctrl.foerdervertrag.dokumente">
-							<td>
-								{{dok.name}}
-							</td>
-							<td style="text-align: center">
-								<a href="./api/helper/download_dokument.php?dms_id={{dok.dms_id}}">
-									<button type="submit" class="btn btn-primary btn-sm">Download</button>
-								</a>
-							</td>
-							<td style="text-align: center">
-								<button class="btn btn-danger btn-sm" ng-click="ctrl.deleteDokument(dok.dms_id)">Löschen</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
 	</form>
+	<div class="row col-sm-6">
+		<div class="col-sm-6">
+			<table class="table doctable">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th width="100px" style="text-align: center">Download</th>
+						<th width="100px" style="text-align: center">Löschen</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-if="ctrl.foerdervertrag.dokumente == ''">
+						<td colspan="3">Keine Dokumente vorhanden.</td>
+					</tr>
+					<tr ng-repeat="dok in ctrl.foerdervertrag.dokumente">
+						<td>
+							{{dok.name}}
+						</td>
+						<td style="text-align: center">
+							<a href="./api/helper/download_dokument.php?dms_id={{dok.dms_id}}">
+								<button class="btn btn-primary btn-sm">Download</button>
+							</a>
+						</td>
+						<td style="text-align: center">
+							<button class="btn btn-danger btn-sm" ng-click="ctrl.deleteDokument(dok.dms_id)">Löschen</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>

@@ -8,19 +8,19 @@ require_once('../../../../../../include/studiensemester.class.php');
 require_once('../../../../include/Qualifikationsziel.class.php');
 require_once('../../functions.php');
 
-$stoId = filter_input(INPUT_GET, "stoId");
+$studienordnung_id = filter_input(INPUT_GET, "studienordnung_id");
 
-if(is_null($stoId))
+if(is_null($studienordnung_id))
 {
-    returnAJAX(false, "Variable stoId nicht gesetzt");    
+    returnAJAX(false, "Variable studienordnung_id nicht gesetzt");    
 }
-elseif(($stoId == false))
+elseif(($studienordnung_id == false))
 {
     returnAJAX(false, "Fehler beim lesen der GET Variablen");    
 }
 
 $qualifikationsziel = new Qualifikationsziel();
-$qualifikationsziel->getAll($stoId);
+$qualifikationsziel->getAll($studienordnung_id);
 
 $data = $qualifikationsziel->result;
 

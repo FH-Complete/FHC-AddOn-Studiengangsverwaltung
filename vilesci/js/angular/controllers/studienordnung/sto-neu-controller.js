@@ -1,6 +1,6 @@
 angular.module('stgv2')
 		.controller('StoNeuController', function ($scope, $http, $state, $stateParams, errorService, $filter, successService) {
-			$scope.stoid = $stateParams.stoid;
+			$scope.studienordnung_id = $stateParams.studienordnung_id;
 			var ctrl = this;
 			ctrl.studiensemesterList = "";
 			ctrl.studiengangList = "";
@@ -15,7 +15,7 @@ angular.module('stgv2')
 				gueltigbis: "",
 				begruendung: "",
 				aenderungsvariante_kurzbz: "",
-				vorlage_stoid: ''
+				vorlage_studienordnung_id: ''
 			};
 			
 			//loading Studiensemester list
@@ -86,7 +86,6 @@ angular.module('stgv2')
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
-					console.log(ctrl.aenderungsvarianteList);
 					ctrl.aenderungsvarianteList = response.data.info;
 				}
 				else

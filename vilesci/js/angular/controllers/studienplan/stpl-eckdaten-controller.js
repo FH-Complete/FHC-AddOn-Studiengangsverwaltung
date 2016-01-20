@@ -1,11 +1,11 @@
 angular.module('stgv2')
 		.controller('StplEckdatenCtrl', function ($scope, $http, $state, $stateParams, errorService, successService) {
-			$scope.stplid = $stateParams.stplid;
+			$scope.studienplan_id = $stateParams.studienplan_id;
 			var ctrl = this;
 			ctrl.data = "";
 			$http({
 				method: 'GET',
-				url: './api/studienplan/eckdaten/eckdaten.php?stplId=' + $scope.stplid
+				url: './api/studienplan/eckdaten/eckdaten.php?studienplan_id=' + $scope.studienplan_id
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{

@@ -11,19 +11,19 @@ require_once('../../functions.php');
 
 $sto_array = array();
 
-$stplId = filter_input(INPUT_GET, "stplId");
+$studienplan_id = filter_input(INPUT_GET, "studienplan_id");
 
-if(is_null($stplId))
+if(is_null($studienplan_id))
 {
-    returnAJAX(false, "Variable stplId nicht gesetzt");    
+    returnAJAX(false, "Variable studienplan_id nicht gesetzt");    
 }
-elseif(($stplId == false))
+elseif(($studienplan_id == false))
 {
     returnAJAX(false, "Fehler beim lesen der GET Variablen");    
 }
 
 $studienplan = new StudienplanAddonStgv();
-$studienplan->loadStudienplan($stplId);
+$studienplan->loadStudienplan($studienplan_id);
 
 $studienordnung = new StudienordnungAddonStgv();
 $studienordnung->loadStudienordnung($studienplan->studienordnung_id);

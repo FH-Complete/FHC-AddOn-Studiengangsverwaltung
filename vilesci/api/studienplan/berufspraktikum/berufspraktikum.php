@@ -8,19 +8,19 @@ require_once('../../../../../../include/studiensemester.class.php');
 require_once('../../../../include/Berufspraktikum.class.php');
 require_once('../../functions.php');
 
-$splid = filter_input(INPUT_GET, "stplid");
+$studienplan_id = filter_input(INPUT_GET, "studienplan_id");
 
-if(is_null($splid))
+if(is_null($studienplan_id))
 {
-    returnAJAX(false, "Variable stplid nicht gesetzt");    
+    returnAJAX(false, "Variable studienplan_id nicht gesetzt");    
 }
-elseif(($splid == false))
+elseif(($studienplan_id == false))
 {
     returnAJAX(false, "Fehler beim lesen der GET Variablen");    
 }
 
 $berufspraktikum = new berufspraktikum();
-$berufspraktikum->getAll($splid);
+$berufspraktikum->getAll($studienplan_id);
 
 $data = $berufspraktikum->result;
 

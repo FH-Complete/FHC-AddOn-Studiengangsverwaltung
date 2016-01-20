@@ -1,6 +1,6 @@
 angular.module('stgv2')
 		.controller('StplGueltigkeitCtrl', function ($scope, $http, $state, $stateParams, errorService) {
-			$scope.stplid = $stateParams.stplid;
+			$scope.studienplan_id = $stateParams.studienplan_id;
 			var ctrl = this;
 			ctrl.data = "";
 			ctrl.origin = "";
@@ -11,7 +11,7 @@ angular.module('stgv2')
 			//loading Studienplan (regelstudiendauer needed)
 			$http({
 				method: 'GET',
-				url: './api/studienplan/eckdaten/eckdaten.php?stplId=' + $scope.stplid
+				url: './api/studienplan/eckdaten/eckdaten.php?studienplan_id=' + $scope.studienplan_id
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
@@ -30,7 +30,7 @@ angular.module('stgv2')
 				{
 				$http({
 					method: 'GET',
-					url: './api/studienplan/gueltigkeit/gueltigkeit.php?studienplan_id=' + $scope.stplid
+					url: './api/studienplan/gueltigkeit/gueltigkeit.php?studienplan_id=' + $scope.studienplan_id
 				}).then(function success(response) {
 					if (response.data.erfolg)
 					{
@@ -86,7 +86,7 @@ angular.module('stgv2')
 						if ($(checkbox).prop("checked"))
 						{
 							var obj = {};
-							obj.studienplan_id = $scope.stplid;
+							obj.studienplan_id = $scope.studienplan_id;
 							obj.studiensemester_kurzbz = $("#studiensemester").val();
 							obj.ausbildungssemester = $(checkbox).attr("sem");
 							data.push(obj);
@@ -125,7 +125,7 @@ angular.module('stgv2')
 			{
 				$http({
 					method: 'GET',
-					url: './api/studienplan/gueltigkeit/delete_gueltigkeit.php?studienplan_id='+$scope.stplid+"&studiensemester_kurzbz="+studiensemester_kurzbz,
+					url: './api/studienplan/gueltigkeit/delete_gueltigkeit.php?studienplan_id='+$scope.studienplan_id+"&studiensemester_kurzbz="+studiensemester_kurzbz,
 					headers: {
 						'Content-Type': 'application/x-www-form-urlencoded'
 					}

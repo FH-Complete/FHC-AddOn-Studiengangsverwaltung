@@ -131,8 +131,6 @@ angular.module('stgv2')
 			
 			ctrl.save = function()
 			{
-				console.log(ctrl.reihungstest);
-				
 				if($scope.form.$valid)
 				{
 					var saveData = {data: ""}
@@ -147,7 +145,6 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						console.log(response);
 						if(response.data.erfolg)
 						{
 							$("#dataGridReihungstest").datagrid('reload');
@@ -208,7 +205,6 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						console.log(response);
 						if(response.data.erfolg)
 						{
 							$("#dataGridReihungstest").datagrid('reload');
