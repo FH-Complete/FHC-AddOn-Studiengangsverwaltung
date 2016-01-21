@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StplLehrveranstaltungCtrl', function ($scope, $http, $state, $stateParams, errorService, $compile) {
+		.controller('StplLehrveranstaltungCtrl', function ($scope, $http, $state, $stateParams, errorService, $compile, StudienplanService) {
 			$scope.studienplan_id = $stateParams.studienplan_id;
 			var ctrl = this;
 			var scope = $scope;
@@ -238,36 +238,45 @@ angular.module('stgv2')
 				});
 			};
 
-			//get Selected Studienplan if selected in TreeGrid
-			var node = $("#treeGrid").treegrid('getSelected');
-			if(node)
-			{
-				ctrl.studienplan = node;
+			StudienplanService.getStudienplan($scope.studienplan_id).then(function(result){
+				console.log(result);
+				ctrl.studienplan = result;
 				ctrl.initSemesterList();
 				ctrl.initStplTree();
-			}
-			else
-			{
-				//if not selected get data from DB
-				$http({
-					method: 'GET',
-					url: './api/studienplan/eckdaten/eckdaten.php?studienplan_id=' + $scope.studienplan_id
-				}).then(function success(response) {
-					if (response.data.erfolg)
-					{
-						ctrl.studienplan = response.data.info;
-						ctrl.initSemesterList();
-						ctrl.initStplTree();
-					}
-					else
-					{
-						errorService.setError(getErrorMsg(response));
-					}
-				}, function error(response) {
-					errorService.setError(getErrorMsg(response));
-				});
-			}
+			}, function(error){
+				
+			});
+//			//get Selected Studienplan if selected in TreeGrid
+//			var node = $("#treeGrid").treegrid('getSelected');
+//			if(node)
+//			{
+//				ctrl.studienplan = node;
+//				ctrl.initSemesterList();
+//				ctrl.initStplTree();
+//			}
+//			else
+//			{
+//				//if not selected get data from DB
+//				$http({
+//					method: 'GET',
+//					url: './api/studienplan/eckdaten/eckdaten.php?studienplan_id=' + $scope.studienplan_id
+//				}).then(function success(response) {
+//					if (response.data.erfolg)
+//					{
+//						ctrl.studienplan = response.data.info;
+//						ctrl.initSemesterList();
+//						ctrl.initStplTree();
+//					}
+//					else
+//					{
+//						errorService.setError(getErrorMsg(response));
+//					}
+//				}, function error(response) {
+//					errorService.setError(getErrorMsg(response));
+//				});
+//			}
 
+			//TODO load from Service
 			//load organisationseinheiten
 			$http({
 				method: 'GET',
@@ -285,6 +294,7 @@ angular.module('stgv2')
 				errorService.setError(getErrorMsg(response));
 			});
 
+			//TODO load from Service
 			//load lehrtypen
 			$http({
 				method: 'GET',

@@ -1,171 +1,86 @@
-$(document).ready(function () {
-	$('#west_tree').tree({
-		url: "./api/studiengang/studiengang.php",
-		method: "get",
-		animate: "true",
-		dnd: "true",
-		loadFilter: function (data)
-		{
-			if (data.erfolg)
-			{
-				return data.info;
-			}
-			else
-			{
-				//TODO Fehler ausgeben data.message
-			}
-
-		},
-		onLoadSuccess: function (rootNode, data)
-		{
-			data.forEach(function (node, v) {
-				writeAttributesFromJson(node);
-			});
-			$('.tree-title').bind('click', function (event) {
-				var ele = $(event.target);
-				if (ele.attr('node_type') !== undefined)
-					angular.element($("#west_tree")).scope().load(ele);
-			});
-
-		},
-		onClick: function (node)
-		{
-			return true;
-		},
-		onBeforeDrop: function (target, source, point)
-		{
-			toAppend = $.extend(true, {}, source);
-			$(this).tree('append', {
-				parent: target,
-				data: toAppend,
-			});
-			return false;
-		},
-		onDragEnter: function (target, source)
-		{
-			return false;
-		}
-	});
-
-	function writeAttributesFromJson(node) {
-		if (node.attributes)
-		{
-			node.attributes.forEach(function (attr, value)
-			{
-				$("#" + node.domId + " span").last().attr(attr.name, attr.value);
-			});
-		}
-
-		if (node.children)
-		{
-			node.children.forEach(function (node) {
-				writeAttributesFromJson(node);
-			});
-		}
-	}
-});
-
-var stgv2 = angular.module("stgv2", ['ui.router', 'ngSanitize', 'angularFileUpload'], function ($httpProvider) {
+var stgv2 = angular.module("stgv2", ['ui.router', 'ngSanitize', 'angularFileUpload', 'angular-storage'], function ($httpProvider) {
 	$httpProvider.defaults.headers.post['Content-Type'] = 'studienplan_idication/x-www-form-urlencoded;charset=utf-8';
 });
 
 angular.module("stgv2")
-		.controller("AppCtrl", function ($rootScope, $scope, $state, $compile, $stateParams, errorService, $http)
+		.controller("AppCtrl", function ($rootScope, errorService, $http, StudiengangService, StoreService)
 		{
+			var storeList = ["studiengangList", "standortList","orgformList","aenderungsvarianteList","akadgradList","studiensemesterList","studienordnungStatusList","studienplan"];
+			
+			angular.forEach(storeList, function(v, i){
+				StoreService.remove(v);
+			});
+			
+			$('#west_tree').tree({
+				url: "./api/studiengang/studiengang.php",
+				method: "get",
+				animate: "true",
+				dnd: "true",
+				loadFilter: function (data)
+				{
+					if (data.erfolg)
+					{
+						StudiengangService.setStudiengangList(data.info);
+						return data.info;
+					}
+					else
+					{
+						//TODO Fehler ausgeben data.message
+					}
+
+				},
+				onLoadSuccess: function (rootNode, data)
+				{
+					data.forEach(function (node, v) {
+						writeAttributesFromJson(node);
+					});
+					$('.tree-title').bind('click', function (event) {
+						var ele = $(event.target);
+						if (ele.attr('node_type') !== undefined)
+							angular.element($("#west_tree")).scope().load(ele);
+					});
+
+				},
+				onClick: function (node)
+				{
+					return true;
+				},
+				onBeforeDrop: function (target, source, point)
+				{
+					toAppend = $.extend(true, {}, source);
+					$(this).tree('append', {
+						parent: target,
+						data: toAppend,
+					});
+					return false;
+				},
+				onDragEnter: function (target, source)
+				{
+					return false;
+				}
+			});
+
+			function writeAttributesFromJson(node) {
+				if (node.attributes)
+				{
+					node.attributes.forEach(function (attr, value)
+					{
+						$("#" + node.domId + " span").last().attr(attr.name, attr.value);
+					});
+				}
+
+				if (node.children)
+				{
+					node.children.forEach(function (node) {
+						writeAttributesFromJson(node);
+					});
+				}
+			};
+
 			$rootScope.studienordnung = null;
 			$rootScope.studienplan = null;
-			$rootScope.studiensemesterList = [];
-			$rootScope.aenderungsvarianteList = [];
-			$rootScope.akadGradList = [];
-			$rootScope.orgformList = [];
-			$rootScope.standortList = [];
-			
-			//loading studiensemesterList
-			$http({
-				method: "GET",
-				url: "./api/helper/studiensemester.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					$rootScope.studiensemesterList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
-			
-			//loading aenderungsvarianteList
-			$http({
-				method: "GET",
-				url: "./api/helper/aenderungsvariante.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					$rootScope.aenderungsvarianteList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
-			
-			//loading akadgradList
-			$http({
-				method: "GET",
-				url: "./api/helper/akadGrad.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					$rootScope.akadGradList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
-			
-			//loading orgform list
-			$http({
-				method: "GET",
-				url: "./api/helper/orgform.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					$rootScope.orgformList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
-			
-			//loading standortList
-			$http({
-				method: "GET",
-				url: "./api/helper/standort.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					$rootScope.standortList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
-			
-			$rootScope.setStudienordnung = function(studienordnung_id) 
+
+			$rootScope.setStudienordnung = function (studienordnung_id)
 			{
 				$http({
 					method: 'GET',
@@ -183,8 +98,8 @@ angular.module("stgv2")
 					errorService.setError(getErrorMsg(response));
 				});
 			};
-			
-			$rootScope.setStudienplan = function(studienplan_id)
+
+			$rootScope.setStudienplan = function (studienplan_id)
 			{
 				$http({
 					method: 'GET',
@@ -202,8 +117,8 @@ angular.module("stgv2")
 					errorService.setError(getErrorMsg(response));
 				});
 			};
-			
-			
+
+
 			function detectIE() {
 				var ua = window.navigator.userAgent;
 
@@ -235,7 +150,7 @@ angular.module("stgv2")
 				//TODO EXCLUDE INTERNET EXPLORER
 //				alert("Internet Explorer is not Supported now. Please try Firefox or Google Chrome.");
 			}
-			
+
 			var ctrl = this;
 			ctrl.user = {
 				name: "",
@@ -264,6 +179,7 @@ angular.module("stgv2")
 			ctrl.studienordnung_id = "";
 			ctrl.statusList = "";
 
+			//TODO user Service
 			$http({
 				method: "GET",
 				url: "./api/helper/studienordnungStatus.php"
@@ -499,7 +415,7 @@ angular.module("stgv2")
 				$state.go(target, params[0]);
 			};
 		})
-		.controller("TreeGridCtrl", function ($scope, $state){
+		.controller("TreeGridCtrl", function ($scope, $state) {
 			$scope.load = function (row)
 			{
 				var target = row.attributes[0].value;

@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StoDiffController', function ($scope, $http, $state, $stateParams, errorService, $filter, successService) {
+		.controller('StoDiffController', function ($rootScope, $scope, $http, $state, $stateParams, errorService, $filter, successService, StudiengangService) {
 			$scope.studienordnung_id = $stateParams.studienordnung_id;
 			$scope.stgkz = $stateParams.stgkz;
 			var ctrl = this;
@@ -7,30 +7,21 @@ angular.module('stgv2')
 			ctrl.old = new Studienordnung();
 			ctrl.new = new Studienordnung();
 			ctrl.diff = null;
+			ctrl.studiengangList = [];
 
 			//loading Studiengang list
-			$http({
-				method: "GET",
-				url: "./api/helper/studiengang.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.studiengangList = response.data.info;
-					if($scope.stgkz !== "")
-					{
-						ctrl.old.stgkz = $scope.stgkz;
-						ctrl.old.studienordnung_id = $scope.studienordnung_id;
-						ctrl.loadStudienordnungList(ctrl.old);
-					}
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
+			StudiengangService.getStudiengangList().then(function (result) {
+				ctrl.studiengangList = result;
+			}, function (error) {
+				errorService.setError(getErrorMsg(error));
 			});
 
+			if ($scope.stgkz !== "")
+			{
+				ctrl.old.stgkz = $scope.stgkz;
+				ctrl.old.studienordnung_id = $scope.studienordnung_id;
+				ctrl.loadStudienordnungList(ctrl.old);
+			}
 
 			ctrl.loadStudienordnungList = function (selection)
 			{
@@ -56,7 +47,7 @@ angular.module('stgv2')
 				//loading diff
 				$http({
 					method: "GET",
-					url: "./api/helper/diff.php?studienordnung_id_old=" + ctrl.old.studienordnung_id+"&studienordnung_id_new="+ctrl.new.studienordnung_id
+					url: "./api/helper/diff.php?studienordnung_id_old=" + ctrl.old.studienordnung_id + "&studienordnung_id_new=" + ctrl.new.studienordnung_id
 				}).then(function success(response) {
 					if (response.data.erfolg)
 					{

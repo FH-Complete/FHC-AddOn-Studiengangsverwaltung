@@ -11,18 +11,18 @@ angular.module('stgv2').config(function ($stateProvider, $urlRouterProvider) {
 				templateUrl: './templates/pages/studiengang/stammdaten/stammdaten.html',
 				controller: "StgMainCtrl"
 			})
-			.state('stammdaten', {
-				name: 'stammdaten',
-				url: 'studiengang/:stgkz/stammdaten',
-				templateUrl: './templates/pages/studiengang/stammdaten/stammdaten.html'
-			})
 			.state('betriebsdaten', {
 				name: 'betriebsdaten',
 				url: 'studiengang/:stgkz/betriebsdaten',
 				templateUrl: './templates/pages/studiengang/betriebsdaten/betriebsdaten.html',
 				controller: function ($scope, $state, $stateParams) {
-					$state.go('betriebsdaten.bewerbung');
+					$state.go('betriebsdaten.studiengangsgruppen');
 				}
+			})
+			.state('betriebsdaten.studiengangsgruppen', {
+				name: 'betriebsdaten.studiengangsgruppen',
+				url: '/studiengangsgruppen',
+				templateUrl: './templates/pages/studiengang/stammdaten/stammdaten.html'
 			})
 			.state('betriebsdaten.bewerbung', {
 				name: 'betriebsdaten.bewerbung',
@@ -107,7 +107,7 @@ angular.module('stgv2').config(function ($stateProvider, $urlRouterProvider) {
 				url: '/studienplan/:studienplan_id',
 				templateUrl: './templates/pages/studienplan/studienplan.html',
 				controller: function ($scope, $state, $stateParams) {
-					$state.go('studienplan.metadaten');
+//					$state.go('studienplan.metadaten');
 				}
 			})
 			.state('studienplanNeu', {

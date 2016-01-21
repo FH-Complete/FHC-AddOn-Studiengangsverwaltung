@@ -462,7 +462,7 @@ class StudienordnungAddonStgv extends studienordnung
 	    $this->errormsg = 'studienordnung_id ist ungueltig';
 	    return false;
 	}
-	
+
 	if (!is_numeric($dms_id))
 	{
 	    $this->errormsg = 'dms_id ist ungueltig';
@@ -471,11 +471,11 @@ class StudienordnungAddonStgv extends studienordnung
 
 	// Dokument löschen
 	$dms = new dms();
-	if($dms->deleteDms($dms_id))
+	if ($dms->deleteDms($dms_id))
 	{
 	    $qry = "Delete FROM addon.tbl_stgv_studienordnung_dokument "
 		    . "WHERE studienordnung_id=" . $this->db_add_param($studienordnung_id, FHC_INTEGER)
-		    . " AND dms_id=".$this->db_add_param($dms_id, FHC_INTEGER);
+		    . " AND dms_id=" . $this->db_add_param($dms_id, FHC_INTEGER);
 
 	    if (!$this->db_query($qry))
 	    {
@@ -483,14 +483,67 @@ class StudienordnungAddonStgv extends studienordnung
 		return false;
 	    }
 	    return true;
-	}
-	else
+	} else
 	{
 	    $this->errormsg = 'Fehler beim Loeschen des Dokuments.';
 	    return false;
 	}
+    }
 
-	
+    /**
+     * Laedt alle Studienordnungen
+     * @return true wenn ok, false im Fehlerfall
+     */
+    public function getAll()
+    {
+
+
+
+	$qry = 'SELECT * FROM lehre.tbl_studienordnung';
+
+
+	if (!$this->db_query($qry))
+	{
+	    $this->errormsg = 'Fehler bei einer Datenbankabfrage';
+	    return false;
+	}
+
+	while ($row = $this->db_fetch_object())
+	{
+	    $obj = new studienordnung();
+
+	    $obj->studienordnung_id = $row->studienordnung_id;
+	    $obj->studiengang_kz = $row->studiengang_kz;
+	    $obj->version = $row->version;
+	    $obj->bezeichnung = $row->bezeichnung;
+	    $obj->ects = $row->ects;
+	    $obj->gueltigvon = $row->gueltigvon;
+	    $obj->gueltigbis = $row->gueltigbis;
+	    $obj->studiengangbezeichnung = $row->studiengangbezeichnung;
+	    $obj->studiengangbezeichnung_englisch = $row->studiengangbezeichnung_englisch;
+	    $obj->studiengangkurzbzlang = $row->studiengangkurzbzlang;
+	    $obj->akadgrad_id = $row->akadgrad_id;
+	    $obj->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
+	    $obj->status_kurzbz = $row->status_kurzbz;
+	    $obj->begruendung = $row->begruendung;
+	    $obj->studiengangsart = $row->studiengangsart;
+	    $obj->orgform_kurzbz = $row->orgform_kurzbz;
+	    $obj->standort_id = $row->standort_id;
+	    $obj->updateamum = $row->updateamum;
+	    $obj->updatevon = $row->updatevon;
+	    $obj->insertamum = $row->insertamum;
+	    $obj->insertvon = $row->insertvon;
+	    $obj->new = false;
+
+	    if (!is_null($studiensemester_kurzbz))
+	    {
+		$obj->studiensemester_kurzbz = $row->studiensemester_kurzbz;
+		$obj->semester = $row->semester;
+		$obj->studienordnung_semester_id = $row->studienordnung_semester_id;
+	    }
+	    $this->result[] = $obj;
+	}
+	return true;
     }
 
 }

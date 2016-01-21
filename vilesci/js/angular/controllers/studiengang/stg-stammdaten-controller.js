@@ -6,23 +6,6 @@ angular.module('stgv2')
 			ctrl.model = new Studiengangsgruppe();
 			ctrl.model.studiengang_kz = $scope.stgkz;
 			ctrl.zuordnung = false;
-			
-			$http({
-				method: 'GET',
-				url: './api/studiengang/studiengangsgruppen/studiengangsgruppen.php'
-			}).then(function success(response) {
-				
-				if (response.data.erfolg)
-				{
-					ctrl.data = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
 
 			ctrl.save = function()
 			{
@@ -102,6 +85,8 @@ angular.module('stgv2')
 					if (response.data.erfolg)
 					{
 						ctrl.zuordnung = response.data.info;
+						if(ctrl.zuordnung.data === null)
+							ctrl.loadStudiengangGruppen();
 					}
 					else
 					{
@@ -113,6 +98,26 @@ angular.module('stgv2')
 			}
 			
 			this.loadZuordnung();
+			
+			ctrl.loadStudiengangGruppen = function()
+			{
+				$http({
+					method: 'GET',
+					url: './api/studiengang/studiengangsgruppen/studiengangsgruppen.php'
+				}).then(function success(response) {
+
+					if (response.data.erfolg)
+					{
+						ctrl.data = response.data.info;
+					}
+					else
+					{
+						errorService.setError(getErrorMsg(response));
+					}
+				}, function error(response) {
+					errorService.setError(getErrorMsg(response));
+				});
+			}
 		});
 		
 function Studiengangsgruppe()

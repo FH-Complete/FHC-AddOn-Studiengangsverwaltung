@@ -4,6 +4,7 @@ angular.module('stgv2')
 		
 		//TODO get tabs from config
 		$scope.tabs = [
+			{label: 'Studiengangsgruppen', link: '.studiengangsgruppen'},
 			{label: 'Bewerbungstermine', link: '.bewerbung'},
 			{label: 'Reihungstesttermine', link: '.reihungstest'},
 			{label: 'Kosten', link: '.kosten'},

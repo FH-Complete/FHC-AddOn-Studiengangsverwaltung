@@ -1,63 +1,43 @@
 angular.module('stgv2')
-		.controller('StgBewerbungCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, $filter) {
+		.controller('StgBewerbungCtrl', function ($scope, $http, $stateParams, errorService, successService, StudiengangService, StudiensemesterService) {
 			$scope.stgkz = $stateParams.stgkz;
 			var ctrl = this;
 			ctrl.data = "";
 			ctrl.bewerbungstermin = new Bewerbungstermin();
 			ctrl.studiengangList = "";
 			ctrl.studiensemesterList = [{
-					studiensemester_kurzbz : "null",
+					studiensemester_kurzbz: "null",
 					beschreibung: "alle"
-			}];
+				}];
 			ctrl.selectedStudiensemester = null;
-			
+
 			//loading Studiensemester list
-			$http({
-				method: "GET",
-				url: "./api/helper/studiensemester.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					$.merge(ctrl.studiensemesterList, response.data.info);
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
+			StudiensemesterService.getStudiensemesterList().then(function (result) {
+				$.merge(ctrl.studiensemesterList, result);
+			}, function (error) {
+				errorService.setError(getErrorMsg(error));
 			});
-			
-			//loading StudiengangList
-			$http({
-				method: "GET",
-				url: "./api/helper/studiengang.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.studiengangList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
+
+			//loading Studiengang list
+			StudiengangService.getStudiengangList().then(function (result) {
+				ctrl.studiengangList = result;
+			}, function (error) {
+				errorService.setError(getErrorMsg(error));
 			});
-			
-			ctrl.loadDataGrid = function()
+
+			ctrl.loadDataGrid = function ()
 			{
 				$("#dataGridBewerbungstermin").datagrid({
-					url: "./api/studiengang/bewerbungstermin/bewerbungstermin.php?stgkz=" + $stateParams.stgkz+"&studiensemester_kurzbz="+ctrl.selectedStudiensemester,
+					url: "./api/studiengang/bewerbungstermin/bewerbungstermin.php?stgkz=" + $stateParams.stgkz + "&studiensemester_kurzbz=" + ctrl.selectedStudiensemester,
 					method: 'GET',
-					onLoadSuccess: function(data)
+					onLoadSuccess: function (data)
 					{
 						//Error Handling happens in loadFilter
 					},
-					onLoadError: function(){
+					onLoadError: function () {
 						//TODO Error Handling
 					},
-					loadFilter: function(data){
+					loadFilter: function (data) {
 						var result = {};
 						if (data.erfolg)
 						{
@@ -70,39 +50,39 @@ angular.module('stgv2')
 						{
 							errorService.setError(getErrorMsg(data));
 							return result;
-						}					
+						}
 					},
 					onClickRow: function (index, row)
 					{
 						ctrl.loadBewerbungsterminDetails(row);
-						if($("#save").is(":visible"))
+						if ($("#save").is(":visible"))
 							ctrl.changeButtons();
 					}
 				});
 			};
-			
+
 			ctrl.loadDataGrid();
-			
+
 			$(".datepicker").datepicker({
 				dateFormat: "yy-mm-dd",
 				firstDay: 1
 			});
 
-			ctrl.newBewerbungstermin = function()
+			ctrl.newBewerbungstermin = function ()
 			{
 				$scope.form.$setPristine();
 				$("#dataGridBewerbungstermin").datagrid("unselectAll");
 				ctrl.bewerbungstermin = new Bewerbungstermin();
 				ctrl.bewerbungstermin.studiengang_kz = $scope.stgkz;
 				ctrl.bewerbungstermin.studiensemester_kurzbz = ctrl.selectedStudiensemester;
-				if(!$("#save").is(":visible"))
+				if (!$("#save").is(":visible"))
 					ctrl.changeButtons();
 				$("#bewerbungsterminDetails").show();
 			};
-			
-			ctrl.changeButtons = function()
+
+			ctrl.changeButtons = function ()
 			{
-				if($("#save").is(":visible"))
+				if ($("#save").is(":visible"))
 				{
 					$("#save").hide();
 					$("#update").show();
@@ -115,10 +95,10 @@ angular.module('stgv2')
 					$("#delete").hide();
 				}
 			};
-			
-			ctrl.save = function()
+
+			ctrl.save = function ()
 			{
-				if($scope.form.$valid)
+				if ($scope.form.$valid)
 				{
 					var saveData = {data: ""}
 					saveData.data = ctrl.bewerbungstermin;
@@ -130,7 +110,7 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						if(response.data.erfolg)
+						if (response.data.erfolg)
 						{
 							$("#dataGridBewerbungstermin").datagrid('reload');
 							ctrl.bewerbungstermin = new Bewerbungstermin();
@@ -146,8 +126,8 @@ angular.module('stgv2')
 					});
 				}
 			};
-			
-			ctrl.loadBewerbungsterminDetails = function(row)
+
+			ctrl.loadBewerbungsterminDetails = function (row)
 			{
 				row.beginn = formatStringToDate(row.beginn.split(" ")[0]);
 				row.ende = formatStringToDate(row.ende.split(" ")[0]);
@@ -155,12 +135,12 @@ angular.module('stgv2')
 				$scope.$apply();
 				$("#bewerbungsterminDetails").show();
 			};
-			
-			ctrl.update = function()
+
+			ctrl.update = function ()
 			{
-				if($scope.form.$valid)
+				if ($scope.form.$valid)
 				{
-					var updateData = { data: ""};
+					var updateData = {data: ""};
 					updateData.data = ctrl.bewerbungstermin;
 					$http({
 						method: 'POST',
@@ -170,7 +150,7 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						if(response.data.erfolg)
+						if (response.data.erfolg)
 						{
 							$("#dataGridBewerbungstermin").datagrid('reload');
 							ctrl.bewerbungstermin = new Bewerbungstermin();
@@ -186,10 +166,10 @@ angular.module('stgv2')
 					});
 				}
 			};
-			
-			ctrl.delete = function()
+
+			ctrl.delete = function ()
 			{
-				if(confirm("Wollen Sie den Bewerbungstermin wirklich Löschen?"))
+				if (confirm("Wollen Sie den Bewerbungstermin wirklich Löschen?"))
 				{
 					var deleteData = {data: ""}
 					deleteData.data = ctrl.bewerbungstermin;
@@ -201,7 +181,7 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						if(response.data.erfolg)
+						if (response.data.erfolg)
 						{
 							$("#dataGridBewerbungstermin").datagrid('reload');
 							ctrl.newBewerbungstermin();
@@ -215,13 +195,13 @@ angular.module('stgv2')
 						errorService.setError(getErrorMsg(response));
 					});
 				}
-			};	
-			
-			$scope.$watch('ctrl.bewerbungstermin.nachfrist', function(newValue, oldValue){
-				if(newValue)
+			};
+
+			$scope.$watch('ctrl.bewerbungstermin.nachfrist', function (newValue, oldValue) {
+				if (newValue)
 				{
 					var date = new Date(ctrl.bewerbungstermin.ende);
-					date.setDate(date.getDate()+ 30);
+					date.setDate(date.getDate() + 30);
 					ctrl.bewerbungstermin.nachfrist_ende = date;
 				}
 				else
@@ -230,14 +210,14 @@ angular.module('stgv2')
 				}
 			});
 		});
-		
+
 function Bewerbungstermin()
 {
 	this.bewerbungstermin_id = "";
 	this.studiengang_kz = "";
 	this.studiensemester_kurzbz = "";
-	this.beginn = new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate());
-	this.ende = new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()+30);
+	this.beginn = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+	this.ende = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 30);
 	this.nachfrist = false;
 	this.nachfrist_ende = "";
 	this.anmerkung = "";

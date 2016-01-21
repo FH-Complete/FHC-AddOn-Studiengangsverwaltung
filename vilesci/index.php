@@ -79,6 +79,23 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script type="text/javascript" src="./js/angular/app.js"></script>
 	<script type="text/javascript" src="./js/angular/states.js"></script>
 	
+	<!-- Services -->
+	<script src="js/angular/services/AenderungsvarianteService.js" type="text/javascript"></script>
+	<script src="js/angular/services/AkadgradService.js" type="text/javascript"></script>
+	<script src="js/angular/services/OrgformService.js" type="text/javascript"></script>
+	<script src="js/angular/services/StandortService.js" type="text/javascript"></script>
+	<script src="js/angular/services/StudiengangService.js" type="text/javascript"></script>
+	<script src="js/angular/services/StudienordnungService.js" type="text/javascript"></script>
+	<script src="js/angular/services/StudienordnungStatusService.js" type="text/javascript"></script>
+	<script src="js/angular/services/StudienplanService.js" type="text/javascript"></script>
+	<script src="js/angular/services/StudiensemesterService.js" type="text/javascript"></script>
+	<script type="text/javascript" src="./js/angular/services/errorService.js"></script>
+	<script src="js/angular/services/storeService.js" type="text/javascript"></script>
+	<script type="text/javascript" src="./js/angular/services/successService.js"></script>
+	
+	<!-- Angular Storage -->
+	<script src="js/angular/angular-storage.js" type="text/javascript"></script>
+	
 	<!-- Other Controller -->
 	<script type="text/javascript" src="./js/angular/controllers/error-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/success-controller.js"></script>
@@ -115,10 +132,6 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<!-- Angular State Controllers -->
 	<script type="text/javascript" src="./js/angular/controllers/state/state-main-controller.js"></script>
 	
-	<!-- Services -->
-	<script type="text/javascript" src="./js/angular/services/errorService.js"></script>
-	<script type="text/javascript" src="./js/angular/services/successService.js"></script>
-	
 	<!-- Directives -->
 	<script type="text/javascript" src="./js/angular/directives/error-directive.js"></script>
 	<script type="text/javascript" src="./js/angular/directives/numericOnly-directive.js"></script>
@@ -131,6 +144,8 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	
 	<!-- Angular File Upload -->
 	<script src="js/angular/angular-file-upload/dist/angular-file-upload.js" type="text/javascript"></script>
+	
+	
 	
     </head>
     <body ng-controller="AppCtrl as appCtrl">

@@ -87,24 +87,24 @@ foreach($studiengang->result as $key=>$stg)
     //Children of Studiengang
 	//Child Stammdaten
 	$children = array();
-	$stammdaten = new stdClass();
-	$stammdaten->id = $key;
-	$stammdaten->text = "Stammdaten";
-
-	$stammdaten_attributes = array();
-	$stammdaten_attr = new stdClass();
-	$stammdaten_attr->name = "node_type";
-	$stammdaten_attr->value = "stammdaten";
-
-	$stammdaten_urlParams = array();
-	$stammdaten_urlParam = new stdClass();
-	$stammdaten_urlParam->stgkz = $stg->studiengang_kz;
-	array_push($stammdaten_urlParams, $stammdaten_urlParam);
-
-	$stammdaten_attr->urlParams = $stammdaten_urlParams;
-	array_push($stammdaten_attributes, $stammdaten_attr);
-	$stammdaten->attributes = $stammdaten_attributes;
-	array_push($children, $stammdaten);
+//	$stammdaten = new stdClass();
+//	$stammdaten->id = $key;
+//	$stammdaten->text = "Stammdaten";
+//
+//	$stammdaten_attributes = array();
+//	$stammdaten_attr = new stdClass();
+//	$stammdaten_attr->name = "node_type";
+//	$stammdaten_attr->value = "stammdaten";
+//
+//	$stammdaten_urlParams = array();
+//	$stammdaten_urlParam = new stdClass();
+//	$stammdaten_urlParam->stgkz = $stg->studiengang_kz;
+//	array_push($stammdaten_urlParams, $stammdaten_urlParam);
+//
+//	$stammdaten_attr->urlParams = $stammdaten_urlParams;
+//	array_push($stammdaten_attributes, $stammdaten_attr);
+//	$stammdaten->attributes = $stammdaten_attributes;
+//	array_push($children, $stammdaten);
 	
 	//Child Betriebsdaten
 	$betriebsdaten = new stdClass();

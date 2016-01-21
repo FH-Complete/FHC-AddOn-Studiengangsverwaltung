@@ -1,33 +1,35 @@
 angular.module('stgv2')
-		.controller('StplGueltigkeitCtrl', function ($scope, $http, $state, $stateParams, errorService) {
+		.controller('StplGueltigkeitCtrl', function ($scope, $http, $rootScope, $stateParams, errorService, StudienordnungService, StudienplanService, StudiensemesterService) {
 			$scope.studienplan_id = $stateParams.studienplan_id;
+			console.log($scope.studienplan_id);
+			console.log($rootScope.studienplan);
 			var ctrl = this;
 			ctrl.data = "";
 			ctrl.origin = "";
-			ctrl.studiensemesterList = "";
+			ctrl.studiensemesterList = [];
 			ctrl.studienplan = "";
 			ctrl.zuordnungList = "";
 
-			//loading Studienplan (regelstudiendauer needed)
-			$http({
-				method: 'GET',
-				url: './api/studienplan/eckdaten/eckdaten.php?studienplan_id=' + $scope.studienplan_id
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.studienplan = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
+			//loading data
+			StudienplanService.getStudienplan($scope.studienplan_id).then(function (result) {
+				ctrl.studienplan = result;
+				StudienordnungService.getStudienordnungByStudienplan($scope.studienplan_id).then(function (result) {
+					ctrl.studienplan.status_kurzbz = result.status_kurzbz;
+					StudiensemesterService.getStudiensemesterAfter(result.gueltigvon).then(function (result) {
+						ctrl.studiensemesterList = result;
+					}, function (error) {
+						errorService.setError(getErrorMsg(error));
+					});
+				}, function (error) {
+					errorService.setError(getErrorMsg(error));
+				});
+			}, function (error) {
+				errorService.setError(getErrorMsg(error));
 			});
 
 			//loading zuordnungen
-			ctrl.loadZuordnung = function()
-				{
+			ctrl.loadZuordnung = function ()
+			{
 				$http({
 					method: 'GET',
 					url: './api/studienplan/gueltigkeit/gueltigkeit.php?studienplan_id=' + $scope.studienplan_id
@@ -43,28 +45,9 @@ angular.module('stgv2')
 				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
 				});
-			}
-			ctrl.loadFutureStudiensemester = function ()
-			{
-				//loading Studiensemester list
-				$http({
-					method: "GET",
-					url: "./api/helper/futureStudiensemester.php"
-				}).then(function success(response) {
-					if (response.data.erfolg)
-					{
-						ctrl.studiensemesterList = response.data.info;
-					}
-					else
-					{
-						errorService.setError(getErrorMsg(response));
-					}
-				}, function error(response) {
-					errorService.setError(getErrorMsg(response));
-				});
-			}
+			};
+
 			ctrl.loadZuordnung();
-			ctrl.loadFutureStudiensemester();
 
 			ctrl.range = function (max)
 			{
@@ -106,7 +89,7 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						if(response.data.erfolg)
+						if (response.data.erfolg)
 						{
 							ctrl.loadZuordnung();
 							ctrl.resetForm();
@@ -125,13 +108,13 @@ angular.module('stgv2')
 			{
 				$http({
 					method: 'GET',
-					url: './api/studienplan/gueltigkeit/delete_gueltigkeit.php?studienplan_id='+$scope.studienplan_id+"&studiensemester_kurzbz="+studiensemester_kurzbz,
+					url: './api/studienplan/gueltigkeit/delete_gueltigkeit.php?studienplan_id=' + $scope.studienplan_id + "&studiensemester_kurzbz=" + studiensemester_kurzbz,
 					headers: {
 						'Content-Type': 'application/x-www-form-urlencoded'
 					}
 				}).then(function success(response) {
 					ctrl.loadZuordnung();
-					if(!response.data.erfolg)
+					if (!response.data.erfolg)
 					{
 						errorService.setError(getErrorMsg(response));
 					}
@@ -139,10 +122,10 @@ angular.module('stgv2')
 					errorService.setError(getErrorMsg(response));
 				});
 			}
-			
-			ctrl.resetForm = function()
+
+			ctrl.resetForm = function ()
 			{
-				$("input:checkbox").each(function(key, value)
+				$("input:checkbox").each(function (key, value)
 				{
 					$(value).prop("checked", false);
 				})

@@ -4,7 +4,7 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="bezeichnung">Version</label>
-					<input type="text" class="form-control input-sm"  name="bezeichnung" ng-model="ctrl.data.bezeichnung"/>
+					<input type="text" class="form-control input-sm"  name="bezeichnung" ng-model="ctrl.data.bezeichnung" required/>
 				</div>
 			</div>
 		</div>
@@ -12,7 +12,7 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="orgform">Orgform</label>
-					<select class="form-control input-sm" name="orgform" ng-model="ctrl.data.orgform_kurzbz">
+					<select class="form-control input-sm" name="orgform" ng-model="ctrl.data.orgform_kurzbz" required>
 						<option ng-repeat="orgform in ctrl.orgformList">{{orgform.orgform_kurzbz}}</option>
 					</select>
 				</div>

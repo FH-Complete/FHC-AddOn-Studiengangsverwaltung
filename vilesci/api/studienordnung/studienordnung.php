@@ -10,97 +10,78 @@ require_once('../functions.php');
 //TODO
 $DEBUG = true;
 
-$sto_array = array();
 
-$studiengang_kz = filter_input(INPUT_GET, "stgkz");
-$status = filter_input(INPUT_GET, "state");
 
-if(is_null($studiengang_kz))
-{
-    returnAJAX(false, "Variable stgkz nicht gesetzt");    
-}
-elseif(is_null($status))
-{
-    returnAJAX(false, "Variable state nicht gesetzt");
-}
-elseif(($studiengang_kz == false) || ($status == false))
-{
-    returnAJAX(false, "Fehler beim lesen der GET Variablen");    
-}
+$studienordnung_id = filter_input(INPUT_GET, "studienordnung_id");
+$studienplan_id = filter_input(INPUT_GET, "studienplan_id");
 
 $studienordnung = new StudienordnungAddonStgv();
 
-switch($status)
+if (!is_null($studienordnung_id))
 {
-    case "all":
-	$studienordnung->loadStudienordnungSTG($studiengang_kz);
-    default:
-	$studienordnung->loadStudienordnungWithStatus($studiengang_kz, $status);
-	break;
-}
-$id = 0;
-foreach($studienordnung->result as $key=>$sto)
+    $studienordnung->loadStudienordnung($studienordnung_id);
+} 
+elseif (!is_null($studienplan_id))
 {
-    $temp = new stdClass();
-    $temp->id = $id;
-    $id++;
-    $temp->studienordnung_id = $sto->studienordnung_id;
-    $temp->version = $sto->version;
-    $temp->text = $sto->bezeichnung;
-    if($key == 0 && $DEBUG)
-	$temp->state = "open";
-    else
-	$temp->state = "closed";
-    $temp->status = $sto->status_bezeichnung;
-    $temp->status_kurzbz = $sto->status_kurzbz;
-    $temp->stgkz = $sto->studiengang_kz;
-    $temp->ects = $sto->ects;
-    $temp->gueltigvon = $sto->gueltigvon;
-    $temp->gueltigbis = $sto->gueltigbis;
-    
-    //Creating attributes for treeGrid
-    $temp->attributes = array();
-    $attr = new stdClass();
-    $attr->name = "node_type";
-    $attr->value = "studienordnung";
-    $attr->urlParams = array();
-    $urlParam = new stdClass();
-    $urlParam->studienordnung_id = $sto->studienordnung_id;
-    array_push($attr->urlParams, $urlParam);
-    array_push($temp->attributes, $attr);
-    
-    $stpl_array = array();
-    $studienplan = new StudienplanAddonStgv();
-    $studienplan->loadStudienplanSTO($sto->studienordnung_id);
-    $temp->children = array();
-    
-    foreach($studienplan->result as $stpl)
+    $studienordnung->getStudienordnungFromStudienplan($studienplan_id);
+} 
+else
+{
+    $studienordnung->getAll();
+    $data = array();
+    foreach ($studienordnung->resul as $sto)
     {
-	$temp_stpl = new stdClass();
-	$temp_stpl->id = $id;
-	$id++;
-	$temp_stpl->studienplan_id = $stpl->studienplan_id;
-	$temp_stpl->text = $stpl->bezeichnung;
-	$temp_stpl->version = $stpl->version;
-	$temp_stpl->orgform_kurzbz = $stpl->orgform_kurzbz;
-	$temp_stpl->regelstudiendauer = $stpl->regelstudiendauer;
-	$temp_stpl->sprache = $stpl->sprache;
-	$temp_stpl->ects_stpl = $stpl->ects_stpl;
-	$temp_stpl->status_kurzbz = $sto->status_kurzbz;
-	
-	$temp_stpl->attributes = array();
-	$node_attr = new stdClass();
-	$node_attr->name = "node_type";
-	$node_attr->value = "studienplan";
-	$node_attr->urlParams = array();
-	$node_urlParam = new stdClass();
-	$node_urlParam->studienplan_id = $stpl->studienplan_id;
-	array_push($node_attr->urlParams, $node_urlParam);
-	array_push($temp_stpl->attributes, $node_attr);
-	array_push($temp->children, $temp_stpl);
+	$obj = new stdClass();
+	$obj->studienordnung_id = $sto->studienordnung_id;
+	$obj->studiengang_kz = $sto->studiengang_kz;
+	$obj->version = $sto->version;
+	$obj->bezeichnung = $sto->bezeichnung;
+	$obj->ects = $sto->ects;
+	$obj->gueltigvon = $sto->gueltigvon;
+	$obj->gueltigbis = $sto->gueltigbis;
+	$obj->studiengangbezeichnung = $sto->studiengangbezeichnung;
+	$obj->studiengangbezeichnung_englisch = $sto->studiengangbezeichnung_englisch;
+	$obj->studiengangkurzbzlang = $sto->studiengangkurzbzlang;
+	$obj->akadgrad_id = $sto->akadgrad_id;
+	$obj->aenderungsvariante_kurzbz = $sto->aenderungsvariante_kurzbz;
+	$obj->status_kurzbz = $sto->status_kurzbz;
+	$obj->begruendung = $sto->begruendung;
+	$obj->studiengangsart = $sto->studiengangsart;
+	$obj->orgform_kurzbz = $sto->orgform_kurzbz;
+	$obj->standort_id = $sto->standort_id;
+	$obj->updateamum = $sto->updateamum;
+	$obj->updatevon = $sto->updatevon;
+	$obj->insertamum = $sto->insertamum;
+	$obj->insertvon = $sto->insertvon;
+	array_push($data, $obj);
     }
-    
-    array_push($sto_array, $temp);
+    returnAJAX(true, $data);
 }
-returnAJAX(true, $sto_array)
+
+$data = array(
+    "studienordnung_id" => $studienordnung->studienordnung_id,
+    "studiengang_kz" => $studienordnung->studiengang_kz,
+    "version" => $studienordnung->version,
+    "bezeichnung" => $studienordnung->bezeichnung,
+    "ects" => $studienordnung->ects,
+    "gueltigvon" => $studienordnung->gueltigvon,
+    "gueltigbis" => $studienordnung->gueltigbis,
+    "studiengangbezeichnung" => $studienordnung->studiengangbezeichnung,
+    "studiengangbezeichnung_englisch" => $studienordnung->studiengangbezeichnung_englisch,
+    "studiengangkurzbzlang" => $studienordnung->studiengangkurzbzlang,
+    "akadgrad_id" => $studienordnung->akadgrad_id,
+    "aenderungsvariante_kurzbz" => $studienordnung->aenderungsvariante_kurzbz,
+    "status_kurzbz" => $studienordnung->status_kurzbz,
+    "begruendung" => $studienordnung->begruendung,
+    "studiengangsart" => $studienordnung->studiengangsart,
+    "orgform_kurzbz" => $studienordnung->orgform_kurzbz,
+    "standort_id" => $studienordnung->standort_id,
+    "updateamum" => $studienordnung->updateamum,
+    "updatevon" => $studienordnung->updatevon,
+    "insertamum" => $studienordnung->insertamum,
+    "insertvon" => $studienordnung->insertvon
+);
+
+
+returnAJAX(true, $data);
 ?>

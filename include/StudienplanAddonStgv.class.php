@@ -499,5 +499,53 @@ class StudienplanAddonStgv extends studienplan
 	}
 	return false;
     }
+    
+    
+    /**
+     * Laedt alle Studienplaene 
+     * @return boolean true wenn ok, false im Fehlerfall
+     */
+    public function getAll()
+    {
+
+	//Daten aus der Datenbank lesen
+	$qry = "SELECT * FROM lehre.tbl_studienplan";
+
+	if ($this->db_query($qry))
+	{
+	    while ($row = $this->db_fetch_object())
+	    {
+		$obj = new studienplan();
+
+		$obj->studienplan_id = $row->studienplan_id;
+		$obj->studienordnung_id = $row->studienordnung_id;
+		$obj->orgform_kurzbz = $row->orgform_kurzbz;
+		$obj->version = $row->version;
+		$obj->bezeichnung = $row->bezeichnung;
+		$obj->regelstudiendauer = $row->regelstudiendauer;
+		$obj->sprache = $row->sprache;
+		$obj->aktiv = $this->db_parse_bool($row->aktiv);
+		$obj->semesterwochen = $row->semesterwochen;
+		$obj->testtool_sprachwahl = $this->db_parse_bool($row->testtool_sprachwahl);
+		$obj->ects_stpl = $row->ects_stpl;
+		$obj->pflicht_lvs = $row->pflicht_lvs;
+		$obj->pflicht_sws = $row->pflicht_sws;
+		$obj->erlaeuterungen = $row->erlaeuterungen;
+		$obj->updateamum = $row->updateamum;
+		$obj->updatevon = $row->updatevon;
+		$obj->insertamum = $row->insertamum;
+		$obj->insertvon = $row->insertvon;
+		$obj->new = false;
+
+		$this->result[] = $obj;
+	    }
+
+	    return true;
+	} else
+	{
+	    $this->errormsg = 'Fehler bei einer Datenbankabfrage';
+	    return false;
+	}
+    }
 
 }
