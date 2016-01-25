@@ -13,25 +13,9 @@ angular.module('stgv2')
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
-//					ctrl.drawListItem("zielList_1", "test");
-//					ctrl.drawListItem("zielList_1", "test");
 					if (response.data.info.length > 0)
 					{
 						ctrl.data = response.data.info[0];
-						$(ctrl.data.data[1].elements).each(function(key, value)
-						{
-							if(value != null)
-							{
-								$(value).each(function(i, v)
-								{
-									console.log(v);
-									ctrl.drawListItem("zielList_"+key, v);
-//									ctrl.drawListItem("zielList_1", "test");
-								});
-								$compile($("#zielList_"+key))(scope);
-							}
-							
-						});
 					}
 				}
 				else
@@ -68,22 +52,24 @@ angular.module('stgv2')
 				});
 			};
 
-			ctrl.drawListItem = function (list_id, text)
-			{
-				var listItem = '<li class="list-group-item">' + text + '<span class="badge" ng-click="ctrl.removeListItem($event)"><span class="glyphicon glyphicon-trash"></span></span></li>';
-				var html = $("#" + list_id).append(listItem);
-				console.log(html);
-//				$compile($("#" + list_id))(scope);
-				ctrl.temp = [];
-			};
+//			ctrl.drawListItem = function (list_id, text)
+//			{
+//				var listItem = '<li class="list-group-item">' + text + '<span class="badge" ng-click="ctrl.removeListItem($event)"><span class="glyphicon glyphicon-trash"></span></span></li>';
+//				var html = $("#" + list_id).append(listItem);
+//				console.log(html);
+////				$compile($("#" + list_id))(scope);
+//				ctrl.temp = [];
+//			};
 
 			ctrl.addListItem = function (list_id, index)
 			{
 				if ((ctrl.temp[index-1] !== "") && (ctrl.temp[index-1] != undefined))
 				{
-					ctrl.drawListItem(list_id, ctrl.temp[index-1]);
-					$compile($("#" + list_id))(scope);
-					ctrl.parseJson();
+					ctrl.data.data[1].elements[index].push(ctrl.temp[index-1]);
+					ctrl.temp = [];
+//					ctrl.drawListItem(list_id, ctrl.temp[index-1]);
+//					$compile($("#" + list_id))(scope);
+//					ctrl.parseJson();
 				}
 			};
 
@@ -97,21 +83,17 @@ angular.module('stgv2')
 			ctrl.parseJson = function ()
 			{
 				var elements = []
-				console.log(elements);
 				$("#zielList_1 li").each(function (key, value)
 				{
 					elements.push($(value).text());
 				});
 				ctrl.data.data[1].elements[1] = elements;
-				console.log(elements);
 				elements = [];
 				$("#zielList_2 li").each(function (key, value)
 				{
 					elements.push($(value).text());
 				});
 				ctrl.data.data[1].elements[2] = elements;
-				console.log(elements);
-				console.log(ctrl.data);
 			};
 		});
 

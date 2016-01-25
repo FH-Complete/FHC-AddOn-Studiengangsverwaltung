@@ -16,7 +16,7 @@
 			<div class="row">
 				<div class="col-sm-8">
 					<div class="form-group">
-						<textarea class="form-control" rows="5" ng-model="ele.fixed[0]"></textarea>
+						<textarea class="form-control" rows="10" ng-model="ele.fixed[0]"></textarea>
 					</div>
 				</div>
 			</div>
@@ -26,11 +26,11 @@
 					<div class="input-group">
 						<input type="text" class="form-control" ng-model="ctrl.temp[$index]"/>
 						<span class="input-group-btn">
-							<button class="btn btn-primary" type="button" ng-click="ctrl.addListItem('list_'+($index+1), $index+1)">hinzufügen</button>
+							<button class="btn btn-primary" type="button" ng-click="ctrl.addListItem('zielList_'+($index+1), $index+1)">Aufzählung hinzufügen</button>
 						</span>
 					</div>
 					<ul id="zielList_{{$index+1}}" class="list-group">
-					
+						<li ng-repeat="item in ctrl.data.data[1].elements[$index+1]" class="list-group-item">{{item}}<span class="badge" ng-click="ctrl.removeListItem($event)"><span class="glyphicon glyphicon-trash"></span></span></li>
 					</ul>
 				</div>
 			</div>

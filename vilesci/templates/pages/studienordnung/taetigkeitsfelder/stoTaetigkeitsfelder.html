@@ -4,7 +4,7 @@
 			<div class="col-sm-8">
 				<h4>Überblick</h4>
 				<div class="form-group">
-					<textarea class="form-control" rows="5" name='ueberblick' ng-model="ctrl.data.ueberblick"></textarea>
+					<textarea class="form-control" rows="10" name='ueberblick' ng-model="ctrl.data.ueberblick"></textarea>
 				</div>
 			</div>
 		</div>
@@ -15,7 +15,7 @@
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="" ng-model="ctrl.temp.branchen"/>
 					<span class="input-group-btn">
-						<button class="btn btn-primary" type="button" ng-click="ctrl.addListItem('list_branchen', 'branchen')">hinzufügen</button>
+						<button class="btn btn-primary" type="button" ng-click="ctrl.addListItem('list_branchen', 'branchen')">Aufzählung hinzufügen</button>
 					</span>
 				</div>
 				<ul id="list_branchen" class="list-group">
@@ -30,7 +30,7 @@
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="" ng-model="ctrl.temp.positionen"/>
 					<span class="input-group-btn">
-						<button class="btn btn-primary" type="button" ng-click="ctrl.addListItem('list_positionen', 'positionen')">hinzufügen</button>
+						<button class="btn btn-primary" type="button" ng-click="ctrl.addListItem('list_positionen', 'positionen')">Aufzählung hinzufügen</button>
 					</span>
 				</div>
 				<ul id="list_positionen" class="list-group">
@@ -45,7 +45,7 @@
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="" ng-model="ctrl.temp.aufgaben"/>
 					<span class="input-group-btn">
-						<button class="btn btn-primary" type="button" ng-click="ctrl.addListItem('list_aufgaben', 'aufgaben')">hinzufügen</button>
+						<button class="btn btn-primary" type="button" ng-click="ctrl.addListItem('list_aufgaben', 'aufgaben')">Aufzählung hinzufügen</button>
 					</span>
 				</div>
 				<ul id="list_aufgaben" class="list-group">
