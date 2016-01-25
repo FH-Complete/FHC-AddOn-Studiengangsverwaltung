@@ -8,20 +8,21 @@ angular.module('stgv2')
 			ctrl.new = new Studienordnung();
 			ctrl.diff = null;
 			ctrl.studiengangList = [];
+			ctrl.collapsed = true;
+			ctrl.stateUrl = $state.current.url;
 
 			//loading Studiengang list
 			StudiengangService.getStudiengangList().then(function (result) {
 				ctrl.studiengangList = result;
+				if ($scope.stgkz !== "")
+				{
+					ctrl.old.stgkz = $scope.stgkz;
+					ctrl.old.studienordnung_id = $scope.studienordnung_id;
+					ctrl.loadStudienordnungList(ctrl.old);
+				}
 			}, function (error) {
 				errorService.setError(getErrorMsg(error));
 			});
-
-			if ($scope.stgkz !== "")
-			{
-				ctrl.old.stgkz = $scope.stgkz;
-				ctrl.old.studienordnung_id = $scope.studienordnung_id;
-				ctrl.loadStudienordnungList(ctrl.old);
-			}
 
 			ctrl.loadStudienordnungList = function (selection)
 			{
@@ -41,7 +42,7 @@ angular.module('stgv2')
 				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
 				});
-			}
+			};
 
 			ctrl.loadDiff = function () {
 				//loading diff
@@ -52,6 +53,9 @@ angular.module('stgv2')
 					if (response.data.erfolg)
 					{
 						ctrl.diff = response.data.info;
+						angular.forEach(ctrl.diff, function (value, index) {
+							ctrl.collapsed[index] = false;
+						});
 					}
 					else
 					{
@@ -60,8 +64,7 @@ angular.module('stgv2')
 				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
 				});
-			}
-
+			};
 		});
 
 function Studienordnung()

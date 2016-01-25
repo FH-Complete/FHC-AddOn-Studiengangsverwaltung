@@ -1,5 +1,6 @@
-<div style="width: 100%; height: 100%;">
-	<ul class="nav nav-tabs" ng-controller="studienplanTabCtrl">
+<div style="width: 100%; height: 100%;" ng-controller="studienplanTabCtrl">
+
+	<ul class="nav nav-tabs" >
 	  <li ng-repeat="tab in tabs" tab="tab" ng-class="getTabClass(tab)"><a ui-sref="{{tab.link}}" ng-click="setSelectedTab(tab)">{{tab.label}}</a></li>
 	</ul>
 	<div style="height: 100%;" ui-view></div>

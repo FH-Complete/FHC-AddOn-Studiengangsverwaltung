@@ -61,6 +61,7 @@ foreach($studiengang->result as $key=>$stg)
     $temp = new stdClass();
     $temp->id = $stg->studiengang_kz;
     $temp->stgkz = $stg->studiengang_kz;
+    $temp->studiengang_kz = $stg->studiengang_kz;
     $temp->kurzbzlang = $stg->kurzbzlang;
     //TODO Stg Bezeichnung von jüngster aktiven STO holen
     $temp->bezeichnung = $stg->bezeichnung;

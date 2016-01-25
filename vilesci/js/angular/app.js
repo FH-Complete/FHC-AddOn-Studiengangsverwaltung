@@ -3,7 +3,7 @@ var stgv2 = angular.module("stgv2", ['ui.router', 'ngSanitize', 'angularFileUplo
 });
 
 angular.module("stgv2")
-		.controller("AppCtrl", function ($rootScope, errorService, $http, StudiengangService, StoreService)
+		.controller("AppCtrl", function ($rootScope, errorService, $http, StudiengangService, StoreService, StudienordnungService, StudienplanService)
 		{
 			var storeList = ["studiengangList", "standortList","orgformList","aenderungsvarianteList","akadgradList","studiensemesterList","studienordnungStatusList","studienplan"];
 			
@@ -77,46 +77,59 @@ angular.module("stgv2")
 				}
 			};
 
-			$rootScope.studienordnung = null;
-			$rootScope.studienplan = null;
-
-			$rootScope.setStudienordnung = function (studienordnung_id)
-			{
-				$http({
-					method: 'GET',
-					url: './api/studienordnung/metadaten/metadaten.php?studienordnung_id=' + studienordnung_id
-				}).then(function success(response) {
-					if (response.data.erfolg)
-					{
-						$rootScope.studienordnung = response.data.info;
-					}
-					else
-					{
-						errorService.setError(getErrorMsg(response));
-					}
-				}, function error(response) {
-					errorService.setError(getErrorMsg(response));
-				});
-			};
-
-			$rootScope.setStudienplan = function (studienplan_id)
-			{
-				$http({
-					method: 'GET',
-					url: './api/studienplan/eckdaten/eckdaten.php?studienplan_id=' + studienplan_id
-				}).then(function success(response) {
-					if (response.data.erfolg)
-					{
-						$rootScope.studienplan = response.data.info;
-					}
-					else
-					{
-						errorService.setError(getErrorMsg(response));
-					}
-				}, function error(response) {
-					errorService.setError(getErrorMsg(response));
-				});
-			};
+//			$rootScope.studienordnung = null;
+//			$rootScope.studienplan = null;
+//
+//			$rootScope.setStudienordnung = function (studienordnung_id)
+//			{
+//				StudienordnungService.getStudienordnung(studienordnung_id).then(function(result){
+//					$rootScope.studienordnung = result;
+//				},function(error){
+//					
+//				});
+//				
+//				
+////				$http({
+////					method: 'GET',
+////					url: './api/studienordnung/metadaten/metadaten.php?studienordnung_id=' + studienordnung_id
+////				}).then(function success(response) {
+////					if (response.data.erfolg)
+////					{
+////						$rootScope.studienordnung = response.data.info;
+////					}
+////					else
+////					{
+////						errorService.setError(getErrorMsg(response));
+////					}
+////				}, function error(response) {
+////					errorService.setError(getErrorMsg(response));
+////				});
+//			};
+//
+//			$rootScope.setStudienplan = function (studienplan_id)
+//			{
+//				StudienplanService.getStudienplan(studienplan_id).then(function(result){
+//					$rootScope.studienplan = result;
+//				},function(error){
+//					
+//				});
+//				
+////				$http({
+////					method: 'GET',
+////					url: './api/studienplan/eckdaten/eckdaten.php?studienplan_id=' + studienplan_id
+////				}).then(function success(response) {
+////					if (response.data.erfolg)
+////					{
+////						$rootScope.studienplan = response.data.info;
+////					}
+////					else
+////					{
+////						errorService.setError(getErrorMsg(response));
+////					}
+////				}, function error(response) {
+////					errorService.setError(getErrorMsg(response));
+////				});
+//			};
 
 
 			function detectIE() {
@@ -331,7 +344,7 @@ angular.module("stgv2")
 				}
 			};
 		})
-		.controller("studienordnungTabCtrl", function ($scope, $stateParams, $state) {
+		.controller("studienordnungTabCtrl", function ($scope, $state, $filter) {
 			//TODO tabs from config
 			$scope.tabs = [
 				{label: 'Metadaten', link: '.metadaten'},
@@ -347,6 +360,16 @@ angular.module("stgv2")
 			$scope.setSelectedTab = function (tab)
 			{
 				$scope.selectedTab = tab;
+			};
+			
+			//set substate from url
+			var substate = $state.current.name.split(".");
+			if(substate.length === 2)
+			{
+				substate = "."+substate[1];
+				var tab = $filter('filter')($scope.tabs,{link:substate},true);
+				if(tab.length === 1)
+					$scope.setSelectedTab(tab[0]);
 			}
 
 			$scope.getTabClass = function (tab)
@@ -361,8 +384,12 @@ angular.module("stgv2")
 				}
 			}
 		})
-		.controller("studienplanTabCtrl", function ($scope) {
+		.controller("studienplanTabCtrl", function ($scope, $state, $filter) {
 			//TODO tabs from config
+	
+			console.log($scope);
+			console.log($state);
+	
 			$scope.tabs = [
 				{label: 'Metadaten', link: '.metadaten'},
 				{label: 'Eckdaten', link: '.eckdaten'},
@@ -391,6 +418,16 @@ angular.module("stgv2")
 					$('#layoutWrapper').layout('collapse', 'west');
 					$('#centerLayout').layout('collapse', 'north');
 				}
+			};
+			
+			//set substate from url
+			var substate = $state.current.name.split(".");
+			if(substate.length === 2)
+			{
+				substate = "."+substate[1];
+				var tab = $filter('filter')($scope.tabs,{link:substate},true);
+				if(tab.length === 1)
+					$scope.setSelectedTab(tab[0]);
 			}
 
 			$scope.getTabClass = function (tab)
@@ -408,10 +445,13 @@ angular.module("stgv2")
 		.controller("TreeCtrl", function ($scope, $state) {
 			$scope.load = function (ele)
 			{
+				
 				var target = $(ele).attr("node_type");
 				var parent = $(ele).parent();
 				var node = $('#west_tree').tree("getNode", parent);
 				var params = node.attributes[0].urlParams;
+				console.log(target);
+				console.log(params[0]);
 				$state.go(target, params[0]);
 			};
 		})

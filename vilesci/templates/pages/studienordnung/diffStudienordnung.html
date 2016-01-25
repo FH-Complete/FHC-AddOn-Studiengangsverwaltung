@@ -5,7 +5,7 @@
 				<div class="form-group">
 					<label for="studiengang">Studiengang</label>
 					<select class="form-control input-sm" name="studiengang" ng-model="stoCtrl.old.stgkz" ng-change="stoCtrl.loadStudienordnungList(stoCtrl.old)">
-						<option ng-repeat="stg in studiengangList" value="{{stg.studiengang_kz}}">{{stg.kurzbzlang}} - {{stg.bezeichnung}}</option>
+						<option ng-repeat="stg in stoCtrl.studiengangList" value="{{stg.studiengang_kz}}">{{stg.kurzbzlang}} - {{stg.bezeichnung}}</option>
 					</select>
 				</div>
 			</div>
@@ -13,7 +13,7 @@
 				<div class="form-group">
 					<label for="studiengang">Studiengang</label>
 					<select class="form-control input-sm" name="studiengang" ng-model="stoCtrl.new.stgkz" ng-change="stoCtrl.loadStudienordnungList(stoCtrl.new)">
-						<option ng-repeat="stg in studiengangList" value="{{stg.studiengang_kz}}">{{stg.kurzbzlang}} - {{stg.bezeichnung}}</option>
+						<option ng-repeat="stg in stoCtrl.studiengangList" value="{{stg.studiengang_kz}}">{{stg.kurzbzlang}} - {{stg.bezeichnung}}</option>
 					</select>
 				</div>
 			</div>
@@ -46,18 +46,31 @@
 			</div>
 		</div>
 	</form>
-	<table class="table" width="800" ng-show="stoCtrl.diff != null">
-		<thead>
-			<th width="250">Eigenschaft</th>
-			<th width="350">{{stoCtrl.diff.bezeichnung.old}}</th>
-			<th width="350">{{stoCtrl.diff.bezeichnung.new}}</th>
-		</thead>
-		<tbody>
-			<tr ng-repeat="(prop,diff) in stoCtrl.diff">
-				<td>{{prop}}</td>
-				<td ng-bind-html="diff.old"></td>
-				<td ng-bind-html="diff.diff"></td>
-			</tr>
-		</tbody>
-	</table>
-</div>
+	<div ng-repeat="(header, item) in stoCtrl.diff">
+		<div class="row">
+			<div class="col-sm-10">
+				<a href="#" ng-model="collapse[header]" ng-click="collapse[header] = !collapse[header]"><h2>{{header}}</h2></a>
+			</div>
+		</div>
+		<div>
+			<div class="row">
+				<div class="col-sm-3 bold">{{prop}}</div>
+				<div class="col-sm-3" ng-bind-html="diff.old"></div>
+				<div class="col-sm-3" ng-bind-html="diff.diff"></div>
+			</div>
+			<table class="table" width="800" ng-show="collapse[header]" ng-repeat="(header, item) in stoCtrl.diff">
+				<thead>
+				<th width="250"></th>
+				<th width="350"></th>
+				<th width="350"></th>
+				</thead>
+				<tbody>
+					<tr ng-repeat="(prop,diff) in item">
+						<td class="bold">{{prop}}</td>
+						<td ng-bind-html="diff.old"></td>
+						<td ng-bind-html="diff.diff"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>

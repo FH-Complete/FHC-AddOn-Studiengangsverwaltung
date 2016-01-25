@@ -2,7 +2,6 @@ angular.module('stgv2')
 		.controller('StoQualifikationszieleCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, $compile) {
 			$scope.studienordnung_id = $stateParams.studienordnung_id;
 			var ctrl = this;
-			var scope = $scope;
 			ctrl.data = new Qualifikationsziel();
 			ctrl.data.studienordnung_id = $scope.studienordnung_id;
 			ctrl.temp = [];
@@ -52,24 +51,12 @@ angular.module('stgv2')
 				});
 			};
 
-//			ctrl.drawListItem = function (list_id, text)
-//			{
-//				var listItem = '<li class="list-group-item">' + text + '<span class="badge" ng-click="ctrl.removeListItem($event)"><span class="glyphicon glyphicon-trash"></span></span></li>';
-//				var html = $("#" + list_id).append(listItem);
-//				console.log(html);
-////				$compile($("#" + list_id))(scope);
-//				ctrl.temp = [];
-//			};
-
 			ctrl.addListItem = function (list_id, index)
 			{
 				if ((ctrl.temp[index-1] !== "") && (ctrl.temp[index-1] != undefined))
 				{
 					ctrl.data.data[1].elements[index].push(ctrl.temp[index-1]);
 					ctrl.temp = [];
-//					ctrl.drawListItem(list_id, ctrl.temp[index-1]);
-//					$compile($("#" + list_id))(scope);
-//					ctrl.parseJson();
 				}
 			};
 

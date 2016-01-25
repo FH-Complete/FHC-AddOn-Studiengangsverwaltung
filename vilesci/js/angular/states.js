@@ -54,7 +54,9 @@ angular.module('stgv2').config(function ($stateProvider, $urlRouterProvider) {
 				url: '/studienordnung/:studienordnung_id',
 				templateUrl: './templates/pages/studienordnung/studienordnung.html',
 				controller: function ($scope, $state, $stateParams) {
-					$state.go('studienordnung.metadaten');
+					if($state.current.name === "studienordnung")
+						$state.go('studienordnung.metadaten');
+					
 				}
 			})
 			.state('studienordnungNeu', {
@@ -106,8 +108,9 @@ angular.module('stgv2').config(function ($stateProvider, $urlRouterProvider) {
 				name: 'studienplan',
 				url: '/studienplan/:studienplan_id',
 				templateUrl: './templates/pages/studienplan/studienplan.html',
-				controller: function ($scope, $state, $stateParams) {
-//					$state.go('studienplan.metadaten');
+				controller: function ($scope, $state, $stateParams, $rootScope) {
+					if($state.current.name === "studienplan")
+						$state.go('studienplan.metadaten');
 				}
 			})
 			.state('studienplanNeu', {

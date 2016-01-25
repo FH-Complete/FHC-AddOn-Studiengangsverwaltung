@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.factory("StudienordnungService", function ($http, $q, StoreService, $filter) {
+		.factory("StudienordnungService", function ($http, $q, StoreService) {
 			var storeId = "studienordnung";
 			var getStudienordnung = function (studienordnung_id)
 			{

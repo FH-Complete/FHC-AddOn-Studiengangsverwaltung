@@ -1,8 +1,6 @@
 angular.module('stgv2')
 		.controller('StplGueltigkeitCtrl', function ($scope, $http, $rootScope, $stateParams, errorService, StudienordnungService, StudienplanService, StudiensemesterService) {
 			$scope.studienplan_id = $stateParams.studienplan_id;
-			console.log($scope.studienplan_id);
-			console.log($rootScope.studienplan);
 			var ctrl = this;
 			ctrl.data = "";
 			ctrl.origin = "";
