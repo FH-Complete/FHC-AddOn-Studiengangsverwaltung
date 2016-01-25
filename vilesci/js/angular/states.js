@@ -167,5 +167,9 @@ angular.module('stgv2').config(function ($stateProvider, $urlRouterProvider) {
 				url: '/state/:stgkz/:state',
 				name: 'state',
 				controller: "StateMainCtrl"
+			}).state('stateAll', {
+				url: '/state/:stgkz/all',
+				name: 'stateAll',
+				controller: "StateMainCtrl"
 			});
 });

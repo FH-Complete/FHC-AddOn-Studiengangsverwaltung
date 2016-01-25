@@ -134,6 +134,21 @@ foreach($studiengang->result as $key=>$stg)
 	$studienordnungen = new stdClass();
 	$studienordnungen->id = $key;
 	$studienordnungen->text = "Studienordnungen";
+	$node_attributes = array();
+	$node_attr = new stdClass();
+	$node_attr->name = "node_type";
+	$node_attr->value = "state";
+	
+	$node_urlParams = array();
+	$node_urlParam = new stdClass();
+	$node_urlParam->stgkz = $stg->studiengang_kz;
+	$node_urlParam->state = "all";
+	array_push($node_urlParams, $node_urlParam);
+	
+	$node_attr->urlParams = $node_urlParams;
+	array_push($node_attributes, $node_attr);
+	$studienordnungen->attributes = $node_attributes;
+	
 	if($key == 0 && $DEBUG)
 	    $studienordnungen->state = "open";
 	else
