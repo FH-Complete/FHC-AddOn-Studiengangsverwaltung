@@ -5,41 +5,7 @@
         }
     </script>
 	<div id="stplTree">
-		<table id="stplTreeGrid" class="easyui-treegrid" 
-			   data-options="
-					url: '',
-					method: 'get',
-					rownumbers: true,
-					idField: 'id',
-					treeField: 'name',
-					fit: true,
-					onContextMenu: function(e ,row)
-					{
-						if (row){
-							console.log(row);
-							console.log($(this).treegrid('select', row.id));
-							e.preventDefault();
-							$(this).treegrid('select', row.id);
-							$('#stplTreeGridContextMenu').menu('show');
-							$('#stplTreeGridContextMenu').menu('show',{
-								left: e.pageX,
-								top: e.pageY
-							});                
-						}
-					}
-				">
-			<thead>
-				<tr>
-					<th data-options="field: 'name', editor:'text'" width="300">Lehrveranstaltung</th>
-					<th data-options="field: 'ects',align: 'right', editor:'numberbox'">ECTS</th>
-					<th data-options="field: 'semesterstunden',align: 'right', editor:'numberbox'">Semesterstunden</th>
-					<th data-options="field: 'lehrform_kurzbz',align: 'right', editor:'text'">Lehrform</th>
-					<th data-options="field: 'lvnr',align: 'right', editor:'numberbox'">LVNR</th>
-					<th data-options="field: 'benotung',align: 'right', editor:'checkbox'">Benotung</th>
-					<th data-options="field: 'zeugnis',align: 'right', editor:'checkbox'">Zeugnis</th>
-					<th data-options="field: 'lvinfo',align: 'right', editor:'checkbox'">LV-Info</th>
-				</tr>
-			</thead>
+		<table id="stplTreeGrid" class="easyui-treegrid">
 		</table>
 		<div id="stplTreeGridContextMenu" class="easyui-menu" style="width:120px;">
 			<div ng-click='stplCtrl.removeStudienplanLehrveranstaltung()' data-options="iconCls:'icon-remove'">Remove</div>

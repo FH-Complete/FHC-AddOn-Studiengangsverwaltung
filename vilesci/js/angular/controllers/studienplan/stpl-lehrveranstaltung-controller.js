@@ -37,26 +37,34 @@ angular.module('stgv2')
 					url: "./api/studienplan/lehrveranstaltungen/lehrveranstaltungTree.php?studienplan_id=" + $scope.studienplan_id,
 					idField: "id",
 					treeField: "name",
-//                                        onDblClickCell: function(index,field,value){
-//                                            console.log(index);
-//                                            console.log(field);
-//                                            console.log(value);
-//                                            $('#stplTreeGrid').treegrid('beginEdit', field.id);
-//                                            console.log($('#stplTreeGrid').treegrid('getEditor', {index:field.id,field:index}));
-//                                            var ed = $('#stplTreeGrid').treegrid('getEditor', {index:index,field:field});
-//                                            console.log(ed);
-////                                            $(ed.target).focus();
-//                                        },
-//                                        onBeginEdit: function(index, row)
-//                                        {
-//                                            console.log(index);
-//                                            console.log(row);
-//                                        },
-//                                        onBeforeEdit: function(index, row)
-//                                        {
-//                                            console.log(index);
-//                                            console.log(row);
-//                                        },
+					rownumbers: true,
+					fit: true,
+					columns: [[
+						{field: 'name', editor:'text', width:'300', title:'Lehrveranstaltung'},
+						{field: 'ects',align: 'right', editor:'numberbox', title:'ECTS'},
+						{field: 'semesterstunden',align: 'right', editor:'numberbox', title:'Semesterstunden'},
+						{field: 'lehrform_kurzbz',align: 'right', editor:'text', title:'Lehrform'},
+						{field: 'lvnr',align: 'right', editor:'numberbox', title:'LVNR'},
+						{field: 'benotung',align: 'right', editor:'checkbox', title:'Benotung'},
+						{field: 'zeugnis',align: 'right', editor:'checkbox', title:'Zeugnis'},
+						{field: 'lvinfo',align: 'right', editor:'checkbox', title:'LV-Info'},
+						{field: 'curriculum',align: 'right', editor:'checkbox', title:'Curriculum'},
+						{field: 'stpllv_pflicht',align: 'right', editor:'checkbox', title:'Pflicht'}
+					]],
+					onContextMenu: function(e ,row)
+					{
+						if (row){
+							console.log(row);
+							console.log($(this).treegrid('select', row.id));
+							e.preventDefault();
+							$(this).treegrid('select', row.id);
+							$('#stplTreeGridContextMenu').menu('show');
+							$('#stplTreeGridContextMenu').menu('show',{
+								left: e.pageX,
+								top: e.pageY
+							});                
+						}
+					},
 					rowStyler: function(row)
 					{
 						
@@ -522,6 +530,8 @@ function generateChildren(item, sem)
 	node.benotung = item.benotung;
 	node.zeugnis = item.zeugnis;
 	node.lvinfo = item.lvinfo;
+	node.curriculum = item.curriculum;
+	node.stpllv_pflicht = item.stpllv_pflicht;
 	if (children.length != 0)
 	{
 		node.children = children;

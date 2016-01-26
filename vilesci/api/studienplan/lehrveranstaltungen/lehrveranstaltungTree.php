@@ -21,5 +21,7 @@ elseif(($studienplan_id == false))
 $lehrveranstaltung = new lehrveranstaltung();
 $data = $lehrveranstaltung->getLvTree($studienplan_id);
 
+//var_dump($data);
+
 returnAJAX(true, $data);
 ?>

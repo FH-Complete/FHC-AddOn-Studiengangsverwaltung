@@ -916,6 +916,18 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_berufspraktikum LIMI
 	echo ' addon.tbl_stgv_berufspraktikum: Tabelle hinzugefuegt<br>';
 }
 
+//Spalte curriculum in lehre.tbl_studienordnung_lehrveranstaltung
+if (!$result = @$db->db_query("SELECT curriculum FROM lehre.tbl_studienplan_lehrveranstaltung LIMIT 1;"))
+{
+    $qry = "ALTER TABLE lehre.tbl_studienplan_lehrveranstaltung ADD COLUMN curriculum BOOLEAN DEFAULT TRUE;";
+    
+    if (!$db->db_query($qry))
+	echo '<strong>lehre.tbl_studienplan_lehrveranstaltung: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' lehre.tbl_studienplan_lehrveranstaltung: Spalte curriculum hinzugefügt.<br>';
+    
+}
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
