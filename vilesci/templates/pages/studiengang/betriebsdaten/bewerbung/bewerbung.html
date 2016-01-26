@@ -2,7 +2,7 @@
 	<div class="col-sm-2">
 		<label>&nbsp;</label>
 		<div>
-			<button class='btn btn-default btn-sm' ng-click='ctrl.newBewerbungstermin()' id="newBewerbungstermin">neuer Bewerbungstermin</button>
+			<button class='btn btn-default btn-sm' ng-click='ctrl.newBewerbungstermin()' id="newBewerbungstermin">neue Bewerbungsfrist</button>
 		</div>
 	</div>
 	<div class="col-sm-2">
@@ -15,18 +15,8 @@
 	</br>
 	</br>
 	</br>
-	<table id="dataGridBewerbungstermin" class="easyui-datagrid" data-options="url: '', method: 'get', singleSelect:true" style='height: 200px;'>
-		<thead>
-			<tr>
-				<th data-options="field: 'bewerbungstermin_id',align: 'right'"><span class="table-header">ID</span></th>
-				<th data-options="field: 'studiengang_kz',align:'right', sortable: 'true'"><span class="table-header">STG KZ</span></th>
-				<th data-options="field: 'studiensemester_kurzbz',align:'right', sortable: 'true'"><span class="table-header">Studiensemester</span></th>
-				<th data-options="field: 'beginn',align:'left'" formatter='formatDateToString'><span class="table-header">Beginn</span></th>
-				<th data-options="field: 'ende',align:'left'" formatter='formatDateToString'><span class="table-header">Ende</span></th>
-				<th data-options="field: 'nachfrist',align:'left'"><span class="table-header">Nachfrist</span></th>
-				<th data-options="field: 'nachfrist_ende',align:'left'" formatter='formatDateToString'><span class="table-header">Ende Nachfrist</span></th>
-			</tr>
-		</thead>
+	<table id="dataGridBewerbungstermin" class="easyui-datagrid" style='height: 200px;'>
+		
 	</table>
 	</br>
 	<form id="bewerbungsterminDetails" name="form" onsubmit="return false;" style="display: none;" novalidate>
@@ -67,14 +57,14 @@
 		<div class="row">
 			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.beginn.$error.required || form.beginn.$error.date))}">
-					<label for="beginn">Beginn</label>
+					<label for="beginn">Beginn Bewerbungsfrist</label>
 					<input type="date" class="form-control input-sm datepicker" name="beginn" ng-model="ctrl.bewerbungstermin.beginn" required/>
 					<span ng-show="form.beginn.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.ende.$error.required || form.ende.$error.date))}">
-					<label for="ende">Ende</label>
+					<label for="ende">Ende Bewerbungsfrist</label>
 					<input type="date" class="form-control input-sm datepicker" name="ende" ng-model="ctrl.bewerbungstermin.ende" required/>
 					<span ng-show="form.ende.$error.date">Kein gültiges Datum!</span>
 				</div>
@@ -101,7 +91,7 @@
 			<div class="col-sm-5">
 				<div class="form-group">
 					<label for="anmerkung">Anmerkung</label>
-					<input type="text" class="form-control input-sm" name="anmerkung" ng-model="ctrl.bewerbungstermin.anmerkung"/>
+					<textarea class="form-control input-sm" rows="5" name='anmerkung' ng-model="ctrl.bewerbungstermin.anmerkung"></textarea>
 				</div>
 			</div>
 		</div>

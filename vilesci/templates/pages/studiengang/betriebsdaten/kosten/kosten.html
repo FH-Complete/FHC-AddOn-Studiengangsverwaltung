@@ -2,7 +2,7 @@
 	<!--TODO Kosten je Studiengang anzeigen-->
 	<div class="list-group col-sm-4">
 		<a href="#" class="list-group-item" ng-repeat="typ in ctrl.data" ng-if="typ.buchungstyp_kurzbz != 'Leistungsstipendium' && typ.buchungstyp_kurzbz !='Sonstiges' && typ.buchungstyp_kurzbz !='Kaution'">
-			<h4 class="list-group-item-heading">{{typ.beschreibung}}</h4>
+			<h5 class="list-group-item-heading">{{typ.beschreibung}}</h5>
 			<p class="list-group-item-text">Betrag: {{typ.standardbetrag * -1 | currency : "€ ":2}}</p>
 		</a>
 	</div>

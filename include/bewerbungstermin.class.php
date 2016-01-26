@@ -104,15 +104,15 @@ class bewerbungstermin extends basis_db
 	/**
 	 * Liefert alle Förderverträge
 	 */
-	public function getBewerbungstermine($studiengang_kz, $studiensemester_kurzbz=null, $sort=null, $order=null)
+	public function getBewerbungstermine($studiengang_kz, $studiensemester_kurzbz=null, $sort=null)
 	{
 		$qry = "SELECT * FROM addon.tbl_stgv_bewerbungstermine WHERE studiengang_kz=".$this->db_add_param($studiengang_kz, FHC_INTEGER);
 		if($studiensemester_kurzbz!=null)
 			$qry.=" AND studiensemester_kurzbz=".$this->db_add_param($studiensemester_kurzbz);
 		
-		if($sort != null && $order != null)
+		if($sort != null)
 		{
-		    $qry.=" ORDER BY ".$sort." ".$order;
+		    $qry.=" ORDER BY ".$sort;
 		}
 		$qry.=";";
 		

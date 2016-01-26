@@ -4,12 +4,12 @@ angular.module('stgv2')
 		
 		//TODO get tabs from config
 		$scope.tabs = [
-			{label: 'Studiengangsgruppen', link: '.studiengangsgruppen'},
-			{label: 'Bewerbungstermine', link: '.bewerbung'},
+			{label: 'Bewerbungsfristen', link: '.bewerbung'},
 			{label: 'Reihungstesttermine', link: '.reihungstest'},
 			{label: 'Kosten', link: '.kosten'},
 			{label: 'Förderungen', link: '.foerderungen'},
-			{label: 'Doktorat', link: '.doktorat'}
+			{label: 'Doktorat', link: '.doktorat'},
+			{label: 'Studiengangsgruppen', link: '.studiengangsgruppen'}
 		];
 			
 		$scope.selectedTab = $scope.tabs[0];

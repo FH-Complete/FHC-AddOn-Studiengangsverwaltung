@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StgMainCtrl', function ($scope, $http, $state, $stateParams, errorService) {
-
+		.controller('StgMainCtrl', function ($state) {
+			console.log($state);
 //			$state.go('stammdaten', {"stgkz": $stateParams.stgkz});
 		});

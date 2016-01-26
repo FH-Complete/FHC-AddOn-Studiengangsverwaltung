@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StgReihungstestCtrl', function ($scope, $http, $state, $stateParams,errorService,successService) {
+		.controller('StgReihungstestCtrl', function ($scope, $http, $stateParams, errorService, successService, StudiensemesterService, OrtService) {
 			$scope.stgkz = $stateParams.stgkz;
 			$scope.minTime = "08:00:00";
 			$scope.maxTime = "21:00:00";
@@ -8,58 +8,41 @@ angular.module('stgv2')
 			ctrl.reihungstest = new Reihungstest();
 			ctrl.selectedStudiensemester = null;
 			ctrl.studiensemesterList = [{
-					studiensemester_kurzbz : "null",
+					studiensemester_kurzbz: null,
 					beschreibung: "alle"
-			}];
+				}];
 			ctrl.ortList = "";
-			
+
 			//loading Studiensemester list
-			$http({
-				method: "GET",
-				url: "./api/helper/studiensemester.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					$.merge(ctrl.studiensemesterList, response.data.info);
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
+			StudiensemesterService.getStudiensemesterList().then(function (result) {
+				$.merge(ctrl.studiensemesterList, result);
+			}, function (error) {
+				errorService.setError(getErrorMsg(error));
 			});
-			
+
 			//loading Ort list
-			$http({
-				method: "GET",
-				url: "./api/helper/ort.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.ortList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
+			OrtService.getOrtList().then(function (result) {
+				ctrl.ortList = result;
+			}, function (error) {
+				errorService.setError(getErrorMsg(error));
 			});
-			
-			ctrl.loadDataGrid = function()
+
+			ctrl.loadDataGrid = function ()
 			{
 				$("#dataGridReihungstest").datagrid({
-					url: "./api/studiengang/reihungstest/reihungstest.php?stgkz=" + $stateParams.stgkz+"&studiensemester_kurzbz="+ctrl.selectedStudiensemester,
+					url: "./api/studiengang/reihungstest/reihungstest.php?stgkz=" + $stateParams.stgkz + "&studiensemester_kurzbz=" + ctrl.selectedStudiensemester,
 					method: 'GET',
-					onLoadSuccess: function(data)
+					multiSort: true,
+					singleSelect: true,
+					
+					onLoadSuccess: function (data)
 					{
 						//Error Handling happens in loadFilter
 					},
-					onLoadError: function(){
+					onLoadError: function () {
 						//TODO Error Handling
 					},
-					loadFilter: function(data){
+					loadFilter: function (data) {
 						var result = {};
 						if (data.erfolg)
 						{
@@ -72,38 +55,64 @@ angular.module('stgv2')
 						{
 							errorService.setError(getErrorMsg(data));
 							return result;
-						}					
+						}
 					},
 					onClickRow: function (index, row)
 					{
+						console.log(index);
+						console.log(row);
 //						var row = $("#dataGridReihungstest").datagrid("getSelected");
 						ctrl.loadReihungstestDetails(row);
-						if($("#save").is(":visible"))
+						if ($("#save").is(":visible"))
 							ctrl.changeButtons();
-					}
+					},
+					onDblClickRow: function(index, row){
+						console.log(index);
+						console.log(row);
+						return false;
+					},
+					columns: [[
+							{field: 'reihungstest_id',align: 'right', title: 'ID'},
+							{field: 'studiengang_kz',align:'right', sortable: true, title: 'STG KZ'},
+							{field: 'studiensemester_kurzbz',align:'left', sortable: true, title: 'Studiensemester'},
+							{field: 'datum',align:'left', sortable: true, title: 'Datum', formatter: formatDateToString},
+							{field: 'uhrzeit', align:'left', sortable: true, title:'Uhrzeit',
+								formatter: function(val)
+								{
+									console.log(val);
+									return val.substring(0,5);
+								}
+							},
+							{field: 'ort_kurzbz',align:'right', sortable: true,title:'Ort'},
+							{field: 'max_teilnehmer',align:'left', sortable: true, title: 'max. TeilnehmerInnen'},
+							{field: 'freigeschaltet',align:'left', sortable: true, title: 'freigeschaltet'},
+							{field: 'oeffentlich',align:'left', sortable: true, title:'öffentlich'},
+							{field: 'anmerkung',align:'left', title: 'Anmerkung'}
+						]]
 				});
 			};
-			
+
 			ctrl.loadDataGrid();
-			
+
 			$("input[name=datum]").datepicker({
 				dateFormat: "yy-mm-dd",
 				firstDay: 1
 			});
-			
-			ctrl.loadReihungstestDetails = function(row)
+
+			ctrl.loadReihungstestDetails = function (row)
 			{
+				console.log(row);
 				row.datum = formatStringToDate(row.datum);
 				row.uhrzeit = formatStringToTime(row.uhrzeit, ":");
 				ctrl.reihungstest = row;
 				$scope.$apply();
 				$("#reihungstestDetails").show();
 			};
-			ctrl.update = function()
+			ctrl.update = function ()
 			{
-				if($scope.form.$valid)
+				if ($scope.form.$valid)
 				{
-					var updateData = { data: ""};
+					var updateData = {data: ""};
 					updateData.data = ctrl.reihungstest;
 					$http({
 						method: 'POST',
@@ -113,7 +122,7 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						if(response.data.erfolg)
+						if (response.data.erfolg)
 						{
 							$("#dataGridReihungstest").datagrid('reload');
 							successService.setMessage(response.data.info);
@@ -128,10 +137,10 @@ angular.module('stgv2')
 					});
 				}
 			};
-			
-			ctrl.save = function()
+
+			ctrl.save = function ()
 			{
-				if($scope.form.$valid)
+				if ($scope.form.$valid)
 				{
 					var saveData = {data: ""}
 					saveData.data = angular.copy(ctrl.reihungstest);
@@ -145,7 +154,7 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						if(response.data.erfolg)
+						if (response.data.erfolg)
 						{
 							$("#dataGridReihungstest").datagrid('reload');
 							//TODO select recently added Reihungstest in Datagrid
@@ -162,22 +171,22 @@ angular.module('stgv2')
 					});
 				}
 			};
-			
-			ctrl.newReihungstest = function()
+
+			ctrl.newReihungstest = function ()
 			{
 				$("#dataGridReihungstest").datagrid("unselectAll");
 				ctrl.reihungstest = new Reihungstest();
 				$scope.form.$setPristine();
 				ctrl.reihungstest.studiengang_kz = $scope.stgkz;
 				ctrl.reihungstest.studiensemester_kurzbz = ctrl.selectedStudiensemester;
-				if(!$("#save").is(":visible"))
+				if (!$("#save").is(":visible"))
 					ctrl.changeButtons();
 				$("#reihungstestDetails").show();
 			};
-			
-			ctrl.changeButtons = function()
+
+			ctrl.changeButtons = function ()
 			{
-				if($("#save").is(":visible"))
+				if ($("#save").is(":visible"))
 				{
 					$("#save").hide();
 					$("#update").show();
@@ -190,10 +199,10 @@ angular.module('stgv2')
 					$("#delete").hide();
 				}
 			};
-			
-			ctrl.delete = function()
+
+			ctrl.delete = function ()
 			{
-				if(confirm("Wollen Sie den Fördervertrag wirklich Löschen?"))
+				if (confirm("Wollen Sie den Fördervertrag wirklich Löschen?"))
 				{
 					var deleteData = {data: ""}
 					deleteData.data = ctrl.reihungstest;
@@ -205,7 +214,7 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						if(response.data.erfolg)
+						if (response.data.erfolg)
 						{
 							$("#dataGridReihungstest").datagrid('reload');
 							ctrl.newReihungstest();
@@ -221,14 +230,14 @@ angular.module('stgv2')
 				}
 			};
 		});
-		
+
 function Reihungstest()
 {
 	this.reihungstest_id = "";
 	this.studiengang_kz = "";
 	this.ort_kurzbz = "";
 	this.anmerkung = "";
-	this.datum = new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate());
+	this.datum = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
 	this.uhrzeit;
 	this.ext_id = "";
 	this.insertamum = "";

@@ -1,4 +1,4 @@
-angular.module('stgv2').config(function ($stateProvider, $urlRouterProvider) {
+angular.module('stgv2').config(function ($stateProvider) {
 
 	$stateProvider
 //			.state('home', {
@@ -9,14 +9,20 @@ angular.module('stgv2').config(function ($stateProvider, $urlRouterProvider) {
 				name: 'studiengang',
 				url: '/studiengang/:stgkz',
 				templateUrl: './templates/pages/studiengang/stammdaten/stammdaten.html',
-				controller: "StgMainCtrl"
+				controller: function($state)
+				{
+					console.log($state);
+				}
 			})
 			.state('betriebsdaten', {
 				name: 'betriebsdaten',
 				url: 'studiengang/:stgkz/betriebsdaten',
 				templateUrl: './templates/pages/studiengang/betriebsdaten/betriebsdaten.html',
 				controller: function ($scope, $state, $stateParams) {
-					$state.go('betriebsdaten.studiengangsgruppen');
+					console.log($state);
+					$state.go('betriebsdaten.bewerbung');
+					
+//					if($state.current.name === "studienordnung")
 				}
 			})
 			.state('betriebsdaten.studiengangsgruppen', {

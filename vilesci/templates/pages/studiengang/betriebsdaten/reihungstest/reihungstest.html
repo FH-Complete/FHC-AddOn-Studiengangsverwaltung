@@ -1,10 +1,4 @@
 <div class="contentWrapper" ng-controller="StgReihungstestCtrl as ctrl">
-	<script type='text/javascript'>
-		function timeFormatter(val)
-		{
-			return val.substring(0,5);
-		}
-	</script>
 	<div class="col-sm-2">
 		<label>&nbsp;</label>
 		<div>
@@ -21,21 +15,7 @@
 	</br>
 	</br>
 	</br>
-	<table id="dataGridReihungstest" class="easyui-datagrid" data-options="url: '', method: 'get', singleSelect:true" style='height: 200px;'>
-		<thead>
-			<tr>
-				<th data-options="field: 'reihungstest_id',align: 'right'"><span class="table-header">ID</span></th>
-				<th data-options="field: 'studiengang_kz',align:'right'"><span class="table-header">STG KZ</span></th>
-				<th data-options="field: 'ort_kurzbz',align:'right'"><span class="table-header">Ort</span></th>
-				<th data-options="field: 'anmerkung',align:'left'"><span class="table-header">Anmerkung</span></th>
-				<th data-options="field: 'datum',align:'left'"><span class="table-header">Datum</span></th>
-				<th data-options="field: 'uhrzeit',align:'left'" formatter='timeFormatter'><span class="table-header">Uhrzeit</span></th>
-				<th data-options="field: 'max_teilnehmer',align:'left'"><span class="table-header">max Teilnehmer</span></th>
-				<th data-options="field: 'freigeschaltet',align:'left'"><span class="table-header">freigeschaltet</span></th>
-				<th data-options="field: 'oeffentlich',align:'left'"><span class="table-header">öffentlich</span></th>
-				<th data-options="field: 'studiensemester_kurzbz',align:'left'"><span class="table-header">Studiensemester</span></th>
-			</tr>
-		</thead>
+	<table id="dataGridReihungstest" class="easyui-datagrid" style='height: 200px;'>
 	</table>
 	</br>
 	<form id="reihungstestDetails" name="form" onsubmit="return false;" style="display: none;" novalidate>
@@ -90,7 +70,7 @@
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
-					<label for="maxTeilnehmer">max Teilnehmer</label>
+					<label for="maxTeilnehmer">max. TeilnehmerInnen</label>
 					<input type="text" class="form-control input-sm" name="maxTeilnehmer" ng-model="ctrl.reihungstest.max_teilnehmer"/>
 				</div>
 			</div>
@@ -100,7 +80,7 @@
 			<div class="col-sm-5">
 				<div class="form-group">
 					<label for="anmerkung">Anmerkung</label>
-					<input type="text" class="form-control input-sm" name="anmerkung" ng-model="ctrl.reihungstest.anmerkung"/>
+					<textarea class="form-control input-sm" rows="5" name='anmerkung' ng-model="ctrl.reihungstest.anmerkung"></textarea>
 				</div>
 			</div>
 		</div>

@@ -6,7 +6,7 @@ angular.module('stgv2')
 			ctrl.bewerbungstermin = new Bewerbungstermin();
 			ctrl.studiengangList = "";
 			ctrl.studiensemesterList = [{
-					studiensemester_kurzbz: "null",
+					studiensemester_kurzbz: null,
 					beschreibung: "alle"
 				}];
 			ctrl.selectedStudiensemester = null;
@@ -30,6 +30,8 @@ angular.module('stgv2')
 				$("#dataGridBewerbungstermin").datagrid({
 					url: "./api/studiengang/bewerbungstermin/bewerbungstermin.php?stgkz=" + $stateParams.stgkz + "&studiensemester_kurzbz=" + ctrl.selectedStudiensemester,
 					method: 'GET',
+					multiSort: true,
+					singleSelect:true,
 					onLoadSuccess: function (data)
 					{
 						//Error Handling happens in loadFilter
@@ -57,7 +59,17 @@ angular.module('stgv2')
 						ctrl.loadBewerbungsterminDetails(row);
 						if ($("#save").is(":visible"))
 							ctrl.changeButtons();
-					}
+					},
+					columns: [[
+						{field: 'bewerbungstermin_id', align: 'right', title:'ID'},
+						{field: 'studiengang_kz', align:'right', sortable: 'true', title:'STG KZ'},
+						{field: 'studiensemester_kurzbz', align:'right', sortable: 'true', title:'Studiensemester'},
+						{field: 'beginn', align:'left', sortable: 'true', formatter: formatDateToString, title:'Beginn'},
+						{field: 'ende', align:'left',  sortable: 'true', formatter: formatDateToString, title:'Ende'},
+						{field: 'nachfrist', align:'left', title:'Nachfrist'},
+						{field: 'nachfrist_ende', align:'left', formatter: formatDateToString, title:'Ende Nachfrist'},
+						{field: 'anmerkung', align:'left', title:'Anmerkung'}
+					]]
 				});
 			};
 

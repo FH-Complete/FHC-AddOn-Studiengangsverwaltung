@@ -110,6 +110,7 @@ angular.module('stgv2')
 				$("#dataGridFoerdervertrag").datagrid({
 					url: "./api/studiengang/foerdervertrag/foerdervertrag.php?stgkz=" + $stateParams.stgkz,
 					method: 'GET',
+					singleSelect: true,
 					onLoadSuccess: function (data)
 					{
 						if(ctrl.lastSelectedIndex !== null)
@@ -145,7 +146,17 @@ angular.module('stgv2')
 						ctrl.loadFoerdervertragDetails(row);
 						if ($("#save").is(":visible"))
 							ctrl.changeButtons();
-					}
+					},
+					columns: [[
+						{field: 'foerdervertrag_id', align: 'right', title:'ID'},
+						{field: 'studiengang_kz', align:'left', title:'STG KZ'},
+						{field: 'foerdergeber', align:'left', title:'Fördergeber'},
+						{field: 'foerdergruppe', align:'left', title:'Fördergruppe'},
+						{field: 'foerdersatz', align:'left', title:'Fördersatz'},
+						{field: 'gueltigvon', align:'left', title:'gültig von'},
+						{field: 'gueltigbis', align:'left', title:'gültig bis'},
+						{field: 'erlaeuterungen', align:'left', title:'Erläuterungen'}
+					]]
 				});
 			};
 			

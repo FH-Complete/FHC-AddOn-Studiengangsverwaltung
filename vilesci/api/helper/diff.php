@@ -98,118 +98,120 @@ $taetigkeitsfeld_old->getAll($studienordnung_id_old);
 $taetigkeitsfeld_new = new taetigkeitsfeld();
 $taetigkeitsfeld_new->getAll($studienordnung_id_new);
 
-$diff_array["Tätigkeitsfelder"]["Überblick"]["old"] = $taetigkeitsfeld_old->result[0]->ueberblick;
-$diff_array["Tätigkeitsfelder"]["Überblick"]["new"] = $taetigkeitsfeld_new->result[0]->ueberblick;
-$diff_array["Tätigkeitsfelder"]["Überblick"]["diff"] = $diff->render($taetigkeitsfeld_old->result[0]->ueberblick, $taetigkeitsfeld_new->result[0]->ueberblick);
-
-$diff_array["Tätigkeitsfelder"]["Aufgaben"]["old"] = $taetigkeitsfeld_old->result[0]->data->aufgaben->fixed;
-$diff_array["Tätigkeitsfelder"]["Aufgaben"]["new"] = $taetigkeitsfeld_new->result[0]->data->aufgaben->fixed;
-$diff_array["Tätigkeitsfelder"]["Aufgaben"]["diff"] = $diff->render($taetigkeitsfeld_old->result[0]->data->aufgaben->fixed, $taetigkeitsfeld_new->result[0]->data->aufgaben->fixed);
-
-$diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["old"] = count($taetigkeitsfeld_old->result[0]->data->aufgaben->elements);
-$diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["new"] = count($taetigkeitsfeld_new->result[0]->data->aufgaben->elements);
-$diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["diff"] = $diff->render(count($taetigkeitsfeld_old->result[0]->data->aufgaben->elements), count($taetigkeitsfeld_new->result[0]->data->aufgaben->elements));
-
-if (count($taetigkeitsfeld_old->result[0]->data->aufgaben->elements) < count($taetigkeitsfeld_new->result[0]->data->aufgaben->elements))
+if((!empty($taetigkeitsfeld_old->result)) &&(!empty($taetigkeitsfeld_new->result)))
 {
-    foreach ($taetigkeitsfeld_new->result[0]->data->aufgaben->elements as $key => $ele_new)
+    $diff_array["Tätigkeitsfelder"]["Überblick"]["old"] = $taetigkeitsfeld_old->result[0]->ueberblick;
+    $diff_array["Tätigkeitsfelder"]["Überblick"]["new"] = $taetigkeitsfeld_new->result[0]->ueberblick;
+    $diff_array["Tätigkeitsfelder"]["Überblick"]["diff"] = $diff->render($taetigkeitsfeld_old->result[0]->ueberblick, $taetigkeitsfeld_new->result[0]->ueberblick);
+
+    $diff_array["Tätigkeitsfelder"]["Aufgaben"]["old"] = $taetigkeitsfeld_old->result[0]->data->aufgaben->fixed;
+    $diff_array["Tätigkeitsfelder"]["Aufgaben"]["new"] = $taetigkeitsfeld_new->result[0]->data->aufgaben->fixed;
+    $diff_array["Tätigkeitsfelder"]["Aufgaben"]["diff"] = $diff->render($taetigkeitsfeld_old->result[0]->data->aufgaben->fixed, $taetigkeitsfeld_new->result[0]->data->aufgaben->fixed);
+
+    $diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["old"] = count($taetigkeitsfeld_old->result[0]->data->aufgaben->elements);
+    $diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["new"] = count($taetigkeitsfeld_new->result[0]->data->aufgaben->elements);
+    $diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["diff"] = $diff->render(count($taetigkeitsfeld_old->result[0]->data->aufgaben->elements), count($taetigkeitsfeld_new->result[0]->data->aufgaben->elements));
+
+    if (count($taetigkeitsfeld_old->result[0]->data->aufgaben->elements) < count($taetigkeitsfeld_new->result[0]->data->aufgaben->elements))
     {
-	$ele_old = "";
-	$diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["new"] .= "<br>" . $ele_new;
-	if (array_key_exists($key, $taetigkeitsfeld_old->result[0]->data->aufgaben->elements))
+	foreach ($taetigkeitsfeld_new->result[0]->data->aufgaben->elements as $key => $ele_new)
 	{
-	    $ele_old = $taetigkeitsfeld_old->result[0]->data->aufgaben->elements[$key];
+	    $ele_old = "";
+	    $diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["new"] .= "<br>" . $ele_new;
+	    if (array_key_exists($key, $taetigkeitsfeld_old->result[0]->data->aufgaben->elements))
+	    {
+		$ele_old = $taetigkeitsfeld_old->result[0]->data->aufgaben->elements[$key];
+	    }
+	    $diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["old"] .= "<br>" . $ele_old;
+	    $diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
 	}
-	$diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["old"] .= "<br>" . $ele_old;
-	$diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
+    } else
+    {
+	foreach ($taetigkeitsfeld_old->result[0]->data->aufgaben->elements as $key => $ele_old)
+	{
+	    $ele_new = "";
+	    $diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["old"] .= "<br>" . $ele_old;
+	    if (array_key_exists($key, $taetigkeitsfeld_new->result[0]->data->aufgaben->elements))
+	    {
+		$ele_new = $taetigkeitsfeld_new->result[0]->data->aufgaben->elements[$key];
+	    }
+	    $diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["new"] .= "<br>" . $ele_new;
+	    $diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
+	}
     }
-} else
-{
-    foreach ($taetigkeitsfeld_old->result[0]->data->aufgaben->elements as $key => $ele_old)
+
+    $diff_array["Tätigkeitsfelder"]["Branchen"]["old"] = $taetigkeitsfeld_old->result[0]->data->branchen->fixed;
+    $diff_array["Tätigkeitsfelder"]["Branchen"]["new"] = $taetigkeitsfeld_new->result[0]->data->branchen->fixed;
+    $diff_array["Tätigkeitsfelder"]["Branchen"]["diff"] = $diff->render($taetigkeitsfeld_old->result[0]->data->branchen->fixed, $taetigkeitsfeld_new->result[0]->data->branchen->fixed);
+
+    $diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["old"] = count($taetigkeitsfeld_old->result[0]->data->branchen->elements);
+    $diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["new"] = count($taetigkeitsfeld_new->result[0]->data->branchen->elements);
+    $diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["diff"] = $diff->render(count($taetigkeitsfeld_old->result[0]->data->branchen->elements), count($taetigkeitsfeld_new->result[0]->data->branchen->elements));
+
+    if (count($taetigkeitsfeld_old->result[0]->data->branchen->elements) < count($taetigkeitsfeld_new->result[0]->data->branchen->elements))
     {
-	$ele_new = "";
-	$diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["old"] .= "<br>" . $ele_old;
-	if (array_key_exists($key, $taetigkeitsfeld_new->result[0]->data->aufgaben->elements))
+	foreach ($taetigkeitsfeld_new->result[0]->data->branchen->elements as $key => $ele_new)
 	{
-	    $ele_new = $taetigkeitsfeld_new->result[0]->data->aufgaben->elements[$key];
+	    $ele_old = "";
+	    $diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["new"] .= "<br>" . $ele_new;
+	    if (array_key_exists($key, $taetigkeitsfeld_old->result[0]->data->branchen->elements))
+	    {
+		$ele_old = $taetigkeitsfeld_old->result[0]->data->branchen->elements[$key];
+	    }
+	    $diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["old"] .= "<br>" . $ele_old;
+	    $diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
 	}
-	$diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["new"] .= "<br>" . $ele_new;
-	$diff_array["Tätigkeitsfelder"]["Aufgaben Aufzählungen"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
+    } else
+    {
+	foreach ($taetigkeitsfeld_old->result[0]->data->branchen->elements as $key => $ele_old)
+	{
+	    $ele_new = "";
+	    $diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["old"] .= "<br>" . $ele_old;
+	    if (array_key_exists($key, $taetigkeitsfeld_new->result[0]->data->branchen->elements))
+	    {
+		$ele_new = $taetigkeitsfeld_new->result[0]->data->branchen->elements[$key];
+	    }
+	    $diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["new"] .= "<br>" . $ele_new;
+	    $diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
+	}
+    }
+
+    $diff_array["Tätigkeitsfelder"]["Positionen"]["old"] = $taetigkeitsfeld_old->result[0]->data->positionen->fixed;
+    $diff_array["Tätigkeitsfelder"]["Positionen"]["new"] = $taetigkeitsfeld_new->result[0]->data->positionen->fixed;
+    $diff_array["Tätigkeitsfelder"]["Positionen"]["diff"] = $diff->render($taetigkeitsfeld_old->result[0]->data->positionen->fixed, $taetigkeitsfeld_new->result[0]->data->positionen->fixed);
+
+    $diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["old"] = count($taetigkeitsfeld_old->result[0]->data->positionen->elements);
+    $diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["new"] = count($taetigkeitsfeld_new->result[0]->data->positionen->elements);
+    $diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["diff"] = $diff->render(count($taetigkeitsfeld_old->result[0]->data->positionen->elements), count($taetigkeitsfeld_new->result[0]->data->positionen->elements));
+
+    if (count($taetigkeitsfeld_old->result[0]->data->positionen->elements) < count($taetigkeitsfeld_new->result[0]->data->positionen->elements))
+    {
+	foreach ($taetigkeitsfeld_new->result[0]->data->positionen->elements as $key => $ele_new)
+	{
+	    $ele_old = "";
+	    $diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["new"] .= "<br>" . $ele_new;
+	    if (array_key_exists($key, $taetigkeitsfeld_old->result[0]->data->positionen->elements))
+	    {
+		$ele_old = $taetigkeitsfeld_old->result[0]->data->positionen->elements[$key];
+	    }
+	    $diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["old"] .= "<br>" . $ele_old;
+	    $diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
+	}
+    } else
+    {
+	foreach ($taetigkeitsfeld_old->result[0]->data->positionen->elements as $key => $ele_old)
+	{
+	    $ele_new = "";
+	    $diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["old"] .= "<br>" . $ele_old;
+	    if (array_key_exists($key, $taetigkeitsfeld_new->result[0]->data->positionen->elements))
+	    {
+		$ele_new = $taetigkeitsfeld_new->result[0]->data->positionen->elements[$key];
+	    }
+	    $diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["new"] .= "<br>" . $ele_new;
+	    $diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
+	}
     }
 }
-
-$diff_array["Tätigkeitsfelder"]["Branchen"]["old"] = $taetigkeitsfeld_old->result[0]->data->branchen->fixed;
-$diff_array["Tätigkeitsfelder"]["Branchen"]["new"] = $taetigkeitsfeld_new->result[0]->data->branchen->fixed;
-$diff_array["Tätigkeitsfelder"]["Branchen"]["diff"] = $diff->render($taetigkeitsfeld_old->result[0]->data->branchen->fixed, $taetigkeitsfeld_new->result[0]->data->branchen->fixed);
-
-$diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["old"] = count($taetigkeitsfeld_old->result[0]->data->branchen->elements);
-$diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["new"] = count($taetigkeitsfeld_new->result[0]->data->branchen->elements);
-$diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["diff"] = $diff->render(count($taetigkeitsfeld_old->result[0]->data->branchen->elements), count($taetigkeitsfeld_new->result[0]->data->branchen->elements));
-
-if (count($taetigkeitsfeld_old->result[0]->data->branchen->elements) < count($taetigkeitsfeld_new->result[0]->data->branchen->elements))
-{
-    foreach ($taetigkeitsfeld_new->result[0]->data->branchen->elements as $key => $ele_new)
-    {
-	$ele_old = "";
-	$diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["new"] .= "<br>" . $ele_new;
-	if (array_key_exists($key, $taetigkeitsfeld_old->result[0]->data->branchen->elements))
-	{
-	    $ele_old = $taetigkeitsfeld_old->result[0]->data->branchen->elements[$key];
-	}
-	$diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["old"] .= "<br>" . $ele_old;
-	$diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
-    }
-} else
-{
-    foreach ($taetigkeitsfeld_old->result[0]->data->branchen->elements as $key => $ele_old)
-    {
-	$ele_new = "";
-	$diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["old"] .= "<br>" . $ele_old;
-	if (array_key_exists($key, $taetigkeitsfeld_new->result[0]->data->branchen->elements))
-	{
-	    $ele_new = $taetigkeitsfeld_new->result[0]->data->branchen->elements[$key];
-	}
-	$diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["new"] .= "<br>" . $ele_new;
-	$diff_array["Tätigkeitsfelder"]["Branchen Aufzählungen"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
-    }
-}
-
-$diff_array["Tätigkeitsfelder"]["Positionen"]["old"] = $taetigkeitsfeld_old->result[0]->data->positionen->fixed;
-$diff_array["Tätigkeitsfelder"]["Positionen"]["new"] = $taetigkeitsfeld_new->result[0]->data->positionen->fixed;
-$diff_array["Tätigkeitsfelder"]["Positionen"]["diff"] = $diff->render($taetigkeitsfeld_old->result[0]->data->positionen->fixed, $taetigkeitsfeld_new->result[0]->data->positionen->fixed);
-
-$diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["old"] = count($taetigkeitsfeld_old->result[0]->data->positionen->elements);
-$diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["new"] = count($taetigkeitsfeld_new->result[0]->data->positionen->elements);
-$diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["diff"] = $diff->render(count($taetigkeitsfeld_old->result[0]->data->positionen->elements), count($taetigkeitsfeld_new->result[0]->data->positionen->elements));
-
-if (count($taetigkeitsfeld_old->result[0]->data->positionen->elements) < count($taetigkeitsfeld_new->result[0]->data->positionen->elements))
-{
-    foreach ($taetigkeitsfeld_new->result[0]->data->positionen->elements as $key => $ele_new)
-    {
-	$ele_old = "";
-	$diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["new"] .= "<br>" . $ele_new;
-	if (array_key_exists($key, $taetigkeitsfeld_old->result[0]->data->positionen->elements))
-	{
-	    $ele_old = $taetigkeitsfeld_old->result[0]->data->positionen->elements[$key];
-	}
-	$diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["old"] .= "<br>" . $ele_old;
-	$diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
-    }
-} else
-{
-    foreach ($taetigkeitsfeld_old->result[0]->data->positionen->elements as $key => $ele_old)
-    {
-	$ele_new = "";
-	$diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["old"] .= "<br>" . $ele_old;
-	if (array_key_exists($key, $taetigkeitsfeld_new->result[0]->data->positionen->elements))
-	{
-	    $ele_new = $taetigkeitsfeld_new->result[0]->data->positionen->elements[$key];
-	}
-	$diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["new"] .= "<br>" . $ele_new;
-	$diff_array["Tätigkeitsfelder"]["Positionen Aufzählungen"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
-    }
-}
-
 //Abschnitt für Qualifikationsziele
 $qualifikationsziel_old = new qualifikationsziel();
 $qualifikationsziel_old->getAll($studienordnung_id_old);
@@ -218,57 +220,59 @@ $qualifikationsziel_new = new qualifikationsziel();
 $qualifikationsziel_new->getAll($studienordnung_id_new);
 
 //var_dump($qualifikationsziel_new->result[0]->data);
-
-foreach ($qualifikationsziel_old->result[0]->data as $key => $ele)
+if((!empty($qualifikationsziel_old->result)) &&(!empty($qualifikationsziel_new->result)))
 {
-
-    if (!isset($diff_array["Qualifikationsziele"][$ele->header]))
+    foreach ($qualifikationsziel_old->result[0]->data as $key => $ele)
     {
-	$diff_array["Qualifikationsziele"][$ele->header]["old"] = "";
-	$diff_array["Qualifikationsziele"][$ele->header]["new"] = "";
-	$diff_array["Qualifikationsziele"][$ele->header]["diff"] = "";
-    }
-    foreach ($ele->fixed as $k => $fixed)
-    {
-	$old = $fixed;
-	$new = $qualifikationsziel_new->result[0]->data[$key]->fixed[$k];
-	$diff_array["Qualifikationsziele"][$ele->header]["old"] .= $old . "<br>" . "<br>";
-	$diff_array["Qualifikationsziele"][$ele->header]["new"] .= $new . "<br>" . "<br>";
-	$diff_array["Qualifikationsziele"][$ele->header]["diff"] .= $diff->render($old, $new) . "<br>" . "<br>";
 
-	if (isset($ele->elements))
+	if (!isset($diff_array["Qualifikationsziele"][$ele->header]))
 	{
-//	    if (count($taetigkeitsfeld_old->result[0]->data->positionen->elements) < count($taetigkeitsfeld_new->result[0]->data->positionen->elements))
-	    $old = $ele->elements[$k];
-	    $new = $qualifikationsziel_new->result[0]->data[$key]->elements[$k];
+	    $diff_array["Qualifikationsziele"][$ele->header]["old"] = "";
+	    $diff_array["Qualifikationsziele"][$ele->header]["new"] = "";
+	    $diff_array["Qualifikationsziele"][$ele->header]["diff"] = "";
+	}
+	foreach ($ele->fixed as $k => $fixed)
+	{
+	    $old = $fixed;
+	    $new = $qualifikationsziel_new->result[0]->data[$key]->fixed[$k];
+	    $diff_array["Qualifikationsziele"][$ele->header]["old"] .= $old . "<br>" . "<br>";
+	    $diff_array["Qualifikationsziele"][$ele->header]["new"] .= $new . "<br>" . "<br>";
+	    $diff_array["Qualifikationsziele"][$ele->header]["diff"] .= $diff->render($old, $new) . "<br>" . "<br>";
 
-	    if ($new !== null && $old != null)
+	    if (isset($ele->elements))
 	    {
-		if (count($old) > count($new))
+    //	    if (count($taetigkeitsfeld_old->result[0]->data->positionen->elements) < count($taetigkeitsfeld_new->result[0]->data->positionen->elements))
+		$old = $ele->elements[$k];
+		$new = $qualifikationsziel_new->result[0]->data[$key]->elements[$k];
+
+		if ($new !== null && $old != null)
 		{
-		    foreach ($old as $i => $o)
+		    if (count($old) > count($new))
 		    {
-			$diff_array["Qualifikationsziele"][$ele->header]["old"] .= $o . "<br>" . "<br>";
-			$n = "";
-			if (array_key_exists($i, $new))
+			foreach ($old as $i => $o)
 			{
-			    $n = $diff_array["Qualifikationsziele"][$ele->header]["new"] .= $new[$i];
+			    $diff_array["Qualifikationsziele"][$ele->header]["old"] .= $o . "<br>" . "<br>";
+			    $n = "";
+			    if (array_key_exists($i, $new))
+			    {
+				$n = $diff_array["Qualifikationsziele"][$ele->header]["new"] .= $new[$i];
+			    }
+			    $diff_array["Qualifikationsziele"][$ele->header]["new"] .= $n . "<br>" . "<br>";
+			    $diff_array["Qualifikationsziele"][$ele->header]["diff"] .= $diff->render($o, $new[$i]) . "<br>" . "<br>";
 			}
-			$diff_array["Qualifikationsziele"][$ele->header]["new"] .= $n . "<br>" . "<br>";
-			$diff_array["Qualifikationsziele"][$ele->header]["diff"] .= $diff->render($o, $new[$i]) . "<br>" . "<br>";
-		    }
-		} else
-		{
-		    foreach ($new as $i => $n)
+		    } else
 		    {
-			$o = "";
-			if (array_key_exists($i, $old))
+			foreach ($new as $i => $n)
 			{
-			    $o = $old[$i];
+			    $o = "";
+			    if (array_key_exists($i, $old))
+			    {
+				$o = $old[$i];
+			    }
+			    $diff_array["Qualifikationsziele"][$ele->header]["old"] .= $o . "<br>" . "<br>";
+			    $diff_array["Qualifikationsziele"][$ele->header]["new"] .= $n . "<br>" . "<br>";
+			    $diff_array["Qualifikationsziele"][$ele->header]["diff"] .= $diff->render($o, $new[$i]) . "<br>" . "<br>";
 			}
-			$diff_array["Qualifikationsziele"][$ele->header]["old"] .= $o . "<br>" . "<br>";
-			$diff_array["Qualifikationsziele"][$ele->header]["new"] .= $n . "<br>" . "<br>";
-			$diff_array["Qualifikationsziele"][$ele->header]["diff"] .= $diff->render($o, $new[$i]) . "<br>" . "<br>";
 		    }
 		}
 	    }

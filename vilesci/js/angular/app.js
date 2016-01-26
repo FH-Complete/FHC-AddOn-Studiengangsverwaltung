@@ -3,7 +3,7 @@ var stgv2 = angular.module("stgv2", ['ui.router', 'ngSanitize', 'angularFileUplo
 });
 
 angular.module("stgv2")
-		.controller("AppCtrl", function ($rootScope, errorService, $http, StudiengangService, StoreService, StudienordnungService, StudienplanService)
+		.controller("AppCtrl", function ($state, errorService, $http, StudiengangService, StoreService)
 		{
 			var storeList = ["studiengangList", "standortList","orgformList","aenderungsvarianteList","akadgradList","studiensemesterList","studienordnungStatusList","studienplan"];
 			
@@ -334,7 +334,6 @@ angular.module("stgv2")
 				var sto = $("#treeGrid").treegrid('getSelected');
 				if ((sto != null) && (sto.attributes[0].value == "studienordnung"))
 				{
-					console.log(sto);
 					ctrl.studienordnung_id = sto.studienordnung_id;
 					$state.go('studienordnungDiff', {"studienordnung_id": ctrl.studienordnung_id, "stgkz": sto.stgkz});
 				}
@@ -450,8 +449,6 @@ angular.module("stgv2")
 				var parent = $(ele).parent();
 				var node = $('#west_tree').tree("getNode", parent);
 				var params = node.attributes[0].urlParams;
-				console.log(target);
-				console.log(params[0]);
 				$state.go(target, params[0]);
 			};
 		})

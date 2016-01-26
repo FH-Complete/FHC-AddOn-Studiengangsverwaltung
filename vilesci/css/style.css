@@ -297,7 +297,7 @@ label {
 	font-weight: bold;
 }
 
-.table-header
+.datagrid-header .datagrid-cell
 {
 	font-weight: bold;
 }
@@ -349,6 +349,11 @@ input[type="date"]::-webkit-input-placeholder{
 }
 
 .bold 
+{
+	font-weight: bold;
+}
+
+h5
 {
 	font-weight: bold;
 }

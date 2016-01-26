@@ -29,6 +29,7 @@ angular.module('stgv2')
 				$("#dataGridDoktorat").datagrid({
 					url: "./api/studiengang/doktorat/doktorat.php?stgkz=" + $stateParams.stgkz,
 					method: 'GET',
+					singleSelect:true,
 					onLoadSuccess: function (data)
 					{
 						//Error Handling happens in loadFilter
@@ -57,7 +58,15 @@ angular.module('stgv2')
 						ctrl.loadDoktoratDetails(row);
 						if ($("#save").is(":visible"))
 							ctrl.changeButtons();
-					}
+					},
+					columns: [[
+						{field: 'doktorat_id', align: 'right', title:'ID'},
+						{field: 'studiengang_kz', align:'left', title:'STG KZ'},
+						{field: 'bezeichnung', align:'left', title:'Bezeichnung'},
+						{field: 'datum_erlass', align:'left', formatter: formatDateToString, title:'Erlassdatum'},
+						{field: 'gueltigvon', align:'left', title:'gültig von'},
+						{field: 'gueltigbis', align:'left', title:'gültig bis'}
+					]]
 				});
 			};
 			

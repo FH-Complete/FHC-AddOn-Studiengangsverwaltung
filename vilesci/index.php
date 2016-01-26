@@ -83,6 +83,7 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script src="js/angular/services/AenderungsvarianteService.js" type="text/javascript"></script>
 	<script src="js/angular/services/AkadgradService.js" type="text/javascript"></script>
 	<script src="js/angular/services/OrgformService.js" type="text/javascript"></script>
+	<script src="js/angular/services/OrtService.js" type="text/javascript"></script>
 	<script src="js/angular/services/StandortService.js" type="text/javascript"></script>
 	<script src="js/angular/services/StudiengangService.js" type="text/javascript"></script>
 	<script src="js/angular/services/StudienordnungService.js" type="text/javascript"></script>

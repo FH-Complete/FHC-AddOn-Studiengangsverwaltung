@@ -37,6 +37,26 @@ angular.module('stgv2')
 					url: "./api/studienplan/lehrveranstaltungen/lehrveranstaltungTree.php?studienplan_id=" + $scope.studienplan_id,
 					idField: "id",
 					treeField: "name",
+//                                        onDblClickCell: function(index,field,value){
+//                                            console.log(index);
+//                                            console.log(field);
+//                                            console.log(value);
+//                                            $('#stplTreeGrid').treegrid('beginEdit', field.id);
+//                                            console.log($('#stplTreeGrid').treegrid('getEditor', {index:field.id,field:index}));
+//                                            var ed = $('#stplTreeGrid').treegrid('getEditor', {index:index,field:field});
+//                                            console.log(ed);
+////                                            $(ed.target).focus();
+//                                        },
+//                                        onBeginEdit: function(index, row)
+//                                        {
+//                                            console.log(index);
+//                                            console.log(row);
+//                                        },
+//                                        onBeforeEdit: function(index, row)
+//                                        {
+//                                            console.log(index);
+//                                            console.log(row);
+//                                        },
 					rowStyler: function(row)
 					{
 						
@@ -236,7 +256,7 @@ angular.module('stgv2')
 						}
 					}
 				});
-			};
+                        };
 
 			StudienplanService.getStudienplan($scope.studienplan_id).then(function(result){
 				console.log(result);

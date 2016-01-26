@@ -8,156 +8,146 @@
 	</br>
 	</br>
 	</br>
-	<table id="dataGridFoerdervertrag" class="easyui-datagrid" data-options="url: '', method: 'get', singleSelect:true" style='height: 200px;'>
-		<thead>
-			<tr>
-				<th data-options="field: 'foerdervertrag_id',align: 'right'"><span class="table-header">ID</span></th>
-				<th data-options="field: 'studiengang_kz',align:'left'"><span class="table-header">STG KZ</span></th>
-				<th data-options="field: 'foerdergeber',align:'left'"><span class="table-header">Fördergeber</span></th>
-				<th data-options="field: 'foerdergruppe',align:'left'"><span class="table-header">Fördergruppe</span></th>
-				<th data-options="field: 'foerdersatz',align:'left'"><span class="table-header">Fördersatz</span></th>
-				<th data-options="field: 'gueltigvon',align:'left'"><span class="table-header">gültig von</span></th>
-				<th data-options="field: 'gueltigbis',align:'left'"><span class="table-header">gültig bis</span></th>
-				<th data-options="field: 'erlaeuterungen',align:'left'"><span class="table-header">Erläuterungen</span></th>
-			</tr>
-		</thead>
+	<table id="dataGridFoerdervertrag" class="easyui-datagrid" style='height: 200px;'>
 	</table>
 	</br>
-	<form id="foerdervertragDetails" name="form_foerdervertrag" onsubmit="return true;" style="display: none;" novalidate>
-		<!-- Zeile 1 -->
-		<div class="row">
-			<div class="col-sm-1">
-				<div class="form-group">
-					<label class="sr-only" for="foerdervertrag_id">ID</label>
-					<input type="hidden" class="form-control input-sm" name="foerdervertrag_id" value="{{ctrl.foerdervertrag.foerdervertrag_id}}" disabled/>
-				</div>
-			</div>
-			<div class="col-sm-1">
-				<div class="form-group">
-					<label class="sr-only" for="stgkz">Stg KZ</label>
-					<input type="hidden" class="form-control input-sm" name="stgkz" value="{{ctrl.foerdervertrag.studiengang_kz}}" disabled/>
-				</div>
-			</div>
-		</div>
-		<!-- Zeile 2 -->
-
-		<div class="row">
-			<div class="col-sm-4">
-				<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && form_foerdervertrag.foerdergeber_select.$error.required)}">
-					<label for="foerdergeber_select">Fördergeber</label>
-					<select class="form-control input-sm" name="foerdergeber_select" ng-model="foerdergeber" required>
-						<option ng-repeat="f in ctrl.foerdergeberList">{{f}}</option>
-					</select>
-				</div>
-			</div>
-			<div class="col-sm-4">
-				<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && form_foerdervertrag.foerdergeber.$error.required)}">
-					<label for="foerdergeber">&nbsp;</label>
-					<input ng-if="foerdergeber == 'Sonstige'" type="text" placeholder="Bitte ergänzen ..." class="form-control input-sm" name="foerdergeber" ng-model="ctrl.foerdervertrag.foerdergeber" ng-required="$parent.foerdergeber =='Sonstige'"/>
-				</div>
-			</div>
-		</div>
-		<div class="row" ng-if="ctrl.foerdervertrag.foerdergeber == 'BMWFW'">
-			<div class="col-sm-5">
-				<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && (form_foerdervertrag.foerdergruppe_select.$error.required || form_foerdervertrag.foerdergruppe.$error.required))}">
-					<label for="foerdergruppe_select">Fördergruppe</label>
-					<select class="form-control input-sm" name="foerdergruppe_select" ng-model="$parent.foerdergruppe" ng-required="ctrl.foerdervertrag.foerdergeber=='BMWFW'">
-						<option ng-repeat="f in ctrl.foerdergruppeList">{{f.foerdergruppe}}</option>
-					</select>
-				</div>
-			</div>
-		</div>
-		<!-- Zeile 4 -->
-		<div class="row">
-			<div class="col-sm-2">
-				<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && (form_foerdervertrag.foerdersatz_select.$error.required || form_foerdervertrag.foerdersatz.$error.required))}">
-					<label for="foerdersatz">Fördersatz</label>
-					<select ng-if="ctrl.foerdervertrag.foerdergeber == 'BMWFW'" class="form-control input-sm" name="foerdersatz_select" ng-model="$parent.foerdersatz" ng-required="ctrl.foerdervertrag.foerdergeber=='BMWFW'">
-						<option ng-repeat="f in ctrl.foerdersatzList" value="{{f.value}}">{{f.label}}</option>
-					</select>
-					<input ng-if="ctrl.foerdervertrag.foerdergeber != 'BMWFW'" type="text" class="form-control input-sm" name="foerdersatz" ng-model="$parent.ctrl.foerdervertrag.foerdersatz" ng-required="ctrl.foerdervertrag.foerdergeber!='BMWFW'" ng-keydown="$parent.validate($event)"/>
-				</div>
-			</div>
-			<div class="col-sm-2">
-				<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && form_foerdervertrag.gueltigvon.$error.required)}">
-					<label for="gueltigvon">Gültig von</label>
-					<select class="form-control input-sm" name="gueltigvon" ng-model="ctrl.foerdervertrag.gueltigvon" required>
-						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
-					</select>
-				</div>
-			</div>
-			<div class="col-sm-2">
-				<div class="form-group">
-					<label for="gueltigbis">Gültig bis</label>
-					<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.foerdervertrag.gueltigbis">
-						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
-					</select>
-				</div>
-			</div>
-		</div>
-		<!-- Zeile 5 -->
-		<div class="row col-sm-6">
+	<div id="foerdervertragDetails" style="display: none;">
+		<form  name="form_foerdervertrag" onsubmit="return true;" novalidate>
+			<!-- Zeile 1 -->
 			<div class="row">
-				<div class="col-sm-12">
+				<div class="col-sm-1">
 					<div class="form-group">
-						<label for="erlaeuterungen">Erläuterungen</label>
-						<textarea class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="ctrl.foerdervertrag.erlaeuterungen"></textarea>
+						<label class="sr-only" for="foerdervertrag_id">ID</label>
+						<input type="hidden" class="form-control input-sm" name="foerdervertrag_id" value="{{ctrl.foerdervertrag.foerdervertrag_id}}" disabled/>
+					</div>
+				</div>
+				<div class="col-sm-1">
+					<div class="form-group">
+						<label class="sr-only" for="stgkz">Stg KZ</label>
+						<input type="hidden" class="form-control input-sm" name="stgkz" value="{{ctrl.foerdervertrag.studiengang_kz}}" disabled/>
 					</div>
 				</div>
 			</div>
+			<!-- Zeile 2 -->
+
 			<div class="row">
-				<div class="row col-sm-12">
+				<div class="col-sm-4">
+					<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && form_foerdervertrag.foerdergeber_select.$error.required)}">
+						<label for="foerdergeber_select">Fördergeber</label>
+						<select class="form-control input-sm" name="foerdergeber_select" ng-model="foerdergeber" required>
+							<option ng-repeat="f in ctrl.foerdergeberList">{{f}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && form_foerdervertrag.foerdergeber.$error.required)}">
+						<label for="foerdergeber">&nbsp;</label>
+						<input ng-if="foerdergeber == 'Sonstige'" type="text" placeholder="Bitte ergänzen ..." class="form-control input-sm" name="foerdergeber" ng-model="ctrl.foerdervertrag.foerdergeber" ng-required="$parent.foerdergeber =='Sonstige'"/>
+					</div>
+				</div>
+			</div>
+			<div class="row" ng-if="ctrl.foerdervertrag.foerdergeber == 'BMWFW'">
+				<div class="col-sm-5">
+					<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && (form_foerdervertrag.foerdergruppe_select.$error.required || form_foerdervertrag.foerdergruppe.$error.required))}">
+						<label for="foerdergruppe_select">Fördergruppe</label>
+						<select class="form-control input-sm" name="foerdergruppe_select" ng-model="$parent.foerdergruppe" ng-required="ctrl.foerdervertrag.foerdergeber=='BMWFW'">
+							<option ng-repeat="f in ctrl.foerdergruppeList">{{f.foerdergruppe}}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<!-- Zeile 4 -->
+			<div class="row">
+				<div class="col-sm-2">
+					<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && (form_foerdervertrag.foerdersatz_select.$error.required || form_foerdervertrag.foerdersatz.$error.required))}">
+						<label for="foerdersatz">Fördersatz</label>
+						<select ng-if="ctrl.foerdervertrag.foerdergeber == 'BMWFW'" class="form-control input-sm" name="foerdersatz_select" ng-model="$parent.foerdersatz" ng-required="ctrl.foerdervertrag.foerdergeber=='BMWFW'">
+							<option ng-repeat="f in ctrl.foerdersatzList" value="{{f.value}}">{{f.label}}</option>
+						</select>
+						<input ng-if="ctrl.foerdervertrag.foerdergeber != 'BMWFW'" type="text" class="form-control input-sm" name="foerdersatz" ng-model="$parent.ctrl.foerdervertrag.foerdersatz" ng-required="ctrl.foerdervertrag.foerdergeber!='BMWFW'" ng-keydown="$parent.validate($event)"/>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && form_foerdervertrag.gueltigvon.$error.required)}">
+						<label for="gueltigvon">Gültig von</label>
+						<select class="form-control input-sm" name="gueltigvon" ng-model="ctrl.foerdervertrag.gueltigvon" required>
+							<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="gueltigbis">Gültig bis</label>
+						<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.foerdervertrag.gueltigbis">
+							<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<!-- Zeile 5 -->
+			<div class="row col-sm-6">
+				<div class="row">
 					<div class="col-sm-12">
 						<div class="form-group">
-							<label for="dokument">Dokument</label>
-							<input type="file" nv-file-select="" uploader="uploader" />
-							<button id="upload" class="btn btn-primary btn-sm" ng-click="ctrl.uploadDokument()">Upload</button>
+							<label for="erlaeuterungen">Erläuterungen</label>
+							<textarea class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="ctrl.foerdervertrag.erlaeuterungen"></textarea>
 						</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-sm-12">
-						<div class="form-group">
-							<div>
-								<button id="update" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.update()">Speichern</button>
-								<button id="save" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.save()" style="display:none;">Speichern</button>
-								<button id="delete" type="submit" class="btn btn-danger btn-sm" ng-click="ctrl.delete()">Löschen</button>
+					<div class="row col-sm-12">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label for="dokument">Dokument</label>
+								<input type="file" nv-file-select="" uploader="uploader" />
+								<button id="upload" class="btn btn-primary btn-sm" ng-click="ctrl.uploadDokument()">Upload</button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<div>
+									<button id="update" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.update()">Speichern</button>
+									<button id="save" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.save()" style="display:none;">Speichern</button>
+									<button id="delete" type="submit" class="btn btn-danger btn-sm" ng-click="ctrl.delete()">Löschen</button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</form>
-	<div class="row col-sm-6">
-		<div class="col-sm-6">
-			<table class="table doctable">
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th width="100px" style="text-align: center">Download</th>
-						<th width="100px" style="text-align: center">Löschen</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-if="ctrl.foerdervertrag.dokumente == ''">
-						<td colspan="3">Keine Dokumente vorhanden.</td>
-					</tr>
-					<tr ng-repeat="dok in ctrl.foerdervertrag.dokumente">
-						<td>
-							{{dok.name}}
-						</td>
-						<td style="text-align: center">
-							<a href="./api/helper/download_dokument.php?dms_id={{dok.dms_id}}">
-								<button class="btn btn-primary btn-sm">Download</button>
-							</a>
-						</td>
-						<td style="text-align: center">
-							<button class="btn btn-danger btn-sm" ng-click="ctrl.deleteDokument(dok.dms_id)">Löschen</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+		</form>
+		<div class="row col-sm-6">
+			<div class="col-sm-6">
+				<table class="table doctable">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th width="100px" style="text-align: center">Download</th>
+							<th width="100px" style="text-align: center">Löschen</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-if="ctrl.foerdervertrag.dokumente == ''">
+							<td colspan="3">Keine Dokumente vorhanden.</td>
+						</tr>
+						<tr ng-repeat="dok in ctrl.foerdervertrag.dokumente">
+							<td>
+								{{dok.name}}
+							</td>
+							<td style="text-align: center">
+								<a href="./api/helper/download_dokument.php?dms_id={{dok.dms_id}}">
+									<button class="btn btn-primary btn-sm">Download</button>
+								</a>
+							</td>
+							<td style="text-align: center">
+								<button class="btn btn-danger btn-sm" ng-click="ctrl.deleteDokument(dok.dms_id)">Löschen</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>

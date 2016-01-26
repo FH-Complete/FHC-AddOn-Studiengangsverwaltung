@@ -1,5 +1,6 @@
 angular.module('stgv2')
 		.controller('StgStammdatenCtrl', function ($scope, $http, $state, $stateParams, errorService, successService) {
+			console.log($state);
 			$scope.stgkz = $stateParams.stgkz;
 			var ctrl = this;
 			ctrl.data = "";
@@ -95,7 +96,7 @@ angular.module('stgv2')
 				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
 				});
-			}
+			};
 			
 			this.loadZuordnung();
 			
