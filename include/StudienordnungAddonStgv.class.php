@@ -65,8 +65,11 @@ class StudienordnungAddonStgv extends studienordnung
 
     public function loadStudienordnungWithStatus($studiengang_kz, $status_kurzbz)
     {
-	$qry = "SELECT sto.*, s.bezeichnung as status_bezeichnung FROM lehre.tbl_studienordnung sto JOIN addon.tbl_stgv_studienordnungstatus s USING(status_kurzbz) WHERE "
-		. "status_kurzbz=" . $this->db_add_param($status_kurzbz, FHC_STRING) . ""
+	$qry = "SELECT sto.*, s.bezeichnung as status_bezeichnung, ae.bezeichnung as aenderungsvariante_bezeichnung "
+		. "FROM lehre.tbl_studienordnung sto "
+		. "JOIN addon.tbl_stgv_studienordnungstatus s USING(status_kurzbz) "
+		. "LEFT JOIN addon.tbl_stgv_aenderungsvariante ae USING(aenderungsvariante_kurzbz) "
+		. "WHERE status_kurzbz=" . $this->db_add_param($status_kurzbz, FHC_STRING) . ""
 		. " AND studiengang_kz=" . $this->db_add_param($studiengang_kz, FHC_INTEGER) . ";";
 
 	if (!$this->db_query($qry))
@@ -91,6 +94,7 @@ class StudienordnungAddonStgv extends studienordnung
 	    $obj->studiengangkurzbzlang = $row->studiengangkurzbzlang;
 	    $obj->akadgrad_id = $row->akadgrad_id;
 	    $obj->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
+	    $obj->aenderungsvariante_bezeichnung = $row->aenderungsvariante_bezeichnung;
 	    $obj->status_kurzbz = $row->status_kurzbz;
 	    $obj->status_bezeichnung = $row->status_bezeichnung;
 	    $obj->begruendung = $row->begruendung;
@@ -260,7 +264,7 @@ class StudienordnungAddonStgv extends studienordnung
      * @param $semester
      * @return true wenn ok, false im Fehlerfall
      */
-    public function loadStudienordnungSTG($studiengang_kz, $studiensemester_kurzbz = null, $semester = null)
+    public function loadStudienordnungSTG($studiengang_kz, $studiensemester_kurzbz = null, $semester = null, $sort=null)
     {
 	//Pruefen ob studiengang_kz eine gueltige Zahl ist
 	if (!is_numeric($studiengang_kz) || $studiengang_kz === '')
@@ -275,19 +279,31 @@ class StudienordnungAddonStgv extends studienordnung
 
 	if (is_null($studiensemester_kurzbz))
 	{
-	    $qry = 'SELECT sto.*, s.bezeichnung as status_bezeichnung FROM lehre.tbl_studienordnung sto JOIN addon.tbl_stgv_studienordnungstatus s USING(status_kurzbz) WHERE  
-			studiengang_kz=' . $this->db_add_param($studiengang_kz, FHC_INTEGER, false);
+	    $qry = 'SELECT sto.*, s.bezeichnung as status_bezeichnung, ae.bezeichnung as aenderungsvariante_bezeichnung
+			FROM lehre.tbl_studienordnung sto 
+			    JOIN addon.tbl_stgv_studienordnungstatus s USING(status_kurzbz)
+			    LEFT JOIN addon.tbl_stgv_aenderungsvariante ae USING(aenderungsvariante_kurzbz)
+			    WHERE  studiengang_kz=' . $this->db_add_param($studiengang_kz, FHC_INTEGER, false);
 	} else
 	{
-	    $qry = 'SELECT sto.*, s.bezeichnung as status_bezeichnung FROM lehre.tbl_studienordnung sto JOIN addon.tbl_stgv_studienordnungstatus s USING(status_kurzbz) LEFT JOIN lehre.tbl_studienordnung_semester USING (studienordnung_id) 
-					WHERE 
-						studiengang_kz=' . $this->db_add_param($studiengang_kz, FHC_INTEGER, false);
+	    $qry = 'SELECT sto.*, s.bezeichnung as status_bezeichnung, ae.bezeichnung as aenderungsvariante_bezeichnung
+			FROM lehre.tbl_studienordnung sto 
+			    JOIN addon.tbl_stgv_studienordnungstatus s USING(status_kurzbz) 
+			    LEFT JOIN addon.tbl_stgv_aenderungsvariante ae USING(aenderungsvariante_kurzbz)
+			    LEFT JOIN lehre.tbl_studienordnung_semester USING (studienordnung_id) 
+			    WHERE studiengang_kz=' . $this->db_add_param($studiengang_kz, FHC_INTEGER, false);
 
 	    if (!is_null($studiensemester_kurzbz))
 		$qry.=" AND studiensemester_kurzbz=" . $this->db_add_param($studiensemester_kurzbz, FHC_STRING, false);
 	    if (!is_null($semester))
 		$qry.=" AND semester=" . $this->db_add_param($semester, FHC_INTEGER, false);
 	}
+	
+	if($sort != null)
+	{
+	    $qry.=" ORDER BY ".$sort;
+	}
+	$qry.=";";
 
 	if (!$this->db_query($qry))
 	{
@@ -311,6 +327,7 @@ class StudienordnungAddonStgv extends studienordnung
 	    $obj->studiengangkurzbzlang = $row->studiengangkurzbzlang;
 	    $obj->akadgrad_id = $row->akadgrad_id;
 	    $obj->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
+	    $obj->aenderungsvariante_bezeichnung = $row->aenderungsvariante_bezeichnung;
 	    $obj->status_kurzbz = $row->status_kurzbz;
 	    $obj->status_bezeichnung = $row->status_bezeichnung;
 	    $obj->begruendung = $row->begruendung;

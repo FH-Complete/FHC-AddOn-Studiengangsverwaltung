@@ -73,11 +73,12 @@ foreach($studiengang->result as $key=>$stg)
     $attributes = array();
     $attr = new stdClass();
     $attr->name = "node_type";
-    $attr->value = "studiengang";
+    $attr->value = "state";
 
     $urlParams = array();
     $urlParam = new stdClass();
     $urlParam->stgkz = $stg->studiengang_kz;
+    $urlParam->state = "all";
     
     array_push($urlParams, $urlParam);
     $attr->urlParams = $urlParams;

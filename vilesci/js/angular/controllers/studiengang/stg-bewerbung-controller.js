@@ -71,6 +71,10 @@ angular.module('stgv2')
 						{field: 'anmerkung', align:'left', title:'Anmerkung'}
 					]]
 				});
+				$("#dataGridBewerbungstermin").datagrid('sort', {
+					sortName: 'studiensemester_kurzbz,beginn',
+					sortOrder: 'desc,desc'
+				});
 			};
 
 			ctrl.loadDataGrid();

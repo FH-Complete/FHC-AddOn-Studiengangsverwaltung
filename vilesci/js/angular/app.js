@@ -449,6 +449,8 @@ angular.module("stgv2")
 				var parent = $(ele).parent();
 				var node = $('#west_tree').tree("getNode", parent);
 				var params = node.attributes[0].urlParams;
+				console.log(target);
+				console.log(params[0]);
 				$state.go(target, params[0]);
 			};
 		})

@@ -14,6 +14,23 @@ $sto_array = array();
 
 $studiengang_kz = filter_input(INPUT_GET, "stgkz");
 $status = filter_input(INPUT_GET, "state");
+$sort = filter_input(INPUT_GET, "sort");
+$order = filter_input(INPUT_GET, "order");
+
+$sort = explode(",",$sort);
+$order = explode(",",$order);
+
+$sortString = null;
+
+foreach($sort as $key=>$s)
+{
+    $sortString .= $s." ".$order[$key].", ";
+}
+
+$sortString = substr($sortString,0,-2);
+
+if($sortString == " ")
+    $sortString = null;
 
 if(is_null($studiengang_kz))
 {
@@ -33,7 +50,7 @@ $studienordnung = new StudienordnungAddonStgv();
 switch($status)
 {
     case "all":
-	$studienordnung->loadStudienordnungSTG($studiengang_kz);
+	$studienordnung->loadStudienordnungSTG($studiengang_kz, null, null, $sortString);
     default:
 	$studienordnung->loadStudienordnungWithStatus($studiengang_kz, $status);
 	break;
@@ -46,17 +63,19 @@ foreach($studienordnung->result as $key=>$sto)
     $id++;
     $temp->studienordnung_id = $sto->studienordnung_id;
     $temp->version = $sto->version;
-    $temp->text = $sto->bezeichnung;
+    $temp->bezeichnung = $sto->bezeichnung;
     if($key == 0 && $DEBUG)
 	$temp->state = "open";
     else
 	$temp->state = "closed";
-    $temp->status = $sto->status_bezeichnung;
+    $temp->status_bezeichnung = $sto->status_bezeichnung;
     $temp->status_kurzbz = $sto->status_kurzbz;
-    $temp->stgkz = $sto->studiengang_kz;
+    $temp->studiengang_kz = $sto->studiengang_kz;
     $temp->ects = $sto->ects;
     $temp->gueltigvon = $sto->gueltigvon;
     $temp->gueltigbis = $sto->gueltigbis;
+    $temp->aenderungsvariante_bezeichnung = $sto->aenderungsvariante_bezeichnung;
+    $temp->studiengangbezeichnung = $sto->studiengangbezeichnung;
     
     //Creating attributes for treeGrid
     $temp->attributes = array();
@@ -80,7 +99,7 @@ foreach($studienordnung->result as $key=>$sto)
 	$temp_stpl->id = $id;
 	$id++;
 	$temp_stpl->studienplan_id = $stpl->studienplan_id;
-	$temp_stpl->text = $stpl->bezeichnung;
+	$temp_stpl->bezeichnung = $stpl->bezeichnung;
 	$temp_stpl->version = $stpl->version;
 	$temp_stpl->orgform_kurzbz = $stpl->orgform_kurzbz;
 	$temp_stpl->regelstudiendauer = $stpl->regelstudiendauer;
