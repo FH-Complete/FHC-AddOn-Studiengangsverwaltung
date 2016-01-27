@@ -58,14 +58,14 @@
 			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.beginn.$error.required || form.beginn.$error.date))}">
 					<label for="beginn">Beginn Bewerbungsfrist</label>
-					<input type="date" class="form-control input-sm datepicker" name="beginn" ng-model="ctrl.bewerbungstermin.beginn" required/>
+					<input strip-html type="date" class="form-control input-sm datepicker" name="beginn" ng-model="ctrl.bewerbungstermin.beginn" required/>
 					<span ng-show="form.beginn.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.ende.$error.required || form.ende.$error.date))}">
 					<label for="ende">Ende Bewerbungsfrist</label>
-					<input type="date" class="form-control input-sm datepicker" name="ende" ng-model="ctrl.bewerbungstermin.ende" required/>
+					<input strip-html type="date" class="form-control input-sm datepicker" name="ende" ng-model="ctrl.bewerbungstermin.ende" required/>
 					<span ng-show="form.ende.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
@@ -81,7 +81,7 @@
 			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.nachfrist_ende.$error.required || form.nachfrist_ende.$error.date))}">
 					<label for="nachfrist_ende">Nachfrist Ende</label>
-					<input type="date" class="form-control input-sm datepicker" name="nachfrist_ende" ng-model="ctrl.bewerbungstermin.nachfrist_ende" ng-disabled="!ctrl.bewerbungstermin.nachfrist" ng-required="ctrl.bewerbungstermin.nachfrist"/>
+					<input strip-html type="date" class="form-control input-sm datepicker" name="nachfrist_ende" ng-model="ctrl.bewerbungstermin.nachfrist_ende" ng-disabled="!ctrl.bewerbungstermin.nachfrist" ng-required="ctrl.bewerbungstermin.nachfrist"/>
 					<span ng-show="form.nachfrist_ende.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
@@ -91,7 +91,7 @@
 			<div class="col-sm-5">
 				<div class="form-group">
 					<label for="anmerkung">Anmerkung</label>
-					<textarea class="form-control input-sm" rows="5" name='anmerkung' ng-model="ctrl.bewerbungstermin.anmerkung"></textarea>
+					<textarea strip-html class="form-control input-sm" rows="5" name='anmerkung' ng-model="ctrl.bewerbungstermin.anmerkung"></textarea>
 				</div>
 			</div>
 		</div>

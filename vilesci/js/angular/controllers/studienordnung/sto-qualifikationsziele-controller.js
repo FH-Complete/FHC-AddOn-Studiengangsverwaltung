@@ -3,6 +3,7 @@ angular.module('stgv2')
 			$scope.studienordnung_id = $stateParams.studienordnung_id;
 			var ctrl = this;
 			ctrl.data = new Qualifikationsziel();
+			console.log(ctrl.data);
 			ctrl.data.studienordnung_id = $scope.studienordnung_id;
 			ctrl.temp = [];
 
@@ -15,6 +16,7 @@ angular.module('stgv2')
 					if (response.data.info.length > 0)
 					{
 						ctrl.data = response.data.info[0];
+						console.log(ctrl.data);
 					}
 				}
 				else
@@ -104,7 +106,7 @@ function Qualifikationsziel()
 				"Nach erfolgreichem Abschluss des Studiums sind die AbsolventInnen im Bereich der zentralen fachlichen Kompetenzen in der Lage, …",
 				"Nach erfolgreichem Abschluss des Studiums sind die AbsolventInnen im Bereich der personalen und sozial-kommunikativen Kompetenzen in der Lage, … "
 			],
-			"elements": []
+			"elements": [[],[],[]]
 		}
 	]
 }

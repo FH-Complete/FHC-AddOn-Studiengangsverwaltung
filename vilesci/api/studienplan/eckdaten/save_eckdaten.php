@@ -48,6 +48,9 @@ function mapDataToStudienplan($data)
     $stpl->regelstudiendauer = $data->regelstudiendauer;
     $stpl->sprache = $data->sprache;
     $stpl->ects_stpl = $data->ects_stpl;
+    $stpl->pflicht_sws = $data->pflicht_sws;
+    $stpl->pflicht_lvs = $data->pflicht_lvs;
+    $stpl->erlaeuterungen = $data->erlaeuterungen;
 
     return $stpl;
 }

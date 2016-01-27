@@ -16,7 +16,7 @@ angular.module('stgv2')
 				    {field: 'status_bezeichnung', align: 'left', title:'Status',sortable:true},
 					{field: 'aenderungsvariante_bezeichnung', align: 'left', title:'Änderungsvariante',sortable:true},
 					{field: 'studiengangbezeichnung', align: 'left', title:'Studiengangbezeichnung',sortable:true},
-				    {field: 'studiengang_kz', align:'left', title:'STG KZ',sortable:true},
+				    {field: 'studiengang_kz', align:'left', title:'StgKz',sortable:true},
 				    {field: 'orgform_kurzbz', align:'left', title:'Orgform',sortable:true},
 				    {field: 'gueltigvon', align:'left', title:'gültig von',sortable:true},
 				    {field: 'gueltigbis', align:'left', title:'gültig bis',sortable:true},

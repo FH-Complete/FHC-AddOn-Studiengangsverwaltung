@@ -12,7 +12,7 @@
 	</table>
 	</br>
 	<div id="foerdervertragDetails" style="display: none;">
-		<form  name="form_foerdervertrag" onsubmit="return true;" novalidate>
+		<form name="form_foerdervertrag" onsubmit="return true;" novalidate>
 			<!-- Zeile 1 -->
 			<div class="row">
 				<div class="col-sm-1">
@@ -42,7 +42,7 @@
 				<div class="col-sm-4">
 					<div class="form-group" ng-class="{'has-error': (form_foerdervertrag.$submitted && form_foerdervertrag.foerdergeber.$error.required)}">
 						<label for="foerdergeber">&nbsp;</label>
-						<input ng-if="foerdergeber == 'Sonstige'" type="text" placeholder="Bitte ergänzen ..." class="form-control input-sm" name="foerdergeber" ng-model="ctrl.foerdervertrag.foerdergeber" ng-required="$parent.foerdergeber =='Sonstige'"/>
+						<input strip-html ng-if="foerdergeber == 'Sonstige'" type="text" placeholder="Bitte ergänzen ..." class="form-control input-sm" name="foerdergeber" ng-model="ctrl.foerdervertrag.foerdergeber" ng-required="$parent.foerdergeber =='Sonstige'"/>
 					</div>
 				</div>
 			</div>
@@ -64,7 +64,7 @@
 						<select ng-if="ctrl.foerdervertrag.foerdergeber == 'BMWFW'" class="form-control input-sm" name="foerdersatz_select" ng-model="$parent.foerdersatz" ng-required="ctrl.foerdervertrag.foerdergeber=='BMWFW'">
 							<option ng-repeat="f in ctrl.foerdersatzList" value="{{f.value}}">{{f.label}}</option>
 						</select>
-						<input ng-if="ctrl.foerdervertrag.foerdergeber != 'BMWFW'" type="text" class="form-control input-sm" name="foerdersatz" ng-model="$parent.ctrl.foerdervertrag.foerdersatz" ng-required="ctrl.foerdervertrag.foerdergeber!='BMWFW'" ng-keydown="$parent.validate($event)"/>
+						<input strip-html ng-if="ctrl.foerdervertrag.foerdergeber != 'BMWFW'" type="text" class="form-control input-sm" name="foerdersatz" ng-model="$parent.ctrl.foerdervertrag.foerdersatz" ng-required="ctrl.foerdervertrag.foerdergeber!='BMWFW'" ng-keydown="$parent.validate($event)"/>
 					</div>
 				</div>
 				<div class="col-sm-2">
@@ -90,7 +90,7 @@
 					<div class="col-sm-12">
 						<div class="form-group">
 							<label for="erlaeuterungen">Erläuterungen</label>
-							<textarea class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="ctrl.foerdervertrag.erlaeuterungen"></textarea>
+							<textarea strip-html class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="ctrl.foerdervertrag.erlaeuterungen"></textarea>
 						</div>
 					</div>
 				</div>
@@ -99,7 +99,7 @@
 						<div class="col-sm-12">
 							<div class="form-group">
 								<label for="dokument">Dokument</label>
-								<input type="file" nv-file-select="" uploader="uploader" />
+								<input type="file" nv-file-select="" name="file" uploader="uploader" />
 								<button id="upload" class="btn btn-primary btn-sm" ng-click="ctrl.uploadDokument()">Upload</button>
 							</div>
 						</div>

@@ -1,15 +1,15 @@
 angular.module("stgv2")
-		.directive('numericOnly', function () {
+		.directive('integerOnly', function () {
 			return {
 				require: 'ngModel',
 				link: function (scope, element, attrs, modelCtrl) {
 					modelCtrl.$parsers.push(function (inputValue) {
 						var transformedInput;
-						if(attrs.numericOnly=="positive")
-							transformedInput = inputValue ? inputValue.replace(/[^\d.]/g, '') : null;
+						if(attrs.integerOnly=="positive")
+							transformedInput = inputValue ? inputValue.replace(/[^\d]/g, '') : null;
 						else
-							transformedInput = inputValue ? inputValue.replace(/[^\d.-]/g, '') : null;
-
+							transformedInput = inputValue ? inputValue.replace(/[^\d-]/g, '') : null;
+						
 						if (transformedInput != inputValue) {
 							modelCtrl.$setViewValue(transformedInput);
 							modelCtrl.$render();

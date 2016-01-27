@@ -47,6 +47,9 @@ function formatStringToTime(val, separator)
 
 function formatTimeToString(val)
 {
+	if(!(val instanceof Date))
+		val = new Date(val);
+
 	if(val instanceof Date)
 	{
 		var date = val;

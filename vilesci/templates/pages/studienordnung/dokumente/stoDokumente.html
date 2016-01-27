@@ -5,6 +5,7 @@
 				<thead>
 					<tr>
 						<th>Name</th>
+						<th width="100px" style="text-align: center">Upload</th>
 						<th width="100px" style="text-align: center">Download</th>
 						<th width="100px" style="text-align: center">Löschen</th>
 					</tr>
@@ -17,8 +18,11 @@
 						<td>
 							{{dok.name}}
 						</td>
+						<td>
+							{{dok.insertamum}}
+						</td>
 						<td style="text-align: center">
-							<a href="./api/helper/download_dokument.php?dms_id={{dok.dms_id}}">
+							<a href="./api/helper/download_dokument.php?dms_id={{dok.dms_id}}" target='_blank'>
 								<button type="submit" class="btn btn-primary btn-sm">Download</button>
 							</a>
 						</td>

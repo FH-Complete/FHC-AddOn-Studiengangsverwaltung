@@ -4,7 +4,7 @@
 			<div class="col-sm-4">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.version.$error.required)}">
 					<label for="version">Version</label>
-					<input type="text" class="form-control input-sm" name="version" ng-model="stplCtrl.data.version" ng-change="stplCtrl.versionChanged()" required ng-disabled="stplCtrl.studienordnung.status_kurzbz !='development'"/>
+					<input strip-html type="text" class="form-control input-sm" name="version" ng-model="stplCtrl.data.version" ng-change="stplCtrl.versionChanged()" required ng-disabled="stplCtrl.studienordnung.status_kurzbz !='development'"/>
 				</div>
 			</div>
 		</div>

@@ -5,13 +5,13 @@
 				<div class="col-sm-2">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
 						<label for="kurzbz">Kurzbz*</label>
-						<input type="text" class="form-control input-sm" name="kurzbz" ng-model="newLvCtrl.data.kurzbz" ng-change="newLvCtrl.updateLehreverzeichnis()" required/>
+						<input strip-html type="text" class="form-control input-sm" name="kurzbz" ng-model="newLvCtrl.data.kurzbz" ng-change="newLvCtrl.updateLehreverzeichnis()" required/>
 					</div>
 				</div>
 				<div class="col-sm-6">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
 						<label for="bezeichnung">Bezeichnung*</label>
-						<input type="text" class="form-control input-sm" name="bezeichnung" ng-model="newLvCtrl.data.bezeichnung" required/>
+						<input strip-html type="text" class="form-control input-sm" name="bezeichnung" ng-model="newLvCtrl.data.bezeichnung" required/>
 					</div>
 				</div>
 			</div>
@@ -71,7 +71,7 @@
 				<div class="col-sm-2">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
 						<label for="lvverzeichnis">Lehreverzeichnis*</label>
-						<input type="text" class="form-control input-sm"  name="lehreverzeichnis" ng-model="newLvCtrl.data.lehreverzeichnis" required/>
+						<input strip-html type="text" class="form-control input-sm"  name="lehreverzeichnis" ng-model="newLvCtrl.data.lehreverzeichnis" required/>
 					</div>
 				</div>
 			</div>
@@ -87,7 +87,7 @@
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label for="bezeichnung_englisch">Bezeichnung Englisch</label>
-						<input type="text" class="form-control input-sm"  name="bezeichnung_englisch" ng-model="newLvCtrl.data.bezeichnung_english"/>
+						<input strip-html type="text" class="form-control input-sm"  name="bezeichnung_englisch" ng-model="newLvCtrl.data.bezeichnung_english"/>
 					</div>
 				</div>
 			</div>
@@ -95,31 +95,31 @@
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label for="ects">ECTS</label>
-						<input type="text" class="form-control input-sm"  name="ects" ng-model="newLvCtrl.data.ects"/>
+						<input numeric-only='positive' type="text" class="form-control input-sm"  name="ects" ng-model="newLvCtrl.data.ects"/>
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label for="semesterstunden">Semesterstunden</label>
-						<input type="text" class="form-control input-sm"  name="semesterstunden" ng-model="newLvCtrl.data.semesterstunden"/>
+						<input integer-only="positive" type="text" class="form-control input-sm"  name="semesterstunden" ng-model="newLvCtrl.data.semesterstunden"/>
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label for="planlektoren">Planlektoren</label>
-						<input type="text" class="form-control input-sm"  name="planlektoren" ng-model="newLvCtrl.data.planlektoren"/>
+						<input integer-only="positive" type="text" class="form-control input-sm"  name="planlektoren" ng-model="newLvCtrl.data.planlektoren"/>
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label for="planpersonalkosten">Planpersonalkosten</label>
-						<input type="text" class="form-control input-sm"  name="planpersonalkosten" ng-model="newLvCtrl.data.planpersonalkosten"/>
+						<input numeric-only='positive' type="text" class="form-control input-sm"  name="planpersonalkosten" ng-model="newLvCtrl.data.planpersonalkosten"/>
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label for="plankostenprolektor">Plankosten/Lektor</label>
-						<input type="text" class="form-control input-sm"  name="plankostenprolektor" ng-model="newLvCtrl.data.plankostenprolektor"/>
+						<input numeric-only='positive' type="text" class="form-control input-sm"  name="plankostenprolektor" ng-model="newLvCtrl.data.plankostenprolektor"/>
 					</div>
 				</div>
 				<div class="col-sm-2">
@@ -136,13 +136,13 @@
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label for="sort">Sort</label>
-						<input type="text" class="form-control input-sm"  name="sort" ng-model="newLvCtrl.data.sort"/>
+						<input integer-only type="text" class="form-control input-sm"  name="sort" ng-model="newLvCtrl.data.sort"/>
 					</div>
 				</div>
 				<div class="col-sm-4">
 					<div class="form-group">
 						<label for="anmerkung">Anmerkung</label>
-						<input type="text" class="form-control input-sm"  name="anmerkung" ng-model="newLvCtrl.data.anmerkung"/>
+						<input strip-html type="text" class="form-control input-sm"  name="anmerkung" ng-model="newLvCtrl.data.anmerkung"/>
 					</div>
 				</div>
 				<div class="col-sm-2">
@@ -177,19 +177,19 @@
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label for="lvnr">LVNR</label>
-						<input type="text" class="form-control input-sm"  name="lvnr" ng-model="newLvCtrl.data.lvnr"/>
+						<input integer-only="positive" type="text" class="form-control input-sm"  name="lvnr" ng-model="newLvCtrl.data.lvnr"/>
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label for="incomingplaetze">Incomingplätze</label>
-						<input type="text" class="form-control input-sm"  name="incomingplaetze" ng-model="newLvCtrl.data.incoming"/>
+						<input integer-only="positive" type="text" class="form-control input-sm"  name="incomingplaetze" ng-model="newLvCtrl.data.incoming"/>
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label for="semester_alternativ">Sem alternativ</label>
-						<input type="text" class="form-control input-sm"  name="semester_alternativ" ng-model="newLvCtrl.data.semester_alternativ"/>
+						<input integer-only="positive" type="text" class="form-control input-sm"  name="semester_alternativ" ng-model="newLvCtrl.data.semester_alternativ"/>
 					</div>
 				</div>
 				<div class="col-sm-5">
@@ -206,7 +206,7 @@
 					<div class="form-group">
 						<label for="farbe">Farbe</label>
 						<div class="input-group">
-							<input id="farbe" type="text" class="form-control input-sm" name="farbe" ng-model="newLvCtrl.data.farbe" ng-change="newLvCtrl.updateColor()"/>
+							<input strip-html id="farbe" type="text" class="form-control input-sm" name="farbe" ng-model="newLvCtrl.data.farbe" ng-change="newLvCtrl.updateColor()"/>
 							<span class="input-group-addon"><span id="farbevorschau" style="background-color: #; border: 1px solid #999999; cursor: default;">&nbsp&nbsp&nbsp&nbsp</span></span>
 						</div>
 					</div>
@@ -214,13 +214,13 @@
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label for="anzahlsemester">Anzahl Semester</label>
-						<input type="text" class="form-control input-sm"  name="anzahlsemester" ng-model="newLvCtrl.data.anzahlsemester"/>
+						<input integer-only="positive" type="text" class="form-control input-sm"  name="anzahlsemester" ng-model="newLvCtrl.data.anzahlsemester"/>
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label for="semesterwochen">Semesterwochen</label>
-						<input type="text" class="form-control input-sm"  name="semesterwochen" ng-model="newLvCtrl.data.semesterwochen"/>
+						<input integer-only="positive" type="text" class="form-control input-sm"  name="semesterwochen" ng-model="newLvCtrl.data.semesterwochen"/>
 					</div>
 				</div>
 				<div class="col-sm-2">
@@ -248,7 +248,7 @@
 					<div class="form-group">
 						<label for="sws">SWS</label>
 						<div class="input-group">
-							<input type="text" class="form-control input-sm" name="sws" ng-model="newLvCtrl.data.sws"/>
+							<input integer-only="positive" type="text" class="form-control input-sm" name="sws" ng-model="newLvCtrl.data.sws"/>
 							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
@@ -257,7 +257,7 @@
 					<div class="form-group">
 						<label for="lvs">LVS</label>
 						<div class="input-group">
-							<input type="text" class="form-control input-sm"  name="lvs" ng-model="newLvCtrl.data.lvs"/>
+							<input integer-only="positive" type="text" class="form-control input-sm"  name="lvs" ng-model="newLvCtrl.data.lvs"/>
 							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
@@ -266,7 +266,7 @@
 					<div class="form-group">
 						<label for="alvs">ALVS</label>
 						<div class="input-group">
-							<input type="text" class="form-control input-sm"  name="alvs" ng-model="newLvCtrl.data.alvs"/>
+							<input integer-only="positive" type="text" class="form-control input-sm"  name="alvs" ng-model="newLvCtrl.data.alvs"/>
 							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
@@ -275,7 +275,7 @@
 					<div class="form-group">
 						<label for="lvps">LVPS</label>
 						<div class="input-group">
-							<input type="text" class="form-control input-sm"  name="lvps" ng-model="newLvCtrl.data.lvps"/>
+							<input integer-only="positive" type="text" class="form-control input-sm"  name="lvps" ng-model="newLvCtrl.data.lvps"/>
 							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
@@ -284,7 +284,7 @@
 					<div class="form-group">
 						<label for="las">LAS</label>
 						<div class="input-group">
-							<input type="text" class="form-control input-sm"  name="las" ng-model="newLvCtrl.data.las"/>
+							<input integer-only="positive" type="text" class="form-control input-sm"  name="las" ng-model="newLvCtrl.data.las"/>
 							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 
 						</div>

@@ -57,7 +57,7 @@
 			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.datum.$error.required || form.datum.$error.date))}">
 					<label for="datum">Datum</label>
-					<input type="date" class="form-control input-sm" name="datum" ng-model="ctrl.reihungstest.datum" required/>
+					<input strip-html type="date" class="form-control input-sm" name="datum" ng-model="ctrl.reihungstest.datum" required/>
 					<span ng-show="form.datum.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
@@ -71,7 +71,7 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="maxTeilnehmer">max. TeilnehmerInnen</label>
-					<input type="text" class="form-control input-sm" name="maxTeilnehmer" ng-model="ctrl.reihungstest.max_teilnehmer"/>
+					<input integer-only="positive" type="text" class="form-control input-sm" name="maxTeilnehmer" ng-model="ctrl.reihungstest.max_teilnehmer"/>
 				</div>
 			</div>
 		</div>
@@ -80,7 +80,7 @@
 			<div class="col-sm-5">
 				<div class="form-group">
 					<label for="anmerkung">Anmerkung</label>
-					<textarea class="form-control input-sm" rows="5" name='anmerkung' ng-model="ctrl.reihungstest.anmerkung"></textarea>
+					<textarea strip-html class="form-control input-sm" rows="5" name='anmerkung' ng-model="ctrl.reihungstest.anmerkung"></textarea>
 				</div>
 			</div>
 		</div>

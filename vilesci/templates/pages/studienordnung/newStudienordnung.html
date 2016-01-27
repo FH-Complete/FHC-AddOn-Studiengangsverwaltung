@@ -25,7 +25,7 @@
 			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.version.$error.required)}">
 					<label for="version">Version</label>
-					<input type="text" class="form-control input-sm" name="version" value="{{stoCtrl.sto.version}}" disabled required/>
+					<input strip-html type="text" class="form-control input-sm" name="version" value="{{stoCtrl.sto.version}}" disabled required/>
 				</div>
 			</div>
 			<div class="col-sm-4">
@@ -64,8 +64,8 @@
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group">
-					<label for="status">Begründung</label>
-					<textarea class="form-control input-sm" rows="5" name='begruendung' ng-model="stoCtrl.sto.begruendung"></textarea>
+					<label for="begruendung">Begründung</label>
+					<textarea strip-html class="form-control input-sm" rows="5" name='begruendung' ng-model="stoCtrl.sto.begruendung"></textarea>
 				</div>
 			</div>
 		</div>

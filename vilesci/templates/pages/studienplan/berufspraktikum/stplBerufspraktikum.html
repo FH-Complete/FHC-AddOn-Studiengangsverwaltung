@@ -22,7 +22,7 @@
 					</td>
 					<td ng-repeat="n in stplCtrl.range(stplCtrl.studienplan.regelstudiendauer) track by $index">
 						<div class="form-group">
-							<input type="text" class="form-control input-sm" ng-model="stplCtrl.berufspraktikum.data[$index].dauer"/>
+							<input strip-html type="text" class="form-control input-sm" ng-model="stplCtrl.berufspraktikum.data[$index].dauer"/>
 						</div>
 					</td>
 				</tr>
@@ -32,7 +32,7 @@
 					</td>
 					<td ng-repeat="n in stplCtrl.range(stplCtrl.studienplan.regelstudiendauer) track by $index">
 						<div class="form-group">
-							<input type="text" class="form-control input-sm" ng-model="stplCtrl.berufspraktikum.data[$index].ects"/>
+							<input strip-html type="text" class="form-control input-sm" ng-model="stplCtrl.berufspraktikum.data[$index].ects"/>
 						</div>
 					</td>
 				</tr>
@@ -42,7 +42,7 @@
 					</td>
 					<td ng-repeat="n in stplCtrl.range(stplCtrl.studienplan.regelstudiendauer) track by $index">
 						<div class="form-group">
-							<input type="text" class="form-control input-sm" ng-model="stplCtrl.berufspraktikum.data[$index].stunden"/>	
+							<input strip-html type="text" class="form-control input-sm" ng-model="stplCtrl.berufspraktikum.data[$index].stunden"/>	
 						</div>
 					</td>
 				</tr>
@@ -52,7 +52,7 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="erlaeuterungen">Erläuterungen</label>
-					<textarea class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="stplCtrl.berufspraktikum.erlaeuterungen"></textarea>
+					<textarea strip-html class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="stplCtrl.berufspraktikum.erlaeuterungen"></textarea>
 				</div>
 			</div>
 		</div>

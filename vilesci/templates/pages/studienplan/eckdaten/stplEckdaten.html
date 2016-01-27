@@ -4,25 +4,25 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="regelstudiendauer">Regelstudiendauer</label>
-					<input type="text" class="form-control input-sm" name="regelstudiendauer" ng-model="ctrl.data.regelstudiendauer"/>
+					<input integer-only="positive" type="text" class="form-control input-sm" name="regelstudiendauer" ng-model="ctrl.data.regelstudiendauer"/>
 				</div>
 			</div>
 			<div class="col-sm-1">
 				<div class="form-group">
 					<label for="ects">ECTS</label>
-					<input type="text" class="form-control input-sm" name="ects" ng-model="ctrl.data.ects_stpl"/>
+					<input numeric-only='positive' type="text" class="form-control input-sm" name="ects" ng-model="ctrl.data.ects_stpl"/>
 				</div>
 			</div>
 			<div class="col-sm-1">
 				<div class="form-group">
 					<label for="sws">Pflicht-SWS</label>
-					<input type="text" class="form-control input-sm" name="sws" ng-model="ctrl.data.pflicht_sws"/>
+					<input integer-only="positive" type="text" class="form-control input-sm" name="sws" ng-model="ctrl.data.pflicht_sws"/>
 				</div>
 			</div>
 			<div class="col-sm-1">
 				<div class="form-group">
 					<label for="lvs">Pflicht-LVS</label>
-					<input type="text" class="form-control input-sm" name="lvs" ng-model="ctrl.data.pflicht_lvs"/>
+					<input integer-only="positive" type="text" class="form-control input-sm" name="lvs" ng-model="ctrl.data.pflicht_lvs"/>
 				</div>
 			</div>
 		</div>
@@ -30,14 +30,14 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="sprache">Sprache</label>
-					<input type="text" class="form-control input-sm" name="sprache" ng-model="ctrl.data.sprache"/>
+					<input strip-html type="text" class="form-control input-sm" name="sprache" ng-model="ctrl.data.sprache"/>
 				</div>
 			</div>
 			<div class="col-sm-3">
 				<div class="form-group">
 					<!--TODO Sprache Kommentar als Text in DB speichern-->
 					<label for="spracheKommentar">Sprache Kommentar</label>
-					<input type="text" class="form-control input-sm" name="spracheKommentar" ng-model="ctrl.data.spracheKommentar"/>
+					<input strip-html type="text" class="form-control input-sm" name="spracheKommentar" ng-model="ctrl.data.spracheKommentar"/>
 				</div>
 			</div>
 		</div>
@@ -45,7 +45,7 @@
 			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="erlaeuterungen">Erläuterungen zum Studienplan</label>
-					<textarea class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="stoCtrl.sto.erlaeuterungen"></textarea>
+					<textarea strip-html class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="stoCtrl.sto.erlaeuterungen"></textarea>
 				</div>
 			</div>
 		</div>

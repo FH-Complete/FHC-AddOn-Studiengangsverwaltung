@@ -3,28 +3,35 @@
 		<div class="row">
 			<div class="col-sm-2">
 				<div class="form-group">
-					<label for="stgkz">Stg KZ</label>
+					<label for="stgkz">StgKz</label>
 					<input type="text" class="form-control input-sm" name="stgkz" value="{{ctrl.data.stgkz}}" disabled/>
 				</div>
 			</div>
-			<div class="col-sm-3">
+			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="bezeichnung">Studiengangbezeichnung</label>
-					<input type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.data.studiengangbezeichnung"/>
+					<input characters-only type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.data.studiengangbezeichnung"/>
 				</div>
 			</div>
-			<div class="col-sm-1">
+			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="kurzbz">Studiengangskurzbezeichnung</label>
-					<input type="text" class="form-control input-sm" name="kurzbz" ng-model="ctrl.data.studiengangkurzbzlang"/>
+					<div class="input-group">
+						<input characters-only="upperCase" type="text" maxlength="8" class="form-control input-sm" name="kurzbz" ng-model="ctrl.data.studiengangkurzbzlang"/>
+						<div class="input-group-addon">{{(8-ctrl.data.studiengangkurzbzlang.length)}}</div>
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-4">
+			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="art">Studiengangsart</label>
-					<input type="text" class="form-control input-sm" name="art" ng-model="ctrl.data.studiengangsart"/>
+					<select class="form-control input-sm" name="art" ng-model="ctrl.data.studiengangsart">
+						<option>Bachelor</option>
+						<option>Master</option>
+					</select>
+					<!--<input strip-html type="text" class="form-control input-sm" name="art" ng-model="ctrl.data.studiengangsart"/>-->
 				</div>
 			</div>
 			<div class="col-sm-4">

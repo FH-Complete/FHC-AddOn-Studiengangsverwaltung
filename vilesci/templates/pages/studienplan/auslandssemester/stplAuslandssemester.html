@@ -11,7 +11,6 @@
 				<tr>
 					<td>
 						<span>optional</span>
-						
 					</td>
 					<td ng-repeat="n in ctrl.range(ctrl.studienplan.regelstudiendauer) track by $index">
 						<input type="checkbox" ng-model="ctrl.auslandssemester.data[$index].optional" ng-change="ctrl.changed($index, 'optional')"/>
@@ -31,7 +30,7 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="erlaeuterungen">Erläuterungen</label>
-					<textarea class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="ctrl.auslandssemester.erlaeuterungen"></textarea>
+					<textarea strip-html class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="ctrl.auslandssemester.erlaeuterungen"></textarea>
 				</div>
 			</div>
 		</div>

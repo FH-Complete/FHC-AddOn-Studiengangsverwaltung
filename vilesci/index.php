@@ -137,7 +137,10 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script type="text/javascript" src="./js/angular/directives/error-directive.js"></script>
 	<script type="text/javascript" src="./js/angular/directives/numericOnly-directive.js"></script>
 	<script type="text/javascript" src="./js/angular/directives/currency-directive.js"></script>
+	<script src="js/angular/directives/stripHtml-directive.js" type="text/javascript"></script>
 	<script src="js/angular/directives/timeFormat-directive.js" type="text/javascript"></script>
+	<script src="js/angular/directives/integerOnly-directive.js" type="text/javascript"></script>
+	<script src="js/angular/directives/charactersOnly-directive.js" type="text/javascript"></script>
 	
 	<!-- Colorpicker -->
 	<link rel="stylesheet" href="../../../skin/colorpicker.css" type="text/css"/>

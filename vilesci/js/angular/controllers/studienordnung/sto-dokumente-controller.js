@@ -14,6 +14,7 @@ angular.module('stgv2')
 					if (response.data.erfolg)
 					{
 						ctrl.dokumente = response.data.info;
+						console.log(ctrl.dokumente);
 					}
 					else
 					{

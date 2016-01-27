@@ -31,13 +31,13 @@
 			<div class="col-sm-4">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.bezeichnung.$error.required)}">
 					<label for="bezeichnung">Bezeichnung</label>
-					<input type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.doktorat.bezeichnung" required/>
+					<input strip-html type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.doktorat.bezeichnung" required/>
 				</div>
 			</div>
 			<div class="col-sm-1">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.datum_erlass.$error.required || form.datum_erlass.$error.date))}">
 					<label for="datum_erlass">Erlassdatum</label>
-					<input type="date" class="form-control input-sm" name="datum_erlass" ng-model="ctrl.doktorat.datum_erlass" required/>
+					<input strip-html type="date" class="form-control input-sm" name="datum_erlass" ng-model="ctrl.doktorat.datum_erlass" required/>
 					<span ng-show="form.datum_erlass.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
@@ -65,7 +65,7 @@
 			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="erlaeuterungen">Erläuterungen</label>
-					<textarea class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="ctrl.doktorat.erlaeuterungen"></textarea>
+					<textarea strip-html class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="ctrl.doktorat.erlaeuterungen"></textarea>
 				</div>
 			</div>
 		</div>

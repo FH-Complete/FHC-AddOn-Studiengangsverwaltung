@@ -62,12 +62,12 @@ angular.module('stgv2')
 					},
 					columns: [[
 						{field: 'bewerbungstermin_id', align: 'right', title:'ID'},
-						{field: 'studiengang_kz', align:'right', sortable: 'true', title:'STG KZ'},
-						{field: 'studiensemester_kurzbz', align:'right', sortable: 'true', title:'Studiensemester'},
-						{field: 'beginn', align:'left', sortable: 'true', formatter: formatDateToString, title:'Beginn'},
-						{field: 'ende', align:'left',  sortable: 'true', formatter: formatDateToString, title:'Ende'},
-						{field: 'nachfrist', align:'left', title:'Nachfrist'},
-						{field: 'nachfrist_ende', align:'left', formatter: formatDateToString, title:'Ende Nachfrist'},
+						{field: 'studiengang_kz', align:'right', sortable: true, title:'STG KZ'},
+						{field: 'studiensemester_kurzbz', align:'right', sortable: true, title:'Studiensemester'},
+						{field: 'beginn', align:'left', sortable: true, formatter: formatDateToString, title:'Beginn'},
+						{field: 'ende', align:'left',  sortable: true, formatter: formatDateToString, title:'Ende'},
+						{field: 'nachfrist', align:'left', title:'Nachfrist', sortable: true},
+						{field: 'nachfrist_ende', align:'left', formatter: formatDateToString, title:'Ende Nachfrist', sortable: true},
 						{field: 'anmerkung', align:'left', title:'Anmerkung'}
 					]]
 				});
