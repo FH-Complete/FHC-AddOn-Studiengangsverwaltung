@@ -11,7 +11,7 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="aenderungsvariante">Änderungsvariante</label>
-					<select class="form-control input-sm" name="aenderungsvariante" ng-model="ctrl.data.aenderungsvariante_kurzbz" required>
+					<select class="form-control input-sm" name="aenderungsvariante" ng-model="ctrl.data.aenderungsvariante_kurzbz" required ng-disabled="ctrl.data.beschluesse[0].typ != ''">
 						<option ng-repeat="av in ctrl.aenderungsvarianteList" value="{{av.aenderungsvariante_kurzbz}}">{{av.bezeichnung}}</option>
 					</select>
 				</div>
@@ -38,6 +38,54 @@
 					<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.data.gueltigbis">
 						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
 					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row" ng-show="ctrl.beschluesse.length >= 1">
+			<input type="hidden" class="form-control input-sm" name="beschluss_id_1" ng-model="ctrl.beschluesse[0].beschluss_id"/>
+			<div class="col-sm-2">
+					<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.datum_1.$error.required || form.datum_1.$error.date))}">
+					<label for="datum_1">Beschluss Datum</label>
+					<input type="date" class="form-control input-sm datepicker" name="datum_1" ng-model="ctrl.beschluesse[0].datum"/>
+					<span ng-show="form.datum.$error.date">Kein gültiges Datum!</span>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.beschluss_1.$error.required))}">
+					<label for="beschluss_1">Beschluss</label>
+					<input strip_html type="text" class="form-control input-sm" name="beschluss_1" ng-model="ctrl.beschluesse[0].typ"/>
+				</div>
+			</div>
+		</div>
+		<div class="row" ng-show="ctrl.beschluesse.length >= 2">
+			<input type="hidden" class="form-control input-sm" name="beschluss_id_2" ng-model="ctrl.beschluesse[1].beschluss_id"/>
+			<div class="col-sm-2">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.datum_2.$error.required || form.datum_2.$error.date))}">
+					<label for="datum_2">Beschluss Datum</label>
+					<input type="date" class="form-control input-sm datepicker" name="datum_2" ng-model="ctrl.beschluesse[1].datum"/>
+					<span ng-show="form.datum.$error.date">Kein gültiges Datum!</span>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.beschluss_2.$error.required))}">
+					<label for="beschluss_2">Beschluss</label>
+					<input strip_html type="text" class="form-control input-sm" name="beschluss_2" ng-model="ctrl.beschluesse[1].typ"/>
+				</div>
+			</div>
+		</div>
+		<div class="row" ng-show="ctrl.beschluesse.length >= 3">
+			<input type="hidden" class="form-control input-sm" name="beschluss_id_2" ng-model="ctrl.beschluesse[2].beschluss_id"/>
+			<div class="col-sm-2">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.datum_3.$error.required || form.datum_3.$error.date))}">
+					<label for="datum_3">Beschluss Datum</label>
+					<input type="date" class="form-control input-sm datepicker" name="datum_3" ng-model="ctrl.beschluesse[2].datum"/>
+					<span ng-show="form.datum.$error.date">Kein gültiges Datum!</span>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.beschluss_3.$error.required))}">
+					<label for="beschluss_3">Beschluss</label>
+					<input strip_html type="text" class="form-control input-sm" name="beschluss_3" ng-model="ctrl.beschluesse[2].typ"/>
 				</div>
 			</div>
 		</div>

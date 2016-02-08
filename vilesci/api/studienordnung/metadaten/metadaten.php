@@ -7,6 +7,7 @@ require_once('../../../../../../include/akadgrad.class.php');
 require_once('../../../../../../include/studiensemester.class.php');
 
 require_once('../../../../include/StudienordnungAddonStgv.class.php');
+require_once('../../../../include/Beschluss.class.php');
 require_once('../../functions.php');
 
 $sto_array = array();
@@ -32,6 +33,9 @@ $akadgrad->getAll();
 $studiensemester = new studiensemester();
 $studiensemester->getAll();
 
+$beschluss = new beschluss();
+$beschluss->getAll($studienordnung_id);
+
 $data = array(
     'studienordnung_id'=> $studienordnung->studienordnung_id,
     'version'=> $studienordnung->version, 				
@@ -49,7 +53,8 @@ $data = array(
     'updateamum' => $studienordnung->updateamum,
     'updatevon' => $studienordnung->updatevon,
     'insertamum' => $studienordnung->insertamum,
-    'insertvon' => $studienordnung->insertvon
+    'insertvon' => $studienordnung->insertvon,
+    'beschluesse' => $beschluss->result
 );
 
 

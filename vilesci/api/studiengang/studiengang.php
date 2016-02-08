@@ -4,6 +4,7 @@ require_once('../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../include/functions.inc.php');
 require_once('../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../include/studiengang.class.php');
+require_once ('../../../include/StudienordnungStatus.class.php');
 require_once('../functions.php');
 
 //TODO
@@ -27,6 +28,9 @@ $stg_array = array();
 
 //TODO Stati aus Datenank holen
 //prepared stati
+$studienordnungStatus = new StudienordnungStatus();
+$studienordnungStatus->getAll();
+
 $stati = array();
 $status1 = new stdClass();
 $status1->name = "in Bearbeitung";
@@ -157,11 +161,11 @@ foreach($studiengang->result as $key=>$stg)
 	$studienordnungen->children = array();
 	
 	//Children of Studienordnungen
-	    foreach($stati as $status)
+	    foreach($studienordnungStatus->result as $status)
 	    {
 		$node = new stdClass();
 		$node->id = $key;
-		$node->text = $status->name;
+		$node->text = $status->bezeichnung;
 
 		$node_attributes = array();
 		$node_attr = new stdClass();
@@ -171,7 +175,7 @@ foreach($studiengang->result as $key=>$stg)
 		$node_urlParams = array();
 		$node_urlParam = new stdClass();
 		$node_urlParam->stgkz = $stg->studiengang_kz;
-		$node_urlParam->state = $status->code;
+		$node_urlParam->state = $status->status_kurzbz;
 		array_push($node_urlParams, $node_urlParam);
 
 		$node_attr->urlParams = $node_urlParams;

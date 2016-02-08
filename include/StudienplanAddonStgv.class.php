@@ -441,7 +441,7 @@ class StudienplanAddonStgv extends studienplan
 	{
 	    while ($row = $this->db_fetch_object())
 	    {
-		$obj = new studienplan();
+		$obj = new StudienplanAddonStgv();
 
 		$obj->studienplan_id = $row->studienplan_id;
 		$obj->studienordnung_id = $row->studienordnung_id;
@@ -515,7 +515,7 @@ class StudienplanAddonStgv extends studienplan
 	{
 	    while ($row = $this->db_fetch_object())
 	    {
-		$obj = new studienplan();
+		$obj = new StudienplanAddonStgv();
 
 		$obj->studienplan_id = $row->studienplan_id;
 		$obj->studienordnung_id = $row->studienordnung_id;

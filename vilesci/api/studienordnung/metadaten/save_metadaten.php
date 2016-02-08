@@ -7,15 +7,47 @@ require_once('../../../../../../include/akadgrad.class.php');
 require_once('../../../../../../include/studiensemester.class.php');
 
 require_once('../../../../include/StudienordnungAddonStgv.class.php');
+require_once('../../../../include/Beschluss.class.php');
 require_once('../../functions.php');
 
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
 $data = (Object) $data["data"];
+
+//var_dump($data->beschluesse);
+
+
 $studienordnung = mapDataToStudienordnung($data);
 if($studienordnung->save())
 {
-    
+    if(!empty($data->beschluesse))
+    {
+	foreach($data->beschluesse as $b)
+	{
+//	    var_dump($b);
+	    $beschluss = new beschluss();
+	    if(isset($b["beschluss_id"]))
+	    {
+		$beschluss->new = false;
+		$beschluss->beschluss_id = $b["beschluss_id"];
+	    }
+	    else
+	    {
+		$beschluss->new = true;
+	    }
+	    $beschluss->studienordnung_id = $studienordnung->studienordnung_id;
+	    $beschluss->datum = $b['datum'];
+	    $beschluss->typ = $b['typ'];
+//	    var_dump($beschluss);
+	    if(!$beschluss->save())
+	    {
+		$error = array("message"=>"Fehler beim Speichern des Beschlusses.", "detail"=>$beschluss->errormsg);
+		returnAJAX(false, $error);
+	    }
+	}
+    }
+
     returnAJAX(true, "Studienordnung erfolgreich aktualisiert");
+
 }
 else
 {

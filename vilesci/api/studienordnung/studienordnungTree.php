@@ -3,6 +3,7 @@
 require_once('../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../include/functions.inc.php');
 require_once('../../../../../include/benutzerberechtigung.class.php');
+require_once('../../../../../include/sprache.class.php');
 require_once ('../../../include/StudienplanAddonStgv.class.php');
 require_once ('../../../include/StudienordnungAddonStgv.class.php');
 require_once('../functions.php');
@@ -46,6 +47,8 @@ elseif(($studiengang_kz == false) || ($status == false))
 }
 
 $studienordnung = new StudienordnungAddonStgv();
+$sprache = new sprache();
+
 
 switch($status)
 {
@@ -103,7 +106,13 @@ foreach($studienordnung->result as $key=>$sto)
 	$temp_stpl->version = $stpl->version;
 	$temp_stpl->orgform_kurzbz = $stpl->orgform_kurzbz;
 	$temp_stpl->regelstudiendauer = $stpl->regelstudiendauer;
-	$temp_stpl->sprache = $stpl->sprache;
+	$temp_stpl->sprache = $sprache->getBezeichnung($stpl->sprache, "German");
+	$gueltigkeit = $stpl->loadStudiensemesterFromStudienplan($stpl->studienplan_id);
+	if(!empty($gueltigkeit))
+	    $temp_stpl->gueltigvon = $gueltigkeit[0];
+	
+	if(!empty($gueltigkeit))
+	    $temp_stpl->gueltigbis = $gueltigkeit[count($gueltigkeit)-1];
 	$temp_stpl->ects_stpl = $stpl->ects_stpl;
 	$temp_stpl->status_kurzbz = $sto->status_kurzbz;
 	

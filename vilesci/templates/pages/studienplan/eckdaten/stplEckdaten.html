@@ -30,7 +30,9 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="sprache">Sprache</label>
-					<input strip-html type="text" class="form-control input-sm" name="sprache" ng-model="ctrl.data.sprache"/>
+					<select class="form-control input-sm" name="sprache" ng-model="ctrl.data.sprache">
+						<option ng-repeat="sprache in ctrl.spracheList" value="{{sprache.sprache}}">{{sprache.bezeichnung_arr.German}}</option>
+					</select>
 				</div>
 			</div>
 			<div class="col-sm-3">

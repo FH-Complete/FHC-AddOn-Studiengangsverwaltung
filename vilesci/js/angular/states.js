@@ -1,5 +1,4 @@
 angular.module('stgv2').config(function ($stateProvider) {
-
 	$stateProvider
 //			.state('home', {
 //				name: "home",

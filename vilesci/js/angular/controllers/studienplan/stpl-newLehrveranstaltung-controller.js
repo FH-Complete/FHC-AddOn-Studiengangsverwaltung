@@ -1,7 +1,7 @@
 //TODO check if lehreverzeichnis exists
 
 angular.module('stgv2')
-		.controller('NewLehrveranstaltungCtrl', function ($scope, $http, errorService, successService) {
+		.controller('NewLehrveranstaltungCtrl', function ($scope, $http, errorService, StudiengangService, OrgformService, SpracheService) {
 			var ctrl = this;
 			ctrl.data = new Lehrveranstaltung();
 			ctrl.studiengangList = "";
@@ -15,38 +15,50 @@ angular.module('stgv2')
 			ctrl.lvSuggestionList = "";
 			
 			//loading Studiengang list
-			$http({
-				method: "GET",
-				url: "./api/helper/studiengang.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.studiengangList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
+			StudiengangService.getStudiengangList().then(function(result){
+				ctrl.studiengangList = result;
+			},function(error){
+				errorService.setError(getErrorMsg(error));
 			});
 			
+//			$http({
+//				method: "GET",
+//				url: "./api/helper/studiengang.php"
+//			}).then(function success(response) {
+//				if (response.data.erfolg)
+//				{
+//					ctrl.studiengangList = response.data.info;
+//				}
+//				else
+//				{
+//					errorService.setError(getErrorMsg(response));
+//				}
+//			}, function error(response) {
+//				errorService.setError(getErrorMsg(response));
+//			});
+			
 			//loading orgform list
-			$http({
-				method: "GET",
-				url: "./api/helper/orgform.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.orgformList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
+			OrgformService.getOrgformList().then(function(result){
+				ctrl.orgformList = result;
+			},function(error){
+				errorService.setError(getErrorMsg(error));
 			});
+			
+//			$http({
+//				method: "GET",
+//				url: "./api/helper/orgform.php"
+//			}).then(function success(response) {
+//				if (response.data.erfolg)
+//				{
+//					ctrl.orgformList = response.data.info;
+//				}
+//				else
+//				{
+//					errorService.setError(getErrorMsg(response));
+//				}
+//			}, function error(response) {
+//				errorService.setError(getErrorMsg(response));
+//			});
 			
 			//load lehrtypen
 			$http({
@@ -83,21 +95,27 @@ angular.module('stgv2')
 			});
 			
 			//loading spracheList
-			$http({
-				method: 'GET',
-				url: './api/helper/sprache.php'
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.spracheList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
+			SpracheService.getSpracheList().then(function(result){
+				ctrl.spracheList = result;
+			},function(error){
+				errorService.setError(getErrorMsg(error));
 			});
+			
+//			$http({
+//				method: 'GET',
+//				url: './api/helper/sprache.php'
+//			}).then(function success(response) {
+//				if (response.data.erfolg)
+//				{
+//					ctrl.spracheList = response.data.info;
+//				}
+//				else
+//				{
+//					errorService.setError(getErrorMsg(response));
+//				}
+//			}, function error(response) {
+//				errorService.setError(getErrorMsg(response));
+//			});
 			
 			//loading raumtypList
 			$http({

@@ -32,7 +32,7 @@
 					</td>
 					<td ng-repeat="n in stplCtrl.range(stplCtrl.studienplan.regelstudiendauer) track by $index">
 						<div class="form-group">
-							<input strip-html type="text" class="form-control input-sm" ng-model="stplCtrl.berufspraktikum.data[$index].ects"/>
+							<input numeric-only="positive" type="text" class="form-control input-sm" ng-model="stplCtrl.berufspraktikum.data[$index].ects"/>
 						</div>
 					</td>
 				</tr>
@@ -42,7 +42,7 @@
 					</td>
 					<td ng-repeat="n in stplCtrl.range(stplCtrl.studienplan.regelstudiendauer) track by $index">
 						<div class="form-group">
-							<input strip-html type="text" class="form-control input-sm" ng-model="stplCtrl.berufspraktikum.data[$index].stunden"/>	
+							<input numeric-only="positive" type="text" class="form-control input-sm" ng-model="stplCtrl.berufspraktikum.data[$index].stunden"/>	
 						</div>
 					</td>
 				</tr>

@@ -9,24 +9,24 @@
 			<div class="row" ng-if="ele.header=='Qualifikationsziele'">
 				<div class="col-sm-8">
 					<div class="form-group">
-						<textarea strip-html class="form-control" rows="5" ng-model='ctrl.data.data[1].elements[0]'></textarea>
+						<textarea strip-html class="form-control input-sm" rows="5" ng-model='ctrl.data.data[1].elements[0]'></textarea>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-sm-8">
 					<div class="form-group">
-						<textarea strip-html class="form-control" rows="10" ng-model="ele.fixed[0]"></textarea>
+						<textarea strip-html class="form-control input-sm" rows="10" ng-model="ele.fixed[0]"></textarea>
 					</div>
 				</div>
 			</div>
 			<div class="row" ng-repeat="item in ele.fixed.slice(1, ele.fixed.length) track by $index">
 				<div class="col-sm-8">
-					<textarea strip-html class="form-control" rows="5" ng-model="ele.fixed[$index+1]"></textarea>
+					<textarea strip-html class="form-control input-sm" rows="5" ng-model="ele.fixed[$index+1]"></textarea>
 					<div class="input-group">
-						<input strip-html type="text" class="form-control" ng-model="ctrl.temp[$index]"/>
+						<input strip-html type="text" class="form-control input-sm" ng-model="ctrl.temp[$index]"/>
 						<span class="input-group-btn">
-							<button class="btn btn-primary" type="button" ng-click="ctrl.addListItem('zielList_'+($index+1), $index+1)">Aufzählung hinzufügen</button>
+							<button class="btn btn-primary btn-sm" type="button" ng-click="ctrl.addListItem('zielList_'+($index+1), $index+1)">Aufzählung hinzufügen</button>
 						</span>
 					</div>
 					<ul id="zielList_{{$index+1}}" class="list-group">

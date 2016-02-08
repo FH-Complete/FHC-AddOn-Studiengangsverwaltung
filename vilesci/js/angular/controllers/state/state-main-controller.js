@@ -27,7 +27,6 @@ angular.module('stgv2')
 				]],
 				loadFilter: function (data)
 				{
-					console.log(data);
 					if (data.erfolg)
 					{
 						$(data.info).each(function(i,v){
@@ -65,7 +64,7 @@ angular.module('stgv2')
 					if (data.length == 0)
 					{
 						//Wenn 0 Datensätze gefunden werden
-						$("#centerNorth").find(".datagrid-view1").find(".datagrid-body-inner").html("<span>No records found.</span>");
+						$("#centerNorth").find(".datagrid-view2").find(".datagrid-body").html("<span>No records found.</span>");
 					}
 				},
 				onLoadError: function (arguments) {

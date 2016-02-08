@@ -444,7 +444,6 @@ angular.module("stgv2")
 		.controller("TreeCtrl", function ($scope, $state) {
 			$scope.load = function (ele)
 			{
-				
 				var target = $(ele).attr("node_type");
 				var parent = $(ele).parent();
 				var node = $('#west_tree').tree("getNode", parent);

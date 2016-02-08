@@ -12,6 +12,17 @@ angular.module('stgv2')
 					beschreibung: "alle"
 				}];
 			ctrl.ortList = "";
+			
+//			$("input[type=time]").timepicker({
+//				showPeriodLabels: false,
+//				hourText: "Stunde",
+//				minuteText: "Minute",
+//				hours: {starts: 7,ends: 22},
+//				rows: 4,
+//				width: 200
+//			});
+			
+			
 
 			//loading Studiensemester list
 			StudiensemesterService.getStudiensemesterList().then(function (result) {

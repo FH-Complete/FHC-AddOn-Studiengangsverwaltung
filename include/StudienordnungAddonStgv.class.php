@@ -559,5 +559,5 @@ class StudienordnungAddonStgv extends studienordnung
 	}
 	return true;
     }
-
+    
 }

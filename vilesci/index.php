@@ -47,7 +47,8 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	
 	<!-- JQuery UI CSS -->
 	<link rel="stylesheet" type="text/css" href="./js/jquery-ui-1.11.4.custom/jquery-ui.css">
-
+	<link href="js/jquery-ui-1.11.4.custom/jquery-ui.theme.css" rel="stylesheet" type="text/css"/>
+	
 	<!-- App CSS -->
 	<link rel="stylesheet" type="text/css" href="./css/style.css">
 
@@ -84,6 +85,7 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script src="js/angular/services/AkadgradService.js" type="text/javascript"></script>
 	<script src="js/angular/services/OrgformService.js" type="text/javascript"></script>
 	<script src="js/angular/services/OrtService.js" type="text/javascript"></script>
+	<script src="js/angular/services/SpracheService.js" type="text/javascript"></script>
 	<script src="js/angular/services/StandortService.js" type="text/javascript"></script>
 	<script src="js/angular/services/StudiengangService.js" type="text/javascript"></script>
 	<script src="js/angular/services/StudienordnungService.js" type="text/javascript"></script>
@@ -143,8 +145,12 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script src="js/angular/directives/charactersOnly-directive.js" type="text/javascript"></script>
 	
 	<!-- Colorpicker -->
-	<link rel="stylesheet" href="../../../skin/colorpicker.css" type="text/css"/>
+	<!--<link rel="stylesheet" href="../../../skin/colorpicker.css" type="text/css"/>-->
 	<script type="text/javascript" src="../../../include/js/colorpicker.js"></script>
+	
+	<!-- Timepicker -->
+	<link rel="stylesheet" href="../../../skin/jquery.ui.timepicker.css" type="text/css"/>
+	<script type="text/javascript" src="../../../include/js/jquery.ui.timepicker.js"></script>
 	
 	<!-- Angular File Upload -->
 	<script src="js/angular/angular-file-upload/dist/angular-file-upload.js" type="text/javascript"></script>

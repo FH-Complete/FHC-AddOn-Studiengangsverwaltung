@@ -1,8 +1,17 @@
 angular.module('stgv2')
-		.controller('StplEckdatenCtrl', function ($scope, $http, $stateParams, errorService, successService, StudienplanService, StudienordnungService) {
+		.controller('StplEckdatenCtrl', function ($scope, $http, $stateParams, errorService, successService, StudienplanService, StudienordnungService, SpracheService) {
 			$scope.studienplan_id = $stateParams.studienplan_id;
 			var ctrl = this;
 			ctrl.data = "";
+			ctrl.spracheList = [];
+			
+			//loading SpracheList
+			SpracheService.getSpracheList().then(function(result){
+				ctrl.spracheList = result;
+				console.log(result);
+			},function(error){
+				errorService.setError(getErrorMsg(error));
+			});
 
 			//loading data
 			StudienplanService.getStudienplan($scope.studienplan_id).then(function (result) {
