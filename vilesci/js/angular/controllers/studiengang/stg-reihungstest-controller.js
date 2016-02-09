@@ -158,13 +158,10 @@ angular.module('stgv2')
 			{
 				if ($scope.form.$valid)
 				{
-					console.log(ctrl.reihungstest);
 					var saveData = {data: ""}
 					saveData.data = angular.copy(ctrl.reihungstest);
-					console.log(saveData);
 					saveData.data.datum = formatDateToString(saveData.data.datum);
 					saveData.data.uhrzeit = formatTimeToString(saveData.data.uhrzeit);
-					console.log(saveData);
 					$http({
 						method: 'POST',
 						url: './api/studiengang/reihungstest/save_reihungstest.php',

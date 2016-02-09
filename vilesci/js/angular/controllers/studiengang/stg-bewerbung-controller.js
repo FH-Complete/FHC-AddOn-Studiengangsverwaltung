@@ -79,7 +79,12 @@ angular.module('stgv2')
 
 			ctrl.loadDataGrid();
 
-			$(".datepicker").datepicker({
+			$("#datepicker_beginn").datepicker({
+				dateFormat: "yy-mm-dd",
+				firstDay: 1
+			});
+			
+			$("#datepicker_ende").datepicker({
 				dateFormat: "yy-mm-dd",
 				firstDay: 1
 			});
@@ -233,7 +238,7 @@ function Bewerbungstermin()
 	this.studiengang_kz = "";
 	this.studiensemester_kurzbz = "";
 	this.beginn = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-	this.ende = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 30);
+	this.ende = new Date(new Date().getFullYear(), new Date().getMonth(), (new Date().getDate() + 30));
 	this.nachfrist = false;
 	this.nachfrist_ende = "";
 	this.anmerkung = "";

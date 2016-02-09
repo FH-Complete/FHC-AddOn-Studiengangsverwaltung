@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StoMetadatenCtrl', function ($rootScope, $scope, $http, $filter, $stateParams, errorService, successService, StudiensemesterService, AenderungsvarianteService, StudienordnungStatusService) {
+		.controller('StoMetadatenCtrl', function ($rootScope, $scope, $http, $filter, $stateParams, errorService, successService, StudiensemesterService, AenderungsvarianteService, StudienordnungStatusService, StoreService) {
 			$scope.studienordnung_id = $stateParams.studienordnung_id;
 			var ctrl = this;
 			ctrl.data = "";
@@ -137,6 +137,7 @@ angular.module('stgv2')
 						{
 							$("#treeGrid").treegrid('reload');
 							successService.setMessage(response.data.info);
+							StoreService.remove("studienordnung");
 							$scope.form.$setPristine();
 							ctrl.loadData();
 						}

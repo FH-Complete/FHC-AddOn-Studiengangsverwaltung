@@ -5,7 +5,7 @@ var stgv2 = angular.module("stgv2", ['ui.router', 'ngSanitize', 'angularFileUplo
 angular.module("stgv2")
 		.controller("AppCtrl", function ($state, errorService, $http, StudiengangService, StoreService)
 		{
-			var storeList = ["studiengangList", "standortList","orgformList","aenderungsvarianteList","akadgradList","studiensemesterList","studienordnungStatusList","studienplan"];
+			var storeList = ["studiengangList", "standortList","orgformList","aenderungsvarianteList","akadgradList","studiensemesterList","studienordnungStatusList","studienplan", "studienordnung"];
 			
 			angular.forEach(storeList, function(v, i){
 				StoreService.remove(v);

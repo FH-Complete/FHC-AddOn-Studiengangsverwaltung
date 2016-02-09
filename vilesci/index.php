@@ -121,6 +121,8 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script type="text/javascript" src="./js/angular/controllers/studienordnung/sto-taetigkeitsfelder-controller.js"></script>
 	<script src="js/angular/controllers/studienordnung/sto-qualifikationsziele-controller.js" type="text/javascript"></script>
 	<script src="js/angular/controllers/studienordnung/sto-diff-controller.js" type="text/javascript"></script>
+	<script src="js/angular/controllers/studienordnung/sto-zgv-controller.js" type="text/javascript"></script>
+	<script src="js/angular/controllers/studienordnung/sto-aufnahmeverfahren-controller.js" type="text/javascript"></script>
 	
 	<!-- Angular Studienplan Controllers -->
 	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-neu-controller.js"></script>
@@ -156,7 +158,10 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script src="js/angular/angular-file-upload/dist/angular-file-upload.js" type="text/javascript"></script>
 	
 	
-	
+	<script src="js/jquery.hotkeys.js" type="text/javascript"></script>
+	<script src="js/bootstrap-wysiwyg-2.0/src/bootstrap-wysiwyg.js" type="text/javascript"></script>
+	<link href="js/bootstrap-wysiwyg-2.0/css/style.css" rel="stylesheet" type="text/css"/>
+	<link href="../vendor/fortawesome/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
     </head>
     <body ng-controller="AppCtrl as appCtrl">
 	<div id='layoutWrapper' class="easyui-layout">

@@ -57,7 +57,7 @@
 			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.datum.$error.required || form.datum.$error.date))}">
 					<label for="datum">Datum</label>
-					<input strip-html type="date" class="form-control input-sm" name="datum" ng-model="ctrl.reihungstest.datum" required/>
+					<input type="date" class="form-control input-sm" name="datum" ng-model="ctrl.reihungstest.datum" required/>
 					<span ng-show="form.datum.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>

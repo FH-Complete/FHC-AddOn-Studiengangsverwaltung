@@ -964,6 +964,76 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_beschluesse LIMIT 1;
 	echo ' addon.tbl_stgv_berufspraktikum: Tabelle hinzugefuegt<br>';
 }
 
+//Tabelle addon.tbl_stgv_aufnahmeverfahren
+if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_aufnahmeverfahren LIMIT 1;")) {
+    $qry = "CREATE TABLE addon.tbl_stgv_aufnahmeverfahren
+			(
+				aufnahmeverfahren_id integer NOT NULL,
+				studienordnung_id integer NOT NULL,
+				data jsonb,
+				insertamum timestamp,
+				insertvon varchar(32),
+				updateamum timestamp,
+				updatevon varchar(32)
+			);
+
+		CREATE SEQUENCE addon.tbl_stgv_aufnahmeverfahren_aufnahmeverfahren_id_seq
+		 INCREMENT BY 1
+		 NO MAXVALUE
+		 NO MINVALUE
+		 CACHE 1;
+
+		ALTER TABLE addon.tbl_stgv_aufnahmeverfahren ADD CONSTRAINT pk_aufnahmeverfahren PRIMARY KEY (aufnahmeverfahren_id);
+		ALTER TABLE addon.tbl_stgv_aufnahmeverfahren ALTER COLUMN aufnahmeverfahren_id SET DEFAULT nextval('addon.tbl_stgv_aufnahmeverfahren_aufnahmeverfahren_id_seq');
+
+		ALTER TABLE addon.tbl_stgv_aufnahmeverfahren ADD CONSTRAINT fk_aufnahmeverfahren_studienordnung FOREIGN KEY (studienordnung_id) REFERENCES lehre.tbl_studienordnung (studienordnung_id) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+		GRANT SELECT ON addon.tbl_stgv_aufnahmeverfahren TO web;
+		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_aufnahmeverfahren TO vilesci;
+		GRANT SELECT, UPDATE ON addon.tbl_stgv_aufnahmeverfahren_aufnahmeverfahren_id_seq TO vilesci;
+	";
+
+    if (!$db->db_query($qry))
+	echo '<strong>addon.tbl_stgv_aufnahmeverfahren: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' addon.tbl_stgv_aufnahmeverfahren: Tabelle hinzugefuegt<br>';
+}
+
+//Tabelle addon.tbl_stgv_zugangsvoraussetzung
+if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_zugangsvoraussetzung LIMIT 1;")) {
+    $qry = "CREATE TABLE addon.tbl_stgv_zugangsvoraussetzung
+			(
+				zugangsvoraussetzung_id integer NOT NULL,
+				studienordnung_id integer NOT NULL,
+				data jsonb,
+				insertamum timestamp,
+				insertvon varchar(32),
+				updateamum timestamp,
+				updatevon varchar(32)
+			);
+
+		CREATE SEQUENCE addon.tbl_stgv_zugangsvoraussetzung_zugangsvoraussetzung_id_seq
+		 INCREMENT BY 1
+		 NO MAXVALUE
+		 NO MINVALUE
+		 CACHE 1;
+
+		ALTER TABLE addon.tbl_stgv_zugangsvoraussetzung ADD CONSTRAINT pk_zugangsvoraussetzung PRIMARY KEY (zugangsvoraussetzung_id);
+		ALTER TABLE addon.tbl_stgv_zugangsvoraussetzung ALTER COLUMN zugangsvoraussetzung_id SET DEFAULT nextval('addon.tbl_stgv_zugangsvoraussetzung_zugangsvoraussetzung_id_seq');
+
+		ALTER TABLE addon.tbl_stgv_zugangsvoraussetzung ADD CONSTRAINT fk_zugangsvoraussetzung_studienordnung FOREIGN KEY (studienordnung_id) REFERENCES lehre.tbl_studienordnung (studienordnung_id) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+		GRANT SELECT ON addon.tbl_stgv_zugangsvoraussetzung TO web;
+		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_zugangsvoraussetzung TO vilesci;
+		GRANT SELECT, UPDATE ON addon.tbl_stgv_zugangsvoraussetzung_zugangsvoraussetzung_id_seq TO vilesci;
+	";
+
+    if (!$db->db_query($qry))
+	echo '<strong>addon.tbl_stgv_zugangsvoraussetzung: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' addon.tbl_stgv_zugangsvoraussetzung: Tabelle hinzugefuegt<br>';
+}
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
@@ -984,7 +1054,9 @@ $tabellen = array(
     "addon.tbl_stgv_qualifikationsziele" => array("qualifikationsziel_id", "studienordnung_id", "data","insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_auslandssemester" => array("auslandssemester_id", "studienplan_id", "erlaeuterungen", "data","insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_berufspraktikum" => array("berufspraktikum_id", "studienplan_id", "erlaeuterungen", "data","insertamum", "insertvon", "updateamum", "updatevon"),
-    "addon.tbl_stgv_beschluesse" => array("beschluss_id", "studienordnung_id", "datum", "typ","insertamum", "insertvon", "updateamum", "updatevon")
+    "addon.tbl_stgv_beschluesse" => array("beschluss_id", "studienordnung_id", "datum", "typ","insertamum", "insertvon", "updateamum", "updatevon"),
+    "addon.tbl_stgv_aufnahmeverfahren" => array("aufnahmeverfahren_id", "studienordnung_id", "data","insertamum", "insertvon", "updateamum", "updatevon"),
+    "addon.tbl_stgv_zugangsvoraussetzung" => array("zugangsvoraussetzung_id", "studienordnung_id", "data","insertamum", "insertvon", "updateamum", "updatevon"),
 );
 
 

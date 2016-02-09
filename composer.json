@@ -1,5 +1,6 @@
 {
     "require": {
-        "cogpowered/finediff": "0.3.*"
+        "cogpowered/finediff": "0.3.*",
+		"fortawesome/font-awesome": "*"
     }
 }

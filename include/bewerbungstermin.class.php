@@ -152,7 +152,15 @@ class bewerbungstermin extends basis_db
 	 */
 	private function validate()
 	{
-		return true;
+	    $utc = new DateTimeZone("+01:00");
+	    $date = new DateTime(substr($this->beginn, 0, 15),$utc);
+	    $this->beginn = $date->format("Y-m-d H:i:s");
+
+	    $date = new DateTime(substr($this->ende, 0, 15),$utc);
+	    $date->setTimezone($utc);
+	    $this->ende = $date->format("Y-m-d H:i:s");
+
+	    return true;
 	}
 
 	/**

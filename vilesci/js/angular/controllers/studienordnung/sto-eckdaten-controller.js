@@ -1,6 +1,6 @@
 angular.module('stgv2')
 		.controller('StoEckdatenCtrl',
-				function ($rootScope, $scope, $http, $stateParams, errorService, successService, StandortService, StudiensemesterService, AkadgradService, OrgformService) {
+				function ($rootScope, $scope, $http, $stateParams, errorService, successService, StandortService, StudiensemesterService, AkadgradService, OrgformService, StoreService) {
 					$scope.studienordnung_id = $stateParams.studienordnung_id;
 					var ctrl = this;
 					ctrl.data = "";
@@ -69,6 +69,7 @@ angular.module('stgv2')
 							{
 								$("#treeGrid").treegrid("reload");
 								successService.setMessage(response.data.info);
+								StoreService.remove("studienordnung");
 							}
 							else
 							{
