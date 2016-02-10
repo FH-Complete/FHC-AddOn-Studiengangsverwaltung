@@ -7,6 +7,15 @@ require_once('../../../../include/Studiengangsgruppe.class.php');
 
 require_once('../../functions.php');
 
+$uid = get_uid();
+$berechtigung = new benutzerberechtigung();
+$berechtigung->getBerechtigungen($uid);
+if(!$berechtigung->isBerechtigt("stgv/deleteStudiengangsgruppen",null,"suid"))
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um Studiengangsgruppen zu löschen.", "detail"=>"stgv/deleteStudiengangsgruppen");
+    returnAJAX(FALSE, $error);
+}
+
 $studiengang_kz = filter_input(INPUT_GET, "studiengang_kz");
 
 if(is_null($studiengang_kz))

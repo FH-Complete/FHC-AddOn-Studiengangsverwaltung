@@ -6,6 +6,15 @@ require_once('../../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../include/doktorat.class.php');
 require_once('../../functions.php');
 
+$uid = get_uid();
+$berechtigung = new benutzerberechtigung();
+$berechtigung->getBerechtigungen($uid);
+if(!$berechtigung->isBerechtigt("stgv/editDoktorat",null,"suid"))
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um Doktoratsstudienverordnungen anzulegen oder zu editieren.", "detail"=>"stgv/editDoktorat");
+    returnAJAX(FALSE, $error);
+}
+
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
 $data = (Object) $data["data"];
 $doktorat = mapDataToDoktorat($data);

@@ -447,6 +447,173 @@ if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berecht
     }
 }
 
+//Berechtigung zum Erstellen/editieren von Bewerbungsfristen
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/editBewerbungsfrist' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/editBewerbungsfrist','Recht zum Erstellen/Editieren von Bewerbungsfristen.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/editBewerbungsfrist','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Erstellen/Editieren von Bewerbungsfristen.<br>';
+    }
+}
+
+//Berechtigung zum Erstellen/editieren von Doktoratsstudienverordnungen
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/editDoktorat' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/editDoktorat','Recht zum Erstellen/Editieren von Doktoratsstudienverordnungen.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/editDoktorat','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Erstellen/Editieren von Doktoratsstudienverordnungen.<br>';
+    }
+}
+
+//Berechtigung zum Erstellen/editieren von Förderverträgen
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/editFoerdervertrag' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/editFoerdervertrag','Recht zum Erstellen/Editieren von Förderverträgen.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/editFoerdervertrag','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Erstellen/Editieren von Förderverträgen.<br>';
+    }
+}
+
+//Berechtigung zum Erstellen/editieren von Reihungstests
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/editReihungstest' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/editReihungstest','Recht zum Erstellen/Editieren von Reihungstests.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/editReihungstest','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Erstellen/Editieren von Reihungstests.<br>';
+    }
+}
+
+//Berechtigung zum Erstellen/editieren von Studiengangsgruppen
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/editStudiengangsgruppen' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/editStudiengangsgruppen','Recht zum Erstellen/Editieren von Studiengangsgruppen.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/editStudiengangsgruppen','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Erstellen/Editieren von Studiengangsgruppen.<br>';
+    }
+}
+
+//Berechtigung zum Löschen von Bewerbungsfristen
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/deleteBewerbungsfrist' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/deleteBewerbungsfrist','Recht zum Löschen von Bewerbungsfristen.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/deleteBewerbungsfrist','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Löschen von Bewerbungsfristen.<br>';
+    }
+}
+
+//Berechtigung zum Löschen von Doktoratsstudienverordnungen
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/deleteDoktorat' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/deleteDoktorat','Recht zum Löschen von Doktoratsstudienverordnungen.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/deleteDoktorat','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Löschen von Doktoratsstudienverordnungen.<br>';
+    }
+}
+
+//Berechtigung zum Löschen von Förderverträgen
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/deleteFoerdervertrag' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/deleteFoerdervertrag','Recht zum Löschen von Förderverträgen.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/deleteFoerdervertrag','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Löschen von Förderverträgen.<br>';
+    }
+}
+
+//Berechtigung zum Löschen von Reihungstests
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/deleteReihungstest' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/deleteReihungstest','Recht zum Löschen von Reihungstests.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/deleteReihungstest','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Löschen von Reihungstests.<br>';
+    }
+}
+
+//Berechtigung zum Löschen von Studiengangsgruppen
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/deleteStudiengangsgruppen' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/deleteStudiengangsgruppen','Recht zum Löschen von Studiengangsgruppen.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/deleteStudiengangsgruppen','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Löschen von Studiengangsgruppen.<br>';
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //Tabelle addon.tbl_stgv_bewerbungstermine
 if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_bewerbungstermine LIMIT 1;")) {
     $qry = "CREATE TABLE addon.tbl_stgv_bewerbungstermine

@@ -7,6 +7,15 @@ require_once('../../../../../../include/reihungstest.class.php');
 
 require_once('../../functions.php');
 
+$uid = get_uid();
+$berechtigung = new benutzerberechtigung();
+$berechtigung->getBerechtigungen($uid);
+if(!$berechtigung->isBerechtigt("stgv/deleteReihungstest",null,"suid"))
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um Reihungstests zu löschen.", "detail"=>"stgv/deleteReihungstest");
+    returnAJAX(FALSE, $error);
+}
+
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
 $data = (Object) $data["data"];
 $reihungstest = mapDataToReihungstest($data);

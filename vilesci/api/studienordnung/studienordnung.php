@@ -7,11 +7,6 @@ require_once ('../../../include/StudienplanAddonStgv.class.php');
 require_once ('../../../include/StudienordnungAddonStgv.class.php');
 require_once('../functions.php');
 
-//TODO
-$DEBUG = true;
-
-
-
 $studienordnung_id = filter_input(INPUT_GET, "studienordnung_id");
 $studienplan_id = filter_input(INPUT_GET, "studienplan_id");
 

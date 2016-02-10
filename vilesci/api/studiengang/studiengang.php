@@ -20,42 +20,13 @@ if(!$berechtigung->isBerechtigt("addon/studiengangsverwaltung",null,"suid"))
 }
 $stg_kz_array = $berechtigung->getStgKz("addon/studiengangsverwaltung");
 
-//TODO Studiengänge nach Berechtigung laden
 $studiengang = new studiengang();
 $studiengang->loadArray($stg_kz_array, "kurzbzlang", true);
 
 $stg_array = array();
 
-//TODO Stati aus Datenank holen
-//prepared stati
 $studienordnungStatus = new StudienordnungStatus();
 $studienordnungStatus->getAll();
-
-$stati = array();
-$status1 = new stdClass();
-$status1->name = "in Bearbeitung";
-$status1->code = "development";
-array_push($stati, $status1);
-
-$status2 = new stdClass();
-$status2->name = "in Review";
-$status2->code = "review";
-array_push($stati, $status2);
-
-$status3 = new stdClass();
-$status3->name = "genehmigt";
-$status3->code = "approved";
-array_push($stati, $status3);
-
-$status4 = new stdClass();
-$status4->name = "nicht genehmigt";
-$status4->code = "notApproved";
-array_push($stati, $status4);
-
-$status5 = new stdClass();
-$status5->name = "ausgelaufen";
-$status5->code = "expired";
-array_push($stati, $status5);
 
 /**
  * Baumstruktur für jeden Studiengang anlegen
