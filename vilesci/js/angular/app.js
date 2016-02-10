@@ -287,41 +287,47 @@ angular.module("stgv2")
 				switch (node.attributes[0].value)
 				{
 					case "studienplan":
-						$http({
-							method: "GET",
-							url: "./api/studienplan/delete_studienplan.php?studienplan_id=" + node.studienplan_id
-						}).then(function success(response) {
-							if (response.data.erfolg)
-							{
-								$("#treeGrid").treegrid('reload');
-								successService.setMessage(response.data.info);
-							}
-							else
-							{
+						if(confirm("Wollen Sie den Studienplan wirklich löschen?"))
+						{
+							$http({
+								method: "GET",
+								url: "./api/studienplan/delete_studienplan.php?studienplan_id=" + node.studienplan_id
+							}).then(function success(response) {
+								if (response.data.erfolg)
+								{
+									$("#treeGrid").treegrid('reload');
+									successService.setMessage(response.data.info);
+								}
+								else
+								{
+									errorService.setError(getErrorMsg(response));
+								}
+							}, function error(response) {
 								errorService.setError(getErrorMsg(response));
-							}
-						}, function error(response) {
-							errorService.setError(getErrorMsg(response));
-						});
+							});
+						}
 						break;
 
 					case "studienordnung":
-						$http({
-							method: "GET",
-							url: "./api/studienordnung/delete_studienordnung.php?studienordnung_id=" + node.studienordnung_id
-						}).then(function success(response) {
-							if (response.data.erfolg)
-							{
-								$("#treeGrid").treegrid('reload');
-								successService.setMessage(response.data.info);
-							}
-							else
-							{
+						if(confirm("Wollen Sie die Studienordnung wirklich löschen?"))
+						{
+							$http({
+								method: "GET",
+								url: "./api/studienordnung/delete_studienordnung.php?studienordnung_id=" + node.studienordnung_id
+							}).then(function success(response) {
+								if (response.data.erfolg)
+								{
+									$("#treeGrid").treegrid('reload');
+									successService.setMessage(response.data.info);
+								}
+								else
+								{
+									errorService.setError(getErrorMsg(response));
+								}
+							}, function error(response) {
 								errorService.setError(getErrorMsg(response));
-							}
-						}, function error(response) {
-							errorService.setError(getErrorMsg(response));
-						});
+							});
+						}
 						break;
 					default:
 						alert("Bitte eine Studienordnung oder einen Studienplan auswählen.");
@@ -335,11 +341,11 @@ angular.module("stgv2")
 				if ((sto != null) && (sto.attributes[0].value == "studienordnung"))
 				{
 					ctrl.studienordnung_id = sto.studienordnung_id;
-					$state.go('studienordnungDiff', {"studienordnung_id": ctrl.studienordnung_id, "stgkz": sto.stgkz});
+					$state.go('studienordnungDiff', {"studienordnung_id": ctrl.studienordnung_id, "stgkz": sto.studiengang_kz});
 				}
 				else
 				{
-					$state.go('studienordnungDiff');
+					$state.go('studienordnungDiff', {"stgkz": $stateParams.stgkz});
 				}
 			};
 		})

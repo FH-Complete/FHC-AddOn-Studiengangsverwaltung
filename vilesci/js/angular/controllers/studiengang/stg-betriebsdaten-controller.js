@@ -1,5 +1,5 @@
 angular.module('stgv2')
-	.controller('StgBetriebsdatenCtrl', function($scope, $http, $state, $stateParams){
+	.controller('StgBetriebsdatenCtrl', function($scope, $rootScope, $state, $stateParams){
 		$scope.stgkz = $stateParams.stgkz;
 		console.log($state);
 		//TODO get tabs from config
@@ -11,6 +11,8 @@ angular.module('stgv2')
 			{label: 'Doktorat', link: '.doktorat'},
 			{label: 'Studiengangsgruppen', link: '.studiengangsgruppen'}
 		];
+		
+		$rootScope.$broadcast("loadTreeGrid",{"stgkz": $scope.stgkz, "state": "all"});
 			
 		$scope.selectedTab = $scope.tabs[0];
 		$scope.setSelectedTab = function (tab)

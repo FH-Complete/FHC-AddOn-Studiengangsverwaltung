@@ -10,8 +10,8 @@ require_once('../../../../include/foerdervertrag.class.php');
 require_once('../../functions.php');
 //TODO Berechtigung
 
-$dms_id = filter_input(INPUT_POST, "dms_id");
-$foerdervertrag_id = filter_input(INPUT_POST, "foerdervertrag_id");
+$dms_id = filter_input(INPUT_GET, "dms_id");
+$foerdervertrag_id = filter_input(INPUT_GET, "foerdervertrag_id");
 
 if (is_null($dms_id))
 {

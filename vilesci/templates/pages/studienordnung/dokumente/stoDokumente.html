@@ -4,7 +4,7 @@
 			<table class="table doctable">
 				<thead>
 					<tr>
-						<th>Name</th>
+						<th width="300px"> Name</th>
 						<th width="100px" style="text-align: center">Upload</th>
 						<th width="100px" style="text-align: center">Download</th>
 						<th width="100px" style="text-align: center">Löschen</th>
@@ -35,7 +35,7 @@
 		</div>
 		<div class="col-md-5" style="margin-bottom: 40px">
 			<div class="row">
-				<h3>Select files</h3>
+				<h4>Select files</h4>
 				<div ng-show="uploader.isHTML5">
 					<div class="well drop-zone" nv-file-over="" uploader="uploader">
 						Datei für Upload hierher ziehen ({{ctrl.fileExtensionWhiteList.toString()}})
@@ -46,7 +46,7 @@
 
 			</div>
 			<div class="row">
-				<h3>Upload queue</h3>
+				<h4>Upload queue</h4>
 				<p>Queue length: {{ uploader.queue.length}}</p>
 
 				<table class="table">

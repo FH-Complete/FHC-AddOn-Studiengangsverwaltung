@@ -8,6 +8,8 @@ require_once('../../../../../include/dms.class.php');
 require_once('../../../include/StudienordnungAddonStgv.class.php');
 require_once('../../../include/Taetigkeitsfeld.class.php');
 require_once('../../../include/Qualifikationsziel.class.php');
+require_once('../../../include/Zugangsvoraussetzung.class.php');
+require_once('../../../include/Aufnahmeverfahren.class.php');
 require_once('../../../include/StudienplanAddonStgv.class.php');
 
 require_once('../functions.php');
@@ -74,6 +76,30 @@ if ($studienordnung->save())
 	foreach($sto_vorlage->dokumente as $dok_id)
 	{
 	    $studienordnung->saveDokument($dok_id);
+	}
+	
+	$zugangsvoraussetzung = new zugangsvoraussetzung();
+	$zugangsvoraussetzung->getAll($sto_vorlage->studienordnung_id);
+	
+	foreach($zugangsvoraussetzung->result as $z)
+	{
+	    $z->new = true;
+	    $z->zugangsvoraussetzung_id = null;
+	    $z->studienordnung_id = $studienordnung->studienordnung_id;
+	    $z->data = json_encode($z->data);
+	    $z->save();
+	}
+	
+	$aufnahmeverfahren = new aufnahmeverfahren();
+	$aufnahmeverfahren->getAll($sto_vorlage->studienordnung_id);
+	
+	foreach($aufnahmeverfahren->result as $a)
+	{
+	    $a->new = true;
+	    $a->aufnahmeverfahren_id = null;
+	    $a->studienordnung_id = $studienordnung->studienordnung_id;
+	    $a->data = json_encode($a->data);
+	    $a->save();
 	}
 
 	$studienplan = new StudienplanAddonStgv();

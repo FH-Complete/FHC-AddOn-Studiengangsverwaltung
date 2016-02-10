@@ -4,17 +4,26 @@ angular.module('stgv2')
 			var ctrl = this;
 			ctrl.data = "";
 			ctrl.beschluesse = [];
-			console.log(ctrl.beschluesse);
 			ctrl.changed = false;
 			ctrl.status = "";
 			ctrl.studiensemesterList = [];
 			ctrl.aenderungsvarianteList = [];
 			ctrl.studienordnungStatusList = [];
+			ctrl.beschlussList = ["Studiengang","Kollegium","AQ Austria"];
 
 			if ($stateParams.studienordnung_id !== undefined && $rootScope.studienordnung === null)
 			{
 				$rootScope.setStudienordnung($stateParams.studienordnung_id);
 			}
+			
+			$("#editor").wysiwyg(
+			{
+				'form':
+				{
+					'text-field': 'editorForm',
+					'seperate-binary': false
+				}
+			});
 
 			$scope.$watch("ctrl.data.aenderungsvariante_kurzbz", function (newValue, oldValue) {
 				console.log(newValue);
@@ -38,7 +47,7 @@ angular.module('stgv2')
 
 				for (var i = 0; i < length; i++)
 				{
-					ctrl.beschluesse.push({datum: "", typ: ""});
+					ctrl.beschluesse.push({datum: "", typ: ctrl.beschlussList[ctrl.beschluesse.length]});
 				}
 
 				if (length < 0)
@@ -100,11 +109,12 @@ angular.module('stgv2')
 					if (response.data.erfolg)
 					{
 						ctrl.data = response.data.info;
+						$("#editor").html(response.data.info.begruendung);
 						angular.forEach(ctrl.data.beschluesse, function(value, index){
-							ctrl.data.beschluesse[index].datum = formatStringToDate(value.datum.split(" ")[0]);
+							if(value.datum != null)
+								ctrl.data.beschluesse[index].datum = formatStringToDate(value.datum.split(" ")[0]);
 						});
 						ctrl.beschluesse = ctrl.data.beschluesse;
-						console.log(ctrl.data.beschluesse);
 					}
 					else
 					{
@@ -116,12 +126,11 @@ angular.module('stgv2')
 			};
 
 			ctrl.save = function () {
-				console.log(ctrl.beschluesse);
 				ctrl.data.beschluesse = angular.copy(ctrl.beschluesse);
-				console.log(ctrl.beschluesse.length);
+				ctrl.data.begruendung = JSON.stringify($("#editor").html());
 				if ($scope.form.$valid)
 				{
-					var saveData = {data: ""}
+					var saveData = {data: ""};
 					saveData.data = ctrl.data;
 					console.log(saveData);
 					$http({
@@ -132,7 +141,6 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						console.log(ctrl.beschluesse);
 						if (response.data.erfolg)
 						{
 							$("#treeGrid").treegrid('reload');

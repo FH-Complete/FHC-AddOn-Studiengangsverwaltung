@@ -97,7 +97,7 @@ class StudienordnungAddonStgv extends studienordnung
 	    $obj->aenderungsvariante_bezeichnung = $row->aenderungsvariante_bezeichnung;
 	    $obj->status_kurzbz = $row->status_kurzbz;
 	    $obj->status_bezeichnung = $row->status_bezeichnung;
-	    $obj->begruendung = $row->begruendung;
+	    $obj->begruendung = json_decode($row->begruendung);
 	    $obj->studiengangsart = $row->studiengangsart;
 	    $obj->orgform_kurzbz = $row->orgform_kurzbz;
 	    $obj->standort_id = $row->standort_id;
@@ -240,7 +240,7 @@ class StudienordnungAddonStgv extends studienordnung
 	    $this->akadgrad_id = $row->akadgrad_id;
 	    $this->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
 	    $this->status_kurzbz = $row->status_kurzbz;
-	    $this->begruendung = $row->begruendung;
+	    $this->begruendung = json_decode($row->begruendung);
 	    $this->studiengangsart = $row->studiengangsart;
 	    $this->orgform_kurzbz = $row->orgform_kurzbz;
 	    $this->standort_id = $row->standort_id;
@@ -330,7 +330,7 @@ class StudienordnungAddonStgv extends studienordnung
 	    $obj->aenderungsvariante_bezeichnung = $row->aenderungsvariante_bezeichnung;
 	    $obj->status_kurzbz = $row->status_kurzbz;
 	    $obj->status_bezeichnung = $row->status_bezeichnung;
-	    $obj->begruendung = $row->begruendung;
+	    $obj->begruendung = json_decode($row->begruendung);
 	    $obj->studiengangsart = $row->studiengangsart;
 	    $obj->orgform_kurzbz = $row->orgform_kurzbz;
 	    $obj->standort_id = $row->standort_id;
@@ -389,7 +389,7 @@ class StudienordnungAddonStgv extends studienordnung
 	    $this->akadgrad_id = $row->akadgrad_id;
 	    $this->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
 	    $this->status_kurzbz = $row->status_kurzbz;
-	    $this->begruendung = $row->begruendung;
+	    $this->begruendung = json_decode($row->begruendung);
 	    $this->studiengangsart = $row->studiengangsart;
 	    $this->orgform_kurzbz = $row->orgform_kurzbz;
 	    $this->standort_id = $row->standort_id;
@@ -539,7 +539,7 @@ class StudienordnungAddonStgv extends studienordnung
 	    $obj->akadgrad_id = $row->akadgrad_id;
 	    $obj->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
 	    $obj->status_kurzbz = $row->status_kurzbz;
-	    $obj->begruendung = $row->begruendung;
+	    $obj->begruendung = json_decode($row->begruendung);
 	    $obj->studiengangsart = $row->studiengangsart;
 	    $obj->orgform_kurzbz = $row->orgform_kurzbz;
 	    $obj->standort_id = $row->standort_id;

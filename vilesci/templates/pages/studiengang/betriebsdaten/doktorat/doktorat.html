@@ -34,7 +34,7 @@
 					<input strip-html type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.doktorat.bezeichnung" required/>
 				</div>
 			</div>
-			<div class="col-sm-1">
+			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.datum_erlass.$error.required || form.datum_erlass.$error.date))}">
 					<label for="datum_erlass">Erlassdatum</label>
 					<input strip-html type="date" class="form-control input-sm" name="datum_erlass" ng-model="ctrl.doktorat.datum_erlass" required/>
@@ -52,9 +52,9 @@
 				</div>
 			</div>
 			<div class="col-sm-2">
-				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.gueltigbis.$error.required)}">
+				<div class="form-group">
 					<label for="gueltigbis">Gültig bis</label>
-					<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.doktorat.gueltigbis" required>
+					<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.doktorat.gueltigbis">
 						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
 					</select>
 				</div>

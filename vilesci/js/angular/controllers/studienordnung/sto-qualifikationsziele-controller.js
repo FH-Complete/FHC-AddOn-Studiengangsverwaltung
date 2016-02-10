@@ -55,6 +55,7 @@ angular.module('stgv2')
 
 			ctrl.addListItem = function (list_id, index)
 			{
+				console.log(index);
 				if ((ctrl.temp[index-1] !== "") && (ctrl.temp[index-1] != undefined))
 				{
 					ctrl.data.data[1].elements[index].push(ctrl.temp[index-1]);

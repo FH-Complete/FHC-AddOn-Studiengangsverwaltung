@@ -10,7 +10,7 @@ angular.module("stgv2")
 						else if(attrs.charactersOnly=="lowerCase")
 							transformedInput = inputValue ? inputValue.replace(/[^\a-z]/g, '') : null;
 						else
-							transformedInput = inputValue ? inputValue.replace(/[^\a-zA-Z]/g, '') : null;
+							transformedInput = inputValue ? inputValue.replace(/[^\a-zA-Z\s]/g, '') : null;
 
 						if (transformedInput != inputValue) {
 							modelCtrl.$setViewValue(transformedInput);

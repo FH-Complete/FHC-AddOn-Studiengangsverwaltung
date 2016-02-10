@@ -1,5 +1,5 @@
 <div class="contentWrapper" ng-controller="StoEckdatenCtrl as ctrl">
-	<form id="stoEckdaten" onsubmit="return false;">
+	<form id="stoEckdaten" onsubmit="return false;" name="form" novalidate>
 		<div class="row">
 			<div class="col-sm-2">
 				<div class="form-group">
@@ -17,17 +17,18 @@
 				<div class="form-group">
 					<label for="kurzbz">Studiengangskurzbezeichnung</label>
 					<div class="input-group">
+						<div class="input-group-addon">{{ctrl.data.studiengangsart.substring(0,1)}}</div>
 						<input characters-only="upperCase" type="text" maxlength="8" class="form-control input-sm" name="kurzbz" ng-model="ctrl.data.studiengangkurzbzlang"/>
-						<div class="input-group-addon">{{(8-ctrl.data.studiengangkurzbzlang.length)}}</div>
+						<div class="input-group-addon">{{(7-ctrl.data.studiengangkurzbzlang.length)}}</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-2">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.art.$error.required)}">
 					<label for="art">Studiengangsart</label>
-					<select class="form-control input-sm" name="art" ng-model="ctrl.data.studiengangsart">
+					<select class="form-control input-sm" name="art" ng-model="ctrl.data.studiengangsart" required>
 						<option>Bachelor</option>
 						<option>Master</option>
 					</select>

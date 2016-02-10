@@ -232,7 +232,7 @@ if (!$result = @$db->db_query("SELECT status_kurzbz FROM lehre.tbl_studienordnun
 //Spalte Begruendung in lehre.tbl_studienordnung
 if (!$result = @$db->db_query("SELECT begruendung FROM lehre.tbl_studienordnung LIMIT 1;"))
 {
-    $qry = "ALTER TABLE lehre.tbl_studienordnung ADD COLUMN begruendung text;";
+    $qry = "ALTER TABLE lehre.tbl_studienordnung ADD COLUMN begruendung jsonb;";
     
     if (!$db->db_query($qry))
 	echo '<strong>lehre.tbl_studienordnung: ' . $db->db_last_error() . '</strong><br>';
@@ -319,7 +319,7 @@ if (!$result = @$db->db_query("SELECT pflicht_lvs FROM lehre.tbl_studienplan LIM
     
 }
 
-//Spalte pflicht_lvs in lehre.tbl_studienplan
+//Spalte erlaeuterungen in lehre.tbl_studienplan
 if (!$result = @$db->db_query("SELECT erlaeuterungen FROM lehre.tbl_studienplan LIMIT 1;"))
 {
     $qry = "ALTER TABLE lehre.tbl_studienplan ADD COLUMN erlaeuterungen text;";
@@ -328,6 +328,18 @@ if (!$result = @$db->db_query("SELECT erlaeuterungen FROM lehre.tbl_studienplan 
 	echo '<strong>lehre.tbl_studienplan: ' . $db->db_last_error() . '</strong><br>';
     else
 	echo ' lehre.tbl_studienplan: Spalte erlaeuterungen hinzugefügt.<br>';
+    
+}
+
+//Spalte sprache_kommentar in lehre.tbl_studienplan
+if (!$result = @$db->db_query("SELECT sprache_kommentar FROM lehre.tbl_studienplan LIMIT 1;"))
+{
+    $qry = "ALTER TABLE lehre.tbl_studienplan ADD COLUMN sprache_kommentar text;";
+    
+    if (!$db->db_query($qry))
+	echo '<strong>lehre.tbl_studienplan: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' lehre.tbl_studienplan: Spalte sprache_kommentar hinzugefügt.<br>';
     
 }
 

@@ -53,6 +53,10 @@ angular.module('stgv2')
 					}, function error(response) {
 						errorService.setError(getErrorMsg(response));
 					});
+					
+					$scope.$watch("ctrl.data.studiengangsart", function(newValue, oldValue){
+						console.log(newValue);
+					});
 
 					ctrl.save = function () {
 						var saveData = {data: ""}

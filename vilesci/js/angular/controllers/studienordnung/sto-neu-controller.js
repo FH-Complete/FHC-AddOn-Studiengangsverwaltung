@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StoNeuController', function ($scope, $http, $state, $stateParams, errorService, $filter, successService) {
+		.controller('StoNeuController', function ($scope, $http, $stateParams, errorService, $filter, successService, StudienordnungStatusService, StudiensemesterService, AenderungsvarianteService, StudiengangService) {
 			$scope.studienordnung_id = $stateParams.studienordnung_id;
 			var ctrl = this;
 			ctrl.studiensemesterList = "";
@@ -18,31 +18,36 @@ angular.module('stgv2')
 				vorlage_studienordnung_id: ''
 			};
 			
-			//loading Studiensemester list
-			$http({
-				method: "GET",
-				url: "./api/helper/studiensemester.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
+			$("#editor").wysiwyg(
+			{
+				'form':
 				{
-					ctrl.studiensemesterList = response.data.info;
+					'text-field': 'editorForm',
+					'seperate-binary': false
 				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
 			});
 			
+			//loading Studiensemester list
+			StudiensemesterService.getStudiensemesterList()
+					.then(function (result) {
+						ctrl.studiensemesterList = result;
+
+					}, function (error) {
+						errorService.setError(getErrorMsg(error));
+					});
+
+			//loading AenderungsvarianteList list
+			AenderungsvarianteService.getAenderungsvarianteList()
+				.then(function (result) {
+					ctrl.aenderungsvarianteList = result;
+				}, function (error) {
+					errorService.setError(getErrorMsg(error));
+				});
+			
 			//loading Studiengang list
-			$http({
-				method: "GET",
-				url: "./api/helper/studiengang.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.studiengangList = response.data.info;
+			StudiengangService.getStudiengangList()
+				.then(function (result) {
+					ctrl.studiengangList = result;
 					var node = $('#west_tree').tree("getSelected");
 					if(node && node.attributes)
 					{
@@ -50,14 +55,9 @@ angular.module('stgv2')
 						ctrl.loadStudienordnungList();
 						ctrl.updateVersion();
 					}
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
+				}, function (error) {
+					errorService.setError(getErrorMsg(error));
+				});
 			
 			ctrl.loadStudienordnungList = function ()
 			{
@@ -79,44 +79,18 @@ angular.module('stgv2')
 				});
 			}
 			
-			//loading Aenderungsvariante list
-			$http({
-				method: "GET",
-				url: "./api/helper/aenderungsvariante.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.aenderungsvarianteList = response.data.info;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
-			
-			//loading initial Status
-			$http({
-				method: "GET",
-				url: "./api/helper/studienordnungStatus.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.initialStatus = response.data.info[0];
+			//loading initialStatus
+			StudienordnungStatusService.getStudienordnungStatusList()
+				.then(function (result) {
+					ctrl.initialStatus = result[0];
 					ctrl.sto.status_kurzbz = ctrl.initialStatus.status_kurzbz;
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
-			
+
+				});
+					
 			ctrl.save = function () {
 				if($scope.form.$valid)
 				{
+					ctrl.sto.begruendung = JSON.stringify($("#editor").html());
 					var saveData = {data: ""}
 					saveData.data = ctrl.sto;				
 					$http({
@@ -145,7 +119,6 @@ angular.module('stgv2')
 					$scope.form.$setPristine();
 				}
 			};
-			
 			
 			ctrl.updateVersion = function()
 			{

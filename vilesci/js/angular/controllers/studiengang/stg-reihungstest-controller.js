@@ -103,8 +103,8 @@ angular.module('stgv2')
 				});
 				
 				$("#dataGridReihungstest").datagrid('sort', {
-					sortName: 'studiensemester_kurzbz,datum,uhrzeit',
-					sortOrder: 'desc,desc,desc'
+					sortName: 'datum,uhrzeit',
+					sortOrder: 'desc,desc'
 				});
 			};
 

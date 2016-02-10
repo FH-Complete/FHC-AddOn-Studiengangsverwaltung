@@ -51,6 +51,7 @@ function mapDataToStudienplan($data)
     $stpl->pflicht_sws = $data->pflicht_sws;
     $stpl->pflicht_lvs = $data->pflicht_lvs;
     $stpl->erlaeuterungen = $data->erlaeuterungen;
+    $stpl->sprache_kommentar = $data->sprache_kommentar;
 
     return $stpl;
 }

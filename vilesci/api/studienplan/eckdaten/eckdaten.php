@@ -43,6 +43,7 @@ $data = array(
     'pflicht_sws' => $studienplan->pflicht_sws,
     'pflicht_lvs' => $studienplan->pflicht_lvs,
     'erlaeuterungen' => $studienplan->erlaeuterungen,
+    'sprache_kommentar' => $studienplan->sprache_kommentar,
     'updateamum' => $studienplan->updateamum,
     'updatevon' => $studienplan->updatevon,
     'insertamum' => $studienplan->insertamum,

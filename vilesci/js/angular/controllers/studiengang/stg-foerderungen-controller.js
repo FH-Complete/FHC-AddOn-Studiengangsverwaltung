@@ -372,14 +372,9 @@ angular.module('stgv2')
 			
 			ctrl.deleteDokument = function (dms_id)
 			{
-				var data = {
-					foerdervertrag_id : ctrl.foerdervertrag.foerdervertrag_id,
-					dms_id : dms_id
-				}
 				$http({
-					method: "POST",
-					url: "./api/studiengang/foerdervertrag/delete_dokument.php",
-					data: $.param(data),
+					method: "GET",
+					url: "./api/studiengang/foerdervertrag/delete_dokument.php?dms_id="+dms_id+"&foerdervertrag_id="+ctrl.foerdervertrag.foerdervertrag_id,
 				}).then(function success(response) {
 					if (response.data.erfolg)
 					{

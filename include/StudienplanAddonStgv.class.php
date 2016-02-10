@@ -32,6 +32,7 @@ class StudienplanAddonStgv extends studienplan
     public $pflicht_sws;
     public $pflicht_lvs;
     public $erlaeuterungen;
+    public $sprache_kommentar;
 
     /**
      * Konstruktor
@@ -236,7 +237,7 @@ class StudienplanAddonStgv extends studienplan
 	    //Neuen Datensatz einfuegen
 	    $qry = 'BEGIN;INSERT INTO lehre.tbl_studienplan (studienordnung_id, orgform_kurzbz,version,
 			    bezeichnung, regelstudiendauer, sprache, aktiv, semesterwochen, testtool_sprachwahl, 
-			    pflicht_sws, pflicht_lvs, ects_stpl, erlaeuterungen, 
+			    pflicht_sws, pflicht_lvs, ects_stpl, erlaeuterungen, sprache_kommentar, 
 			    insertamum, insertvon) VALUES (' .
 		    $this->db_add_param($this->studienordnung_id, FHC_INTEGER) . ', ' .
 		    $this->db_add_param($this->orgform_kurzbz) . ', ' .
@@ -247,10 +248,11 @@ class StudienplanAddonStgv extends studienplan
 		    $this->db_add_param($this->aktiv, FHC_BOOLEAN) . ', ' .
 		    $this->db_add_param($this->semesterwochen, FHC_INTEGER) . ', ' .
 		    $this->db_add_param($this->testtool_sprachwahl, FHC_BOOLEAN) . ', ' .
-		    $this->db_add_param($this->pflicht_sws, FHC_BOOLEAN) . ', ' .
-		    $this->db_add_param($this->pflicht_lvs, FHC_BOOLEAN) . ', ' .
-		    $this->db_add_param($this->ects_stpl, FHC_BOOLEAN) . ', ' .
-		    $this->db_add_param($this->erlaeuterungen, FHC_BOOLEAN) . ', ' .
+		    $this->db_add_param($this->pflicht_sws) . ', ' .
+		    $this->db_add_param($this->pflicht_lvs) . ', ' .
+		    $this->db_add_param($this->ects_stpl) . ', ' .
+		    $this->db_add_param($this->erlaeuterungen, FHC_STRING) . ', ' .
+		    $this->db_add_param($this->sprache_kommentar, FHC_STRING) . ', ' .
 		    'now(), ' .
 		    $this->db_add_param($this->insertvon) . ');';
 	} else
@@ -275,6 +277,7 @@ class StudienplanAddonStgv extends studienplan
 		    ' pflicht_sws=' . $this->db_add_param($this->pflicht_sws, FHC_INTEGER) . ',' .
 		    ' pflicht_lvs=' . $this->db_add_param($this->pflicht_lvs, FHC_INTEGER) . ',' .
 		    ' erlaeuterungen=' . $this->db_add_param($this->erlaeuterungen, FHC_STRING) . ',' .
+		    ' sprache_kommentar=' . $this->db_add_param($this->sprache_kommentar, FHC_STRING) . ',' .
 		    ' updateamum= now(), ' .
 		    ' updatevon=' . $this->db_add_param($this->updatevon) . ' ' .
 		    ' WHERE studienplan_id=' . $this->db_add_param($this->studienplan_id, FHC_INTEGER, false) . ';';
@@ -401,6 +404,7 @@ class StudienplanAddonStgv extends studienplan
 	    $this->pflicht_lvs = $row->pflicht_lvs;
 	    $this->pflicht_sws = $row->pflicht_sws;
 	    $this->erlaeuterungen = $row->erlaeuterungen;
+	    $this->sprache_kommentar = $row->sprache_kommentar;
 	    $this->updateamum = $row->updateamum;
 	    $this->updatevon = $row->updatevon;
 	    $this->insertamum = $row->insertamum;
@@ -457,6 +461,7 @@ class StudienplanAddonStgv extends studienplan
 		$obj->pflicht_lvs = $row->pflicht_lvs;
 		$obj->pflicht_sws = $row->pflicht_sws;
 		$obj->erlaeuterungen = $row->erlaeuterungen;
+		$obj->sprache_kommentar = $row->sprache_kommentar;
 		$obj->updateamum = $row->updateamum;
 		$obj->updatevon = $row->updatevon;
 		$obj->insertamum = $row->insertamum;
@@ -531,6 +536,7 @@ class StudienplanAddonStgv extends studienplan
 		$obj->pflicht_lvs = $row->pflicht_lvs;
 		$obj->pflicht_sws = $row->pflicht_sws;
 		$obj->erlaeuterungen = $row->erlaeuterungen;
+		$obj->sprache_kommentar = $row->sprache_kommentar;
 		$obj->updateamum = $row->updateamum;
 		$obj->updatevon = $row->updatevon;
 		$obj->insertamum = $row->insertamum;

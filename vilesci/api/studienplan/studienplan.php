@@ -4,6 +4,7 @@ require_once('../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../include/functions.inc.php');
 require_once('../../../../../include/benutzerberechtigung.class.php');
 require_once ('../../../include/StudienplanAddonStgv.class.php');
+require_once('../../../include/StudienordnungAddonStgv.class.php');
 require_once('../functions.php');
 
 $studienplan_id = filter_input(INPUT_GET, "studienplan_id");
@@ -22,6 +23,9 @@ elseif($studienplan_id == false)
 $studienplan = new StudienplanAddonStgv();
 $studienplan->loadStudienplan($studienplan_id);
 
+$studienordnung = new StudienordnungAddonStgv();
+$studienordnung->loadStudienordnung($studienplan->studienordnung_id);
+
 $data = array(
     "studienplan_id" => $studienplan->studienplan_id,
     "studienordnung_id" => $studienplan->studienordnung_id,
@@ -37,10 +41,12 @@ $data = array(
     "pflicht_lvs" => $studienplan->pflicht_lvs,
     "pflicht_sws" => $studienplan->pflicht_sws,
     "erlaeuterungen" => $studienplan->erlaeuterungen,
+    'sprache_kommentar' => $studienplan->sprache_kommentar,
     "updateamum" => $studienplan->updateamum,
     "updatevon" => $studienplan->updatevon,
     "insertamum" => $studienplan->insertamum,
     "insertvon" => $studienplan->insertvon,
+    'status_kurzbz' => $studienordnung->status_kurzbz,
 );
 
 returnAJAX(true, $data);

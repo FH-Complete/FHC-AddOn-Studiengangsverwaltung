@@ -17,8 +17,10 @@ angular.module('stgv2')
 				if ($scope.stgkz !== "")
 				{
 					ctrl.old.stgkz = $scope.stgkz;
+					ctrl.new.stgkz = $scope.stgkz;
 					ctrl.old.studienordnung_id = $scope.studienordnung_id;
 					ctrl.loadStudienordnungList(ctrl.old);
+					ctrl.loadStudienordnungList(ctrl.new);
 				}
 			}, function (error) {
 				errorService.setError(getErrorMsg(error));
