@@ -206,7 +206,6 @@ angular.module('stgv2')
 					}).then(function success(response) {
 						if(response.data.erfolg)
 						{
-							console.log(response.data);
 							ctrl.foerdervertrag = new Foerdervertrag();
 							ctrl.foerdervertrag.studiengang_kz = $scope.stgkz;
 							ctrl.foerdervertrag.foerdervertrag_id = response.data.info;
@@ -217,8 +216,6 @@ angular.module('stgv2')
 							//TODO select recently added Reihungstest in Datagrid
 							$scope.form_foerdervertrag.$setPristine();
 							$("#dataGridFoerdervertrag").datagrid('reload');
-							console.log($("#dataGridFoerdervertrag").datagrid('getRowIndex',response.data.info));
-							console.log($("#dataGridFoerdervertrag").datagrid('getRows'));
 							successService.setMessage(response.data.info);
 						}
 						else

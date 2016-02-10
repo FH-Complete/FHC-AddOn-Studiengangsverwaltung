@@ -8,7 +8,6 @@ angular.module('stgv2')
 			//loading SpracheList
 			SpracheService.getSpracheList().then(function(result){
 				ctrl.spracheList = result;
-				console.log(result);
 			},function(error){
 				errorService.setError(getErrorMsg(error));
 			});

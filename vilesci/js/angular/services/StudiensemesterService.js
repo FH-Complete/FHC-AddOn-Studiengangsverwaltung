@@ -12,11 +12,14 @@ angular.module('stgv2')
 			var getStudiensemesterAfter = function (studiensemester_kurzbz)
 			{
 				var def = $q.defer();
-				var studiensemester_kurzbz = studiensemester_kurzbz.substring(2);
 				return getStudiensemesterList().then(function (result) {
-					var filtered = $filter('filter')(result, greaterThan('studiensemester_kurzbz', studiensemester_kurzbz));
-					var sorted = $filter('orderBy')(filtered, studiensemester_kurzbz);
-					def.resolve(sorted);
+					var filtered = $filter('filter')(result,('studiensemester_kurzbz', studiensemester_kurzbz));
+					var filteredResult = [];
+					for(var i = (result.indexOf(filtered[0])); i<result.length; i++)
+					{
+						filteredResult.push(result[i]);
+					}
+					def.resolve(filteredResult);
 					return def.promise;
 				}, function (error) {
 					def.reject(error);

@@ -5,15 +5,21 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="version">Version</label>
-					<input type="text" class="form-control input-sm" name="version" value="{{ctrl.data.bezeichnung}}" disabled/>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="version" value="{{ctrl.data.bezeichnung}}" disabled/>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Die Versionsbezeichnung wird automatisch vergeben. Sie setzt sich aus er Studiengangskennzahl, der Studiengangskurzbezeichnung und dem ersten gültigen Studiensemester zusammen."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="aenderungsvariante">Änderungsvariante</label>
-					<select class="form-control input-sm" name="aenderungsvariante" ng-model="ctrl.data.aenderungsvariante_kurzbz" required ng-disabled="ctrl.data.beschluesse[0].datum != ''">
-						<option ng-repeat="av in ctrl.aenderungsvarianteList" value="{{av.aenderungsvariante_kurzbz}}">{{av.bezeichnung}}</option>
-					</select>
+					<div class="input-group">
+						<select class="form-control input-sm" name="aenderungsvariante" ng-model="ctrl.data.aenderungsvariante_kurzbz" required ng-disabled="ctrl.data.beschluesse[0].datum != ''">
+							<option ng-repeat="av in ctrl.aenderungsvarianteList" value="{{av.aenderungsvariante_kurzbz}}">{{av.bezeichnung}}</option>
+						</select>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Die Varianten zur Änderung der Studienordnung sind in Signavio detailliert beschrieben."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -21,23 +27,32 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="status">Status</label>
-					<input type="text" class="form-control input-sm" name="status" value="{{ctrl.status.bezeichnung}}" disabled/>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="status" value="{{ctrl.status.bezeichnung}}" disabled/>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Eine neue Studienordnung hat zunächst immer der Status 'in Bearbeitung'. In diesem Status kann diese auch wieder gelöscht werden. Sobald ein anderer Status vergeben wird ('in Review', 'genehmigt', 'ausgelaufen', 'nicht genehmigt') sind keine Änderungen mehr möglich. Sind dennoch weitere Änderungen durch den Studiengang erforderlich, wird erneut der Status 'in Bearbeitung' vergeben."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="gueltigvon">Gültig von</label>
-					<select class="form-control input-sm" name="gueltigvon" ng-model="ctrl.data.gueltigvon" required>
-						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
-					</select>
+					<div class="input-group">
+						<select class="form-control input-sm" name="gueltigvon" ng-model="ctrl.data.gueltigvon" required>
+							<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
+						</select>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Das Studiensemester, in dem die Studienordnung erstmals gültig wird. Hinweis: Ein zu dieser Studienordnung gehörender Studienplan muss mit demselben Studiensemester gültig werden. Hat eine Studienordnung mehr als einen Studienplan (z.B. VZ und BB), so muss mindestens einer davon mit demselben Studiensemester gültig werden und es darf keiner zu einem früheren Studiensemester gültig werden."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="gueltigbis">Gültig bis</label>
-					<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.data.gueltigbis">
-						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
-					</select>
+					<div class="input-group">
+						<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.data.gueltigbis">
+							<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
+						</select>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Das Studiensemester, in dem die Gültigkeit der Studienordnung endet. Bei einer neuen Studienordnung kann das Feld leer bleiben, da das Ende der Gültigkeit - im Normalfall - noch nicht bekannt ist. Läuft eine genehmigte Studienordnung aus, weil sie durch eine neue Studienordnung ersetzt wird, so ist bei der auslaufenden Studienordnung das entsprechende Studiensemester anzugeben. Hinweis: Ein zu dieser Studienordnung gehörender Studienplan muss mit demselben Studiensemester ungültig werden. Hat eine Studienordnung mehr als einen Studienplan (z.B. VZ und BB), so muss zumindest einer mit demselben Studiensemester ungültig werden und es darf keiner zu einem späteren Studiensemester ungültig werden."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -46,14 +61,20 @@
 			<div class="col-sm-2">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.datum_1.$error.required || form.datum_1.$error.date))}">
 					<label for="datum_1">Beschluss Datum</label>
-					<input type="date" class="form-control input-sm datepicker" name="datum_1" ng-model="ctrl.beschluesse[0].datum"/>
+					<div class="input-group">
+						<input type="date" class="form-control input-sm datepicker" name="datum_1" ng-model="ctrl.beschluesse[0].datum"/>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Das Datum, an dem die Studienordnung vom jeweils zuständigen 'Organ' beschlossen wurde. Siehe dazu auch Signavio."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
 					<span ng-show="form.datum.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
 			<div class="col-sm-4">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.beschluss_1.$error.required))}">
 					<label for="beschluss_1">Beschluss</label>
-					<input strip_html type="text" class="form-control input-sm" name="beschluss_1" ng-model="ctrl.beschluesse[0].typ" disabled/>
+					<div class="input-group">
+						<input strip_html type="text" class="form-control input-sm" name="beschluss_1" ng-model="ctrl.beschluesse[0].typ" disabled/>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Je nach Änderungsvariante gilt: 'geringfügig' > Beschluss durch STGL / 'nicht geringfügig' > Beschluss durch STGL + KOLL / 'akkreditierungspflichtig' > Beschluss durch STGL + KOLL + AQ Austria. Siehe dazu auch Signavio."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
 					<!--<select class="form-control input-sm" name="beschluss_1" ng-model="ctrl.beschluesse[0].typ">
 						<option ng-repeat="beschluss in ctrl.beschlussList">{{beschluss}}</option>
 					</select>-->
@@ -135,7 +156,7 @@
 							<a class="btn btn-default" data-edit="html" title="Clear Formatting"><i class='glyphicon glyphicon-pencil'></i></a>
 						</div>
 					</div>
-					<div id="editor" class="lead" data-placeholder="This is a basic example with a simple toolbar.">
+					<div id="editor" class="lead" data-placeholder="">
 					</div>
 				</div>
 			</div>

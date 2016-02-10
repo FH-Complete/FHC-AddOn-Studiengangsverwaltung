@@ -54,8 +54,6 @@ angular.module('stgv2')
 					onContextMenu: function(e ,row)
 					{
 						if (row){
-							console.log(row);
-							console.log($(this).treegrid('select', row.id));
 							e.preventDefault();
 							$(this).treegrid('select', row.id);
 							$('#stplTreeGridContextMenu').menu('show');
@@ -267,7 +265,6 @@ angular.module('stgv2')
                         };
 
 			StudienplanService.getStudienplan($scope.studienplan_id).then(function(result){
-				console.log(result);
 				ctrl.studienplan = result;
 				ctrl.initSemesterList();
 				ctrl.initStplTree();

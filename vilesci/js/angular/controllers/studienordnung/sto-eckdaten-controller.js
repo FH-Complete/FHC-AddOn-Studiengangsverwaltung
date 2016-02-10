@@ -9,6 +9,11 @@ angular.module('stgv2')
 					ctrl.akadGradList = [];
 					ctrl.orgformList = [];
 					ctrl.standortList = [];
+					
+					//enable tooltips
+					$(document).ready(function(){
+						$('[data-toggle="tooltip"]').tooltip();
+					});
 
 					//loading Studiensemester list
 					StudiensemesterService.getStudiensemesterList().then(function (result) {
@@ -52,10 +57,6 @@ angular.module('stgv2')
 						}
 					}, function error(response) {
 						errorService.setError(getErrorMsg(response));
-					});
-					
-					$scope.$watch("ctrl.data.studiengangsart", function(newValue, oldValue){
-						console.log(newValue);
 					});
 
 					ctrl.save = function () {

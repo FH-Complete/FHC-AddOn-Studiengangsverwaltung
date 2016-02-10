@@ -10,6 +10,11 @@ angular.module('stgv2')
 			ctrl.aenderungsvarianteList = [];
 			ctrl.studienordnungStatusList = [];
 			ctrl.beschlussList = ["Studiengang","Kollegium","AQ Austria"];
+			
+			//enable tooltips
+			$(document).ready(function(){
+				$('[data-toggle="tooltip"]').tooltip();
+			});
 
 			if ($stateParams.studienordnung_id !== undefined && $rootScope.studienordnung === null)
 			{
@@ -26,7 +31,6 @@ angular.module('stgv2')
 			});
 
 			$scope.$watch("ctrl.data.aenderungsvariante_kurzbz", function (newValue, oldValue) {
-				console.log(newValue);
 				var length = 0;
 				switch (newValue)
 				{
@@ -132,7 +136,6 @@ angular.module('stgv2')
 				{
 					var saveData = {data: ""};
 					saveData.data = ctrl.data;
-					console.log(saveData);
 					$http({
 						method: 'POST',
 						url: './api/studienordnung/metadaten/save_metadaten.php',

@@ -3,9 +3,13 @@ angular.module('stgv2')
 			$scope.studienordnung_id = $stateParams.studienordnung_id;
 			var ctrl = this;
 			ctrl.data = new Qualifikationsziel();
-			console.log(ctrl.data);
 			ctrl.data.studienordnung_id = $scope.studienordnung_id;
 			ctrl.temp = [];
+			
+			//enable tooltips
+			$(document).ready(function(){
+				$('[data-toggle="tooltip"]').tooltip();
+			});
 
 			$http({
 				method: 'GET',
@@ -16,7 +20,6 @@ angular.module('stgv2')
 					if (response.data.info.length > 0)
 					{
 						ctrl.data = response.data.info[0];
-						console.log(ctrl.data);
 					}
 				}
 				else
@@ -55,7 +58,6 @@ angular.module('stgv2')
 
 			ctrl.addListItem = function (list_id, index)
 			{
-				console.log(index);
 				if ((ctrl.temp[index-1] !== "") && (ctrl.temp[index-1] != undefined))
 				{
 					ctrl.data.data[1].elements[index].push(ctrl.temp[index-1]);

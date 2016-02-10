@@ -4,13 +4,19 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="stgkz">StgKz</label>
-					<input type="text" class="form-control input-sm" name="stgkz" value="{{ctrl.data.stgkz}}" disabled/>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="stgkz" value="{{ctrl.data.stgkz}}" disabled/>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Die Studiengangskennzahl kann nicht geändert werden."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
 				</div>
 			</div>
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="bezeichnung">Studiengangbezeichnung</label>
-					<input characters-only type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.data.studiengangbezeichnung"/>
+					<div class="input-group">
+						<input characters-only type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.data.studiengangbezeichnung"/>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Die bestehende oder die aufgrund der Änderung neue Studiengangsbezeichnung eingeben."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
 				</div>
 			</div>
 			<div class="col-sm-2">
@@ -20,6 +26,7 @@
 						<div class="input-group-addon">{{ctrl.data.studiengangsart.substring(0,1)}}</div>
 						<input characters-only="upperCase" type="text" maxlength="8" class="form-control input-sm" name="kurzbz" ng-model="ctrl.data.studiengangkurzbzlang"/>
 						<div class="input-group-addon">{{(7-ctrl.data.studiengangkurzbzlang.length)}}</div>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Die bestehende oder die aufgrund der Änderung neue Studiengangskurzbezeichnung eingeben. Die Kurzbezeichnung besteht - üblicherweise aus drei - Großbuchstaben."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
 			</div>
@@ -38,9 +45,12 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="akadGrad">Akademischer Grad</label>
-					<select class="form-control input-sm" name="akadGrad" ng-model="ctrl.data.akadgrad_id">
-						<option ng-repeat="akadGrad in ctrl.akadGradList" value="{{akadGrad.akadgrad_id}}">{{akadGrad.titel}}</option>
-					</select>
+					<div class="input-group">
+						<select class="form-control input-sm" name="akadGrad" ng-model="ctrl.data.akadgrad_id">
+							<option ng-repeat="akadGrad in ctrl.akadGradList" value="{{akadGrad.akadgrad_id}}">{{akadGrad.titel}}</option>
+						</select>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Für technische Studiengänge ist 'Bachelor of Science in Engineering' oder 'Master of Science in Engineering' auszuwählen."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
 				</div>
 			</div>
 		</div>

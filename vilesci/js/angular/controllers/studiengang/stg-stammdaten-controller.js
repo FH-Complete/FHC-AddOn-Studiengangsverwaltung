@@ -1,12 +1,16 @@
 angular.module('stgv2')
 		.controller('StgStammdatenCtrl', function ($scope, $http, $state, $stateParams, errorService, successService) {
-			console.log($state);
 			$scope.stgkz = $stateParams.stgkz;
 			var ctrl = this;
 			ctrl.data = "";
 			ctrl.model = new Studiengangsgruppe();
 			ctrl.model.studiengang_kz = $scope.stgkz;
 			ctrl.zuordnung = false;
+			
+			//enable tooltips
+			$(document).ready(function(){
+				$('[data-toggle="tooltip"]').tooltip();
+			});
 
 			ctrl.save = function()
 			{

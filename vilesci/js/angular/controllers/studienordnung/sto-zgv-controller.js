@@ -77,7 +77,6 @@ angular.module('stgv2')
 			
 			ctrl.preview = function()
 			{
-				console.log($('#editor').html());
 				$('#editorPreview').html($('#editor').html());
 			};
 			

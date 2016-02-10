@@ -370,3 +370,8 @@ h5
 	padding: 5px;
 	max-width: 800px;
 }
+
+.tooltip-inner {
+    max-width: 400px;
+	width: 350px;
+}

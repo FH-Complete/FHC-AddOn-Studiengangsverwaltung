@@ -283,7 +283,6 @@ angular.module("stgv2")
 			ctrl.delete = function ()
 			{
 				var node = $('#treeGrid').treegrid('getSelected');
-				console.log(node);
 				switch (node.attributes[0].value)
 				{
 					case "studienplan":
@@ -392,9 +391,6 @@ angular.module("stgv2")
 		.controller("studienplanTabCtrl", function ($scope, $state, $filter) {
 			//TODO tabs from config
 	
-			console.log($scope);
-			console.log($state);
-	
 			$scope.tabs = [
 				{label: 'Metadaten', link: '.metadaten'},
 				{label: 'Eckdaten', link: '.eckdaten'},
@@ -454,8 +450,6 @@ angular.module("stgv2")
 				var parent = $(ele).parent();
 				var node = $('#west_tree').tree("getNode", parent);
 				var params = node.attributes[0].urlParams;
-				console.log(target);
-				console.log(params[0]);
 				$state.go(target, params[0]);
 			};
 		})

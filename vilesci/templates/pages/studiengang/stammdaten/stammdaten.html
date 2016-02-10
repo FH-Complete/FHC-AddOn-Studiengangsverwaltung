@@ -2,8 +2,10 @@
 	<div ng-if="!ctrl.zuordnung.stgkz">
 		<div ng-repeat="root in ctrl.data track by $index" class="row">
 			<div class="col-sm-3">
-				<h2>{{root.data[0].label}}</h2>
 				<div class="form-group">
+					<label for="">{{root.data[0].label}}</label>
+					<span ng-if="root.data[0].label =='Statistik Austria'"><a href="#" data-toggle="tooltip" data-placement="right" title="Einordnung des Studiengangs in die national gültige Klassifikation von FH-Studiengängen."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					<span ng-if="root.data[0].label =='ISCED'"><a href="#" data-toggle="tooltip" data-placement="right" title="Einordnung des Studiengangs in die international gültige Klassifikation 'ISCED Fields of Education and Training'."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					<select ng-if="root.data[0].children" ng-model='ctrl.model.data[$index][$index]' class="form-control input-sm" ng-change="ctrl.changed()">
 						<option ng-repeat="child in root.data[0].children">{{child.code}} - {{child.label}}</option>
 					</select>

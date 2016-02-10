@@ -5,7 +5,7 @@
 				<thead>
 					<tr>
 						<th width="300px"> Name</th>
-						<th width="100px" style="text-align: center">Upload</th>
+						<th width="100px" style="text-align: center"><span ng-click="sortReverse =!sortReverse" style="cursor: pointer;">Upload</span></th>
 						<th width="100px" style="text-align: center">Download</th>
 						<th width="100px" style="text-align: center">Löschen</th>
 					</tr>
@@ -14,7 +14,7 @@
 					<tr ng-if="ctrl.dokumente == ''">
 						<td colspan="3">Keine Dokumente vorhanden.</td>
 					</tr>
-					<tr ng-repeat="dok in ctrl.dokumente">
+					<tr ng-repeat="dok in ctrl.dokumente | orderBy:'insertamum':sortReverse">
 						<td>
 							{{dok.name}}
 						</td>
