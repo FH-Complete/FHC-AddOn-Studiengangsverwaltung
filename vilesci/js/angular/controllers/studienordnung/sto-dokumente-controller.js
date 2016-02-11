@@ -2,6 +2,7 @@ angular.module('stgv2')
 		.controller('StoDokumenteCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, FileUploader) {
 			$scope.studienordnung_id = $stateParams.studienordnung_id;
 			$scope.sortReverse = true;
+			$scope.tooltipVisibility = false;
 			var ctrl = this;
 			ctrl.fileExtensionWhiteList = ["PDF","JPG","JPEG","DOC","DOCX"];
 			ctrl.dokumente = "";

@@ -9,22 +9,25 @@ angular.module('stgv2')
 				branchen: "",
 				positionen: "",
 				aufgaben: ""
-			}
+			};
 			
 			//enable tooltips
 			$(document).ready(function(){
 				$('[data-toggle="tooltip"]').tooltip();
+				$("#branchen-editor").wysiwyg(
+				{
+					toolbarSelector: '[data-role=branchen-editor-toolbar]'
+				});
+				$("#positionen-editor").wysiwyg(
+				{
+					toolbarSelector: '[data-role=positionen-editor-toolbar]'
+				});
+				$("#aufgaben-editor").wysiwyg(
+				{
+					toolbarSelector: '[data-role=aufgaben-editor-toolbar]'
+				});
 			});
 			
-			$("#editor").wysiwyg(
-			{
-				'form':
-				{
-					'text-field': 'editorForm',
-					'seperate-binary': false
-				}
-			});
-
 			$http({
 				method: 'GET',
 				url: './api/studienordnung/taetigkeitsfelder/taetigkeitsfelder.php?studienordnung_id=' + $scope.studienordnung_id
@@ -39,21 +42,30 @@ angular.module('stgv2')
 //						{
 //							ctrl.drawListItem("list_branchen",value);
 //						});
+
+//						$(ctrl.data.data.positionen.elements).each(function(key, value)
+//						{
+//							ctrl.drawListItem("list_positionen",value);
+//						});
+//						
+//						$(ctrl.data.data.aufgaben.elements).each(function(key, value)
+//						{
+//							ctrl.drawListItem("list_aufgaben",value);
+//						});
 			
 						$(ctrl.data.data.branchen.elements).each(function(key, value)
 						{
-//							ctrl.drawListItem("list_branchen",value);
-							$("#editor").html(value);
+							$("#branchen-editor").html(value);
 						});
 						
 						$(ctrl.data.data.positionen.elements).each(function(key, value)
 						{
-							ctrl.drawListItem("list_positionen",value);
+							$("#positionen-editor").html(value);
 						});
 						
 						$(ctrl.data.data.aufgaben.elements).each(function(key, value)
 						{
-							ctrl.drawListItem("list_aufgaben",value);
+							$("#aufgaben-editor").html(value);
 						});
 						
 					}
@@ -93,50 +105,50 @@ angular.module('stgv2')
 				});
 			};
 
-			ctrl.drawListItem = function (list_id, text)
-			{
-				var listItem = '<li class="list-group-item">' + text + '<span class="badge" ng-click="ctrl.removeListItem($event)"><span class="glyphicon glyphicon-trash"></span></span></li>';
-				var html = $("#" + list_id).append(listItem);
-				$compile(html)(scope);
-				ctrl.temp = {
-					branchen: "",
-					positionen: "",
-					aufgaben: ""
-				};
-			};
+//			ctrl.drawListItem = function (list_id, text)
+//			{
+//				var listItem = '<li class="list-group-item">' + text + '<span class="badge" ng-click="ctrl.removeListItem($event)"><span class="glyphicon glyphicon-trash"></span></span></li>';
+//				var html = $("#" + list_id).append(listItem);
+//				$compile(html)(scope);
+//				ctrl.temp = {
+//					branchen: "",
+//					positionen: "",
+//					aufgaben: ""
+//				};
+//			};
 
-			ctrl.addListItem = function (list_id, name)
-			{
-				var text = "";
-				switch (name)
-				{
+//			ctrl.addListItem = function (list_id, name)
+//			{
+//				var text = "";
+//				switch (name)
+//				{
 //					case "branchen":
 //						text = ctrl.temp.branchen;
 //						break;
-					case "positionen":
-						text = ctrl.temp.positionen;
-						break;
-					case "aufgaben":
-						text = ctrl.temp.aufgaben;
-						break;
-					default:
-						break;
-				}
+//					case "positionen":
+//						text = ctrl.temp.positionen;
+//						break;
+//					case "aufgaben":
+//						text = ctrl.temp.aufgaben;
+//						break;
+//					default:
+//						break;
+//				}
+//
+//				if (text !== "")
+//				{
+//					ctrl.drawListItem(list_id, text);
+//					ctrl.parseJson();
+////					ctrl.save();
+//				}
+//			};
 
-				if (text !== "")
-				{
-					ctrl.drawListItem(list_id, text);
-					ctrl.parseJson();
-//					ctrl.save();
-				}
-			};
-
-			ctrl.removeListItem = function (event)
-			{
-				$(event.target).parent().parent().remove();
-				ctrl.parseJson();
-				ctrl.save();
-			};
+//			ctrl.removeListItem = function (event)
+//			{
+//				$(event.target).parent().parent().remove();
+//				ctrl.parseJson();
+//				ctrl.save();
+//			};
 
 			ctrl.parseJson = function ()
 			{
@@ -147,19 +159,26 @@ angular.module('stgv2')
 //				{
 //					branchen.push($(value).text());
 //				});
-				branchen.push($("#editor").html());
+//				ctrl.data.data.branchen.elements = branchen;
+//				$("#list_positionen li").each(function (key, value)
+//				{
+//					positionen.push($(value).text());
+//				});
+//				ctrl.data.data.positionen.elements = positionen;
+//
+//				$("#list_aufgaben li").each(function (key, value)
+//				{
+//					aufgaben.push($(value).text());
+//				});
+//				ctrl.data.data.aufgaben.elements = aufgaben;
+
+				branchen.push($("#branchen-editor").html());
 				ctrl.data.data.branchen.elements = branchen;
 
-				$("#list_positionen li").each(function (key, value)
-				{
-					positionen.push($(value).text());
-				});
+				positionen.push($("#positionen-editor").html());
 				ctrl.data.data.positionen.elements = positionen;
 
-				$("#list_aufgaben li").each(function (key, value)
-				{
-					aufgaben.push($(value).text());
-				});
+				aufgaben.push($("#aufgaben-editor").html());
 				ctrl.data.data.aufgaben.elements = aufgaben;
 			};
 		});

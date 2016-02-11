@@ -1,6 +1,30 @@
 <div class="contentWrapper" ng-controller="StoDokumenteCtrl as ctrl" nv-file-drop="" uploader="uploader" filters="queueLimit, extensionFilter">
 	<div class="row">
 		<div class="col-md-6">
+			<div id="tooltip" class="panel panel-default">
+				<div class="panel-heading" style="cursor: pointer;" ng-click="tooltipVisibility = !tooltipVisibility">
+					<h5>
+						Dokumentinformationen
+						<span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span>
+					</h5>
+				</div>
+				<div class="panel-body check-element animate-show" ng-show="tooltipVisibility">
+					In Abhängigkeit von der Änderungsvariante werden folgende Dokumente als pdf hochgeladen:
+					<ul>
+						<li>Die genehmigte Studienordnung</li>
+						<li>Der Bericht des Rektors im FH-Kollegium über die geringfügige Änderung</li>
+						<li>Der Antrag auf nicht geringfügige Änderung der Studienordnung an das FH-Kollegium</li>
+						<li>Der Änderungsantrag an die AQ Austria</li>
+						<li>Ein allfälliger Verbesserungsauftrag der AQ Austria</li>
+						<li>Die Mitteilung über die Verfahrensart der AQ Austria</li>
+						<li>Ein allfälliges Gutachten der AQ Austria</li>
+						<li>Eine allfällige Stellungnahme zum Gutachten</li>
+						<li>Der Änderungsbescheid der AQ Austria</li>
+						<li>Der allfällige Entwurf zum Ablehnungsbescheid der AQ Austria</li>
+						<li>Die allfällige Stellungnahme zum Entwurf des Ablehnungsbescheids</li>
+					</ul>
+				</div>
+			  </div>
 			<table class="table doctable">
 				<thead>
 					<tr>
@@ -35,9 +59,9 @@
 		</div>
 		<div class="col-md-5" style="margin-bottom: 40px">
 			<div class="row">
-				<h4>Select files</h4>
+				<!--<h4>Select files</h4>-->
 				<div ng-show="uploader.isHTML5">
-					<div class="well drop-zone" nv-file-over="" uploader="uploader">
+					<div class="well well-lg drop-zone" nv-file-over="" uploader="uploader">
 						Datei für Upload hierher ziehen ({{ctrl.fileExtensionWhiteList.toString()}})
 					</div>
 				</div>
