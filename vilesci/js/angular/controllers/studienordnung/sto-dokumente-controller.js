@@ -66,10 +66,27 @@ angular.module('stgv2')
 				onSuccessItem: function(item, response, status, headers)
 				{
 					//wird nach jedem item aufgerufen
+					if(response.erfolg === false)
+					{
+						$scope.uploader.cancelAll();
+						item.isSuccess = false;
+						item.isUploaded = false;
+						item.progress = 0;
+						item.isError = true;
+					}
+				},
+				onErrorItem: function(fileItem, response, status, headers) {
+					console.log('onErrorItem', fileItem, response, status, headers);
 				},
 				onCompleteAll: function()
 				{
 					//wird am ende des uploads der gesamten queue aufgerufen
+					var elements = $scope.uploader.getNotUploadedItems();
+					if(elements.length > 0)
+					{
+						var response = JSON.parse(elements[0]._xhr.response);
+						errorService.setError(response.message.message+" -> "+response.message.detail);
+					}
 					loadDokumente();
 				}
 			

@@ -18,7 +18,7 @@
  * Authors: Stefan Puraner <stefan.puraner@technikum-wien.at>
  */
 /**
- * Klasse Fördervertrag
+ * Klasse Doktorat
  * @create 10-01-2007
  */
 //require_once('../../../inlcude/basis_db.class.php');
@@ -41,6 +41,7 @@ class doktorat extends basis_db
 	public $insertvon;		//  bigint
 	public $updateamum;		//  timestamp
 	public $updatevon;		//  bigint
+	public $dokumente = array();
 
 	/**
 	 * Konstruktor
@@ -242,4 +243,92 @@ class doktorat extends basis_db
 	    
 	    return true;
 	}
+	
+	/**
+     * Speichert ein Dokument zum Doktorat
+     * @param int $dms_id
+     * @return boolean
+     */
+    public function saveDokument($dms_id)
+    {
+	$qry = "INSERT INTO addon.tbl_stgv_doktorat_dokument(doktorat_id, dms_id) VALUES(" .
+		$this->db_add_param($this->doktorat_id, FHC_INTEGER) . ',' .
+		$this->db_add_param($dms_id, FHC_INTEGER) . ');';
+
+	if ($this->db_query($qry))
+	{
+	    return true;
+	} else
+	{
+	    $this->errormsg = 'Fehler beim Speichern der Daten';
+	    return false;
+	}
+    }
+
+    /**
+     * Laedt die Dokumente des Doktorats
+     * @return boolean
+     */
+    public function getDokumente($doktorat_id)
+    {
+	$qry = "SELECT dms_id FROM addon.tbl_stgv_doktorat_dokument WHERE doktorat_id=" . $this->db_add_param($doktorat_id, FHC_INTEGER);
+
+	if ($this->db_query($qry))
+	{
+	    while ($row = $this->db_fetch_object())
+	    {
+		$this->dokumente[] = $row->dms_id;
+	    }
+
+	    return true;
+	} else
+	{
+	    $this->errormsg = 'Fehler beim Laden der Daten';
+	    return false;
+	}
+    }
+
+    /**
+     * Löscht ein Dokument
+     * @param  $doktorat_id
+     * @param  $dms_id
+     * @return true wenn ok, false im Fehlerfall
+     */
+    public function deleteDokument($doktorat_id, $dms_id)
+    {
+	if (!is_numeric($doktorat_id))
+	{
+	    $this->errormsg = 'doktorat_id ist ungueltig';
+	    return false;
+	}
+	
+	if (!is_numeric($dms_id))
+	{
+	    $this->errormsg = 'dms_id ist ungueltig';
+	    return false;
+	}
+
+	// Dokument löschen
+	$dms = new dms();
+	if($dms->deleteDms($dms_id))
+	{
+	    $qry = "Delete FROM addon.tbl_stgv_doktorat_dokument "
+		    . "WHERE doktorat_id=" . $this->db_add_param($doktorat_id, FHC_INTEGER)
+		    . " AND dms_id=".$this->db_add_param($dms_id, FHC_INTEGER);
+
+	    if (!$this->db_query($qry))
+	    {
+		$this->errormsg = 'Fehler beim Loeschen der Daten';
+		return false;
+	    }
+	    return true;
+	}
+	else
+	{
+	    $this->errormsg = 'Fehler beim Loeschen des Dokuments.';
+	    return false;
+	}
+
+	
+    }
 }

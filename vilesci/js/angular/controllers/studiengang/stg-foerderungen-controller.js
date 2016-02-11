@@ -345,7 +345,7 @@ angular.module('stgv2')
 					var data = {
 						foerdervertrag_id : ctrl.foerdervertrag.foerdervertrag_id,
 						dms_id : response.info
-					}
+					};
 					if(response.erfolg)
 					{
 						$http({
@@ -363,6 +363,27 @@ angular.module('stgv2')
 						}, function error(response) {
 							errorService.setError(getErrorMsg(response));
 						});
+					}
+					else
+					{
+						$scope.uploader.cancelAll();
+						item.isSuccess = false;
+						item.isUploaded = false;
+						item.progress = 0;
+						item.isError = true;
+					}
+				},
+				onErrorItem: function(fileItem, response, status, headers) {
+					console.log('onErrorItem', fileItem, response, status, headers);
+				},
+				onCompleteAll: function()
+				{
+					//wird am ende des uploads der gesamten queue aufgerufen
+					var elements = $scope.uploader.getNotUploadedItems();
+					if(elements.length > 0)
+					{
+						var response = JSON.parse(elements[0]._xhr.response);
+						errorService.setError(response.message.message+" -> "+response.message.detail);
 					}
 				}
 			});

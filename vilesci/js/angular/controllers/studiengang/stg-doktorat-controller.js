@@ -1,11 +1,13 @@
 angular.module('stgv2')
-		.controller('StgDoktoratCtrl', function ($scope, $http, $state, $stateParams,errorService,successService) {
+		.controller('StgDoktoratCtrl', function ($scope, $http, $state, $stateParams,errorService,successService,FileUploader) {
 			$scope.stgkz = $stateParams.stgkz;
 			var ctrl = this;
 			ctrl.data = "";
 			ctrl.dokotrat = new Doktorat();
 			ctrl.selectedStudiensemester = null;
 			ctrl.studiensemesterList = "";
+			ctrl.fileExtensionWhiteList = ["PDF"];
+			ctrl.lastSelectedIndex = null;
 
 			//loading Studiensemester list
 			$http({
@@ -32,6 +34,13 @@ angular.module('stgv2')
 					singleSelect:true,
 					onLoadSuccess: function (data)
 					{
+						if(ctrl.lastSelectedIndex !== null)
+						{
+							$("#dataGridDoktorat").datagrid('selectRow', ctrl.lastSelectedIndex);
+							var row = $("#dataGridDoktorat").datagrid("getSelected");
+							ctrl.loadDoktoratDetails(row);
+//							$scope.$apply();
+						}
 						//Error Handling happens in loadFilter
 					},
 					onLoadError: function () {
@@ -55,6 +64,7 @@ angular.module('stgv2')
 					onClickRow: function(index, row)
 					{
 //						var row = $("#dataGridDoktorat").datagrid("getSelected");
+						ctrl.lastSelectedIndex = index;
 						ctrl.loadDoktoratDetails(row);
 						if ($("#save").is(":visible"))
 							ctrl.changeButtons();
@@ -101,9 +111,14 @@ angular.module('stgv2')
 					}).then(function success(response) {
 						if(response.data.erfolg)
 						{
+							ctrl.doktorat = new Doktorat()();
+							ctrl.doktorat.studiengang_kz = $scope.stgkz;
+							ctrl.doktorat.doktorat_id = response.data.info;
+							$($scope.uploader.queue).each(function(k,v){
+								v.upload();
+							});
 							$("#dataGridDoktorat").datagrid('reload');
 							//TODO select recently added Doktorat in Datagrid
-							ctrl.doktorat = new Doktorat();
 							$scope.form.$setPristine();
 							successService.setMessage(response.data.info);
 						}
@@ -119,28 +134,32 @@ angular.module('stgv2')
 			
 			ctrl.update = function()
 			{
-				var updateData = {data: ""}
-				updateData.data = ctrl.doktorat;
-				$http({
-					method: 'POST',
-					url: './api/studiengang/doktorat/update_doktorat.php',
-					data: $.param(updateData),
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					}
-				}).then(function success(response) {
-					if(response.data.erfolg)
-					{
-						$("#dataGridDoktorat").datagrid('reload');
-						successService.setMessage(response.data.info);
-					}
-					else
-					{
+				if($scope.form.$valid)
+				{
+					var updateData = {data: ""}
+					updateData.data = ctrl.doktorat;
+					$http({
+						method: 'POST',
+						url: './api/studiengang/doktorat/update_doktorat.php',
+						data: $.param(updateData),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response) {
+						if(response.data.erfolg)
+						{
+							$("#dataGridDoktorat").datagrid('reload');
+							$scope.form.$setPristine();
+							successService.setMessage(response.data.info);
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+					}, function error(response) {
 						errorService.setError(getErrorMsg(response));
-					}
-				}, function error(response) {
-					errorService.setError(getErrorMsg(response));
-				});
+					});
+				}
 			};
 			
 			ctrl.newDoktorat = function()
@@ -199,7 +218,98 @@ angular.module('stgv2')
 					$("#delete").hide();
 				}
 			};
-
+			$scope.uploader = new FileUploader({
+				url: './api/helper/upload_dokument.php',
+				formData: [{
+					doktorat_id: $scope.studienordnung_id
+				}],
+				filters: [{
+					name: 'extensionFilter',
+					fn: function (item, options) {
+						var extension = item.name.split(".").pop();
+						if ($.inArray(extension.toUpperCase(), ctrl.fileExtensionWhiteList) === 0)
+						{
+							return true;
+						}
+						return false;
+					}
+				}],
+				onSuccessItem: function(item, response, status, headers)
+				{
+					var data = {
+						doktorat_id : ctrl.doktorat.doktorat_id,
+						dms_id : response.info
+					};
+					if(response.erfolg)
+					{
+						$http({
+							method: 'POST',
+							url: './api/studiengang/doktorat/add_document.php',
+							data: $.param(data),
+							headers: {
+								'Content-Type': 'application/x-www-form-urlencoded'
+							}
+						}).then(function success(response) {
+							if(response.data.erfolg)
+							{
+								$("#dataGridDoktorat").datagrid('reload');
+							}
+						}, function error(response) {
+							errorService.setError(getErrorMsg(response));
+						});
+					}
+					else
+					{
+						$scope.uploader.cancelAll();
+						item.isSuccess = false;
+						item.isUploaded = false;
+						item.progress = 0;
+						item.isError = true;
+					}
+				},
+				onErrorItem: function(fileItem, response, status, headers) {
+					console.log('onErrorItem', fileItem, response, status, headers);
+				},
+				onCompleteAll: function()
+				{
+					//wird am ende des uploads der gesamten queue aufgerufen
+					var elements = $scope.uploader.getNotUploadedItems();
+					if(elements.length > 0)
+					{
+						var response = JSON.parse(elements[0]._xhr.response);
+						errorService.setError(response.message.message+" -> "+response.message.detail);
+					}
+				}
+			});
+			
+			ctrl.uploadDokument = function()
+			{
+				$($scope.uploader.queue).each(function(k,v){
+					v.upload();
+				});
+			};
+			
+			ctrl.deleteDokument = function (dms_id)
+			{
+				$http({
+					method: "GET",
+					url: "./api/studiengang/doktorat/delete_dokument.php?dms_id="+dms_id+"&doktorat_id="+ctrl.doktorat.doktorat_id,
+				}).then(function success(response) {
+					if (response.data.erfolg)
+					{
+						var dokumente = ctrl.doktorat.dokumente.filter(function(obj){
+							return obj.dms_id !== dms_id;
+						});
+						ctrl.doktorat.dokumente = dokumente;
+					}
+					else
+					{
+						errorService.setError(getErrorMsg(response));
+					}
+				}, function error(response) {
+					errorService.setError(getErrorMsg(response));
+				});
+			}
 		});
 
 function Doktorat()
@@ -209,6 +319,7 @@ function Doktorat()
 	this.datum_erlass = "";
 	this.gueltigvon = "";
 	this.gueltigbis = "";
+	this.dokumente = [];
 	this.insertamum = "";
 	this.insertvon = "";
 	this.updateamum = "";

@@ -7,9 +7,14 @@ require_once('../../../../../include/dms.class.php');
 
 require_once('../functions.php');
 
-//TODO Berechtigungen
-
 $uid = get_uid();
+$berechtigung = new benutzerberechtigung();
+$berechtigung->getBerechtigungen($uid);
+if(!$berechtigung->isBerechtigt("stgv/uploadDokumente",null,"suid"))
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um Dokumente hochzuladen.", "detail"=>"stgv/uploadDokumente");
+    returnAJAX(FALSE, $error);
+}
 
 $ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 $filename = uniqid();

@@ -11,75 +11,120 @@
 	<table id="dataGridDoktorat" class="easyui-datagrid" style='height: 200px;'>
 	</table>
 	</br>
-	<form id="doktoratDetails" name="form" onsubmit="return false;" style="display: none;" novalidate>
-		<!-- Zeile 1 -->
-		<div class="row">
-			<div class="col-sm-1">
-				<div class="form-group">
-					<label class="sr-only" for="doktorat_id">ID</label>
-					<input type="hidden" class="form-control input-sm" name="doktorat_id" value="{{ctrl.doktorat.doktorat_id}}" disabled/>
+	<div id="doktoratDetails" style="display: none;">
+		<form name="form" onsubmit="return false;" novalidate>
+			<!-- Zeile 1 -->
+			<div class="row">
+				<div class="col-sm-1">
+					<div class="form-group">
+						<label class="sr-only" for="doktorat_id">ID</label>
+						<input type="hidden" class="form-control input-sm" name="doktorat_id" value="{{ctrl.doktorat.doktorat_id}}" disabled/>
+					</div>
 				</div>
-			</div>
-			<div class="col-sm-1">
-				<div class="form-group">
-					<label class="sr-only" for="stgkz">Stg KZ</label>
-					<input type="hidden" class="form-control input-sm" name="stgkz" value="{{ctrl.doktorat.studiengang_kz}}" disabled/>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-4">
-				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.bezeichnung.$error.required)}">
-					<label for="bezeichnung">Bezeichnung</label>
-					<input strip-html type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.doktorat.bezeichnung" required/>
-				</div>
-			</div>
-			<div class="col-sm-2">
-				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.datum_erlass.$error.required || form.datum_erlass.$error.date))}">
-					<label for="datum_erlass">Erlassdatum</label>
-					<input strip-html type="date" class="form-control input-sm" name="datum_erlass" ng-model="ctrl.doktorat.datum_erlass" required/>
-					<span ng-show="form.datum_erlass.$error.date">Kein gültiges Datum!</span>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-2">
-				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.gueltigvon.$error.required)}">
-					<label for="gueltigvon">Gültig von</label>
-					<select class="form-control input-sm" name="gueltigvon" ng-model="ctrl.doktorat.gueltigvon" required>
-						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
-					</select>
-				</div>
-			</div>
-			<div class="col-sm-2">
-				<div class="form-group">
-					<label for="gueltigbis">Gültig bis</label>
-					<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.doktorat.gueltigbis">
-						<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
-					</select>
-				</div>
-			</div>
-		</div>
-		<!-- Zeile 5 -->
-		<div class="row">
-			<div class="col-sm-6">
-				<div class="form-group">
-					<label for="erlaeuterungen">Erläuterungen</label>
-					<textarea strip-html class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="ctrl.doktorat.erlaeuterungen"></textarea>
-				</div>
-			</div>
-		</div>
-		<!-- Zeile 6 -->
-		<div class="row">
-			<div class="col-sm-10">
-				<div class="form-group">
-					<div>
-						<button id="update" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.update()">Speichern</button>
-						<button id="save" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.save()" style="display:none;">Speichern</button>
-						<button id="delete" type="submit" class="btn btn-danger btn-sm" ng-click="ctrl.delete()">Löschen</button>
+				<div class="col-sm-1">
+					<div class="form-group">
+						<label class="sr-only" for="stgkz">Stg KZ</label>
+						<input type="hidden" class="form-control input-sm" name="stgkz" value="{{ctrl.doktorat.studiengang_kz}}" disabled/>
 					</div>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.bezeichnung.$error.required)}">
+						<label for="bezeichnung">Bezeichnung</label>
+						<input strip-html type="text" class="form-control input-sm" name="bezeichnung" ng-model="ctrl.doktorat.bezeichnung" required/>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.datum_erlass.$error.required || form.datum_erlass.$error.date))}">
+						<label for="datum_erlass">Erlassdatum</label>
+						<input strip-html type="date" class="form-control input-sm" name="datum_erlass" ng-model="ctrl.doktorat.datum_erlass" required/>
+						<span ng-show="form.datum_erlass.$error.date">Kein gültiges Datum!</span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.gueltigvon.$error.required)}">
+						<label for="gueltigvon">Gültig von</label>
+						<select class="form-control input-sm" name="gueltigvon" ng-model="ctrl.doktorat.gueltigvon" required>
+							<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="gueltigbis">Gültig bis</label>
+						<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.doktorat.gueltigbis">
+							<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<!-- Zeile 5 -->
+			<div class="row col-sm-6">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label for="erlaeuterungen">Erläuterungen</label>
+							<textarea strip-html class="form-control input-sm" rows="5" name='erlaeuterungen' ng-model="ctrl.doktorat.erlaeuterungen"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="row col-sm-12">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label for="dokument">Dokument</label>
+								<input type="file" nv-file-select="" name="file" uploader="uploader" />
+								<button id="upload" class="btn btn-primary btn-sm" ng-click="ctrl.uploadDokument()">Upload</button>
+							</div>
+						</div>
+					</div>
+					<div class="row col-sm-12">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<div>
+									<button id="update" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.update()">Speichern</button>
+									<button id="save" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.save()" style="display:none;">Speichern</button>
+									<button id="delete" type="submit" class="btn btn-danger btn-sm" ng-click="ctrl.delete()">Löschen</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="row col-sm-6">
+			<div class="col-sm-6">
+				<table class="table doctable">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th width="100px" style="text-align: center">Download</th>
+							<th width="100px" style="text-align: center">Löschen</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-if="ctrl.doktorat.dokumente == ''">
+							<td colspan="3">Keine Dokumente vorhanden.</td>
+						</tr>
+						<tr ng-repeat="dok in ctrl.doktorat.dokumente">
+							<td>
+								{{dok.name}}
+							</td>
+							<td style="text-align: center">
+								<a href="./api/helper/download_dokument.php?dms_id={{dok.dms_id}}">
+									<button class="btn btn-primary btn-sm">Download</button>
+								</a>
+							</td>
+							<td style="text-align: center">
+								<button class="btn btn-danger btn-sm" ng-click="ctrl.deleteDokument(dok.dms_id)">Löschen</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
-	</form>
+	</div>
 </div>

@@ -20,6 +20,16 @@ $data = (Object) $data["data"];
 $doktorat = mapDataToDoktorat($data);
 $doktorat_id = $doktorat->doktorat_id;
 
+$doktorat->getDokumente($doktorat_id);
+foreach($doktorat->dokumente as $dms_id)
+{
+    if(!$doktorat->deleteDokument($doktorat_id, $dms_id))
+    {
+	$error = array("message"=>"Fehler beim Löschen der Dokumente.", "detail"=>$doktorat->errormsg);
+	returnAJAX(false, $error);
+    }
+}
+
 if($doktorat->delete($doktorat_id))
 {
     returnAJAX(true, "Doktorat erfolgreich gelöscht.");

@@ -597,19 +597,110 @@ if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berecht
     }
 }
 
+//Berechtigung zum Erstellen/editieren von Aufnahmeverfahren
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/editAufnahmeverfahren' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/editAufnahmeverfahren','Recht zum Erstellen/Editieren von Aufnahmeverfahren.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/editAufnahmeverfahren','addonStgv','suid');";
 
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Erstellen/Editieren von Aufnahmeverfahren.<br>';
+    }
+}
 
+//Berechtigung zum Erstellen/editieren von Zugangsvoraussetzung
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/editZugangsvoraussetzung' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/editZugangsvoraussetzung','Recht zum Erstellen/Editieren von Zugangsvoraussetzung.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/editZugangsvoraussetzung','addonStgv','suid');";
 
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Erstellen/Editieren von Zugangsvoraussetzung.<br>';
+    }
+}
 
+//Berechtigung zum Erstellen/editieren von Taetigkeitsfelder
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/editTaetigkeitsfelder' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/editTaetigkeitsfelder','Recht zum Erstellen/Editieren von Taetigkeitsfelder.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/editTaetigkeitsfelder','addonStgv','suid');";
 
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Erstellen/Editieren von Taetigkeitsfelder.<br>';
+    }
+}
 
+//Berechtigung zum Erstellen/editieren von Qualifikationsziel
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/editQualifikationsziel' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/editQualifikationsziel','Recht zum Erstellen/Editieren von Qualifikationsziel.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/editQualifikationsziel','addonStgv','suid');";
 
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Erstellen/Editieren von Qualifikationsziel.<br>';
+    }
+}
 
+//Berechtigung zum Editieren einer Studienordnung
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/editStudienordnung' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/editStudienordnung','Recht zum Erstellen/Editieren von Studienordnung.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/editStudienordnung','addonStgv','suid');";
 
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Editieren einer Studienordnung.<br>';
+    }
+}
 
+//Berechtigung zum Upload von Dokumenten
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/uploadDokumente' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/uploadDokumente','Recht zum Upload von Dokumenten.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/uploadDokumente','addonStgv','suid');";
 
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Upload von Dokumenten.<br>';
+    }
+}
 
+//Berechtigung zum Download von Dokumenten
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/downloadDokumente' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/downloadDokumente','Recht zum Download von Dokumenten.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/downloadDokumente','addonStgv','suid');";
 
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Download von Dokumenten.<br>';
+    }
+}
 
 
 
@@ -950,7 +1041,7 @@ if(!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienordnung_dokume
 		echo ' Tabellen fuer Dokumentenupload fuer Studienordnung hinzugefuegt!<br>';
 }
 
-// Dokumentenupload für Studienordnung
+// Dokumentenupload für Fördervertrag
 if(!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_foerdervertrag_dokument LIMIT 1;"))
 {
 	$qry = "
@@ -963,7 +1054,7 @@ if(!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_foerdervertrag_dokume
 
 	ALTER TABLE addon.tbl_stgv_foerdervertrag_dokument ADD CONSTRAINT pk_foerdervertrag_dokument PRIMARY KEY (foerdervertrag_id, dms_id);
 
-	ALTER TABLE addon.tbl_stgv_foerdervertrag_dokument ADD CONSTRAINT fk_foerdervertrag_dokument_foerervertrag FOREIGN KEY (foerdervertrag_id) REFERENCES addon.tbl_stgv_foerdervertrag (foerdervertrag_id) ON UPDATE CASCADE ON DELETE CASCADE;
+	ALTER TABLE addon.tbl_stgv_foerdervertrag_dokument ADD CONSTRAINT fk_foerdervertrag_dokument_foerdervertrag FOREIGN KEY (foerdervertrag_id) REFERENCES addon.tbl_stgv_foerdervertrag (foerdervertrag_id) ON UPDATE CASCADE ON DELETE CASCADE;
 	ALTER TABLE addon.tbl_stgv_foerdervertrag_dokument ADD CONSTRAINT fk_foerdervertrag_dokument_dms FOREIGN KEY (dms_id) REFERENCES campus.tbl_dms (dms_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 	GRANT SELECT, INSERT, UPDATE, DELETE ON addon.tbl_stgv_foerdervertrag_dokument TO vilesci;
@@ -1211,6 +1302,32 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_zugangsvoraussetzung
 	echo '<strong>addon.tbl_stgv_zugangsvoraussetzung: ' . $db->db_last_error() . '</strong><br>';
     else
 	echo ' addon.tbl_stgv_zugangsvoraussetzung: Tabelle hinzugefuegt<br>';
+}
+
+// Dokumentenupload für Doktoratsstudienverordnung
+if(!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_doktorat_dokument LIMIT 1;"))
+{
+	$qry = "
+
+	CREATE TABLE addon.tbl_stgv_doktorat_dokument
+	(
+		doktorat_id integer NOT NULL,
+		dms_id integer NOT NULL
+	);
+
+	ALTER TABLE addon.tbl_stgv_doktorat_dokument ADD CONSTRAINT pk_doktorat_dokument PRIMARY KEY (doktorat_id, dms_id);
+
+	ALTER TABLE addon.tbl_stgv_doktorat_dokument ADD CONSTRAINT fk_doktorat_dokument_foerervertrag FOREIGN KEY (doktorat_id) REFERENCES addon.tbl_stgv_doktorat (doktorat_id) ON UPDATE CASCADE ON DELETE CASCADE;
+	ALTER TABLE addon.tbl_stgv_doktorat_dokument ADD CONSTRAINT fk_doktorat_dokument_dms FOREIGN KEY (dms_id) REFERENCES campus.tbl_dms (dms_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+	GRANT SELECT, INSERT, UPDATE, DELETE ON addon.tbl_stgv_doktorat_dokument TO vilesci;
+	GRANT SELECT, INSERT, UPDATE, DELETE ON addon.tbl_stgv_doktorat_dokument TO web;
+	";
+
+	if(!$db->db_query($qry))
+		echo '<strong>Dokumentenupload fuer Doktoratsstudienverordnung: '.$db->db_last_error().'</strong><br>';
+	else
+		echo ' Tabellen fuer Dokumentenupload fuer Doktoratsstudienverordnung hinzugefuegt!<br>';
 }
 
 echo '<br>Aktualisierung abgeschlossen<br><br>';
