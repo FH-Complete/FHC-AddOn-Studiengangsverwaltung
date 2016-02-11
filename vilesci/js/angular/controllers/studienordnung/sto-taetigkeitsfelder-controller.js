@@ -10,6 +10,20 @@ angular.module('stgv2')
 				positionen: "",
 				aufgaben: ""
 			}
+			
+			//enable tooltips
+			$(document).ready(function(){
+				$('[data-toggle="tooltip"]').tooltip();
+			});
+			
+			$("#editor").wysiwyg(
+			{
+				'form':
+				{
+					'text-field': 'editorForm',
+					'seperate-binary': false
+				}
+			});
 
 			$http({
 				method: 'GET',
@@ -21,9 +35,15 @@ angular.module('stgv2')
 					{
 						ctrl.data = response.data.info[0];
 //						ctrl.data.data = JSON.parse(ctrl.data.data);
+//						$(ctrl.data.data.branchen.elements).each(function(key, value)
+//						{
+//							ctrl.drawListItem("list_branchen",value);
+//						});
+			
 						$(ctrl.data.data.branchen.elements).each(function(key, value)
 						{
-							ctrl.drawListItem("list_branchen",value);
+//							ctrl.drawListItem("list_branchen",value);
+							$("#editor").html(value);
 						});
 						
 						$(ctrl.data.data.positionen.elements).each(function(key, value)
@@ -48,6 +68,7 @@ angular.module('stgv2')
 
 			ctrl.save = function () {
 				var saveData = {data: ""}
+				ctrl.parseJson();
 				saveData.data = angular.copy(ctrl.data);
 				saveData.data.data = JSON.stringify(saveData.data.data);
 				$http({
@@ -89,9 +110,9 @@ angular.module('stgv2')
 				var text = "";
 				switch (name)
 				{
-					case "branchen":
-						text = ctrl.temp.branchen;
-						break;
+//					case "branchen":
+//						text = ctrl.temp.branchen;
+//						break;
 					case "positionen":
 						text = ctrl.temp.positionen;
 						break;
@@ -122,10 +143,11 @@ angular.module('stgv2')
 				var branchen = [];
 				var positionen = [];
 				var aufgaben = [];
-				$("#list_branchen li").each(function (key, value)
-				{
-					branchen.push($(value).text());
-				});
+//				$("#list_branchen li").each(function (key, value)
+//				{
+//					branchen.push($(value).text());
+//				});
+				branchen.push($("#editor").html());
 				ctrl.data.data.branchen.elements = branchen;
 
 				$("#list_positionen li").each(function (key, value)
