@@ -36,11 +36,11 @@ angular.module('stgv2')
 				$("#stplTreeGrid").treegrid({
 					url: "./api/studienplan/lehrveranstaltungen/lehrveranstaltungTree.php?studienplan_id=" + $scope.studienplan_id,
 					idField: "id",
-					treeField: "name",
+					treeField: "bezeichnung",
 					rownumbers: true,
 					fit: true,
 					columns: [[
-						{field: 'name', editor:'text', width:'300', title:'Lehrveranstaltung'},
+						{field: 'bezeichnung', editor:'text', width:'300', title:'Lehrveranstaltung'},
 						{field: 'ects',align: 'right', editor:'numberbox', title:'ECTS'},
 						{field: 'semesterstunden',align: 'right', editor:'numberbox', title:'Semesterstunden'},
 						{field: 'lehrform_kurzbz',align: 'right', editor:'text', title:'Lehrform'},
@@ -92,7 +92,7 @@ angular.module('stgv2')
 								
 								//sort by name
 								children.sort(function(a,b){
-									return a.name > b.name;
+									return a.bezeichnung > b.bezeichnung;
 								});
 								
 								//sort by type -> modules after lv
@@ -102,7 +102,7 @@ angular.module('stgv2')
 
 								var node = {};
 								node.id = i + '_sem';
-								node.name = i + '. Semester';
+								node.bezeichnung = i + '. Semester';
 								node.type = "sem";
 								node.sem = i;
 								if (children.length != 0)
@@ -337,7 +337,20 @@ angular.module('stgv2')
 				errorService.setError(getErrorMsg(response));
 			});
 			
-			$("#lvTreeGrid").treegrid();
+			$("#lvTreeGrid").treegrid({
+				url: '',
+				method: 'get',
+				rownumbers: true,
+				idField: 'id',
+				treeField: 'bezeichnung',
+				fit: true,
+				multiSort: true,
+				columns: [[
+					{field: 'bezeichnung', align: 'left', width:'250', sortable: true,title:'Lehrveranstaltung'},
+					{field: 'ects', align:'right', sortable: true, title:'ECTS'},
+					{field: 'lehrform_kurzbz', align:'right', sortable: true, title:'Lehrform'},
+				]]
+			});
 
 			ctrl.loadLehrveranstaltungen = function (selection)
 			{
@@ -358,8 +371,14 @@ angular.module('stgv2')
 					url: "./api/helper/lehrveranstaltungByOe.php?oe_kurzbz=" + oe_kurzbz + "&lehrtyp_kurzbz=" + lehrtyp_kurzbz + "&semester=" + semester,
 					method: 'GET',
 					idField: 'id',
-					treeField: 'name',
+					treeField: 'bezeichnung',
 					rownumbers: true,
+					multiSort: true,
+					columns: [[
+						{field: 'bezeichnung', align: 'left', width:'250', sortable: true,title:'Lehrveranstaltung'},
+						{field: 'ects', align:'right', sortable: true, title:'ECTS'},
+						{field: 'lehrform_kurzbz', align:'right', sortable: true, title:'Lehrform'},
+					]],
 					loadFilter: function (data)
 					{
 						if (data.erfolg)
@@ -392,6 +411,7 @@ angular.module('stgv2')
 					},
 					onLoadSuccess: function (row)
 					{
+						console.log(row);
 						$(this).treegrid("enableDnd", row ? row.id : null);
 						if(selection !== undefined)
 						{
@@ -468,7 +488,15 @@ angular.module('stgv2')
 						height: '80%',
 						closed: false,
 						cache: false,
-						modal: true
+						modal: true,
+						closable: true,
+						collapsible: true,
+						resizable: true,
+						maximizable: true,
+						onClose: function()
+						{
+							$("#farbe").ColorPicker("destroy");
+						}
 					});
 				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
@@ -488,6 +516,7 @@ angular.module('stgv2')
 			};
 			
 			$scope.$on("setFilter", function(event, args){
+				console.log(args);
 				ctrl.setFilter(args.lv_id, args.oe_kurzbz, args.lehrtyp_kurzbz, args.semester);
 			});
 		});
@@ -504,7 +533,7 @@ function generateChildren(item, sem)
 	}
 	var node = {};
 	node.id = item.studienplan_lehrveranstaltung_id;
-	node.name = item.bezeichnung;
+	node.bezeichnung = item.bezeichnung;
 	node.type = item.lehrtyp_kurzbz;
 	node.sem = sem;
 	node.ects = item.ects;
@@ -552,6 +581,10 @@ function changeTreeIcons(divId, treeId, target)
 				$(node).addClass("icon-module");
 			}
 			else if(ele.type === "lv")
+			{
+				$(node).addClass("icon-lv");
+			}
+			else if(ele.type === "lf")
 			{
 				$(node).addClass("icon-lv");
 			}

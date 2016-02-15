@@ -147,7 +147,7 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script src="js/angular/directives/charactersOnly-directive.js" type="text/javascript"></script>
 	
 	<!-- Colorpicker -->
-	<!--<link rel="stylesheet" href="../../../skin/colorpicker.css" type="text/css"/>-->
+	<link rel="stylesheet" href="../../../skin/colorpicker.css" type="text/css"/>
 	<script type="text/javascript" src="../../../include/js/colorpicker.js"></script>
 	
 	<!-- Timepicker -->
@@ -179,7 +179,13 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 		    <div ng-click='menuCtrl.createStudienplan()'>Studienplan</div>
 		</div>
 		<div id="mm2" style="width:100px;">
-		    <div ng-click='menuCtrl.delete()' data-options="iconCls:'icon-remove'">Löschen</div>
+		    <div data-options="iconCls:'icon-remove'">
+			<span>Löschen</span>
+			<!--<div>
+			    <div ng-click='menuCtrl.delete("studienordnung")' data-options="iconCls:'icon-remove'">Studienordnung</div>
+			    <div ng-click='menuCtrl.delete("studienplan")' data-options="iconCls:'icon-remove'">Studienplan</div>
+			</div>-->
+		    </div>
 		</div>
 		<div id="mm3" style="width:150px;">
 		    <div>

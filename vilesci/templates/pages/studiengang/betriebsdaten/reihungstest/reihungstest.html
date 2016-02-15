@@ -86,21 +86,23 @@
 		</div>
 		<!-- Zeile 4 -->
 		<div class="row">
-			<div class="col-sm-1">
-				<div class="checkbox">
-					<label>
-					  <input type="checkbox" name="oeffentlich" ng-model="ctrl.reihungstest.oeffentlich"/>
-					  öffentlich
-					</label>
-				  </div>
+			<div class="col-sm-2">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<input type="checkbox" name="oeffentlich" ng-model="ctrl.reihungstest.oeffentlich">
+					</span>
+					<span class="form-control">öffentlich</span>
+					<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Legt fest, ob ein Reihungstest von Bewerbern im Bewerbungstool ausgewählt werden kann."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+				</div>
 			</div>
-			<div class="col-sm-1">
-				<div class="checkbox">
-					<label>
-					  <input type="checkbox" name="freigeschaltet" ng-model="ctrl.reihungstest.freigeschaltet"/>
-					  freigeschaltet
-					</label>
-				  </div>
+			<div class="col-sm-2">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<input type="checkbox" name="oeffentlich" ng-model="ctrl.reihungstest.freigeschaltet">
+					</span>
+					<span class="form-control">freigeschaltet</span>
+					<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Legt fest, ob der Reihungstest für Reihungstestteilnehmer zum Login freigeschaltet ist. Dieses Attribut sollte erst kurz vor Beginn des Reihungstests aktiviert werden."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+				</div>
 			</div>
 		</div>
 		<!-- Zeile 5 -->

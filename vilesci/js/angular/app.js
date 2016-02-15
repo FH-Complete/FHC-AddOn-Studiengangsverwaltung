@@ -202,18 +202,37 @@ angular.module("stgv2")
 					ctrl.statusList = response.data.info;
 					$compile($('#mm1').contents())($scope);
 					$compile($('#mm2').contents())($scope);
+					
+					var item = $('#mm2').menu('findItem', 'Löschen');
+					$('#mm2').menu('appendItem',
+					{
+						parent: item.target,
+						text: "Studienordnung",
+						onclick: function () {
+							ctrl.delete("studienordnung");
+						}
+					});
+
+					$('#mm2').menu('appendItem',
+					{
+						parent: item.target,
+						text: "Studienplan",
+						onclick: function () {
+							ctrl.delete("studienplan");
+						}
+					});
 
 					var item = $('#mm3').menu('findItem', 'Status ändern zu');
 
 					$(ctrl.statusList).each(function (i, v) {
 						$('#mm3').menu('appendItem',
-								{
-									parent: item.target,
-									text: v.bezeichnung,
-									onclick: function () {
-										ctrl.changeStatus(v.status_kurzbz);
-									}
-								});
+						{
+							parent: item.target,
+							text: v.bezeichnung,
+							onclick: function () {
+								ctrl.changeStatus(v.status_kurzbz);
+							}
+						});
 					});
 
 					$compile($('#mm4').contents())($scope);
@@ -280,57 +299,79 @@ angular.module("stgv2")
 				}
 			};
 
-			ctrl.delete = function ()
+			ctrl.delete = function (type)
 			{
 				var node = $('#treeGrid').treegrid('getSelected');
-				switch (node.attributes[0].value)
+				console.log(node);
+				if(node != null)
 				{
-					case "studienplan":
-						if(confirm("Wollen Sie den Studienplan wirklich löschen?"))
-						{
-							$http({
-								method: "GET",
-								url: "./api/studienplan/delete_studienplan.php?studienplan_id=" + node.studienplan_id
-							}).then(function success(response) {
-								if (response.data.erfolg)
+					switch (type)
+					{
+						case "studienplan":
+							if(node.studienplan_id !== undefined)
+							{
+								if(confirm("Wollen Sie den Studienplan wirklich löschen?"))
 								{
-									$("#treeGrid").treegrid('reload');
-									successService.setMessage(response.data.info);
+									$http({
+										method: "GET",
+										url: "./api/studienplan/delete_studienplan.php?studienplan_id=" + node.studienplan_id
+									}).then(function success(response) {
+										if (response.data.erfolg)
+										{
+											$("#treeGrid").treegrid('reload');
+											successService.setMessage(response.data.info);
+										}
+										else
+										{
+											errorService.setError(getErrorMsg(response));
+										}
+									}, function error(response) {
+										errorService.setError(getErrorMsg(response));
+									});
 								}
-								else
-								{
-									errorService.setError(getErrorMsg(response));
-								}
-							}, function error(response) {
-								errorService.setError(getErrorMsg(response));
-							});
-						}
-						break;
+							}
+							else
+							{
+								alert("Bitte einen Studienplan auswählen.");
+							}
+							break;
 
-					case "studienordnung":
-						if(confirm("Wollen Sie die Studienordnung wirklich löschen?"))
-						{
-							$http({
-								method: "GET",
-								url: "./api/studienordnung/delete_studienordnung.php?studienordnung_id=" + node.studienordnung_id
-							}).then(function success(response) {
-								if (response.data.erfolg)
+						case "studienordnung":
+							if(node.studienordnung_id !== undefined)
+							{
+								if(confirm("Wollen Sie die Studienordnung wirklich löschen?"))
 								{
-									$("#treeGrid").treegrid('reload');
-									successService.setMessage(response.data.info);
+									$http({
+										method: "GET",
+										url: "./api/studienordnung/delete_studienordnung.php?studienordnung_id=" + node.studienordnung_id
+									}).then(function success(response) {
+										if (response.data.erfolg)
+										{
+											$("#treeGrid").treegrid('reload');
+											successService.setMessage(response.data.info);
+										}
+										else
+										{
+											errorService.setError(getErrorMsg(response));
+										}
+									}, function error(response) {
+										errorService.setError(getErrorMsg(response));
+									});
 								}
-								else
-								{
-									errorService.setError(getErrorMsg(response));
-								}
-							}, function error(response) {
-								errorService.setError(getErrorMsg(response));
-							});
-						}
-						break;
-					default:
-						alert("Bitte eine Studienordnung oder einen Studienplan auswählen.");
-						break;
+							}
+							else
+							{
+								alert("Bitte eine Studienordnung auswählen.");
+							}
+							break;
+						default:
+							alert("Bitte eine Studienordnung oder einen Studienplan auswählen.");
+							break;
+					}
+				}
+				else
+				{
+					alert("Bitte eine Studienordnung oder einen Studienplan auswählen.");
 				}
 			};
 

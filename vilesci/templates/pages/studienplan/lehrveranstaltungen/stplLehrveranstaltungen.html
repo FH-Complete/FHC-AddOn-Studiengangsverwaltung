@@ -54,22 +54,10 @@
 				</div>
 			</div>
 		</div>
-		<table id="lvTreeGrid" class="easyui-treegrid" data-options="
-					url: '',
-					method: 'get',
-					rownumbers: true,
-					idField: 'id',
-					treeField: 'name',
-					fit: true
-				">
-			<thead>
-				<tr>
-					<th data-options="field: 'name'" width="250">Lehrveranstaltung</th>
-					<th data-options="field: 'ects',align: 'right'">ECTS</th>
-					<th data-options="field: 'lehrform_kurzbz',align: 'right'">Lehrform</th>
-				</tr>
-			</thead>
-		</table>
+		<div id="lvTreeGridContainer">
+			<table id="lvTreeGrid" class="easyui-treegrid" style="height: 300px;">
+			</table>
+		</div>
 	</div>
 	<div id="lvMetadata">
 		<div class="row">

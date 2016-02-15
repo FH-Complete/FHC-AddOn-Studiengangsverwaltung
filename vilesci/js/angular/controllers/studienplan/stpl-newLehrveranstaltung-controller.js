@@ -21,44 +21,12 @@ angular.module('stgv2')
 				errorService.setError(getErrorMsg(error));
 			});
 			
-//			$http({
-//				method: "GET",
-//				url: "./api/helper/studiengang.php"
-//			}).then(function success(response) {
-//				if (response.data.erfolg)
-//				{
-//					ctrl.studiengangList = response.data.info;
-//				}
-//				else
-//				{
-//					errorService.setError(getErrorMsg(response));
-//				}
-//			}, function error(response) {
-//				errorService.setError(getErrorMsg(response));
-//			});
-			
 			//loading orgform list
 			OrgformService.getOrgformList().then(function(result){
 				ctrl.orgformList = result;
 			},function(error){
 				errorService.setError(getErrorMsg(error));
 			});
-			
-//			$http({
-//				method: "GET",
-//				url: "./api/helper/orgform.php"
-//			}).then(function success(response) {
-//				if (response.data.erfolg)
-//				{
-//					ctrl.orgformList = response.data.info;
-//				}
-//				else
-//				{
-//					errorService.setError(getErrorMsg(response));
-//				}
-//			}, function error(response) {
-//				errorService.setError(getErrorMsg(response));
-//			});
 			
 			//load lehrtypen
 			$http({
@@ -101,22 +69,6 @@ angular.module('stgv2')
 				errorService.setError(getErrorMsg(error));
 			});
 			
-//			$http({
-//				method: 'GET',
-//				url: './api/helper/sprache.php'
-//			}).then(function success(response) {
-//				if (response.data.erfolg)
-//				{
-//					ctrl.spracheList = response.data.info;
-//				}
-//				else
-//				{
-//					errorService.setError(getErrorMsg(response));
-//				}
-//			}, function error(response) {
-//				errorService.setError(getErrorMsg(response));
-//			});
-			
 			//loading raumtypList
 			$http({
 				method: 'GET',
@@ -137,24 +89,23 @@ angular.module('stgv2')
 			//enable tooltips
 			$(document).ready(function(){
 				$('[data-toggle="tooltip"]').tooltip();
-			});
-			
-			$("#farbe").ColorPicker(
-			{
-				onSubmit: function(hsb, hex, rgb, el) 
+				$("#farbe").ColorPicker(
 				{
-					$(el).val(hex);
-					$(el).ColorPickerHide();
-					$("#farbevorschau").attr("style","background-color: #"+hex+"; border: 1px solid #999999; cursor: default");
-				},
-				onBeforeShow: function () 
+					onSubmit: function(hsb, hex, rgb, el) 
+					{
+						$(el).val(hex);
+						$(el).ColorPickerHide();
+						$("#farbevorschau").attr("style","background-color: #"+hex+"; border: 1px solid #999999; cursor: default");
+					},
+					onBeforeShow: function () 
+					{
+						$(this).ColorPickerSetColor(this.value);
+					}
+				})
+				.bind("keyup", function()
 				{
 					$(this).ColorPickerSetColor(this.value);
-				}
-			})
-			.bind("keyup", function()
-			{
-				$(this).ColorPickerSetColor(this.value);
+				});
 			});
 			
 			ctrl.updateColor = function()
@@ -257,10 +208,11 @@ angular.module('stgv2')
 						if(response.data.erfolg)
 						{
 							var args = {};
-							args.lv_id = response.data.info;
+							args.lv_id = response.data.info[0];
 							args.oe_kurzbz = ctrl.data.oe_kurzbz;
 							args.lehrtyp_kurzbz = ctrl.data.lehrtyp_kurzbz;
 							args.semester = ctrl.data.semester;
+							console.log(args);
 							$scope.$emit("setFilter", args);
 						}
 						else

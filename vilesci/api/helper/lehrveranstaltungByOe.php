@@ -9,6 +9,23 @@ require_once('../functions.php');
 $oe_kurzbz = filter_input(INPUT_GET, "oe_kurzbz");
 $lehrtyp_kurzbz = filter_input(INPUT_GET, "lehrtyp_kurzbz");
 $semester = filter_input(INPUT_GET, "semester");
+$sort = filter_input(INPUT_GET, "sort");
+$order = filter_input(INPUT_GET, "order");
+
+$sort = explode(",",$sort);
+$order = explode(",",$order);
+
+$sortString = null;
+
+foreach($sort as $key=>$s)
+{
+    $sortString .= $s." ".$order[$key].", ";
+}
+
+$sortString = substr($sortString,0,-2);
+
+if($sortString == " ")
+    $sortString = null;
 
 if(is_null($oe_kurzbz))
 {
@@ -33,7 +50,7 @@ if($semester == "null")
 }
 
 $lehrveranstaltung = new lehrveranstaltung();
-if($lehrveranstaltung->load_lva_oe($oe_kurzbz, true, $lehrtyp_kurzbz, NULL, $semester))
+if($lehrveranstaltung->load_lva_oe($oe_kurzbz, true, $lehrtyp_kurzbz, $sortString, $semester))
 {
     $lv_array = array();
 
@@ -41,7 +58,7 @@ if($lehrveranstaltung->load_lva_oe($oe_kurzbz, true, $lehrtyp_kurzbz, NULL, $sem
     {
 	$temp = new stdClass();
 	$temp->id = $lv->lehrveranstaltung_id;
-	$temp->name = $lv->bezeichnung;
+	$temp->bezeichnung = $lv->bezeichnung;
 	$temp->ects = $lv->ects;
 	$temp->type = $lv->lehrtyp_kurzbz;
 	$temp->kurzbz = $lv->kurzbz;

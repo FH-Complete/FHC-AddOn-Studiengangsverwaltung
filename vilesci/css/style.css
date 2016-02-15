@@ -284,6 +284,11 @@ span.glyphicon {
 	height: 130px;
 }
 
+#lvTreeGridContainer
+{
+	height: 307px;
+}
+
 .row
 {
 	margin-bottom: 5px;
