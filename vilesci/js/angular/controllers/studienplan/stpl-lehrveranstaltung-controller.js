@@ -18,6 +18,7 @@ angular.module('stgv2')
 					"key": "null",
 					"value": "alle"
 				}];
+			var editingId = null;
 			
 			ctrl.initSemesterList = function()
 			{
@@ -39,28 +40,50 @@ angular.module('stgv2')
 					treeField: "bezeichnung",
 					rownumbers: true,
 					fit: true,
+					toolbar: [{
+						id: 'saveChanges',
+						disabled: true,
+						iconCls: 'icon-save',
+						text: 'Speichern',
+						handler: function(){
+							if(editingId !== null)
+							{
+								$("#stplTreeGrid").treegrid('endEdit', editingId);
+								$("#saveChanges").linkbutton("disable");
+							}
+						}
+					},{
+						id: 'deleteNode',
+						disabled: true,
+						iconCls: 'glyphicon glyphicon-remove red',
+						text: 'LV löschen',
+						handler: function(){
+							$("#deleteNode").linkbutton("disable");
+							ctrl.removeStudienplanLehrveranstaltung();
+						}
+					}],
 					columns: [[
-						{field: 'bezeichnung', editor:'text', width:'300', title:'Lehrveranstaltung'},
-						{field: 'ects',align: 'right', editor:'numberbox', title:'ECTS'},
-						{field: 'semesterstunden',align: 'right', editor:'numberbox', title:'Semesterstunden'},
-						{field: 'lehrform_kurzbz',align: 'right', editor:'text', title:'Lehrform'},
-						{field: 'lvnr',align: 'right', editor:'numberbox', title:'LVNR'},
-						{field: 'benotung',align: 'right', editor:'checkbox', title:'Benotung'},
-						{field: 'zeugnis',align: 'right', editor:'checkbox', title:'Zeugnis'},
-						{field: 'lvinfo',align: 'right', editor:'checkbox', title:'LV-Info'},
-						{field: 'curriculum',align: 'right', editor:'checkbox', title:'Curriculum'},
-						{field: 'stpllv_pflicht',align: 'right', editor:'checkbox', title:'Pflicht'}
+						{field: 'bezeichnung', width:'300', title:'Lehrveranstaltung'},
+						{field: 'ects',align: 'right', title:'ECTS'},
+						{field: 'semesterstunden',align: 'right', title:'Semesterstunden'},
+						{field: 'lehrform_kurzbz',align: 'right', title:'Lehrform'},
+						{field: 'lvnr',align: 'right', title:'LVNR'},
+						{field: 'benotung',align: 'right', /*editor: {type: 'checkbox'},*/ title:'Benotung', formatter: booleanToIconFormatter},
+						{field: 'zeugnis',align: 'right', title:'Zeugnis', formatter: booleanToIconFormatter},
+						{field: 'lvinfo',align: 'right', title:'LV-Info', formatter: booleanToIconFormatter},
+						{field: 'curriculum',align: 'right', /*editor: {type: 'checkbox'},*/ title:'Curriculum', formatter: booleanToIconFormatter},
+						{field: 'stpllv_pflicht',align: 'right', title:'Pflicht', formatter: booleanToIconFormatter}
 					]],
 					onContextMenu: function(e ,row)
 					{
-						if (row){
+						if (row && row.type != "sem" && ctrl.studienplan.status_kurzbz === "development") {
 							e.preventDefault();
 							$(this).treegrid('select', row.id);
-							$('#stplTreeGridContextMenu').menu('show');
-							$('#stplTreeGridContextMenu').menu('show',{
+							$('#stplTreeGridContextMenu').menu();
+							$('#stplTreeGridContextMenu').menu('show', {
 								left: e.pageX,
 								top: e.pageY
-							});                
+							});
 						}
 					},
 					rowStyler: function(row)
@@ -130,19 +153,43 @@ angular.module('stgv2')
 					onLoadSuccess: function (row)
 					{
 						$(this).treegrid("enableDnd", row ? row.id : null);
-						
 						//workaround to change tree icons
 						changeTreeIcons("stplTree", "stplTreeGrid");
 					},
 					onClickRow: function (row)
 					{
 						console.log(row);
+						$("#deleteNode").linkbutton("enable");
 						if (row.type != "sem")
 						{
 							ctrl.meta = row;
 							ctrl.meta.oe = ctrl.getOeName(ctrl.meta.oe_kurzbz);
 							$scope.$apply();
 						}
+					},
+					onDblClickRow: function(row)
+					{
+						console.log(row);
+						console.log(editingId);
+						$("#saveChanges").linkbutton("enable");
+						if(editingId !== null)
+						{
+							$("#stplTreeGrid").treegrid('endEdit', editingId);
+							editingId = null;
+						}
+						editingId = row.id;
+						$("#stplTreeGrid").treegrid('beginEdit', row.id);
+					},
+					onBeforeEdit: function(row)
+					{
+						
+					},
+					onAfterEdit: function(row, changes)
+					{
+						//TODO save changes here
+						console.log(row);
+						console.log(changes);
+						changeTreeIcons("stplTree", "stplTreeGrid");
 					},
 					onBeforeDrag: function (row)
 					{
@@ -162,10 +209,18 @@ angular.module('stgv2')
 							return false;
 						}
 					},
+					onBeforeDrop: function(target, source, point)
+					{
+						if(source.stpllv_pflicht === undefined)
+							source.stpllv_pflicht = true;
+						
+						if(source.curriculum === undefined)
+							source.curriculum = true;
+					},
 					onDrop: function (target, source, point)
 					{
 						var data = {};
-						
+						console.log(source);
 						data.semester = target.sem;
 						if(target.type != "sem")
 						{
@@ -247,22 +302,28 @@ angular.module('stgv2')
 								errorService.setError(getErrorMsg(response));
 							});
 						}
-					},
-					onContextMenu: function (e, row)
-					{
-						console.log(row);
-						if (row && row.type != "sem" && ctrl.studienplan.status_kurzbz === "development") {
-							e.preventDefault();
-							$(this).treegrid('select', row.id);
-							$('#stplTreeGridContextMenu').menu();
-							$('#stplTreeGridContextMenu').menu('show', {
-								left: e.pageX,
-								top: e.pageY
-							});
+					}
+				});
+				
+				$.extend($.fn.datagrid.defaults.editors, {
+					checkbox: {
+						init: function(container, options){
+							console.log(container, options);
+							var input = $('<input type="checkbox">').appendTo(container);
+							console.log(input);
+							return input;
+						},
+						getValue: function(target){
+							console.log(target);
+							return $(target).prop('checked');
+						},
+						setValue: function(target, value){
+							console.log(target, value);
+							$(target).prop('checked',value);
 						}
 					}
 				});
-                        };
+			};
 
 			StudienplanService.getStudienplan($scope.studienplan_id).then(function(result){
 				ctrl.studienplan = result;
@@ -619,5 +680,15 @@ function changeTreeIcons(divId, treeId, target)
 			}
 		}
 	});
+}
+
+function booleanToIconFormatter(value)
+{
+	if(value === true)
+		return '<span aria-hidden="true" class="glyphicon glyphicon-ok green"></span>';
+	else if(value === false)
+		return '<span aria-hidden="true" class="glyphicon glyphicon-remove red"></span>';
+	else
+		return "";
 }
 
