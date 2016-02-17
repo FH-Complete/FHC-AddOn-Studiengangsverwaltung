@@ -86,9 +86,9 @@ angular.module('stgv2')
 							});
 						}
 					},
-					rowStyler: function(row)
+					rowStyler: function(index, row)
 					{
-						
+//						console.log(index, row);
 					},
 					loadFilter: function (data)
 					{
@@ -128,6 +128,7 @@ angular.module('stgv2')
 								node.bezeichnung = i + '. Semester';
 								node.type = "sem";
 								node.sem = i;
+								node.iconCls = "tree-folder";
 								if (children.length != 0)
 								{
 									node.children = children;
@@ -170,7 +171,6 @@ angular.module('stgv2')
 					onDblClickRow: function(row)
 					{
 						console.log(row);
-						console.log(editingId);
 						$("#saveChanges").linkbutton("enable");
 						if(editingId !== null)
 						{
@@ -189,7 +189,7 @@ angular.module('stgv2')
 						//TODO save changes here
 						console.log(row);
 						console.log(changes);
-						changeTreeIcons("stplTree", "stplTreeGrid");
+//						changeTreeIcons("stplTree", "stplTreeGrid");
 					},
 					onBeforeDrag: function (row)
 					{
@@ -220,7 +220,6 @@ angular.module('stgv2')
 					onDrop: function (target, source, point)
 					{
 						var data = {};
-						console.log(source);
 						data.semester = target.sem;
 						if(target.type != "sem")
 						{
@@ -444,6 +443,23 @@ angular.module('stgv2')
 					{
 						if (data.erfolg)
 						{
+							angular.forEach(data.info, function(value, index){
+								switch(value.type)
+								{
+									case "lv":
+										value.iconCls = "icon-lv";
+										break;
+									case "modul":
+										value.iconCls = "icon-module";
+										break;
+									case "lf":
+										value.iconCls = "icon-lv";
+										break;
+									default:
+										value.iconCls = "icon-lv";
+										break;
+								}
+							});
 							return data.info;
 						}
 						else
@@ -478,7 +494,6 @@ angular.module('stgv2')
 						{
 							$(this).treegrid('select',selection);
 						}
-						changeTreeIcons("lvTree", "lvTreeGrid");
 					},
 					onDragEnter: function (target, source)
 					{
@@ -577,7 +592,6 @@ angular.module('stgv2')
 			};
 			
 			$scope.$on("setFilter", function(event, args){
-				console.log(args);
 				ctrl.setFilter(args.lv_id, args.oe_kurzbz, args.lehrtyp_kurzbz, args.semester);
 			});
 		});
@@ -596,6 +610,21 @@ function generateChildren(item, sem)
 	node.id = item.studienplan_lehrveranstaltung_id;
 	node.bezeichnung = item.bezeichnung;
 	node.type = item.lehrtyp_kurzbz;
+	switch(item.lehrtyp_kurzbz)
+	{
+		case "lv":
+			node.iconCls = "icon-lv";
+			break;
+		case "modul":
+			node.iconCls = "icon-module";
+			break;
+		case "lf":
+			node.iconCls = "icon-lv";
+			break;
+		default:
+			node.iconCls = "icon-lv";
+			break;
+	}
 	node.sem = sem;
 	node.ects = item.ects;
 	node.semesterstunden = item.semesterstunden;
@@ -630,54 +659,28 @@ function generateChildren(item, sem)
 
 function changeTreeIcons(divId, treeId, target)
 {
-	//workaround to change icon
+	//remove tree-file class to change empty sem node to folder
+	$(".tree-folder.tree-file").each(function(index, value){
+		$(value).removeClass("tree-file");
+	});
+	
+	//remove tree-file class to change empty sem node to folder after move
+	$(".tree-folder-open.tree-file").each(function(index, value){
+		$(value).removeClass("tree-file tree-folder-open").addClass("tree-folder");
+	});
+	
 	$("#"+divId).find('tr[node-id] td[field]:nth-child(1)').each(function(i,v)
 	{
 		var ele = $("#"+treeId).treegrid('find', $(v).parent().attr("node-id"));
-		if(ele.type !== "sem")
+		var node = $(v).find("span.tree-icon");
+
+		//add tree hit if node gets children after drop
+		if((!$(node).hasClass("tree-folder-open")) && (ele.children !== undefined) && (ele.children.length > 0) && (target === ele))
 		{
-			var node = $(v).find("span.tree-icon");
-			if(ele.type === "modul")
-			{
-				$(node).addClass("icon-module");
-			}
-			else if(ele.type === "lv")
-			{
-				$(node).addClass("icon-lv");
-			}
-			else if(ele.type === "lf")
-			{
-				$(node).addClass("icon-lv");
-			}
-			else
-			{
-				$(node).addClass("tree-file");
-			}
-		}
-		else
-		{
-			var node = $(v).find("span.tree-icon");
-			//change file icon to empty folder
-			if($(node).hasClass("tree-file"))
-			{
-				$(node).removeClass("tree-file");
-				$(node).addClass("tree-folder");
-			}
-			
-			//change open folder icon to empty folder icon if node has no children
-			if($(node).hasClass("tree-folder-open") && ele.children.length === 0)
-			{
-				$(node).removeClass("tree-folder-open");
-			}
-			
-			//add tree hit if node gets children after drop
-			if((!$(node).hasClass("tree-folder-open")) && (ele.children !== undefined) && (ele.children.length > 0) && (target === ele))
-			{
-				$(node).addClass("tree-folder-open");
-				$(node).prev("span").addClass("tree-hit");
-				$(node).prev("span").addClass("tree-expanded");
-				$(node).prev("span").removeClass("tree-indent");
-			}
+			$(node).addClass("tree-folder-open");
+			$(node).prev("span").addClass("tree-hit");
+			$(node).prev("span").addClass("tree-expanded");
+			$(node).prev("span").removeClass("tree-indent");
 		}
 	});
 }

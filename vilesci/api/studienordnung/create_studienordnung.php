@@ -11,6 +11,8 @@ require_once('../../../include/Qualifikationsziel.class.php');
 require_once('../../../include/Zugangsvoraussetzung.class.php');
 require_once('../../../include/Aufnahmeverfahren.class.php');
 require_once('../../../include/StudienplanAddonStgv.class.php');
+require_once('../../../include/Auslandssemester.class.php');
+require_once('../../../include/Berufspraktikum.class.php');
 
 require_once('../functions.php');
 
@@ -124,6 +126,7 @@ if ($studienordnung->save())
 		$stpl->pflicht_sws = $value->pflicht_sws;
 		$stpl->pflicht_lvs = $value->pflicht_lvs;
 		$stpl->erlaeuterungen = $value->erlaeuterungen;
+		$stpl->insertvon = get_uid();
 
 		$stpl->save();
 		$zuordnung = array();
@@ -143,18 +146,15 @@ if ($studienordnung->save())
 			}
 		    }
 		    //check ob gueltigkeit zwischen gueltigvon und gueltigbis der sto
-		    foreach ($zuordnung as $index=>$value)
+		    foreach ($zuordnung as $index=>$v)
 		    {
-			if (!isZuordnungGuelitg($value["studienplan_id"], $value["studiensemester_kurzbz"]))
+			if (!isZuordnungGuelitg($v["studienplan_id"], $v["studiensemester_kurzbz"]))
 			{
-			    var_dump($index);
 			    unset($zuordnung[$index]);
-			    echo "unset: ".$index;
 			}
-			if($studienplan->isSemesterZugeordnet($value["studienplan_id"], $value["studiensemester_kurzbz"], $value["ausbildungssemester"]))
+			if($studienplan->isSemesterZugeordnet($v["studienplan_id"], $v["studiensemester_kurzbz"], $v["ausbildungssemester"]))
 			{
 			    unset($zuordnung[$index]);
-			    echo "unset: ".$index;
 			}
 		    }
 		    $zuordnung = array_values($zuordnung);
@@ -165,6 +165,34 @@ if ($studienordnung->save())
 		$data = $lv->getLvTree($value->studienplan_id);
 
 		saveStudienplanLehrveranstaltung($data, $stpl->studienplan_id, null);
+		
+		$auslandssemester = new auslandssemester();
+		$auslandssemester->getAll($value->studienplan_id);
+		if(!empty($auslandssemester->result))
+		{
+		    foreach($auslandssemester->result as $aSem)
+		    {
+			$aSem->studienplan_id = $stpl->studienplan_id;
+			$aSem->new = true;
+			$aSem->insertvon = get_uid();
+			$aSem->data = json_encode($aSem->data);
+			$aSem->save();
+		    }
+		}
+		
+		$berufspraktikum = new berufspraktikum();
+		$berufspraktikum->getAll($value->studienplan_id);
+		if(!empty($berufspraktikum->result))
+		{
+		    foreach($berufspraktikum->result as $bPraktikum)
+		    {
+			$bPraktikum->studienplan_id = $stpl->studienplan_id;
+			$bPraktikum->new = true;
+			$bPraktikum->insertvon = get_uid();
+			$bPraktikum->data = json_encode($bPraktikum->data);
+			$bPraktikum->save();
+		    }
+		}
 	    }
 	}
     }
@@ -198,15 +226,19 @@ function saveStudienplanLehrveranstaltung($data, $studienplan_id, $parent_id)
     $stpllv->studienplan_id = $studienplan_id;
     foreach ($data as $lv)
     {
-	$stpllv->lehrveranstaltung_id = $lv->lehrveranstaltung_id;
-	$stpllv->semester = $lv->stpllv_semester;
-	$stpllv->studienplan_lehrveranstaltung_id_parent = $parent_id;
-	$stpllv->pflicht = $lv->stpllv_pflicht;
-	$stpllv->koordinator = $lv->stpllv_koordinator;
-	
-	if (($stpllv->saveStudienplanLehrveranstaltung() != false) && (count($lv->children) > 0))
+	if($lv->lehrveranstaltung_id != null)
 	{
-	    saveStudienplanLehrveranstaltung($lv->children, $stpllv->studienplan_id, $stpllv->studienplan_lehrveranstaltung_id);
+	    $stpllv->lehrveranstaltung_id = $lv->lehrveranstaltung_id;
+	    $stpllv->semester = $lv->stpllv_semester;
+	    $stpllv->studienplan_lehrveranstaltung_id_parent = $parent_id;
+	    $stpllv->pflicht = $lv->stpllv_pflicht;
+	    $stpllv->koordinator = $lv->stpllv_koordinator;
+	    $stpllv->insertvon = get_uid();
+
+	    if (($stpllv->saveStudienplanLehrveranstaltung() != false) && (count($lv->children) > 0))
+	    {
+		saveStudienplanLehrveranstaltung($lv->children, $stpllv->studienplan_id, $stpllv->studienplan_lehrveranstaltung_id);
+	    }
 	}
     }
 }

@@ -188,7 +188,7 @@
 					function doAppend(){
 						
 						var data;
-						if($("#lvTreeGrid").treegrid('find', sRow[opts.idField]))
+						if($("#lvTreeGrid").treegrid('find', sRow[opts.idField]) && sRow.moving !== true)
 						{
 							data = $("#lvTreeGrid").treegrid('find', sRow[opts.idField]);
 						}
