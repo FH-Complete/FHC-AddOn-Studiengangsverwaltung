@@ -2,22 +2,45 @@
 	<form id="stoNeu" name="form" onsubmit="return false;" novalidate>
 		<div class="row">
 			<div class="col-sm-4">
-				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.studiengang.$error.required)}">
-					<label for="studiengang">Studiengang</label>
-					<select class="form-control input-sm" name="studiengang" ng-model="stoCtrl.sto.stg_kz" ng-change="stoCtrl.updateVersion(); stoCtrl.loadStudienordnungList()" required>
-						<option ng-repeat="stg in stoCtrl.studiengangList" value="{{stg.studiengang_kz}}">{{stg.kurzbzlang}} - {{stg.bezeichnung}}</option>
-					</select>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-group" ng-class="{'has-error': (form.$submitted && form.studiengang.$error.required)}">
+							<label for="studiengang">Studiengang</label>
+							<select class="form-control input-sm" name="studiengang" ng-model="stoCtrl.sto.stg_kz" ng-change="stoCtrl.updateVersion(); stoCtrl.loadStudienordnungList()" required>
+								<option ng-repeat="stg in stoCtrl.studiengangList" value="{{stg.studiengang_kz}}">{{stg.kurzbzlang}} - {{stg.bezeichnung}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label for="studienordnung">Vorlage Studienordnung</label>
+							<select class="form-control input-sm" name="studienordnung" ng-model="stoCtrl.sto.vorlage_studienordnung_id">
+								<option value="" selected>keine</option>
+								<option ng-repeat="sto in stoCtrl.studienordnungList" value="{{sto.studienordnung_id}}">{{sto.bezeichnung}}</option>
+							</select>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="row">
 			<div class="col-sm-4">
-				<div class="form-group">
-					<label for="studienordnung">Vorlage Studienordnung</label>
-					<select class="form-control input-sm" name="studienordnung" ng-model="stoCtrl.sto.vorlage_studienordnung_id">
-						<option value="" selected>keine</option>
-						<option ng-repeat="sto in stoCtrl.studienordnungList" value="{{sto.studienordnung_id}}">{{sto.bezeichnung}}</option>
-					</select>
+				<div class="row">
+					&nbsp;
+				</div>
+				<div style="border: 1px solid black; display: inline-block; padding: 5px;" ng-show="stoCtrl.sto.vorlage_studienordnung_id != ''" class="row" ng-repeat="sto in stoCtrl.studienordnungList | filter:stoCtrl.sto.vorlage_studienordnung_id:true">
+					<span class="bold">Details zur Vorlage</span>
+					</br>
+					</br>
+					<span class="bold">Bezeichnung:</span>
+					<span> {{sto.bezeichnung}}</span>
+					</br>
+					<span class="bold">Organisationsform:</span>
+					<span> {{sto.orgform_kurzbz}}</span>
+					</br>
+					<span class="bold">Status:</span>
+					<span> {{sto.status_bezeichnung}}</span>
+					</br>
 				</div>
 			</div>
 		</div>

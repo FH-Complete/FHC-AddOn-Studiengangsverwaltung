@@ -5,7 +5,10 @@ angular.module('stgv2')
 			var ctrl = this;
 			ctrl.data = new Lehrveranstaltung();
 			ctrl.studiengangList = "";
-			ctrl.orgformList = "";
+			ctrl.orgformList = [{
+					orgform_kurzbz: null,
+					bezeichnung: ""
+			}];
 			ctrl.lehrtypList = "";
 			ctrl.oeList = "";
 			ctrl.lehrformList = "";
@@ -23,7 +26,7 @@ angular.module('stgv2')
 			
 			//loading orgform list
 			OrgformService.getOrgformList().then(function(result){
-				ctrl.orgformList = result;
+				ctrl.orgformList = ctrl.orgformList.concat(result);
 			},function(error){
 				errorService.setError(getErrorMsg(error));
 			});
