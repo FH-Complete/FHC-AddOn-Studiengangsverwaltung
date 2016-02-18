@@ -152,14 +152,6 @@ class bewerbungstermin extends basis_db
 	 */
 	private function validate()
 	{
-	    $utc = new DateTimeZone("+01:00");
-	    $date = new DateTime(substr($this->beginn, 0, 15),$utc);
-	    $this->beginn = $date->format("Y-m-d H:i:s");
-
-	    $date = new DateTime(substr($this->ende, 0, 15),$utc);
-	    $date->setTimezone($utc);
-	    $this->ende = $date->format("Y-m-d H:i:s");
-
 	    return true;
 	}
 
@@ -202,7 +194,6 @@ class bewerbungstermin extends basis_db
 				'updatevon='.$this->db_add_param($this->updatevon).' '.
 				'WHERE bewerbungstermin_id='.$this->db_add_param($this->bewerbungstermin_id, FHC_INTEGER, false).';';
 		}
-		
 		if($this->db_query($qry))
 		{
 			if($this->new)

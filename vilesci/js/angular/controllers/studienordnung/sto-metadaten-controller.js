@@ -116,7 +116,7 @@ angular.module('stgv2')
 						$("#editor").html(response.data.info.begruendung);
 						angular.forEach(ctrl.data.beschluesse, function(value, index){
 							if(value.datum != null)
-								ctrl.data.beschluesse[index].datum = formatStringToDate(value.datum.split(" ")[0]);
+								ctrl.data.beschluesse[index].datum = formatStringToDate(value.datum);
 						});
 						ctrl.beschluesse = ctrl.data.beschluesse;
 					}

@@ -33,8 +33,26 @@ function formatDateToString(val,row){
 }
 
 function formatStringToDate(val){
-	var date = new Date(Date.parse(val));
-	return date;
+	
+	if((val !== null) && (val !== undefined))
+	{
+		var bits = val.split(/\D/);
+		if(bits.length === 6)
+			return new Date(bits[0], --bits[1], bits[2], bits[3], bits[4], bits[5]);
+		else if(bits.length === 5)
+			return new Date(bits[0], --bits[1], bits[2], bits[3], bits[4]);
+		else if(bits.length === 3)
+			return new Date(bits[0], --bits[1], bits[2]);
+		else
+			return null;
+	}
+	else
+	{
+		return null;
+	}
+	
+//	var date = new Date(Date.parse(val));
+//	return date;
 }
 
 function formatStringToTime(val, separator)
@@ -58,4 +76,12 @@ function formatTimeToString(val)
 		var timeString = hour+":"+min;
 		return timeString;
 	}
+}
+
+function dateTimeStringToDateString(dateTimeString)
+{
+	if((dateTimeString !== null) && (dateTimeString !== undefined))
+		return dateTimeString.split(" ")[0];
+	else
+		return null;
 }

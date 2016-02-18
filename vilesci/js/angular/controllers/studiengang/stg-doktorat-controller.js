@@ -6,7 +6,7 @@ angular.module('stgv2')
 			ctrl.dokotrat = new Doktorat();
 			ctrl.selectedStudiensemester = null;
 			ctrl.studiensemesterList = "";
-			ctrl.fileExtensionWhiteList = ["PDF"];
+			ctrl.fileExtensionWhiteList = ["PDF","DOC","DOCX","JPG","JPEG"];
 			ctrl.lastSelectedIndex = null;
 
 			//loading Studiensemester list
@@ -89,8 +89,9 @@ angular.module('stgv2')
 			
 			ctrl.loadDoktoratDetails = function(row)
 			{
-				row.datum_erlass = formatStringToDate(row.datum_erlass.split(" ")[0]);
-				ctrl.doktorat = row;
+				ctrl.doktorat = angular.copy(row);
+				ctrl.doktorat.datum_erlass = formatStringToDate(row.datum_erlass);
+				
 				$scope.$apply();
 				$("#doktoratDetails").show();
 			}
@@ -111,7 +112,7 @@ angular.module('stgv2')
 					}).then(function success(response) {
 						if(response.data.erfolg)
 						{
-							ctrl.doktorat = new Doktorat()();
+							ctrl.doktorat = new Doktorat();
 							ctrl.doktorat.studiengang_kz = $scope.stgkz;
 							ctrl.doktorat.doktorat_id = response.data.info;
 							$($scope.uploader.queue).each(function(k,v){
@@ -138,6 +139,7 @@ angular.module('stgv2')
 				{
 					var updateData = {data: ""}
 					updateData.data = ctrl.doktorat;
+					console.log(updateData);
 					$http({
 						method: 'POST',
 						url: './api/studiengang/doktorat/update_doktorat.php',

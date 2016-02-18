@@ -56,6 +56,7 @@
 					<div class="form-group">
 						<label for="gueltigbis">Gültig bis</label>
 						<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.doktorat.gueltigbis">
+							<option value="null">&nbsp;</option>
 							<option ng-repeat="sem in ctrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
 						</select>
 					</div>

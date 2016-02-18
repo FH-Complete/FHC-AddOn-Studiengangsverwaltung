@@ -112,9 +112,10 @@ angular.module('stgv2')
 			ctrl.loadReihungstestDetails = function (row)
 			{
 				console.log(row);
-				row.datum = formatStringToDate(row.datum);
-				row.uhrzeit = formatStringToTime(row.uhrzeit, ":");
-				ctrl.reihungstest = row;
+				ctrl.reihungstest = angular.copy(row);
+				ctrl.reihungstest.datum = formatStringToDate(row.datum);
+				ctrl.reihungstest.uhrzeit = formatStringToTime(row.uhrzeit, ":");
+				
 				$scope.$apply();
 				$("#reihungstestDetails").show();
 			};

@@ -81,7 +81,7 @@
 			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.nachfrist_ende.$error.required || form.nachfrist_ende.$error.date))}">
 					<label for="nachfrist_ende">Nachfrist Ende</label>
-					<input type="date" class="form-control input-sm datepicker" name="nachfrist_ende" ng-model="ctrl.bewerbungstermin.nachfrist_ende" ng-disabled="!ctrl.bewerbungstermin.nachfrist" ng-required="ctrl.bewerbungstermin.nachfrist"/>
+					<input id="nachfrist_ende" type="date" class="form-control input-sm datepicker" name="nachfrist_ende" ng-model="ctrl.bewerbungstermin.nachfrist_ende" ng-disabled="!ctrl.bewerbungstermin.nachfrist" ng-required="ctrl.bewerbungstermin.nachfrist"/>
 					<span ng-show="form.nachfrist_ende.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
