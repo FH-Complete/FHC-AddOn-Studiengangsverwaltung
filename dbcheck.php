@@ -1330,6 +1330,42 @@ if(!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_doktorat_dokument LIM
 		echo ' Tabellen fuer Dokumentenupload fuer Doktoratsstudienverordnung hinzugefuegt!<br>';
 }
 
+//Tabelle addon.tbl_stgv_studienjahr
+if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienjahr LIMIT 1;")) {
+    $qry = "CREATE TABLE addon.tbl_stgv_studienjahr
+			(
+				studienjahr_id integer NOT NULL,
+				studienplan_id integer NOT NULL,
+				bezeichnung varchar(32),
+				data jsonb,
+				insertamum timestamp,
+				insertvon varchar(32),
+				updateamum timestamp,
+				updatevon varchar(32)
+			);
+
+		CREATE SEQUENCE addon.tbl_stgv_studienjahr_studienjahr_id_seq
+		 INCREMENT BY 1
+		 NO MAXVALUE
+		 NO MINVALUE
+		 CACHE 1;
+
+		ALTER TABLE addon.tbl_stgv_studienjahr ADD CONSTRAINT pk_studienjahr PRIMARY KEY (studienjahr_id);
+		ALTER TABLE addon.tbl_stgv_studienjahr ALTER COLUMN studienjahr_id SET DEFAULT nextval('addon.tbl_stgv_studienjahr_studienjahr_id_seq');
+
+		ALTER TABLE addon.tbl_stgv_studienjahr ADD CONSTRAINT fk_studienjahr_studienplan FOREIGN KEY (studienplan_id) REFERENCES lehre.tbl_studienplan (studienplan_id) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+		GRANT SELECT ON addon.tbl_stgv_studienjahr TO web;
+		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_studienjahr TO vilesci;
+		GRANT SELECT, UPDATE ON addon.tbl_stgv_studienjahr_studienjahr_id_seq TO vilesci;
+	";
+
+    if (!$db->db_query($qry))
+	echo '<strong>addon.tbl_stgv_studienjahr: ' . $db->db_last_error() . '</strong><br>';
+    else
+	echo ' addon.tbl_stgv_studienjahr: Tabelle hinzugefuegt<br>';
+}
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
@@ -1353,6 +1389,7 @@ $tabellen = array(
     "addon.tbl_stgv_beschluesse" => array("beschluss_id", "studienordnung_id", "datum", "typ","insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_aufnahmeverfahren" => array("aufnahmeverfahren_id", "studienordnung_id", "data","insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_zugangsvoraussetzung" => array("zugangsvoraussetzung_id", "studienordnung_id", "data","insertamum", "insertvon", "updateamum", "updatevon"),
+    "addon.tbl_stgv_studienjahr" => array("studienjahr_id", "studienplan_id","bezeichnung", "data","insertamum", "insertvon", "updateamum", "updatevon"),
 );
 
 

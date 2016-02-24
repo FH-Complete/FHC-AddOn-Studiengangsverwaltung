@@ -5,7 +5,7 @@ require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../../include/akadgrad.class.php');
 require_once('../../../../../../include/studiensemester.class.php');
-require_once('../../../../include/auslandssemester.class.php');
+require_once('../../../../include/studienjahr.class.php');
 require_once('../../functions.php');
 
 $studienplan_id = filter_input(INPUT_GET, "studienplan_id");
@@ -19,10 +19,10 @@ elseif(($studienplan_id == false))
     returnAJAX(false, "Fehler beim lesen der GET Variablen");    
 }
 
-$auslandssemester = new auslandssemester();
-$auslandssemester->getAll($studienplan_id);
+$studienjahr = new studienjahr();
+$studienjahr->getAll($studienplan_id);
 
-$data = $auslandssemester->result;
+$data = $studienjahr->result;
 
 
 returnAJAX(true, $data);

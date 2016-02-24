@@ -6,8 +6,8 @@ require_once('../../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../../include/akadgrad.class.php');
 require_once('../../../../../../include/studiensemester.class.php');
 
-require_once('../../../../include/StudienplanAddonStgv.class.php');
-require_once('../../../../include/StudienordnungAddonStgv.class.php');
+require_once('../../../../include/studienplanAddonStgv.class.php');
+require_once('../../../../include/studienordnungAddonStgv.class.php');
 require_once('../../functions.php');
 
 $sto_array = array();

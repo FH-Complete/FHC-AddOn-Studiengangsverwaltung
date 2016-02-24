@@ -5,14 +5,14 @@ require_once('../../../../../include/functions.inc.php');
 require_once('../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../include/lehrveranstaltung.class.php');
 require_once('../../../../../include/dms.class.php');
-require_once('../../../include/StudienordnungAddonStgv.class.php');
-require_once('../../../include/Taetigkeitsfeld.class.php');
-require_once('../../../include/Qualifikationsziel.class.php');
-require_once('../../../include/Zugangsvoraussetzung.class.php');
-require_once('../../../include/Aufnahmeverfahren.class.php');
-require_once('../../../include/StudienplanAddonStgv.class.php');
-require_once('../../../include/Auslandssemester.class.php');
-require_once('../../../include/Berufspraktikum.class.php');
+require_once('../../../include/studienordnungAddonStgv.class.php');
+require_once('../../../include/taetigkeitsfeld.class.php');
+require_once('../../../include/qualifikationsziel.class.php');
+require_once('../../../include/zugangsvoraussetzung.class.php');
+require_once('../../../include/aufnahmeverfahren.class.php');
+require_once('../../../include/studienplanAddonStgv.class.php');
+require_once('../../../include/auslandssemester.class.php');
+require_once('../../../include/berufspraktikum.class.php');
 
 require_once('../functions.php');
 

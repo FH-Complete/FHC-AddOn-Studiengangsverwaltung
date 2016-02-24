@@ -1,3 +1,352 @@
-<div class="contentWrapper">
-	<p>Studienjahr</p>
+<div class="contentWrapper" ng-controller="StplStudienjahrCtrl as ctrl">
+	<div class="col-sm-2">
+		<label>&nbsp;</label>
+		<div>
+			<button class='btn btn-default btn-sm' ng-click='ctrl.newStudienjahr()' id="newStudienjahr">neues Studienjahr</button>
+		</div>
+	</div>
+	</br>
+	</br>
+	</br>
+	</br>
+	<table id="dataGridStudienjahr" class="easyui-datagrid" style='height: 200px;'>
+		
+	</table>
+	</br>
+	<form id="stplStudienjahrDetails" name="form" onsubmit="return false;" novalidate style="display: none;">
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="allgemeines">Allgemeines</label>
+					<div class="input-group">
+						<textarea class="form-control input-sm" name="allgemeines" size="10" ng-model="ctrl.studienjahr.data.allgemeines"></textarea>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="studienjahr">Studienjahr</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="studienjahr" ng-model="ctrl.studienjahr.bezeichnung"/>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="gueltigFuer">Gültig für Ausbildungssemester</label>
+					<div class="row">
+						<div class="col-sm-1" ng-repeat="i in [1,2,3,4,5,6]">
+							<label>{{i}}</label>
+							<input type="checkbox" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="studienjahr">Studienjahr</label>
+					<div class="input-group">
+						<span class="form-control input-sm" style="height:50px;">Das Studienjahr besteht aus dem WS, dem SS und den LV-freien Zeiten. Es beginnt und endet in einer fixen Kalenderwoche.</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="beginn_studienjahr">Beginn KW</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="beginn_studienjahr" ng-model="ctrl.studienjahr.data.studienjahr.beginn"/>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="ende_studienjahr">Ende KW</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="ende_studienjahr" ng-model="ctrl.studienjahr.data.studienjahr.ende"/>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="wochenAnzahl_studienjahr">Zahl der Wochen</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="wochenAnzahl_studienjahr" ng-model="ctrl.studienjahr.data.studienjahr.wochenAnzahl"/>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="wintersemester">Wintersemester</label>
+					<div class="input-group">
+						<span class="form-control input-sm">Das WS beginnt und endet in einer fixen Kalenderwoche.</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="beginn_wintersemester">Beginn KW</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="beginn_wintersemester" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="ende_wintersemester">Ende KW</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="ende_wintersemester" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="wochenAnzahl_wintersemester">Zahl der Wochen</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="wochenAnzahl_wintersemester" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="lvWochenAnzahl_wintersemester">Zahl der LV-Wochen</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="lvWochenAnzahl_wintersemester" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="weihnachtsferien">Weihnachtsferien</label>
+					<div class="input-group">
+						<span class="form-control input-sm" style="height:70px;">Die Weihnachtsferien beginnen üblicherweise am 24.12 und enden am 06.01. des Folgejahres. Aufgrund von "Fenstertagen" können das Beginn- oder Endedatum in Ausnahmefällen davon abweichen.</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="beginn_weihnachtsferien">Beginn</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="beginn_weihnachtsferien" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="ende_weihnachtsferien">Ende</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="ende_weihnachtsferien" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="wochenAnzahl_weihnachtsferien">Zahl der Wochen</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="wochenAnzahl_weihnachtsferien" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="semesterferien">Semesterferien</label>
+					<div class="input-group">
+						<span class="form-control input-sm">Die Semesterferien beginnen und enden in einer fixen Kalenderwoche.</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="beginn_semesterferien">Beginn</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="beginn_semesterferien" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="ende_semesterferien">Ende</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="ende_semesterferien" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="wochenAnzahl_semesterferien">Zahl der Wochen</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="wochenAnzahl_semesterferien" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="sommersemester">Sommersemester</label>
+					<div class="input-group">
+						<span class="form-control input-sm">Das SS beginnt und endet in einer fixen Kalenderwoche.</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="beginn_sommersemester">Beginn KW</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="beginn_sommersemester" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="ende_sommersemester">Ende KW</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="ende_sommersemester" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="wochenAnzahl_sommersemester">Zahl der Wochen</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="wochenAnzahl_sommersemester" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="lvWochenAnzahl_sommersemester">Zahl der LV-Wochen</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="lvWochenAnzahl_sommersemester" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="osterferien">Osterferien</label>
+					<div class="input-group">
+						<span class="form-control input-sm" style="height:70px;">Die Weihnachtsferien beginnen üblicherweise am 24.12 und enden am 06.01. des Folgejahres. Aufgrund von "Fenstertagen" können das Beginn- oder Endedatum in Ausnahmefällen davon abweichen.</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="beginn_osterferien">Beginn</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="beginn_osterferien" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="ende_osterferien">Ende</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="ende_osterferien" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="wochenAnzahl_osterferien">Zahl der Wochen</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="wochenAnzahl_osterferien" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="sommerferien">Sommerferien</label>
+					<div class="input-group">
+						<span class="form-control input-sm" style="height:70px;">Die Weihnachtsferien beginnen üblicherweise am 24.12 und enden am 06.01. des Folgejahres. Aufgrund von "Fenstertagen" können das Beginn- oder Endedatum in Ausnahmefällen davon abweichen.</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="beginn_sommerferien">Beginn</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="beginn_sommerferien" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="ende_sommerferien">Ende</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="ende_sommerferien" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="wochenAnzahl_sommerferien">Zahl der Wochen</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="wochenAnzahl_sommerferien" />
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="eraleuterungen">Präsenzzeiten/Erläuterungen</label>
+					<div class="input-group">
+						<textarea class="form-control input-sm" name="eraleuterungen" size="20" ng-model="ctrl.studienjahr.data.erlaeuterungen"></textarea>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row" ng-show="ctrl.data.status_kurzbz == 'development'">
+			<div class="col-sm-10">
+				<div class="form-group">
+					<div>
+						<button id="update" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.update()">Speichern</button>
+						<button id="save" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.save()" style="display:none;">Speichern</button>
+						<button id="delete" type="submit" class="btn btn-danger btn-sm" ng-click="ctrl.delete()">Löschen</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 </div>

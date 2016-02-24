@@ -4,7 +4,7 @@ require_once('../../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
 
-require_once('../../../../include/Berufspraktikum.class.php');
+require_once('../../../../include/berufspraktikum.class.php');
 require_once('../../functions.php');
 
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));

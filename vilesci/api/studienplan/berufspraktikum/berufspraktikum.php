@@ -5,7 +5,7 @@ require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../../include/akadgrad.class.php');
 require_once('../../../../../../include/studiensemester.class.php');
-require_once('../../../../include/Berufspraktikum.class.php');
+require_once('../../../../include/berufspraktikum.class.php');
 require_once('../../functions.php');
 
 $studienplan_id = filter_input(INPUT_GET, "studienplan_id");

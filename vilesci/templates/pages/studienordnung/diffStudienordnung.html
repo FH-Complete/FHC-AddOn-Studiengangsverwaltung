@@ -22,7 +22,7 @@
 			<div class="col-sm-4">
 				<div class="form-group" ng-show="stoCtrl.old.studienordnungList.length > 0">
 					<label for="studienordnung">Studienordnung</label>
-					<select class="form-control input-sm" name="studienordnung" ng-model="stoCtrl.old.studienordnung_id">
+					<select class="form-control input-sm" name="studienordnung" ng-model="stoCtrl.old.studienordnung_id" ng-change="stoCtrl.loadStudienplanList(stoCtrl.old)">
 						<option ng-repeat="sto in stoCtrl.old.studienordnungList" value="{{sto.studienordnung_id}}">{{sto.bezeichnung}}</option>
 					</select>
 				</div>
@@ -30,8 +30,26 @@
 			<div class="col-sm-4">
 				<div class="form-group" ng-show="stoCtrl.new.studienordnungList.length > 0">
 					<label for="studienordnung">Studienordnung</label>
-					<select class="form-control input-sm" name="studienordnung" ng-model="stoCtrl.new.studienordnung_id">
+					<select class="form-control input-sm" name="studienordnung" ng-model="stoCtrl.new.studienordnung_id" ng-change="stoCtrl.loadStudienplanList(stoCtrl.new)">
 						<option ng-repeat="sto in stoCtrl.new.studienordnungList" value="{{sto.studienordnung_id}}">{{sto.bezeichnung}}</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group" ng-show="stoCtrl.old.studienplanList.length > 0">
+					<label for="studienplan">Studienplan</label>
+					<select class="form-control input-sm" name="studienplan" ng-model="stoCtrl.old.studienplan_id">
+						<option ng-repeat="stpl in stoCtrl.old.studienplanList" value="{{stpl.studienplan_id}}">{{stpl.bezeichnung}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" ng-show="stoCtrl.new.studienplanList.length > 0">
+					<label for="studienplan">Studienplan</label>
+					<select class="form-control input-sm" name="studienplan" ng-model="stoCtrl.new.studienplan_id">
+						<option ng-repeat="stpl in stoCtrl.new.studienplanList" value="{{stpl.studienplan_id}}">{{stpl.bezeichnung}}</option>
 					</select>
 				</div>
 			</div>
@@ -68,7 +86,7 @@
 					<tr ng-repeat="(prop,diff) in item">
 						<td class="bold">{{prop}}</td>
 						<td ng-bind-html="diff.old"></td>
-						<td ng-bind-html="diff.diff"></td>
+						<td ng-bind-html="stoCtrl.insertHTML(diff.diff)"></td>
 					</tr>
 				</tbody>
 			</table>

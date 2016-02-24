@@ -5,7 +5,7 @@ require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../../include/akadgrad.class.php');
 require_once('../../../../../../include/studiensemester.class.php');
-require_once('../../../../include/Qualifikationsziel.class.php');
+require_once('../../../../include/qualifikationsziel.class.php');
 require_once('../../functions.php');
 
 $studienordnung_id = filter_input(INPUT_GET, "studienordnung_id");

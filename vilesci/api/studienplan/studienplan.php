@@ -3,8 +3,8 @@
 require_once('../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../include/functions.inc.php');
 require_once('../../../../../include/benutzerberechtigung.class.php');
-require_once ('../../../include/StudienplanAddonStgv.class.php');
-require_once('../../../include/StudienordnungAddonStgv.class.php');
+require_once ('../../../include/studienplanAddonStgv.class.php');
+require_once('../../../include/studienordnungAddonStgv.class.php');
 require_once('../functions.php');
 
 $studienplan_id = filter_input(INPUT_GET, "studienplan_id");

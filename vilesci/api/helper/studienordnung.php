@@ -3,8 +3,8 @@
 require_once('../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../include/functions.inc.php');
 require_once('../../../../../include/benutzerberechtigung.class.php');
-require_once ('../../../include/StudienplanAddonStgv.class.php');
-require_once ('../../../include/StudienordnungAddonStgv.class.php');
+require_once ('../../../include/studienplanAddonStgv.class.php');
+require_once ('../../../include/studienordnungAddonStgv.class.php');
 require_once('../functions.php');
 
 $sto_array = array();
@@ -41,7 +41,8 @@ foreach($studienordnung->result as $key=>$sto)
 {
    $data[$key]["studienordnung_id"] = $sto->studienordnung_id;
    $data[$key]["bezeichnung"] = $sto->bezeichnung;
+   $data[$key]["orgform_kurzbz"] = $sto->orgform_kurzbz;
+   $data[$key]["status_bezeichnung"] = $sto->status_bezeichnung;
 }
-
 returnAJAX(true, $data);
 ?>

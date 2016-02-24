@@ -11,71 +11,84 @@ angular.module('stgv2')
 				aufgaben: ""
 			};
 			
-			//enable tooltips
-			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip();
-				$("#branchen-editor").wysiwyg(
-				{
-					toolbarSelector: '[data-role=branchen-editor-toolbar]'
-				});
-				$("#positionen-editor").wysiwyg(
-				{
-					toolbarSelector: '[data-role=positionen-editor-toolbar]'
-				});
-				$("#aufgaben-editor").wysiwyg(
-				{
-					toolbarSelector: '[data-role=aufgaben-editor-toolbar]'
-				});
-			});
-			
-			$http({
-				method: 'GET',
-				url: './api/studienordnung/taetigkeitsfelder/taetigkeitsfelder.php?studienordnung_id=' + $scope.studienordnung_id
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					if (response.data.info.length > 0)
+			function initDnD()
+			{
+				$(".sortable").sortable({
+					connectWith: ".sortable",
+					helper: "clone",
+					revert: false,
+					over: function(event, ui)
 					{
-						ctrl.data = response.data.info[0];
-//						ctrl.data.data = JSON.parse(ctrl.data.data);
-//						$(ctrl.data.data.branchen.elements).each(function(key, value)
-//						{
-//							ctrl.drawListItem("list_branchen",value);
-//						});
-
-//						$(ctrl.data.data.positionen.elements).each(function(key, value)
-//						{
-//							ctrl.drawListItem("list_positionen",value);
-//						});
-//						
-//						$(ctrl.data.data.aufgaben.elements).each(function(key, value)
-//						{
-//							ctrl.drawListItem("list_aufgaben",value);
-//						});
-			
-						$(ctrl.data.data.branchen.elements).each(function(key, value)
-						{
-							$("#branchen-editor").html(value);
-						});
-						
-						$(ctrl.data.data.positionen.elements).each(function(key, value)
-						{
-							$("#positionen-editor").html(value);
-						});
-						
-						$(ctrl.data.data.aufgaben.elements).each(function(key, value)
-						{
-							$("#aufgaben-editor").html(value);
-						});
-						
+						$(this).addClass("hovered-list");
+					},
+					out: function(event, ui)
+					{
+						$(this).removeClass("hovered-list");
 					}
-				}
-				else
-				{
+				}).disableSelection();
+			}
+			
+			//enable tooltips and editor
+			$(document).ready(function(){
+				
+				initDnD();
+				
+				$('[data-toggle="tooltip"]').tooltip();
+				
+				$("#ueberblick-editor").wysiwyg({
+					toolbarSelector: '[data-role=ueberblick-editor-toolbar]'
+				});
+				$("#ueberblick-editor").on('paste', function(event){
+					event.preventDefault();
+					var clipboardData = event.originalEvent.clipboardData.getData("text");
+					$("#ueberblick-editor").html(clipboardData);
+				});
+			
+			
+				$http({
+					method: 'GET',
+					url: './api/studienordnung/taetigkeitsfelder/taetigkeitsfelder.php?studienordnung_id=' + $scope.studienordnung_id
+				}).then(function success(response) {
+					if (response.data.erfolg)
+					{
+						console.log(response);
+						if (response.data.info.length > 0)
+						{
+							ctrl.data = response.data.info[0];
+							$("#ueberblick-editor").html(ctrl.data.ueberblick);
+	//						ctrl.data.data = JSON.parse(ctrl.data.data);
+							$(ctrl.data.data.branchen.elements).each(function(key, value)
+							{
+								ctrl.drawList("branchen_lists",value.title);
+								$(value.elements).each(function(k, v){
+									ctrl.drawListItem('branchen_lists', v);
+								});
+							});
+							
+							$(ctrl.data.data.positionen.elements).each(function(key, value)
+							{
+								ctrl.drawList("positionen_lists",value.title);
+								$(value.elements).each(function(k, v){
+									ctrl.drawListItem('positionen_lists', v);
+								});
+							});
+							
+							$(ctrl.data.data.aufgaben.elements).each(function(key, value)
+							{
+								ctrl.drawList("aufgaben_lists",value.title);
+								$(value.elements).each(function(k, v){
+									ctrl.drawListItem('aufgaben_lists', v);
+								});
+							});
+						}
+					}
+					else
+					{
+						errorService.setError(getErrorMsg(response));
+					}
+				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
+				});
 			});
 
 			ctrl.save = function () {
@@ -105,81 +118,113 @@ angular.module('stgv2')
 				});
 			};
 
-//			ctrl.drawListItem = function (list_id, text)
-//			{
-//				var listItem = '<li class="list-group-item">' + text + '<span class="badge" ng-click="ctrl.removeListItem($event)"><span class="glyphicon glyphicon-trash"></span></span></li>';
-//				var html = $("#" + list_id).append(listItem);
-//				$compile(html)(scope);
-//				ctrl.temp = {
-//					branchen: "",
-//					positionen: "",
-//					aufgaben: ""
-//				};
-//			};
+			ctrl.drawList = function (div_id, text)
+			{
+				if(text!="")
+				{
+					var html = $("#"+div_id).append('<ul class="list-group dropzone"><li class="list-group-item">'+text+'<span class="badge" ng-click="ctrl.removeList($event)"><span class="glyphicon glyphicon-trash"></span></span><ul class="list-group sortable sortable-list"></ul></li></ul>');
+					$compile(html)(scope);
+				}
+			};
+			
+			ctrl.drawListItem = function (div_id, text)
+			{
+				if(text!="")
+				{
+					var list = $("#"+div_id).find("ul li ul").last() ;
+					var html = $(list).append('<li class="list-group-item draggable">'+text+'<span class="badge" ng-click="ctrl.removeListItem($event)"><span class="glyphicon glyphicon-trash"></span></span></li>');
+					$compile(html)(scope);
+				}
+			};
+			
 
-//			ctrl.addListItem = function (list_id, name)
-//			{
-//				var text = "";
-//				switch (name)
-//				{
-//					case "branchen":
-//						text = ctrl.temp.branchen;
-//						break;
-//					case "positionen":
-//						text = ctrl.temp.positionen;
-//						break;
-//					case "aufgaben":
-//						text = ctrl.temp.aufgaben;
-//						break;
-//					default:
-//						break;
-//				}
-//
-//				if (text !== "")
-//				{
-//					ctrl.drawListItem(list_id, text);
-//					ctrl.parseJson();
-////					ctrl.save();
-//				}
-//			};
+			ctrl.addList = function(div_id, input_id)
+			{
+				var listTitle = $("#"+input_id).val();
+				if(listTitle!="")
+				{
+					ctrl.drawList(div_id, listTitle);
+					$("#"+input_id).val("");
+					initDnD();
+					ctrl.save();
+				}
+			};
 
-//			ctrl.removeListItem = function (event)
-//			{
-//				$(event.target).parent().parent().remove();
-//				ctrl.parseJson();
-//				ctrl.save();
-//			};
+			ctrl.addListItem = function (div_id, input_id)
+			{
+				var value = $("#"+input_id).val();
+				if(value!="")
+				{
+					ctrl.drawListItem(div_id, value);
+					$("#"+input_id).val("");
+					initDnD();
+					ctrl.save();
+				}
+			};
+
+			ctrl.removeListItem = function (event)
+			{
+				$(event.target).parent().parent().remove();
+				ctrl.save();
+			};
+			
+			ctrl.removeList = function(event)
+			{
+				$(event.target).parent().parent().remove();
+				ctrl.save();
+			};
 
 			ctrl.parseJson = function ()
 			{
 				var branchen = [];
 				var positionen = [];
 				var aufgaben = [];
-//				$("#list_branchen li").each(function (key, value)
-//				{
-//					branchen.push($(value).text());
-//				});
-//				ctrl.data.data.branchen.elements = branchen;
-//				$("#list_positionen li").each(function (key, value)
-//				{
-//					positionen.push($(value).text());
-//				});
-//				ctrl.data.data.positionen.elements = positionen;
-//
-//				$("#list_aufgaben li").each(function (key, value)
-//				{
-//					aufgaben.push($(value).text());
-//				});
-//				ctrl.data.data.aufgaben.elements = aufgaben;
+				
+				ctrl.data.ueberblick = $("#ueberblick-editor").html();
+				
+				$("#branchen_lists>ul>li>span").each(function(key, value){
+					var list = {
+						title: "",
+						elements: []
+					};
+					list.title = $(value).text();
+					$(value).next().children().each(function(k, v){
+						list.elements.push($(v).text());
+					});
+					branchen.push(list);
+				});
+				
+				$("#positionen_lists>ul>li>span").each(function(key, value){
+					var list = {
+						title: "",
+						elements: []
+					};
+					list.title = $(value).text();
+					$(value).next().children().each(function(k, v){
+						list.elements.push($(v).text());
+					});
+					positionen.push(list);
+				});
+				
+				$("#aufgaben_lists>ul>li>span").each(function(key, value){
+					var list = {
+						title: "",
+						elements: []
+					};
+					list.title = $(value).text();
+					$(value).next().children().each(function(k, v){
+						list.elements.push($(v).text());
+					});
+					aufgaben.push(list);
+				});
 
-				branchen.push($("#branchen-editor").html());
 				ctrl.data.data.branchen.elements = branchen;
 
-				positionen.push($("#positionen-editor").html());
 				ctrl.data.data.positionen.elements = positionen;
 
-				aufgaben.push($("#aufgaben-editor").html());
 				ctrl.data.data.aufgaben.elements = aufgaben;
+				
+				ctrl.save();
 			};
 		});
 

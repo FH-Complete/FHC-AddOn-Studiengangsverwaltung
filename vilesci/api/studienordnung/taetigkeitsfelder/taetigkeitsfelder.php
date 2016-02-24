@@ -5,7 +5,7 @@ require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../../include/akadgrad.class.php');
 require_once('../../../../../../include/studiensemester.class.php');
-require_once('../../../../include/Taetigkeitsfeld.class.php');
+require_once('../../../../include/taetigkeitsfeld.class.php');
 require_once('../../functions.php');
 
 $sto_array = array();

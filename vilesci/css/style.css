@@ -378,7 +378,7 @@ h5
 
 .editor
 {
-	font-size: auto;
+	font-size: initial;
 }
 
 .tooltip-inner {
@@ -408,6 +408,17 @@ h5
   padding: 10px;
   border: 1px solid black;
   background: white;
+}
+
+.hovered-list
+{
+	background-color: lightblue;
+}
+
+.sortable-list
+{
+	min-height: 10px;
+	padding-top: 10px;
 }
 
 

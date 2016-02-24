@@ -3,7 +3,7 @@
 require_once('../../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
-require_once('../../../../include/Zugangsvoraussetzung.class.php');
+require_once('../../../../include/zugangsvoraussetzung.class.php');
 require_once('../../functions.php');
 
 $sto_array = array();
