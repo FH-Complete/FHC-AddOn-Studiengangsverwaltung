@@ -40,10 +40,10 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="gueltigFuer">Gültig für Ausbildungssemester</label>
-					<div class="row">
-						<div class="col-sm-1" ng-repeat="i in [1,2,3,4,5,6]">
+					<div class="row" id="gueltigFuer">
+						<div class="col-sm-1" ng-repeat="i in ctrl.range(ctrl.data.regelstudiendauer) track by $index">
 							<label>{{i}}</label>
-							<input type="checkbox" />
+							<input type="checkbox" ng-model="ctrl.studienjahr.data.gueltigFuer[$index+1]"/>
 						</div>
 					</div>
 				</div>
@@ -99,7 +99,7 @@
 				<div class="form-group">
 					<label for="beginn_wintersemester">Beginn KW</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="beginn_wintersemester" />
+						<input type="text" class="form-control input-sm" name="beginn_wintersemester" ng-model="ctrl.studienjahr.data.wintersemester.beginn"/>
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -108,7 +108,7 @@
 				<div class="form-group">
 					<label for="ende_wintersemester">Ende KW</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="ende_wintersemester" />
+						<input type="text" class="form-control input-sm" name="ende_wintersemester" ng-model="ctrl.studienjahr.data.wintersemester.ende" />
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -117,7 +117,7 @@
 				<div class="form-group">
 					<label for="wochenAnzahl_wintersemester">Zahl der Wochen</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="wochenAnzahl_wintersemester" />
+						<input type="text" class="form-control input-sm" name="wochenAnzahl_wintersemester" ng-model="ctrl.studienjahr.data.wintersemester.wochenAnzahl" />
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -126,7 +126,7 @@
 				<div class="form-group">
 					<label for="lvWochenAnzahl_wintersemester">Zahl der LV-Wochen</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="lvWochenAnzahl_wintersemester" />
+						<input type="text" class="form-control input-sm" name="lvWochenAnzahl_wintersemester" ng-model="ctrl.studienjahr.data.wintersemester.lvWochenAnzahl" />
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -145,7 +145,7 @@
 				<div class="form-group">
 					<label for="beginn_weihnachtsferien">Beginn</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="beginn_weihnachtsferien" />
+						<input type="text" class="form-control input-sm" name="beginn_weihnachtsferien" ng-model="ctrl.studienjahr.data.weihnachtsferien.beginn" />
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -154,7 +154,7 @@
 				<div class="form-group">
 					<label for="ende_weihnachtsferien">Ende</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="ende_weihnachtsferien" />
+						<input type="text" class="form-control input-sm" name="ende_weihnachtsferien" ng-model="ctrl.studienjahr.data.weihnachtsferien.ende" />
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -163,7 +163,7 @@
 				<div class="form-group">
 					<label for="wochenAnzahl_weihnachtsferien">Zahl der Wochen</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="wochenAnzahl_weihnachtsferien" />
+						<input type="text" class="form-control input-sm" name="wochenAnzahl_weihnachtsferien" ng-model="ctrl.studienjahr.data.weihnachtsferien.wochenAnzahl" />
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -182,7 +182,7 @@
 				<div class="form-group">
 					<label for="beginn_semesterferien">Beginn</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="beginn_semesterferien" />
+						<input type="text" class="form-control input-sm" name="beginn_semesterferien" ng-model="ctrl.studienjahr.data.semesterferien.beginn" />
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -191,7 +191,7 @@
 				<div class="form-group">
 					<label for="ende_semesterferien">Ende</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="ende_semesterferien" />
+						<input type="text" class="form-control input-sm" name="ende_semesterferien" ng-model="ctrl.studienjahr.data.semesterferien.ende" />
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -200,7 +200,7 @@
 				<div class="form-group">
 					<label for="wochenAnzahl_semesterferien">Zahl der Wochen</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="wochenAnzahl_semesterferien" />
+						<input type="text" class="form-control input-sm" name="wochenAnzahl_semesterferien" ng-model="ctrl.studienjahr.data.semesterferien.wochenAnzahl" />
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -219,7 +219,7 @@
 				<div class="form-group">
 					<label for="beginn_sommersemester">Beginn KW</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="beginn_sommersemester" />
+						<input type="text" class="form-control input-sm" name="beginn_sommersemester" ng-model="ctrl.studienjahr.data.sommersemester.beginn" />
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -228,7 +228,7 @@
 				<div class="form-group">
 					<label for="ende_sommersemester">Ende KW</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="ende_sommersemester" />
+						<input type="text" class="form-control input-sm" name="ende_sommersemester" ng-model="ctrl.studienjahr.data.sommersemester.ende" />
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -237,7 +237,7 @@
 				<div class="form-group">
 					<label for="wochenAnzahl_sommersemester">Zahl der Wochen</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="wochenAnzahl_sommersemester" />
+						<input type="text" class="form-control input-sm" name="wochenAnzahl_sommersemester" ng-model="ctrl.studienjahr.data.sommersemester.wochenAnzahl" />
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -246,7 +246,7 @@
 				<div class="form-group">
 					<label for="lvWochenAnzahl_sommersemester">Zahl der LV-Wochen</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="lvWochenAnzahl_sommersemester" />
+						<input type="text" class="form-control input-sm" name="lvWochenAnzahl_sommersemester"  ng-model="ctrl.studienjahr.data.sommersemester.lvWochenAnzahl"/>
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -265,7 +265,7 @@
 				<div class="form-group">
 					<label for="beginn_osterferien">Beginn</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="beginn_osterferien" />
+						<input type="text" class="form-control input-sm" name="beginn_osterferien" ng-model="ctrl.studienjahr.data.osterferien.beginn"/>
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -274,7 +274,7 @@
 				<div class="form-group">
 					<label for="ende_osterferien">Ende</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="ende_osterferien" />
+						<input type="text" class="form-control input-sm" name="ende_osterferien" ng-model="ctrl.studienjahr.data.osterferien.ende" />
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -283,7 +283,7 @@
 				<div class="form-group">
 					<label for="wochenAnzahl_osterferien">Zahl der Wochen</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="wochenAnzahl_osterferien" />
+						<input type="text" class="form-control input-sm" name="wochenAnzahl_osterferien" ng-model="ctrl.studienjahr.data.osterferien.wochenAnzahl"/>
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -302,7 +302,7 @@
 				<div class="form-group">
 					<label for="beginn_sommerferien">Beginn</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="beginn_sommerferien" />
+						<input type="text" class="form-control input-sm" name="beginn_sommerferien" ng-model="ctrl.studienjahr.data.sommerferien.beginn"/>
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -311,7 +311,7 @@
 				<div class="form-group">
 					<label for="ende_sommerferien">Ende</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="ende_sommerferien" />
+						<input type="text" class="form-control input-sm" name="ende_sommerferien" ng-model="ctrl.studienjahr.data.sommerferien.ende" />
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
@@ -320,7 +320,7 @@
 				<div class="form-group">
 					<label for="wochenAnzahl_sommerferien">Zahl der Wochen</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="wochenAnzahl_sommerferien" />
+						<input type="text" class="form-control input-sm" name="wochenAnzahl_sommerferien" ng-model="ctrl.studienjahr.data.sommerferien.wochenAnzahl" />
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>

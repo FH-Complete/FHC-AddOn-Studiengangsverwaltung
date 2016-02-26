@@ -59,8 +59,10 @@ angular.module('stgv2')
 	//						ctrl.data.data = JSON.parse(ctrl.data.data);
 							$(ctrl.data.data.branchen.elements).each(function(key, value)
 							{
+								console.log(value);
 								ctrl.drawList("branchen_lists",value.title);
 								$(value.elements).each(function(k, v){
+									console.log(v);
 									ctrl.drawListItem('branchen_lists', v);
 								});
 							});
@@ -122,7 +124,7 @@ angular.module('stgv2')
 			{
 				if(text!="")
 				{
-					var html = $("#"+div_id).append('<ul class="list-group dropzone"><li class="list-group-item">'+text+'<span class="badge" ng-click="ctrl.removeList($event)"><span class="glyphicon glyphicon-trash"></span></span><ul class="list-group sortable sortable-list"></ul></li></ul>');
+					var html = $("#"+div_id).append('<ul class="list-group dropzone"><li class="list-group-item"><span class="list_title">'+text+'</span><span class="badge" ng-click="ctrl.removeList($event)"><span class="glyphicon glyphicon-trash"></span></span><ul class="list-group sortable sortable-list"></ul></li></ul>');
 					$compile(html)(scope);
 				}
 			};
@@ -182,37 +184,37 @@ angular.module('stgv2')
 				
 				ctrl.data.ueberblick = $("#ueberblick-editor").html();
 				
-				$("#branchen_lists>ul>li>span").each(function(key, value){
+				$("#branchen_lists>ul>li>span[class=list_title]").each(function(key, value){
 					var list = {
 						title: "",
 						elements: []
 					};
 					list.title = $(value).text();
-					$(value).next().children().each(function(k, v){
+					$(value).next().next().children().each(function(k, v){
 						list.elements.push($(v).text());
 					});
 					branchen.push(list);
 				});
 				
-				$("#positionen_lists>ul>li>span").each(function(key, value){
+				$("#positionen_lists>ul>li>span[class=list_title]").each(function(key, value){
 					var list = {
 						title: "",
 						elements: []
 					};
 					list.title = $(value).text();
-					$(value).next().children().each(function(k, v){
+					$(value).next().next().children().each(function(k, v){
 						list.elements.push($(v).text());
 					});
 					positionen.push(list);
 				});
 				
-				$("#aufgaben_lists>ul>li>span").each(function(key, value){
+				$("#aufgaben_lists>ul>li>span[class=list_title]").each(function(key, value){
 					var list = {
 						title: "",
 						elements: []
 					};
 					list.title = $(value).text();
-					$(value).next().children().each(function(k, v){
+					$(value).next().next().children().each(function(k, v){
 						list.elements.push($(v).text());
 					});
 					aufgaben.push(list);
@@ -223,8 +225,6 @@ angular.module('stgv2')
 				ctrl.data.data.positionen.elements = positionen;
 
 				ctrl.data.data.aufgaben.elements = aufgaben;
-				
-				ctrl.save();
 			};
 		});
 

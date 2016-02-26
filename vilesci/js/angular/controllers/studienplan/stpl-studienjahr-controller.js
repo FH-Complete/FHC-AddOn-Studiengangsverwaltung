@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StplStudienjahrCtrl', function ($scope, $http, $stateParams, errorService, successService, StudienplanService, StudienordnungService, SpracheService) {
+		.controller('StplStudienjahrCtrl', function ($scope, $http, $stateParams, errorService, successService, StudienplanService, StudienordnungService) {
 			$scope.studienplan_id = $stateParams.studienplan_id;
 			var ctrl = this;
 			ctrl.data = "";
@@ -15,6 +15,10 @@ angular.module('stgv2')
 				$scope.form.$setPristine();
 				$("#dataGridStudienjahr").datagrid("unselectAll");
 				ctrl.studienjahr = new Studienjahr();
+				for(var i = 1; i<= ctrl.data.regelstudiendauer; i++)
+				{
+					ctrl.studienjahr.data.gueltigFuer[i] = false;
+				};
 				ctrl.studienjahr.studienplan_id = $scope.studienplan_id;
 				if (!$("#save").is(":visible"))
 					ctrl.changeButtons();
@@ -36,17 +40,11 @@ angular.module('stgv2')
 					$("#delete").hide();
 				}
 			};
-			
-			//loading SpracheList
-//			SpracheService.getSpracheList().then(function(result){
-//				ctrl.spracheList = result;
-//			},function(error){
-//				errorService.setError(getErrorMsg(error));
-//			});
 
 			//loading data
 			StudienplanService.getStudienplan($scope.studienplan_id).then(function (result) {
 				ctrl.data = result;
+				console.log(ctrl.data);
 				StudienordnungService.getStudienordnungByStudienplan($scope.studienplan_id).then(function (result) {
 					ctrl.data.status_kurzbz = result.status_kurzbz;
 				}, function (error) {
@@ -78,6 +76,10 @@ angular.module('stgv2')
 						var result = {};
 						if (data.erfolg)
 						{
+							angular.forEach(data.info, function(value, index)
+							{
+								value.ausbildungssemester = value.data.gueltigFuer;
+							});
 							ctrl.data = data.info;
 							result.rows = data.info;
 							return result;
@@ -90,14 +92,30 @@ angular.module('stgv2')
 					},
 					onClickRow: function (index, row)
 					{
-						ctrl.loadBewerbungsterminDetails(row);
+						ctrl.loadStudienjahrDetails(row);
 						if ($("#save").is(":visible"))
 							ctrl.changeButtons();
 					},
 					columns: [[
 						{field: 'studienjahr_id', align: 'right', title:'ID'},
-						{field: 'studienjahr', align:'right', title:'Studienjahr'},
-						{field: 'ausbildungssemester', align:'right', title:'Ausbildungssemester'}
+						{field: 'bezeichnung', align:'right', title:'Studienjahr'},
+						{field: 'ausbildungssemester', align:'right', 
+							formatter: function(value)
+							{
+								var string = "";
+								angular.forEach(value, function(v, i)
+								{
+									console.log(v);
+									if(v === true)
+									{
+										string+= i+" ";
+									}
+								});
+								console.log(string);
+								return string;
+								
+							},
+							title:'Ausbildungssemester'}
 					]]
 				});
 //				$("#dataGridStudienjahr").datagrid('sort', {
@@ -107,32 +125,80 @@ angular.module('stgv2')
 			};
 
 			ctrl.loadDataGrid();
+			
+			ctrl.loadStudienjahrDetails = function(row)
+			{
+				ctrl.studienjahr = angular.copy(row);	
+				$scope.$apply();
+				$("#stplStudienjahrDetails").show();
+			};
 
 			ctrl.save = function () {
 				var saveData = {data: ""}
-				saveData.data = ctrl.data;
-				console.log(ctrl.studienjahr);
-//				$http({
-//					method: 'POST',
-//					url: './api/studienplan/eckdaten/save_eckdaten.php',
-//					data: $.param(saveData),
-//					headers: {
-//						'Content-Type': 'application/x-www-form-urlencoded'
-//					}
-//				}).then(function success(response) {
-//					if (response.data.erfolg)
-//					{
-//						$("#treeGrid").treegrid('reload');
-//						successService.setMessage(response.data.info);
-//					}
-//					else
-//					{
-//						errorService.setError(getErrorMsg(response));
-//					}
-//				}, function error(response) {
-//					errorService.setError(getErrorMsg(response));
-//				});
+				saveData.data = angular.copy(ctrl.studienjahr);
+				saveData.data.data = JSON.stringify(saveData.data.data);
+				console.log(saveData);
+				$http({
+					method: 'POST',
+					url: './api/studienplan/studienjahr/save_studienjahr.php',
+					data: $.param(saveData),
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
+				}).then(function success(response) {
+					if (response.data.erfolg)
+					{
+						$("#dataGridStudienjahr").treegrid('reload');
+						successService.setMessage(response.data.info);
+					}
+					else
+					{
+						errorService.setError(getErrorMsg(response));
+					}
+				}, function error(response) {
+					errorService.setError(getErrorMsg(response));
+				});
 			};
+			
+			ctrl.range = function (max)
+			{
+				var values = [];
+				for (i = 1; i <= max; i++)
+				{
+					values.push(i);
+				}
+				return values;
+			};
+			
+			ctrl.delete = function()
+			{
+				if (confirm("Wollen Sie das Studienjahr wirklich Löschen?"))
+				{
+					var deleteData = {data: ""}
+					deleteData.data = ctrl.studienjahr;
+					$http({
+						method: 'POST',
+						url: './api/studienplan/studienjahr/delete_studienjahr.php',
+						data: $.param(deleteData),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response) {
+						if (response.data.erfolg)
+						{
+							$("#dataGridStudienjahr").datagrid('reload');
+							ctrl.newStudienjahr();
+							successService.setMessage(response.data.info);
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+					}, function error(response) {
+						errorService.setError(getErrorMsg(response));
+					});
+				}
+			}
 		});
 		
 function Studienjahr()
@@ -154,7 +220,7 @@ function Studienjahr()
 			wochenAnzahl: "",
 			lvWochenAnzahl: ""
 		},
-		weichnachtsferien: {
+		weihnachtsferien: {
 			beginn: "",
 			ende: "",
 			wochenAnzahl: ""
@@ -180,7 +246,7 @@ function Studienjahr()
 			ende: "",
 			wochenAnzahl: ""
 		},
-		erlaueuterungen: ""
+		erlaeuterungen: ""
 	};
 	
 }

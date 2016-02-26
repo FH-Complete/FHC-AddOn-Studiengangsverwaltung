@@ -163,7 +163,7 @@ class studienjahr extends basis_db
 
 			$qry='BEGIN; INSERT INTO addon.tbl_stgv_studienjahr (studienplan_id, bezeichnung, data, insertamum, insertvon) VALUES('.
 			     $this->db_add_param($this->studienplan_id, FHC_INTEGER).', '.
-			     $this->db_add_param($this->bezeichnung, FHC_INTEGER).', '.
+			     $this->db_add_param($this->bezeichnung, FHC_STRING).', '.
 			     $this->db_add_param($this->data).', now(),'.
 			     $this->db_add_param($this->insertvon).');';
 		}
