@@ -368,9 +368,36 @@ class StudienplanAddonStgv extends studienplan
     
     public function delete($studienplan_id)
     {
-	//TODO delete addon data
-	var_dump(parent::delete($studienplan_id));
-	//parent::delete($studienplan_id);
+	//Pruefen ob studienplan_id eine gueltige Zahl ist
+	if(!is_numeric($studienplan_id) || $studienplan_id === '')
+	{
+		$this->errormsg = 'studienplan_id muss eine gültige Zahl sein'."\n";
+		return false;
+	}
+
+	//loeschen des Datensatzes
+	$qry="BEGIN;DELETE FROM addon.tbl_stgv_studienplan WHERE studienplan_id=".$this->db_add_param($studienplan_id, FHC_INTEGER, false).";";
+
+	if($this->db_query($qry))
+	{
+		if(parent::delete($studienplan_id))
+		{
+		    $this->db_query("COMMIT");
+		    return true;
+		}
+		else
+		{
+		    $this->db_query("ROLLBACK");
+		    $this->errormsg = 'Fehler beim Löschen der Daten'."\n";
+		    return false;
+		}
+	}
+	else
+	{
+		$this->db_query("ROLLBACK");
+		$this->errormsg = 'Fehler beim Löschen der Daten'."\n";
+		return false;
+	}
     }
 
 }

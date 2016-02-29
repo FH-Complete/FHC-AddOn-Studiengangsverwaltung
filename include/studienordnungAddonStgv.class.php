@@ -470,8 +470,36 @@ class StudienordnungAddonStgv extends studienordnung
     
     public function delete($studienordnung_id)
     {
-	//TODO delte in addon
-	parent::delete($studienordnung_id);
+	    //Pruefen ob studienordnung_id eine gueltige Zahl ist
+	    if(!is_numeric($studienordnung_id) || $studienordnung_id == '')
+	    {
+		    $this->errormsg = 'studienordnung_id muss eine gültige Zahl sein'."\n";
+		    return false;
+	    }
+
+	    //loeschen des Datensatzes
+	    $qry="BEGIN;DELETE FROM addon.tbl_stgv_studienordnung WHERE studienordnung_id=".$this->db_add_param($studienordnung_id, FHC_INTEGER, false).";";
+
+	    if($this->db_query($qry))
+	    {
+		    if(parent::delete($studienordnung_id))
+		    {
+			$this->db_query("COMMIT");
+			return true;
+			
+		    }
+		    else
+		    {
+			$this->db_query("ROLLBACK");
+			$this->errormsg = 'Fehler beim Löschen der Daten'."\n";
+			return false;
+		    }
+	    }
+	    else
+	    {
+		    $this->errormsg = 'Fehler beim Löschen der Daten'."\n";
+		    return false;
+	    }
     }
 
     /**

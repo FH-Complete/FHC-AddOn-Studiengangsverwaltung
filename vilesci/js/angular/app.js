@@ -302,7 +302,6 @@ angular.module("stgv2")
 			ctrl.delete = function (type)
 			{
 				var node = $('#treeGrid').treegrid('getSelected');
-				console.log(node);
 				if(node != null)
 				{
 					switch (type)
