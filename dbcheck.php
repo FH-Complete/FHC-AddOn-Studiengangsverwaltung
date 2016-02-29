@@ -114,39 +114,6 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_foerdervertrag LIMIT
 	echo ' addon.tbl_stgv_foerdervertrag: Tabelle hinzugefuegt<br>';
 }
 
-// Tabelle Studienplan_Semester
-if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienplan_semester LIMIT 1;")) {
-    $qry = "CREATE TABLE addon.tbl_stgv_studienplan_semester
-			(
-				studienplan_semester_id integer NOT NULL,
-				studienplan_id integer NOT NULL,
-				studiensemester_kurzbz varchar(16) NOT NULL,
-				semester smallint NOT NULL
-			);
-
-		CREATE SEQUENCE addon.tbl_stgv_studienplan_semester_studienplan_semester_id
-		 INCREMENT BY 1
-		 NO MAXVALUE
-		 NO MINVALUE
-		 CACHE 1;
-
-		ALTER TABLE addon.tbl_stgv_studienplan_semester ADD CONSTRAINT pk_studienplan_semester PRIMARY KEY (studienplan_semester_id);
-		ALTER TABLE addon.tbl_stgv_studienplan_semester ALTER COLUMN studienplan_semester_id SET DEFAULT nextval('addon.tbl_stgv_studienplan_semester_studienplan_semester_id');
-
-		ALTER TABLE addon.tbl_stgv_studienplan_semester ADD CONSTRAINT fk_studienplan_semester_studienplan_id FOREIGN KEY (studienplan_id) REFERENCES lehre.tbl_studienplan (studienplan_id) ON DELETE RESTRICT ON UPDATE CASCADE;
-		ALTER TABLE addon.tbl_stgv_studienplan_semester ADD CONSTRAINT fk_studienplan_semester_studiensemester FOREIGN KEY (studiensemester_kurzbz) REFERENCES public.tbl_studiensemester (studiensemester_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
-
-		GRANT SELECT ON addon.tbl_stgv_studienplan_semester TO web;
-		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_studienplan_semester TO vilesci;
-		GRANT SELECT, UPDATE ON addon.tbl_stgv_studienplan_semester_studienplan_semester_id TO vilesci;
-	";
-
-    if (!$db->db_query($qry))
-	echo '<strong>addon.tbl_stgv_studienplan_semester: ' . $db->db_last_error() . '</strong><br>';
-    else
-	echo ' addon.tbl_stgv_studienplan_semester: Tabelle hinzugefuegt<br>';
-}
-
 //Tabelle addon.tbl_stgv_aenderungsvariante
 if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_aenderungsvariante LIMIT 1;")) {
     $qry = "CREATE TABLE addon.tbl_stgv_aenderungsvariante
@@ -171,176 +138,50 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_aenderungsvariante L
 	echo ' addon.tbl_stgv_aenderungsvariante: Tabelle hinzugefuegt<br>';
 }
 
-//Spalte Aenderungsvariante in lehre.tbl_studienordnung
-if (!$result = @$db->db_query("SELECT aenderungsvariante_kurzbz FROM lehre.tbl_studienordnung LIMIT 1;"))
-{
-    $qry = "ALTER TABLE lehre.tbl_studienordnung ADD COLUMN aenderungsvariante_kurzbz varchar(32); 
-	   
-	    ALTER TABLE lehre.tbl_studienordnung ADD CONSTRAINT fk_studienordnung_aenderungsvariante_kurzbz FOREIGN KEY (aenderungsvariante_kurzbz) REFERENCES addon.tbl_stgv_aenderungsvariante (aenderungsvariante_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
-	   ";
-    
-    if (!$db->db_query($qry))
-	echo '<strong>lehre.tbl_studienordnung: ' . $db->db_last_error() . '</strong><br>';
-    else
-	echo ' lehre.tbl_studienordnung: Spalte aenderungsvariante_kurzbz hinzugefügt.<br>';
-    
-}
-
-//Tabelle addon.tbl_stgv_studienordnungstatus
-if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienordnungstatus LIMIT 1;")) {
-    $qry = "CREATE TABLE addon.tbl_stgv_studienordnungstatus
+//Tabelle addon.tbl_stgv_studienordnung
+if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienordnung LIMIT 1;")) {
+    $qry = "CREATE TABLE addon.tbl_stgv_studienordnung
 			(
-				status_kurzbz varchar(32) NOT NULL,
-				bezeichnung varchar(256),
-				reihenfolge integer
+				studienordnung_id integer NOT NULL,
+				aenderungsvariante_kurzbz varchar(32),
+				begruendung jsonb
 			);
+			
+		ALTER TABLE addon.tbl_stgv_studienordnung ADD CONSTRAINT studienordnung_id FOREIGN KEY (studienordnung_id) REFERENCES lehre.tbl_studienordnung (studienordnung_id) ON DELETE RESTRICT ON UPDATE CASCADE;
 
-		ALTER TABLE addon.tbl_stgv_studienordnungstatus ADD CONSTRAINT pk_studienordnungstatus PRIMARY KEY (status_kurzbz);
+		INSERT INTO addon.tbl_stgv_studienordnung (studienordnung_id) SELECT studienordnung_id FROM lehre.tbl_studienordnung;
 
-		GRANT SELECT ON addon.tbl_stgv_studienordnungstatus TO web;
-		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_studienordnungstatus TO vilesci;
-		
-		INSERT INTO addon.tbl_stgv_studienordnungstatus (status_kurzbz, bezeichnung, reihenfolge) VALUES ('development', 'in Bearbeitung', 1);
-		INSERT INTO addon.tbl_stgv_studienordnungstatus (status_kurzbz, bezeichnung, reihenfolge) VALUES ('review', 'in Review', 2);
-		INSERT INTO addon.tbl_stgv_studienordnungstatus (status_kurzbz, bezeichnung, reihenfolge) VALUES ('approved', 'genehmigt', 3);
-		INSERT INTO addon.tbl_stgv_studienordnungstatus (status_kurzbz, bezeichnung, reihenfolge) VALUES ('expired', 'ausgelaufen', 4);
-		INSERT INTO addon.tbl_stgv_studienordnungstatus (status_kurzbz, bezeichnung, reihenfolge) VALUES ('notApproved', 'nicht genehmigt', 5);
+		GRANT SELECT ON addon.tbl_stgv_studienordnung TO web;
+		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_studienordnung TO vilesci;
 	";
 
     if (!$db->db_query($qry))
-	echo '<strong>addon.tbl_stgv_studienordnungstatus: ' . $db->db_last_error() . '</strong><br>';
+	echo '<strong>addon.tbl_stgv_studienordnung: ' . $db->db_last_error() . '</strong><br>';
     else
-	echo ' addon.tbl_stgv_studienordnungstatus: Tabelle hinzugefuegt<br>';
+	echo ' addon.tbl_stgv_studienordnung: Tabelle hinzugefuegt<br>';
 }
 
-//Spalte status_kurzbz in lehre.tbl_studienordnung
-if (!$result = @$db->db_query("SELECT status_kurzbz FROM lehre.tbl_studienordnung LIMIT 1;"))
-{
-    $qry = "ALTER TABLE lehre.tbl_studienordnung ADD COLUMN status_kurzbz varchar(32); 
-	   
-	    ALTER TABLE lehre.tbl_studienordnung ADD CONSTRAINT status_kurzbz FOREIGN KEY (status_kurzbz) REFERENCES addon.tbl_stgv_studienordnungstatus (status_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
-	    UPDATE lehre.tbl_studienordnung SET status_kurzbz = 'approved';
-	   ";
-    
-    if (!$db->db_query($qry))
-	echo '<strong>lehre.tbl_studienordnung: ' . $db->db_last_error() . '</strong><br>';
-    else
-	echo ' lehre.tbl_studienordnung: Spalte status_kurzbz hinzugefügt.<br>';
-    
-}
+//Tabelle addon.tbl_stgv_studienplan
+if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienplan LIMIT 1;")) {
+    $qry = "CREATE TABLE addon.tbl_stgv_studienplan
+			(
+				studienplan_id integer NOT NULL,
+				erlaeuterungen text,
+				sprache_kommentar text
+			);
+			
+		ALTER TABLE addon.tbl_stgv_studienplan ADD CONSTRAINT studienplan_id FOREIGN KEY (studienplan_id) REFERENCES lehre.tbl_studienplan (studienplan_id) ON DELETE RESTRICT ON UPDATE CASCADE;
 
-//Spalte Begruendung in lehre.tbl_studienordnung
-if (!$result = @$db->db_query("SELECT begruendung FROM lehre.tbl_studienordnung LIMIT 1;"))
-{
-    $qry = "ALTER TABLE lehre.tbl_studienordnung ADD COLUMN begruendung jsonb;";
-    
-    if (!$db->db_query($qry))
-	echo '<strong>lehre.tbl_studienordnung: ' . $db->db_last_error() . '</strong><br>';
-    else
-	echo ' lehre.tbl_studienordnung: Spalte begruendung hinzugefügt.<br>';
-    
-}
+		INSERT INTO addon.tbl_stgv_studienplan (studienplan_id) SELECT studienplan_id FROM lehre.tbl_studienplan;
 
-//Spalte Studiengangsart in lehre.tbl_studienordnung
-if (!$result = @$db->db_query("SELECT studiengangsart FROM lehre.tbl_studienordnung LIMIT 1;"))
-{
-    $qry = "ALTER TABLE lehre.tbl_studienordnung ADD COLUMN studiengangsart varchar(64);";
-    
-    if (!$db->db_query($qry))
-	echo '<strong>lehre.tbl_studienordnung: ' . $db->db_last_error() . '</strong><br>';
-    else
-	echo ' lehre.tbl_studienordnung: Spalte studiengangsart hinzugefügt.<br>';
-    
-}
+		GRANT SELECT ON addon.tbl_stgv_studienplan TO web;
+		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_studienplan TO vilesci;
+	";
 
-//Spalte orgform_kurzbz in lehre.tbl_studienordnung
-if (!$result = @$db->db_query("SELECT orgform_kurzbz FROM lehre.tbl_studienordnung LIMIT 1;"))
-{
-    $qry = "ALTER TABLE lehre.tbl_studienordnung ADD COLUMN orgform_kurzbz varchar(3);
-	    
-	    ALTER TABLE lehre.tbl_studienordnung ADD CONSTRAINT studienordnung_orgform_kurzbz FOREIGN KEY (orgform_kurzbz) REFERENCES bis.tbl_orgform (orgform_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
-	   ";
-    
     if (!$db->db_query($qry))
-	echo '<strong>lehre.tbl_studienordnung: ' . $db->db_last_error() . '</strong><br>';
+	echo '<strong>addon.tbl_stgv_studienplan: ' . $db->db_last_error() . '</strong><br>';
     else
-	echo ' lehre.tbl_studienordnung: Spalte orgform_kurzbz hinzugefügt.<br>';
-    
-}
-
-//Spalte standort_id in lehre.tbl_studienordnung
-if (!$result = @$db->db_query("SELECT standort_id FROM lehre.tbl_studienordnung LIMIT 1;"))
-{
-    $qry = "ALTER TABLE lehre.tbl_studienordnung ADD COLUMN standort_id integer;
-	    
-	    ALTER TABLE lehre.tbl_studienordnung ADD CONSTRAINT studienordnung_standort_id FOREIGN KEY (standort_id) REFERENCES public.tbl_standort (standort_id) ON DELETE RESTRICT ON UPDATE CASCADE;
-	   ";
-    
-    if (!$db->db_query($qry))
-	echo '<strong>lehre.tbl_studienordnung: ' . $db->db_last_error() . '</strong><br>';
-    else
-	echo ' lehre.tbl_studienordnung: Spalte standort_id hinzugefügt.<br>';
-    
-}
-
-//Spalte ects_stpl in lehre.tbl_studienplan
-if (!$result = @$db->db_query("SELECT ects_stpl FROM lehre.tbl_studienplan LIMIT 1;"))
-{
-    $qry = "ALTER TABLE lehre.tbl_studienplan ADD COLUMN ects_stpl numeric(5,2);";
-    
-    if (!$db->db_query($qry))
-	echo '<strong>lehre.tbl_studienplan: ' . $db->db_last_error() . '</strong><br>';
-    else
-	echo ' lehre.tbl_studienplan: Spalte ects_stpl hinzugefügt.<br>';
-    
-}
-
-//Spalte pflicht_sws in lehre.tbl_studienplan
-if (!$result = @$db->db_query("SELECT pflicht_sws FROM lehre.tbl_studienplan LIMIT 1;"))
-{
-    $qry = "ALTER TABLE lehre.tbl_studienplan ADD COLUMN pflicht_sws integer;";
-    
-    if (!$db->db_query($qry))
-	echo '<strong>lehre.tbl_studienplan: ' . $db->db_last_error() . '</strong><br>';
-    else
-	echo ' lehre.tbl_studienplan: Spalte pflicht_sws hinzugefügt.<br>';
-    
-}
-
-//Spalte pflicht_lvs in lehre.tbl_studienplan
-if (!$result = @$db->db_query("SELECT pflicht_lvs FROM lehre.tbl_studienplan LIMIT 1;"))
-{
-    $qry = "ALTER TABLE lehre.tbl_studienplan ADD COLUMN pflicht_lvs integer;";
-    
-    if (!$db->db_query($qry))
-	echo '<strong>lehre.tbl_studienplan: ' . $db->db_last_error() . '</strong><br>';
-    else
-	echo ' lehre.tbl_studienplan: Spalte pflicht_lvs hinzugefügt.<br>';
-    
-}
-
-//Spalte erlaeuterungen in lehre.tbl_studienplan
-if (!$result = @$db->db_query("SELECT erlaeuterungen FROM lehre.tbl_studienplan LIMIT 1;"))
-{
-    $qry = "ALTER TABLE lehre.tbl_studienplan ADD COLUMN erlaeuterungen text;";
-    
-    if (!$db->db_query($qry))
-	echo '<strong>lehre.tbl_studienplan: ' . $db->db_last_error() . '</strong><br>';
-    else
-	echo ' lehre.tbl_studienplan: Spalte erlaeuterungen hinzugefügt.<br>';
-    
-}
-
-//Spalte sprache_kommentar in lehre.tbl_studienplan
-if (!$result = @$db->db_query("SELECT sprache_kommentar FROM lehre.tbl_studienplan LIMIT 1;"))
-{
-    $qry = "ALTER TABLE lehre.tbl_studienplan ADD COLUMN sprache_kommentar text;";
-    
-    if (!$db->db_query($qry))
-	echo '<strong>lehre.tbl_studienplan: ' . $db->db_last_error() . '</strong><br>';
-    else
-	echo ' lehre.tbl_studienplan: Spalte sprache_kommentar hinzugefügt.<br>';
-    
+	echo ' addon.tbl_stgv_studienplan: Tabelle hinzugefuegt<br>';
 }
 
 //Rolle für Addon
@@ -700,49 +541,6 @@ if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berecht
 	else
 	    echo ' system.tbl_berechtigung: Recht zum Download von Dokumenten.<br>';
     }
-}
-
-
-
-
-//Tabelle addon.tbl_stgv_bewerbungstermine
-if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_bewerbungstermine LIMIT 1;")) {
-    $qry = "CREATE TABLE addon.tbl_stgv_bewerbungstermine
-			(
-				bewerbungstermin_id integer NOT NULL,
-				studiengang_kz integer NOT NULL,
-				studiensemester_kurzbz varchar(16) NOT NULL,
-				beginn timestamp,
-				ende timestamp,
-				nachfrist boolean default false,
-				nachfrist_ende timestamp,
-				anmerkung text,
-				insertamum timestamp,
-				insertvon varchar(32),
-				updateamum timestamp,
-				updatevon varchar(32)
-			);
-			
-		    CREATE SEQUENCE addon.tbl_stgv_bewerbungstermine_bewerbungstermin_id_seq
-			INCREMENT BY 1
-			NO MAXVALUE
-			NO MINVALUE
-			CACHE 1;
-
-		ALTER TABLE addon.tbl_stgv_bewerbungstermine ADD CONSTRAINT pk_bewerbungstermin_id PRIMARY KEY (bewerbungstermin_id);
-		ALTER TABLE addon.tbl_stgv_bewerbungstermine ALTER COLUMN bewerbungstermin_id SET DEFAULT nextval('addon.tbl_stgv_bewerbungstermine_bewerbungstermin_id_seq');
-		ALTER TABLE addon.tbl_stgv_bewerbungstermine ADD CONSTRAINT fk_bewerbungstermin_studiensemester FOREIGN KEY (studiensemester_kurzbz) REFERENCES public.tbl_studiensemester (studiensemester_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
-		ALTER TABLE addon.tbl_stgv_bewerbungstermine ADD CONSTRAINT fk_bewerbungstermin_studiengang FOREIGN KEY (studiengang_kz) REFERENCES public.tbl_studiengang (studiengang_kz) ON DELETE RESTRICT ON UPDATE CASCADE;
-
-		GRANT SELECT ON addon.tbl_stgv_bewerbungstermine TO web;
-		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_bewerbungstermine TO vilesci;
-		GRANT SELECT, UPDATE ON addon.tbl_stgv_bewerbungstermine_bewerbungstermin_id_seq TO vilesci;
-	";
-
-    if (!$db->db_query($qry))
-	echo '<strong>addon.tbl_stgv_studienordnungstatus: ' . $db->db_last_error() . '</strong><br>';
-    else
-	echo ' addon.tbl_stgv_studienordnungstatus: Tabelle hinzugefuegt<br>';
 }
 
 //Spalte benotung in lehre.tbl_lehrveranstaltung
@@ -1374,10 +1172,7 @@ echo '<h2>Gegenprüfung</h2>';
 //TODO check lehre.tbl_studienordnung
 $tabellen = array(
     "addon.tbl_stgv_foerdervertrag" => array("foerdervertrag_id", "studiengang_kz", "foerdergeber", "foerdersatz", "foerdergruppe", "gueltigvon", "gueltigbis", "erlaeuterungen", "insertamum", "insertvon", "updateamum", "updatevon"),
-    "addon.tbl_stgv_studienplan_semester" => array("studienplan_semester_id", "studienplan_id", "studiensemester_kurzbz", "semester"),
     "addon.tbl_stgv_aenderungsvariante" => array("aenderungsvariante_kurzbz","bezeichnung"),
-    "addon.tbl_stgv_studienordnungstatus" => array("status_kurzbz","bezeichnung","reihenfolge"),
-    "addon.tbl_stgv_bewerbungstermine" => array("bewerbungstermin_id","studiengang_kz","studiensemester_kurzbz","beginn","ende","nachfrist","nachfrist_ende","anmerkung", "insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_doktorat" => array("doktorat_id", "studiengang_kz", "bezeichnung", "datum_erlass", "gueltigvon", "gueltigbis", "erlaeuterungen", "insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_taetigkeitsfelder" => array("taetigkeitsfeld_id", "studienordnung_id", "ueberblick", "data","insertamum", "insertvon", "updateamum", "updatevon"), 
     "addon.tbl_stgv_studiengangsgruppen" => array("studiengangsgruppe_id", "data","insertamum", "insertvon", "updateamum", "updatevon"), 
@@ -1390,6 +1185,8 @@ $tabellen = array(
     "addon.tbl_stgv_aufnahmeverfahren" => array("aufnahmeverfahren_id", "studienordnung_id", "data","insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_zugangsvoraussetzung" => array("zugangsvoraussetzung_id", "studienordnung_id", "data","insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_studienjahr" => array("studienjahr_id", "studienplan_id","bezeichnung", "data","insertamum", "insertvon", "updateamum", "updatevon"),
+    "addon.tbl_stgv_studienordnung" => array("studienordnung_id", "aenderungsvariante_kurzbz", "begruendung"),
+    "addon.tbl_stgv_studienplan" => array("studienplan_id", "erlaeuterungen", "sprache_kommentar")
 );
 
 

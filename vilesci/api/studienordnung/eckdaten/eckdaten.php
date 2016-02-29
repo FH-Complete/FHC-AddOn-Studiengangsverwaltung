@@ -5,7 +5,9 @@ require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../../include/akadgrad.class.php');
 require_once('../../../../../../include/studiensemester.class.php');
+require_once('../../../../../../include/studiengang.class.php');
 require_once('../../../../include/studienordnungAddonStgv.class.php');
+require_once('../../../../include/studienplanAddonStgv.class.php');
 require_once('../../functions.php');
 
 $sto_array = array();
@@ -31,6 +33,24 @@ $akadgrad->getAll();
 $studiensemester = new studiensemester();
 $studiensemester->getAll();
 
+$studiengang = new studiengang($studienordnung->studiengang_kz);
+$studienplan = new StudienplanAddonStgv();
+$studienplan->loadStudienplanSTO($studienordnung->studienordnung_id);
+
+
+$orgform = "";
+foreach($studienplan->result as $stpl)
+{
+    if($orgform === "")
+    {
+	$orgform .= $stpl->orgform_kurzbz." ";
+    }
+    else
+    {
+	$orgform .= "+ ".$stpl->orgform_kurzbz." ";
+    }
+}
+
 $data = array(
     'studienordnung_id'=> $studienordnung->studienordnung_id,
     'stgkz'=> $studienordnung->studiengang_kz,
@@ -43,9 +63,9 @@ $data = array(
     'studiengangbezeichnung_englisch' => $studienordnung->studiengangbezeichnung_englisch,
     'studiengangkurzbzlang' => $studienordnung->studiengangkurzbzlang,
     'akadgrad_id' => $studienordnung->akadgrad_id,
-    'studiengangsart' => $studienordnung->studiengangsart,
+    'studiengangsart' => $studiengang->typ,
     'standort_id' => $studienordnung->standort_id,
-    'orgform_kurzbz' => $studienordnung->orgform_kurzbz,
+    'orgform' => $orgform,
     'status_kurzbz' => $studienordnung->status_kurzbz,
     'updateamum' => $studienordnung->updateamum,
     'updatevon' => $studienordnung->updatevon,

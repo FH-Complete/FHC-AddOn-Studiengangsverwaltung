@@ -35,7 +35,7 @@ if (($data->vorlage_studienordnung_id != 'null') && $data->vorlage_studienordnun
     $sto_vorlage = new StudienordnungAddonStgv();
     $sto_vorlage->loadStudienordnung($data->vorlage_studienordnung_id);
 
-    $studienordnung->studiengangsart = $sto_vorlage->studiengangsart;
+//    $studienordnung->studiengangsart = $sto_vorlage->studiengangsart;
     $studienordnung->orgform_kurzbz = $sto_vorlage->orgform_kurzbz;
     $studienordnung->standort_id = $sto_vorlage->standort_id;
     $studienordnung->ects = $sto_vorlage->ects;

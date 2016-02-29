@@ -9,6 +9,7 @@ angular.module('stgv2')
 					ctrl.akadGradList = [];
 					ctrl.orgformList = [];
 					ctrl.standortList = [];
+					ctrl.studiengangartList = [];
 					
 					//enable tooltips
 					$(document).ready(function(){
@@ -41,6 +42,22 @@ angular.module('stgv2')
 						ctrl.standortList = result;
 					}, function (error) {
 						errorService.setError(getErrorMsg(error));
+					});
+					
+					$http({
+						method: 'GET',
+						url: './api/helper/studiengangtyp.php'
+					}).then(function success(response) {
+						if (response.data.erfolg)
+						{
+							ctrl.studiengangartList = response.data.info;
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+					}, function error(response) {
+						errorService.setError(getErrorMsg(response));
 					});
 
 					$http({

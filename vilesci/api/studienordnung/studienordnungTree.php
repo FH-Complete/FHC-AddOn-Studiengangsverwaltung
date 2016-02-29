@@ -59,6 +59,9 @@ switch($status)
 	break;
 }
 $id = 0;
+
+
+
 foreach($studienordnung->result as $key=>$sto)
 {
     $temp = new stdClass();

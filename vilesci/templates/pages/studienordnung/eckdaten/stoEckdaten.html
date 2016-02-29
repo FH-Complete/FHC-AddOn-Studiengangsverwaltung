@@ -36,8 +36,7 @@
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.art.$error.required)}">
 					<label for="art">Studiengangsart</label>
 					<select class="form-control input-sm" name="art" ng-model="ctrl.data.studiengangsart" required>
-						<option>Bachelor</option>
-						<option>Master</option>
+						<option ng-repeat="stgArt in ctrl.studiengangartList" value="{{stgArt.typ}}">{{stgArt.bezeichnung}}</option>
 					</select>
 					<!--<input strip-html type="text" class="form-control input-sm" name="art" ng-model="ctrl.data.studiengangsart"/>-->
 				</div>
@@ -46,7 +45,7 @@
 				<div class="form-group">
 					<label for="akadGrad">Akademischer Grad</label>
 					<div class="input-group">
-						<select class="form-control input-sm" name="akadGrad" ng-model="ctrl.data.akadgrad_id">
+						<select class="form-control input-sm" name="akadGrad" ng-model="ctrl.data.akadgrad_id" disabled>
 							<option ng-repeat="akadGrad in ctrl.akadGradList" value="{{akadGrad.akadgrad_id}}">{{akadGrad.titel}}</option>
 						</select>
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Für technische Studiengänge ist 'Bachelor of Science in Engineering' oder 'Master of Science in Engineering' auszuwählen."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
@@ -58,9 +57,10 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="orgform">Orgform</label>
-					<select class="form-control input-sm" name="orgform" ng-model="ctrl.data.orgform_kurzbz">
+					<input strip-html type="text" class="form-control input-sm" name="art" ng-model="ctrl.data.orgform" disabled/>
+					<!--<select class="form-control input-sm" name="orgform" ng-model="ctrl.data.orgform_kurzbz">
 						<option ng-repeat="orgform in ctrl.orgformList">{{orgform.orgform_kurzbz}}</option>
-					</select>
+					</select>-->
 				</div>
 			</div>
 			<div class="col-sm-2">

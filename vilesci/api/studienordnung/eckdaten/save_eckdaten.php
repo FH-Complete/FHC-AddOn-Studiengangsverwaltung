@@ -40,7 +40,6 @@ function mapDataToStudienordnung($data)
     $sto->studiengangkurzbzlang	= $data->studiengangkurzbzlang;
     $sto->studiengangsart = $data->studiengangsart;
     $sto->akadgrad_id = $data->akadgrad_id;
-    $sto->orgform_kurzbz = $data->orgform_kurzbz;
     $sto->standort_id = $data->standort_id;
     $sto->updatevon = get_uid();
     return $sto;

@@ -29,11 +29,7 @@ class StudienordnungAddonStgv extends studienordnung
 {
 
     public $aenderungsvariante_kurzbz; //varchar(32)
-    public $status_kurzbz;  //varchar(32)
     public $begruendung;  //text
-    public $studiengangsart;
-    public $orgform_kurzbz;
-    public $standort_id;
     public $dokumente = array();
 
     /**
@@ -65,9 +61,10 @@ class StudienordnungAddonStgv extends studienordnung
 
     public function loadStudienordnungWithStatus($studiengang_kz, $status_kurzbz)
     {
-	$qry = "SELECT sto.*, s.bezeichnung as status_bezeichnung, ae.bezeichnung as aenderungsvariante_bezeichnung "
+	$qry = "SELECT sto.*, s.bezeichnung as status_bezeichnung, ae.bezeichnung as aenderungsvariante_bezeichnung, addonSto.* "
 		. "FROM lehre.tbl_studienordnung sto "
-		. "JOIN addon.tbl_stgv_studienordnungstatus s USING(status_kurzbz) "
+		. "JOIN addon.tbl_stgv_studienordnung addonSto USING(studienordnung_id) "
+		. "JOIN lehre.tbl_studienordnungstatus s USING(status_kurzbz) "
 		. "LEFT JOIN addon.tbl_stgv_aenderungsvariante ae USING(aenderungsvariante_kurzbz) "
 		. "WHERE status_kurzbz=" . $this->db_add_param($status_kurzbz, FHC_STRING) . ""
 		. " AND studiengang_kz=" . $this->db_add_param($studiengang_kz, FHC_INTEGER) . ";";
@@ -98,8 +95,6 @@ class StudienordnungAddonStgv extends studienordnung
 	    $obj->status_kurzbz = $row->status_kurzbz;
 	    $obj->status_bezeichnung = $row->status_bezeichnung;
 	    $obj->begruendung = json_decode($row->begruendung);
-	    $obj->studiengangsart = $row->studiengangsart;
-	    $obj->orgform_kurzbz = $row->orgform_kurzbz;
 	    $obj->standort_id = $row->standort_id;
 	    $obj->updateamum = $row->updateamum;
 	    $obj->updatevon = $row->updatevon;
@@ -113,14 +108,14 @@ class StudienordnungAddonStgv extends studienordnung
 
     public function save()
     {
-//Variablen pruefen
+	//Variablen pruefen
 	if (!$this->validate())
 	    return false;
 
 	if ($this->new)
 	{
-//Neuen Datensatz einfuegen
-	    $qry = 'BEGIN;INSERT INTO lehre.tbl_studienordnung (studiengang_kz, version, bezeichnung, ects, gueltigvon, gueltigbis, studiengangbezeichnung, studiengangbezeichnung_englisch, studiengangkurzbzlang, akadgrad_id, aenderungsvariante_kurzbz, status_kurzbz, begruendung, studiengangsart, orgform_kurzbz, standort_id, insertamum, insertvon) VALUES (' .
+	    //Neuen Datensatz einfuegen
+	    $qry = 'BEGIN;INSERT INTO lehre.tbl_studienordnung (studiengang_kz, version, bezeichnung, ects, gueltigvon, gueltigbis, studiengangbezeichnung, studiengangbezeichnung_englisch, studiengangkurzbzlang, akadgrad_id, status_kurzbz, standort_id, insertamum, insertvon) VALUES (' .
 		    $this->db_add_param($this->studiengang_kz, FHC_INTEGER) . ', ' .
 		    $this->db_add_param($this->version) . ', ' .
 		    $this->db_add_param($this->bezeichnung) . ', ' .
@@ -131,11 +126,7 @@ class StudienordnungAddonStgv extends studienordnung
 		    $this->db_add_param($this->studiengangbezeichnung_englisch) . ', ' .
 		    $this->db_add_param($this->studiengangkurzbzlang) . ', ' .
 		    $this->db_add_param($this->akadgrad_id, FHC_INTEGER) . ', ' .
-		    $this->db_add_param($this->aenderungsvariante_kurzbz) . ', ' .
 		    $this->db_add_param($this->status_kurzbz) . ', ' .
-		    $this->db_add_param($this->begruendung) . ', ' .
-		    $this->db_add_param($this->studiengangsart) . ', ' .
-		    $this->db_add_param($this->orgform_kurzbz) . ', ' .
 		    $this->db_add_param($this->standort_id) . ', ' .
 		    ' now(), ' .
 		    $this->db_add_param($this->insertvon) . ');';
@@ -158,14 +149,15 @@ class StudienordnungAddonStgv extends studienordnung
 		    ' studiengangbezeichnung_englisch=' . $this->db_add_param($this->studiengangbezeichnung_englisch) . ', ' .
 		    ' studiengangkurzbzlang=' . $this->db_add_param($this->studiengangkurzbzlang) . ',' .
 		    ' akadgrad_id=' . $this->db_add_param($this->akadgrad_id, FHC_INTEGER) . ', ' .
-		    ' aenderungsvariante_kurzbz=' . $this->db_add_param($this->aenderungsvariante_kurzbz) . ', ' .
 		    ' status_kurzbz=' . $this->db_add_param($this->status_kurzbz) . ', ' .
-		    ' begruendung=' . $this->db_add_param($this->begruendung) . ', ' .
-		    ' studiengangsart=' . $this->db_add_param($this->studiengangsart) . ', ' .
-		    ' orgform_kurzbz=' . $this->db_add_param($this->orgform_kurzbz) . ', ' .
 		    ' standort_id=' . $this->db_add_param($this->standort_id) . ', ' .
 		    ' updateamum= now(), ' .
 		    ' updatevon=' . $this->db_add_param($this->updatevon) . ' ' .
+		    ' WHERE studienordnung_id=' . $this->db_add_param($this->studienordnung_id, FHC_INTEGER, false) . ';';
+	    
+	    $qry .= 'UPDATE addon.tbl_stgv_studienordnung SET' .
+		    ' aenderungsvariante_kurzbz=' . $this->db_add_param($this->aenderungsvariante_kurzbz) . ', ' .
+		    ' begruendung=' . $this->db_add_param($this->begruendung) . ' ' .
 		    ' WHERE studienordnung_id=' . $this->db_add_param($this->studienordnung_id, FHC_INTEGER, false) . ';';
 	}
 
@@ -180,7 +172,22 @@ class StudienordnungAddonStgv extends studienordnung
 		    if ($row = $this->db_fetch_object())
 		    {
 			$this->studienordnung_id = $row->id;
-			$this->db_query('COMMIT');
+			$qry = 'BEGIN;INSERT INTO addon.tbl_stgv_studienordnung (studienordnung_id, aenderungsvariante_kurzbz, begruendung) VALUES (' .
+				$this->db_add_param($this->studienordnung_id, FHC_INTEGER) . ', ' .
+
+				$this->db_add_param($this->aenderungsvariante_kurzbz) . ', ' .
+				$this->db_add_param($this->begruendung). ');';
+			if($this->db_query($qry))
+			{
+			    $this->db_query('COMMIT');
+			}
+			else
+			{
+			    $this->db_query('ROLLBACK');
+			    $this->errormsg = "Fehler beim Speichern der Daten.";
+			    return false;
+			}
+			
 		    } else
 		    {
 			$this->db_query('ROLLBACK');
@@ -217,7 +224,7 @@ class StudienordnungAddonStgv extends studienordnung
 	}
 
 	//Daten aus der Datenbank lesen
-	$qry = "SELECT * FROM lehre.tbl_studienordnung WHERE studienordnung_id=" . $this->db_add_param($studienordnung_id, FHC_INTEGER, false);
+	$qry = "SELECT * FROM lehre.tbl_studienordnung JOIN addon.tbl_stgv_studienordnung USING(studienordnung_id) WHERE studienordnung_id=" . $this->db_add_param($studienordnung_id, FHC_INTEGER, false);
 
 	if (!$this->db_query($qry))
 	{
@@ -240,9 +247,7 @@ class StudienordnungAddonStgv extends studienordnung
 	    $this->akadgrad_id = $row->akadgrad_id;
 	    $this->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
 	    $this->status_kurzbz = $row->status_kurzbz;
-	    $this->begruendung = json_decode($row->begruendung);
-	    $this->studiengangsart = $row->studiengangsart;
-	    $this->orgform_kurzbz = $row->orgform_kurzbz;
+	    $this->begruendung = $row->begruendung;
 	    $this->standort_id = $row->standort_id;
 	    $this->updateamum = $row->updateamum;
 	    $this->updatevon = $row->updatevon;
@@ -279,16 +284,18 @@ class StudienordnungAddonStgv extends studienordnung
 
 	if (is_null($studiensemester_kurzbz))
 	{
-	    $qry = 'SELECT sto.*, s.bezeichnung as status_bezeichnung, ae.bezeichnung as aenderungsvariante_bezeichnung
+	    $qry = 'SELECT sto.*, s.bezeichnung as status_bezeichnung, ae.bezeichnung as aenderungsvariante_bezeichnung, addonSto.*
 			FROM lehre.tbl_studienordnung sto 
-			    JOIN addon.tbl_stgv_studienordnungstatus s USING(status_kurzbz)
+			    JOIN addon.tbl_stgv_studienordnung addonSto USING(studienordnung_id) 
+			    JOIN lehre.tbl_studienordnungstatus s USING(status_kurzbz)
 			    LEFT JOIN addon.tbl_stgv_aenderungsvariante ae USING(aenderungsvariante_kurzbz)
 			    WHERE  studiengang_kz=' . $this->db_add_param($studiengang_kz, FHC_INTEGER, false);
 	} else
 	{
-	    $qry = 'SELECT sto.*, s.bezeichnung as status_bezeichnung, ae.bezeichnung as aenderungsvariante_bezeichnung
+	    $qry = 'SELECT sto.*, s.bezeichnung as status_bezeichnung, ae.bezeichnung as aenderungsvariante_bezeichnung, addonSto.*
 			FROM lehre.tbl_studienordnung sto 
-			    JOIN addon.tbl_stgv_studienordnungstatus s USING(status_kurzbz) 
+			    JOIN addon.tbl_stgv_studienordnung addonSto USING(studienordnung_id)
+			    JOIN lehre.tbl_studienordnungstatus s USING(status_kurzbz) 
 			    LEFT JOIN addon.tbl_stgv_aenderungsvariante ae USING(aenderungsvariante_kurzbz)
 			    LEFT JOIN lehre.tbl_studienordnung_semester USING (studienordnung_id) 
 			    WHERE studiengang_kz=' . $this->db_add_param($studiengang_kz, FHC_INTEGER, false);
@@ -331,8 +338,6 @@ class StudienordnungAddonStgv extends studienordnung
 	    $obj->status_kurzbz = $row->status_kurzbz;
 	    $obj->status_bezeichnung = $row->status_bezeichnung;
 	    $obj->begruendung = json_decode($row->begruendung);
-	    $obj->studiengangsart = $row->studiengangsart;
-	    $obj->orgform_kurzbz = $row->orgform_kurzbz;
 	    $obj->standort_id = $row->standort_id;
 	    $obj->updateamum = $row->updateamum;
 	    $obj->updatevon = $row->updatevon;
@@ -366,7 +371,9 @@ class StudienordnungAddonStgv extends studienordnung
 	}
 
 	//Daten aus der Datenbank lesen
-	$qry = "SELECT tbl_studienordnung.* FROM lehre.tbl_studienordnung JOIN lehre.tbl_studienplan USING (studienordnung_id) WHERE studienplan_id=" . $this->db_add_param($studienplan_id, FHC_INTEGER, false);
+	$qry = "SELECT tbl_studienordnung.*, addonSto.*  FROM lehre.tbl_studienordnung "
+		. "JOIN addon.tbl_stgv_studienordnung addonSto USING(studienordnung_id) "
+		. "JOIN lehre.tbl_studienplan USING (studienordnung_id) WHERE studienplan_id=" . $this->db_add_param($studienplan_id, FHC_INTEGER, false);
 
 	if (!$this->db_query($qry))
 	{
@@ -390,8 +397,6 @@ class StudienordnungAddonStgv extends studienordnung
 	    $this->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
 	    $this->status_kurzbz = $row->status_kurzbz;
 	    $this->begruendung = json_decode($row->begruendung);
-	    $this->studiengangsart = $row->studiengangsart;
-	    $this->orgform_kurzbz = $row->orgform_kurzbz;
 	    $this->standort_id = $row->standort_id;
 	    $this->updateamum = $row->updateamum;
 	    $this->updatevon = $row->updatevon;
@@ -462,6 +467,12 @@ class StudienordnungAddonStgv extends studienordnung
 	    return false;
 	}
     }
+    
+    public function delete($studienordnung_id)
+    {
+	//TODO delte in addon
+	parent::delete($studienordnung_id);
+    }
 
     /**
      * Löscht ein Dokument
@@ -510,9 +521,6 @@ class StudienordnungAddonStgv extends studienordnung
      */
     public function getAll()
     {
-
-
-
 	$qry = 'SELECT * FROM lehre.tbl_studienordnung';
 
 
@@ -540,8 +548,6 @@ class StudienordnungAddonStgv extends studienordnung
 	    $obj->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
 	    $obj->status_kurzbz = $row->status_kurzbz;
 	    $obj->begruendung = json_decode($row->begruendung);
-	    $obj->studiengangsart = $row->studiengangsart;
-	    $obj->orgform_kurzbz = $row->orgform_kurzbz;
 	    $obj->standort_id = $row->standort_id;
 	    $obj->updateamum = $row->updateamum;
 	    $obj->updatevon = $row->updatevon;
