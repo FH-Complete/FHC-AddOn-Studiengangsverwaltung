@@ -46,14 +46,18 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<link rel="stylesheet" type="text/css" href="./js/jquery-easyui-1.4.4/themes/color.css">
 	
 	<!-- JQuery UI CSS -->
-	<link rel="stylesheet" type="text/css" href="./js/jquery-ui-1.11.4.custom/jquery-ui.css">
+	<link href="./js/jquery-ui-1.11.4.custom/jquery-ui.css" rel="stylesheet" type="text/css">
 	<link href="js/jquery-ui-1.11.4.custom/jquery-ui.theme.css" rel="stylesheet" type="text/css"/>
+	<link href="js/jquery-ui-1.11.4.custom/jquery-ui.structure.css" rel="stylesheet" type="text/css"/>
 	
 	<!-- App CSS -->
 	<link rel="stylesheet" type="text/css" href="./css/style.css">
 
 	<!-- jQuery -->
 	<script type="text/javascript" src="./js/jquery-1.11.3.js"></script>
+	
+	<!-- JQuery UI -->
+	<script type="text/javascript" src="./js/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
 
 	<!-- Easy UI JS -->
 	<!--<script type="text/javascript" src="./js/jquery-easyui-1.4.4/jquery.min.js"></script>-->
@@ -61,8 +65,6 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<!-- TreeGrid DnD Extension -->
 	<script type="text/javascript" src="./js/treegrid-dnd/treegrid-dnd.js"></script>
 	
-	<!-- JQuery UI -->
-	<script type="text/javascript" src="./js/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
 
 	<!-- Bootstrap JS -->
 	<script src="./css/bootstrap-3.3.5/dist/js/bootstrap.js"></script>

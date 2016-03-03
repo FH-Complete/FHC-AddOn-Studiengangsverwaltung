@@ -82,6 +82,8 @@ angular.module('stgv2')
 									ctrl.drawListItem('aufgaben_lists', v);
 								});
 							});
+							
+							initDnD();
 						}
 					}
 					else

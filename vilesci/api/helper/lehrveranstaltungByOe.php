@@ -80,6 +80,8 @@ if($lehrveranstaltung->load_lva_oe($oe_kurzbz, true, $lehrtyp_kurzbz, $sortStrin
 	$temp->benotung = $lv->benotung;
 	$temp->lvinfo = $lv->lvinfo;
 	$temp->zeugnis = $lv->zeugnis;
+	$temp->lehre = $lv->lehre;
+	$temp->lehrauftrag = $lv->lehrauftrag;
 	array_push($lv_array, $temp);
     }
 }

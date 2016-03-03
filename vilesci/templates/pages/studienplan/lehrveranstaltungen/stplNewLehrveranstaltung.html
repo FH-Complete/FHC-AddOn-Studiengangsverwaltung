@@ -63,7 +63,7 @@
 				<div class="col-sm-3">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
 						<label for="lehrvorm">Lehrform*</label>
-						<select class="form-control input-sm" name="lehrform" ng-model="newLvCtrl.data.lehrform_kurzbz" required>
+						<select class="form-control input-sm" name="lehrform" ng-model="newLvCtrl.data.lehrform_kurzbz" ng-change="newLvCtrl.setLehrformDependencies()" required>
 							<option ng-repeat="lehrform in newLvCtrl.lehrformList" value="{{lehrform.lehrform_kurzbz}}">{{lehrform.bezeichnung}}</option>
 						</select>
 					</div>
@@ -106,45 +106,26 @@
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
-						<label for="planlektoren">Planlektoren</label>
-						<input integer-only="positive" type="text" class="form-control input-sm"  name="planlektoren" ng-model="newLvCtrl.data.planlektoren"/>
+						<label for="semester_alternativ">Sem alternativ</label>
+						<input integer-only="positive" type="text" class="form-control input-sm"  name="semester_alternativ" ng-model="newLvCtrl.data.semester_alternativ"/>
 					</div>
 				</div>
-				<div class="col-sm-2">
-					<div class="form-group">
-						<label for="planpersonalkosten">Planpersonalkosten</label>
-						<input numeric-only='positive' type="text" class="form-control input-sm"  name="planpersonalkosten" ng-model="newLvCtrl.data.planpersonalkosten"/>
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="form-group">
-						<label for="plankostenprolektor">Plankosten/Lektor</label>
-						<input numeric-only='positive' type="text" class="form-control input-sm"  name="plankostenprolektor" ng-model="newLvCtrl.data.plankostenprolektor"/>
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="checkbox">
-						</br>
-						<label>
-							<input type="checkbox" name="projektarbeit" ng-model="newLvCtrl.data.projektarbeit"/>
-							Projektarbeit
-						</label>
-					</div>
-				</div>
-			</div>
-			<div class="row">
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label for="sort">Sort</label>
 						<input integer-only type="text" class="form-control input-sm"  name="sort" ng-model="newLvCtrl.data.sort"/>
 					</div>
 				</div>
-				<div class="col-sm-4">
+			</div>
+			<div class="row">
+				<div class="col-sm-8">
 					<div class="form-group">
 						<label for="anmerkung">Anmerkung</label>
 						<input strip-html type="text" class="form-control input-sm"  name="anmerkung" ng-model="newLvCtrl.data.anmerkung"/>
 					</div>
 				</div>
+			</div>
+			<div class="row">
 				<div class="col-sm-2">
 					<div class="checkbox">
 						</br>
@@ -172,57 +153,6 @@
 						</label>
 					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-2">
-					<div class="form-group">
-						<label for="lvnr">LVNR</label>
-						<input integer-only="positive" type="text" class="form-control input-sm"  name="lvnr" ng-model="newLvCtrl.data.lvnr"/>
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="form-group">
-						<label for="incomingplaetze">Incomingplätze</label>
-						<input integer-only="positive" type="text" class="form-control input-sm"  name="incomingplaetze" ng-model="newLvCtrl.data.incoming"/>
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="form-group">
-						<label for="semester_alternativ">Sem alternativ</label>
-						<input integer-only="positive" type="text" class="form-control input-sm"  name="semester_alternativ" ng-model="newLvCtrl.data.semester_alternativ"/>
-					</div>
-				</div>
-				<div class="col-sm-5">
-					<div class="form-group">
-						<label for="raumtyp">Raumtyp</label>
-						<select class="form-control input-sm" name="raumtyp" ng-model="newLvCtrl.data.raumtyp_kurzbz">
-							<option ng-repeat="raumtyp in newLvCtrl.raumtypList" value="{{raumtyp.raumtyp_kurzbz}}">{{raumtyp.beschreibung}}</option>
-						</select>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-3">
-					<div class="form-group">
-						<label for="farbe">Farbe</label>
-						<div class="input-group">
-							<input strip-html id="farbe" type="text" class="form-control input-sm" name="farbe" ng-model="newLvCtrl.data.farbe" ng-change="newLvCtrl.updateColor()"/>
-							<span class="input-group-addon"><span id="farbevorschau" style="background-color: #; border: 1px solid #999999; cursor: default;">&nbsp&nbsp&nbsp&nbsp</span></span>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="form-group">
-						<label for="anzahlsemester">Anzahl Semester</label>
-						<input integer-only="positive" type="text" class="form-control input-sm"  name="anzahlsemester" ng-model="newLvCtrl.data.anzahlsemester"/>
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="form-group">
-						<label for="semesterwochen">Semesterwochen</label>
-						<input integer-only="positive" type="text" class="form-control input-sm"  name="semesterwochen" ng-model="newLvCtrl.data.semesterwochen"/>
-					</div>
-				</div>
 				<div class="col-sm-2">
 					<div class="checkbox">
 						</br>
@@ -241,10 +171,93 @@
 						</label>
 					</div>
 				</div>
+				<div class="col-sm-2">
+					<div class="checkbox">
+						</br>
+						<label>
+							<input type="checkbox" name="lehrauftrag" ng-model="newLvCtrl.data.lehrauftrag"/>
+							Lehrauftrag
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
+					<div class="form-group">
+						<label for="lvnr">LVNR</label>
+						<input integer-only="positive" type="text" class="form-control input-sm"  name="lvnr" ng-model="newLvCtrl.data.lvnr"/>
+					</div>
+				</div>
+				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
+					<div class="form-group">
+						<label for="incomingplaetze">Incomingplätze</label>
+						<input integer-only="positive" type="text" class="form-control input-sm"  name="incomingplaetze" ng-model="newLvCtrl.data.incoming"/>
+					</div>
+				</div>
+				<div class="col-sm-5" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
+					<div class="form-group">
+						<label for="raumtyp">Raumtyp</label>
+						<select class="form-control input-sm" name="raumtyp" ng-model="newLvCtrl.data.raumtyp_kurzbz">
+							<option ng-repeat="raumtyp in newLvCtrl.raumtypList" value="{{raumtyp.raumtyp_kurzbz}}">{{raumtyp.beschreibung}}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
+					<div class="form-group">
+						<label for="planlektoren">Planlektoren</label>
+						<input integer-only="positive" type="text" class="form-control input-sm"  name="planlektoren" ng-model="newLvCtrl.data.planlektoren"/>
+					</div>
+				</div>
+				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
+					<div class="form-group">
+						<label for="planpersonalkosten">Planpersonalkosten</label>
+						<input numeric-only='positive' type="text" class="form-control input-sm"  name="planpersonalkosten" ng-model="newLvCtrl.data.planpersonalkosten"/>
+					</div>
+				</div>
+				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
+					<div class="form-group">
+						<label for="plankostenprolektor">Plankosten/Lektor</label>
+						<input numeric-only='positive' type="text" class="form-control input-sm"  name="plankostenprolektor" ng-model="newLvCtrl.data.plankostenprolektor"/>
+					</div>
+				</div>
+				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
+					<div class="checkbox">
+						</br>
+						<label>
+							<input type="checkbox" name="projektarbeit" ng-model="newLvCtrl.data.projektarbeit"/>
+							Projektarbeit
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label for="farbe">Farbe</label>
+						<div class="input-group">
+							<input strip-html id="farbe" type="text" class="form-control input-sm" name="farbe" ng-model="newLvCtrl.data.farbe" ng-change="newLvCtrl.updateColor()"/>
+							<span class="input-group-addon"><span id="farbevorschau" style="background-color: #; border: 1px solid #999999; cursor: default;">&nbsp&nbsp&nbsp&nbsp</span></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label for="anzahlsemester">Anzahl Semester</label>
+						<input integer-only="positive" type="text" class="form-control input-sm"  name="anzahlsemester" ng-model="newLvCtrl.data.anzahlsemester"/>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="semesterwochen">Semesterwochen</label>
+						<input integer-only="positive" type="text" class="form-control input-sm"  name="semesterwochen" ng-model="newLvCtrl.data.semesterwochen"/>
+					</div>
+				</div>
 			</div>
 			<div class="row">
 				<!--TODO tooltips definieren-->
-				<div class="col-sm-2">
+				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
 					<div class="form-group">
 						<label for="sws">SWS</label>
 						<div class="input-group">
@@ -253,7 +266,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
 					<div class="form-group">
 						<label for="lvs">LVS</label>
 						<div class="input-group">
@@ -262,7 +275,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
 					<div class="form-group">
 						<label for="alvs">ALVS</label>
 						<div class="input-group">
@@ -271,7 +284,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
 					<div class="form-group">
 						<label for="lvps">LVPS</label>
 						<div class="input-group">
@@ -280,7 +293,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
 					<div class="form-group">
 						<label for="las">LAS</label>
 						<div class="input-group">

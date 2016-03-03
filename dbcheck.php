@@ -543,6 +543,36 @@ if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berecht
     }
 }
 
+//Berechtigung zum Erstellen von Lehrveranstaltungen
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/createLehrveranstaltung' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/createLehrveranstaltung','Recht zum Erstellen von Lehrveranstaltungen.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/createLehrveranstaltung','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Erstellen von Lehrveranstaltungen.<br>';
+    }
+}
+
+//Berechtigung zum Ändern von Lehrveranstaltungen
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/editLehrveranstaltung' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/editLehrveranstaltung','Recht zum Ändern von Lehrveranstaltungen.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/editLehrveranstaltung','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Ändern von Lehrveranstaltungen..<br>';
+    }
+}
+
 //Spalte benotung in lehre.tbl_lehrveranstaltung
 if (!$result = @$db->db_query("SELECT benotung FROM lehre.tbl_lehrveranstaltung LIMIT 1;"))
 {
@@ -813,6 +843,20 @@ if($result = @$db->db_query("SELECT 1 FROM campus.tbl_dms_kategorie WHERE katego
     }
 }
 
+//DMS Kategorie studiengangsverwaltung mit Gruppe CMS_LOCK verknüpfen
+if($result = @$db->db_query("SELECT 1 FROM campus.tbl_dms_kategorie_gruppe WHERE kategorie_kurzbz='studiengangsverwaltung' AND gruppe_kurzbz='CMS_LOCK' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO campus.tbl_dms_kategorie_gruppe(kategorie_kurzbz, gruppe_kurzbz, insertamum, insertvon) VALUES ('studiengangsverwaltung','CMS_LOCK', now(), 'dbcheck');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>campus.tbl_dms_kategorie_gruppe: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' campus.tbl_dms_kategorie_gruppe: DMS Dokumentkategorie "studiengangsverwaltung" mit Gruppe "CMS_LOCK" verknüpft.<br>';
+    }
+}
+
 // Dokumentenupload für Studienordnung
 if(!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienordnung_dokument LIMIT 1;"))
 {
@@ -863,18 +907,6 @@ if(!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_foerdervertrag_dokume
 		echo '<strong>Dokumentenupload fuer Foerdervertrag: '.$db->db_last_error().'</strong><br>';
 	else
 		echo ' Tabellen fuer Dokumentenupload fuer Foerdervertrag hinzugefuegt!<br>';
-}
-
-//Spalte studiensemester_kurzbz für Reihungstest
-if(!$result = @$db->db_query("SELECT studiensemester_kurzbz FROM public.tbl_reihungstest LIMIT 1"))
-{
-    $qry = "ALTER TABLE public.tbl_reihungstest ADD COLUMN studiensemester_kurzbz varchar(16);
-	   ALTER TABLE public.tbl_reihungstest ADD CONSTRAINT fk_reihungsteset_studiensemester FOREIGN KEY (studiensemester_kurzbz) REFERENCES public.tbl_studiensemester (studiensemester_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;";
-
-    if(!$db->db_query($qry))
-	    echo '<strong>public.tbl_reihungstest: '.$db->db_last_error().'</strong><br>';
-	else
-	    echo 'public.tbl_reihungstest: Spalte studiensemester_kurzbz hinzugefuegt';
 }
 
 //Tabelle addon.tbl_stgv_qualifikationsziele
@@ -982,18 +1014,6 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_berufspraktikum LIMI
 	echo '<strong>addon.tbl_stgv_berufspraktikum: ' . $db->db_last_error() . '</strong><br>';
     else
 	echo ' addon.tbl_stgv_berufspraktikum: Tabelle hinzugefuegt<br>';
-}
-
-//Spalte curriculum in lehre.tbl_studienordnung_lehrveranstaltung
-if (!$result = @$db->db_query("SELECT curriculum FROM lehre.tbl_studienplan_lehrveranstaltung LIMIT 1;"))
-{
-    $qry = "ALTER TABLE lehre.tbl_studienplan_lehrveranstaltung ADD COLUMN curriculum BOOLEAN DEFAULT TRUE;";
-    
-    if (!$db->db_query($qry))
-	echo '<strong>lehre.tbl_studienplan_lehrveranstaltung: ' . $db->db_last_error() . '</strong><br>';
-    else
-	echo ' lehre.tbl_studienplan_lehrveranstaltung: Spalte curriculum hinzugefügt.<br>';
-    
 }
 
 //Tabelle addon.tbl_stgv_studienordnung_beschluesse
@@ -1169,7 +1189,6 @@ echo '<h2>Gegenprüfung</h2>';
 
 
 // Liste der verwendeten Tabellen / Spalten des Addons
-//TODO check lehre.tbl_studienordnung
 $tabellen = array(
     "addon.tbl_stgv_foerdervertrag" => array("foerdervertrag_id", "studiengang_kz", "foerdergeber", "foerdersatz", "foerdergruppe", "gueltigvon", "gueltigbis", "erlaeuterungen", "insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_aenderungsvariante" => array("aenderungsvariante_kurzbz","bezeichnung"),

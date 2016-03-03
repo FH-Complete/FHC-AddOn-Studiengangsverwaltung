@@ -55,6 +55,8 @@ function mapDataToStudienplan($data)
     $stpl->studienplan_lehrveranstaltung_id_parent = $data->studienplan_lehrveranstaltung_id_parent;
     $stpl->pflicht = parseBoolean($data->pflicht);
     $stpl->insertvon = get_uid();
+    $stpl->export = parseBoolean($data->export);
+    $stpl->curriculum = parseBoolean($data->curriculum);
 
     return $stpl;
 }

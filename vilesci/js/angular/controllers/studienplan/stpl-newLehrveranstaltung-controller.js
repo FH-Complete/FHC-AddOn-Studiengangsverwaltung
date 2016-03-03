@@ -17,6 +17,42 @@ angular.module('stgv2')
 			ctrl.semesterList = [0,1,2,3,4,5,6,7,8,9];
 			ctrl.lvSuggestionList = "";
 			
+			ctrl.setLehrformDependencies = function()
+			{
+				//TODO
+				console.log(ctrl.data.lehrform_kurzbz);
+				switch(ctrl.data.lehrform_kurzbz)
+				{
+					case 'iMod':
+						ctrl.data.benotung = true;
+						ctrl.data.zeugnis = false;
+						ctrl.data.lehrauftrag = false;
+						ctrl.data.lehre = true;
+						break;
+					case 'kMod':
+						ctrl.data.benotung = false;
+						ctrl.data.zeugnis = false;
+						ctrl.data.lehrauftrag = false;
+						ctrl.data.lehre = false;
+						break;
+					default:
+						break;
+				}
+			};
+			
+			ctrl.setLehrtypDependencies = function()
+			{
+				console.log(ctrl.data.lehrtyp_kurzbz);
+				if(ctrl.data.lehrtyp_kurzbz === "modul")
+				{
+					ctrl.data.zeugnis = false;
+				}
+				else
+				{
+					ctrl.data.zeugnis = true;
+				}
+			}
+			
 			//loading Studiengang list
 			StudiengangService.getStudiengangList().then(function(result){
 				ctrl.studiengangList = result;
@@ -186,6 +222,8 @@ angular.module('stgv2')
 				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
 				});
+				
+				ctrl.setLehrtypDependencies();
 			};
 			
 			//set predefined OE
@@ -274,4 +312,5 @@ angular.module('stgv2')
 		this.las = null;
 		this.benotung = false;
 		this.lvinfo = false;
+		this.lehrauftrag = true;
 	}

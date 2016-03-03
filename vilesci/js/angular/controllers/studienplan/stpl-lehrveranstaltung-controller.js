@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StplLehrveranstaltungCtrl', function ($scope, $http, $state, $stateParams, errorService, $compile, StudienplanService) {
+		.controller('StplLehrveranstaltungCtrl', function ($scope, $http, $state, $stateParams, errorService, $compile, StudienplanService, successService) {
 			$scope.studienplan_id = $stateParams.studienplan_id;
 			var ctrl = this;
 			var scope = $scope;
@@ -50,6 +50,7 @@ angular.module('stgv2')
 							{
 								$("#stplTreeGrid").treegrid('endEdit', editingId);
 								$("#saveChanges").linkbutton("disable");
+								$("#editNode").linkbutton("disable");
 							}
 						}
 					},{
@@ -61,6 +62,22 @@ angular.module('stgv2')
 							$("#deleteNode").linkbutton("disable");
 							ctrl.removeStudienplanLehrveranstaltung();
 						}
+					},{
+						id: 'editNode',
+						disabled: true,
+						iconCls: 'icon-edit',
+						text: 'LV editieren',
+						handler: function(){
+							$("#saveChanges").linkbutton("enable");
+							if(editingId !== null)
+							{
+								$("#stplTreeGrid").treegrid('endEdit', editingId);
+								editingId = null;
+							}
+							var row = $("#stplTreeGrid").treegrid('getSelected');
+							editingId = row.id;
+							$("#stplTreeGrid").treegrid('beginEdit', editingId);
+							}
 					}],
 					columns: [[
 						{field: 'bezeichnung', width:'300', title:'Lehrveranstaltung'},
@@ -68,11 +85,13 @@ angular.module('stgv2')
 						{field: 'semesterstunden',align: 'right', title:'Semesterstunden'},
 						{field: 'lehrform_kurzbz',align: 'right', title:'Lehrform'},
 						{field: 'lvnr',align: 'right', title:'LVNR'},
-						{field: 'benotung',align: 'right', /*editor: {type: 'checkbox'},*/ title:'Benotung', formatter: booleanToIconFormatter},
-						{field: 'zeugnis',align: 'right', title:'Zeugnis', formatter: booleanToIconFormatter},
-						{field: 'lvinfo',align: 'right', title:'LV-Info', formatter: booleanToIconFormatter},
-						{field: 'curriculum',align: 'right', /*editor: {type: 'checkbox'},*/ title:'Curriculum', formatter: booleanToIconFormatter},
-						{field: 'stpllv_pflicht',align: 'right', title:'Pflicht', formatter: booleanToIconFormatter}
+						{field: 'curriculum',align: 'center', editor: {type: 'checkbox'}, title:'Studienplan', formatter: booleanToIconFormatter},
+						{field: 'export',align: 'center', editor: {type: 'checkbox'}, title:'Export', formatter: booleanToIconFormatter},
+						{field: 'benotung',align: 'center', editor: {type: 'checkbox'}, title:'Benotung', formatter: booleanToIconFormatter},
+						{field: 'zeugnis',align: 'center', editor: {type: 'checkbox'}, title:'Zeugnis', formatter: booleanToIconFormatter},
+						{field: 'lvinfo',align: 'center', editor: {type: 'checkbox'}, title:'LV-Info', formatter: booleanToIconFormatter},
+						{field: 'lehrauftrag',align: 'center', editor: {type: 'checkbox'}, title:'Lehrauftrag', formatter: booleanToIconFormatter},
+						{field: 'lehre',align: 'center', editor: {type: 'checkbox'}, title:'Lehre', formatter: booleanToIconFormatter}
 					]],
 					onContextMenu: function(e ,row)
 					{
@@ -160,25 +179,34 @@ angular.module('stgv2')
 					onClickRow: function (row)
 					{
 						console.log(row);
-						$("#deleteNode").linkbutton("enable");
 						if (row.type != "sem")
 						{
-							ctrl.meta = row;
+							if(ctrl.studienplan.status_kurzbz === 'development')
+							{
+								$("#deleteNode").linkbutton("enable");
+								$("#editNode").linkbutton("enable");
+							}
+							ctrl.meta = angular.copy(row);
 							ctrl.meta.oe = ctrl.getOeName(ctrl.meta.oe_kurzbz);
 							$scope.$apply();
+						}
+						else
+						{
+							$("#deleteNode").linkbutton("disable");
+							$("#editNode").linkbutton("disable");
 						}
 					},
 					onDblClickRow: function(row)
 					{
-						console.log(row);
-						$("#saveChanges").linkbutton("enable");
-						if(editingId !== null)
-						{
-							$("#stplTreeGrid").treegrid('endEdit', editingId);
-							editingId = null;
-						}
-						editingId = row.id;
-						$("#stplTreeGrid").treegrid('beginEdit', row.id);
+//						console.log(row);
+//						$("#saveChanges").linkbutton("enable");
+//						if(editingId !== null)
+//						{
+//							$("#stplTreeGrid").treegrid('endEdit', editingId);
+//							editingId = null;
+//						}
+//						editingId = row.id;
+//						$("#stplTreeGrid").treegrid('beginEdit', row.id);
 					},
 					onBeforeEdit: function(row)
 					{
@@ -186,13 +214,104 @@ angular.module('stgv2')
 					},
 					onAfterEdit: function(row, changes)
 					{
-						//TODO save changes here
-						console.log(row);
-						console.log(changes);
+						var lv = $("#stplTreeGrid").treegrid('getSelected');
+						var parent = $("#stplTreeGrid").treegrid('getParent', lv.id);
+
+						//update studienplan_lehrveranstaltung
+						var data = {};
+						data.semester = lv.sem;
+						if(parent.type != "sem")
+						{
+							data.studienplan_lehrveranstaltung_id_parent = parent.id;
+						}
+						else
+						{
+							data.studienplan_lehrveranstaltung_id_parent = "";
+						}
+						data.studienplan_lehrveranstaltung_id = lv.id;
+						data.curriculum = lv.curriculum;
+						data.export = lv.export;
+						data.pflicht = lv.stpllv_pflicht;
+						
+						if((changes.curriculum !== undefined) || (changes.export !== undefined))
+						{
+							var updateData = {data: ""};
+							updateData.data = data;
+							$http({
+								method: 'POST',
+								url: './api/studienplan/lehrveranstaltungen/update_studienplanLehrveranstaltung.php',
+								data: $.param(updateData),
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								}
+							}).then(function success(response) {
+								if (response.data.erfolg)
+								{
+									successService.setMessage("Daten erfolgreich geändert.");
+								}
+								else
+								{
+									for(var prop in changes)
+									{
+										row[prop] = !changes[prop];
+									}
+									$("#stplTreeGrid").treegrid('refreshRow', row.id);
+									errorService.setError(getErrorMsg(response));
+								}
+							}, function error(response) {
+								errorService.setError(getErrorMsg(response));
+							});
+						}
+						
+						if((changes.benotung !== undefined) 
+								|| (changes.zeugnis !== undefined)
+								|| (changes.lvinfo !== undefined)
+								|| (changes.lehrauftrag !== undefined)
+								|| (changes.lehre !== undefined)
+								)
+						{
+							//update lehrveranstaltung
+							var data = {};
+							data.benotung = lv.benotung;
+							data.zeugnis = lv.zeugnis;
+							data.lvinfo = lv.lvinfo;
+							data.lehrauftrag = lv.lehrauftrag;
+							data.lehre = lv.lehre;
+							data.lehrveranstaltung_id = lv.lehrveranstaltung_id;
+
+							var updateData = {data: ""};
+							updateData.data = data;
+
+							$http({
+								method: 'POST',
+								url: './api/studienplan/lehrveranstaltungen/update_lehrveranstaltung.php',
+								data: $.param(updateData),
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								}
+							}).then(function success(response) {
+								if (response.data.erfolg)
+								{
+									successService.setMessage("Daten erfolgreich geändert.");
+								}
+								else
+								{
+									for(var prop in changes)
+									{
+										row[prop] = !changes[prop];
+									}
+									$("#stplTreeGrid").treegrid('refreshRow', row.id);
+									errorService.setError(getErrorMsg(response));
+								}
+							}, function error(response) {
+								errorService.setError(getErrorMsg(response));
+							});
+						}
 //						changeTreeIcons("stplTree", "stplTreeGrid");
 					},
 					onBeforeDrag: function (row)
 					{
+//						console.log(row.type);
 						if (row.type === "sem")
 						{
 							return false;
@@ -211,11 +330,31 @@ angular.module('stgv2')
 					},
 					onBeforeDrop: function(target, source, point)
 					{
+						//TODO set values depending on target node
+						//e.g. children of modules
+//						console.log(target);
 						if(source.stpllv_pflicht === undefined)
+						{
 							source.stpllv_pflicht = true;
+						}
 						
 						if(source.curriculum === undefined)
+						{
 							source.curriculum = true;
+						}
+						
+						if(source.export === undefined)
+						{
+//							console.log(ctrl.studienplan.status_kurzbz);
+							if(ctrl.studienplan.status_kurzbz !== "development")
+							{
+								source.export = false;
+							}
+							else
+							{
+								source.export = true;
+							}
+						}
 					},
 					onDrop: function (target, source, point)
 					{
@@ -307,17 +446,17 @@ angular.module('stgv2')
 				$.extend($.fn.datagrid.defaults.editors, {
 					checkbox: {
 						init: function(container, options){
-							console.log(container, options);
+//							console.log(container, options);
 							var input = $('<input type="checkbox">').appendTo(container);
-							console.log(input);
+//							console.log(input);
 							return input;
 						},
 						getValue: function(target){
-							console.log(target);
+//							console.log(target);
 							return $(target).prop('checked');
 						},
 						setValue: function(target, value){
-							console.log(target, value);
+//							console.log(target, value);
 							$(target).prop('checked',value);
 						}
 					}
@@ -488,7 +627,7 @@ angular.module('stgv2')
 					},
 					onLoadSuccess: function (row)
 					{
-						console.log(row);
+//						console.log(row);
 						$(this).treegrid("enableDnd", row ? row.id : null);
 						if(selection !== undefined)
 						{
@@ -608,6 +747,7 @@ function generateChildren(item, sem)
 	}
 	var node = {};
 	node.id = item.studienplan_lehrveranstaltung_id;
+	node.lehrveranstaltung_id = item.lehrveranstaltung_id
 	node.bezeichnung = item.bezeichnung;
 	node.type = item.lehrtyp_kurzbz;
 	switch(item.lehrtyp_kurzbz)
@@ -648,6 +788,9 @@ function generateChildren(item, sem)
 	node.lvinfo = item.lvinfo;
 	node.curriculum = item.curriculum;
 	node.stpllv_pflicht = item.stpllv_pflicht;
+	node.export = item.export;
+	node.lehrauftrag = item.lehrauftrag;
+	node.lehre = item.lehre;
 	if (children.length != 0)
 	{
 		node.children = children;
