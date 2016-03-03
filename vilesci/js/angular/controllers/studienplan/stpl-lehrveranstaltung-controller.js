@@ -85,13 +85,13 @@ angular.module('stgv2')
 						{field: 'semesterstunden',align: 'right', title:'Semesterstunden'},
 						{field: 'lehrform_kurzbz',align: 'right', title:'Lehrform'},
 						{field: 'lvnr',align: 'right', title:'LVNR'},
-						{field: 'curriculum',align: 'center', editor: {type: 'checkbox'}, title:'Studienplan', formatter: booleanToIconFormatter},
-						{field: 'export',align: 'center', editor: {type: 'checkbox'}, title:'Export', formatter: booleanToIconFormatter},
-						{field: 'benotung',align: 'center', editor: {type: 'checkbox'}, title:'Benotung', formatter: booleanToIconFormatter},
-						{field: 'zeugnis',align: 'center', editor: {type: 'checkbox'}, title:'Zeugnis', formatter: booleanToIconFormatter},
-						{field: 'lvinfo',align: 'center', editor: {type: 'checkbox'}, title:'LV-Info', formatter: booleanToIconFormatter},
-						{field: 'lehrauftrag',align: 'center', editor: {type: 'checkbox'}, title:'Lehrauftrag', formatter: booleanToIconFormatter},
-						{field: 'lehre',align: 'center', editor: {type: 'checkbox'}, title:'Lehre', formatter: booleanToIconFormatter}
+						{field: 'curriculum',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Studienplan', formatter: booleanToIconFormatter},
+						{field: 'export',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Export', formatter: booleanToIconFormatter},
+						{field: 'benotung',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Benotung', formatter: booleanToIconFormatter},
+						{field: 'zeugnis',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Zeugnis', formatter: booleanToIconFormatter},
+						{field: 'lvinfo',align: 'center', /*editor: {type: 'checkbox'},*/ title:'LV-Info', formatter: booleanToIconFormatter},
+						{field: 'lehrauftrag',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Lehrauftrag', formatter: booleanToIconFormatter},
+						{field: 'lehre',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Lehre', formatter: booleanToIconFormatter}
 					]],
 					onContextMenu: function(e ,row)
 					{
@@ -210,13 +210,59 @@ angular.module('stgv2')
 					},
 					onBeforeEdit: function(row)
 					{
+						var benotung = $(this).treegrid('getColumnOption','benotung');
+						var curriculum = $(this).treegrid('getColumnOption','curriculum');
+						var exportCol = $(this).treegrid('getColumnOption','export');
+						var zeugnis = $(this).treegrid('getColumnOption','zeugnis');
+						var lvinfo = $(this).treegrid('getColumnOption','lvinfo');
+						var lehrauftrag = $(this).treegrid('getColumnOption','lehrauftrag');
+						var lehre = $(this).treegrid('getColumnOption','lehre');
 						
+						if(row.type==="modul")
+						{
+							//TODO set editors for module editing
+							exportCol.editor = {type: "checkbox"};
+							lvinfo.editor = {type: "checkbox"};
+							lehrauftrag.editor = {type: "checkbox"};
+							lehre.editor = {type: "checkbox"};
+						}
+						else
+						{
+							var parent = $(this).treegrid('getParent',row.id);
+							console.log(parent);
+							if(parent.type !== "modul")
+							{
+								benotung.editor = {type: "checkbox"};
+							}
+							curriculum.editor = {type: "checkbox"};
+							exportCol.editor = {type: "checkbox"};
+							zeugnis.editor = {type: "checkbox"};
+							lvinfo.editor = {type: "checkbox"};
+							lehrauftrag.editor = {type: "checkbox"};
+							lehre.editor = {type: "checkbox"};
+						}
 					},
 					onAfterEdit: function(row, changes)
 					{
 						var lv = $("#stplTreeGrid").treegrid('getSelected');
 						var parent = $("#stplTreeGrid").treegrid('getParent', lv.id);
 
+						var benotung = $(this).treegrid('getColumnOption','benotung');
+						var curriculum = $(this).treegrid('getColumnOption','curriculum');
+						var exportCol = $(this).treegrid('getColumnOption','export');
+						var zeugnis = $(this).treegrid('getColumnOption','zeugnis');
+						var lvinfo = $(this).treegrid('getColumnOption','lvinfo');
+						var lehrauftrag = $(this).treegrid('getColumnOption','lehrauftrag');
+						var lehre = $(this).treegrid('getColumnOption','lehre');
+
+						benotung.editor = null;
+						curriculum.editor = null;
+						exportCol.editor = null;
+						zeugnis.editor = null;
+						lvinfo.editor = null;
+						lehrauftrag.editor = null;
+						lehre.editor = null;
+							
 						//update studienplan_lehrveranstaltung
 						var data = {};
 						data.semester = lv.sem;
@@ -332,6 +378,21 @@ angular.module('stgv2')
 					{
 						//TODO set values depending on target node
 						//e.g. children of modules
+						console.log(target);
+						console.log(source)
+						if(source.typ !== "modul")
+						{
+							if(target.lehrform_kurzbz === "kMod")
+							{
+								source.benotung = true;
+							}
+							else if(target.lehrform_kurzbz === "iMod")
+							{
+								source.benotung = false;
+							}
+							
+						}
+						
 //						console.log(target);
 						if(source.stpllv_pflicht === undefined)
 						{
@@ -358,6 +419,7 @@ angular.module('stgv2')
 					},
 					onDrop: function (target, source, point)
 					{
+						
 						var data = {};
 						data.semester = target.sem;
 						if(target.type != "sem")
@@ -369,6 +431,8 @@ angular.module('stgv2')
 							data.studienplan_lehrveranstaltung_id_parent = "";
 						}
 						data.pflicht = true;
+						data.export = target.export;
+						data.curriculum = target.curriculum;
 						//TODO errorhandling
 						
 						//update moved entry

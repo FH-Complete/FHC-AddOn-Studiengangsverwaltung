@@ -13,6 +13,7 @@ require_once('../../../include/aufnahmeverfahren.class.php');
 require_once('../../../include/studienplanAddonStgv.class.php');
 require_once('../../../include/auslandssemester.class.php');
 require_once('../../../include/berufspraktikum.class.php');
+require_once('../../../include/studienjahr.class.php');
 
 require_once('../functions.php');
 
@@ -193,6 +194,22 @@ if ($studienordnung->save())
 			$bPraktikum->save();
 		    }
 		}
+		
+		$studienjahr = new studienjahr();
+		$studienjahr->getAll($value->studienplan_id);
+		if(!empty($studienjahr->result))
+		{
+		    foreach($studienjahr->result as $s)
+		    {
+			$s->studienplan_id = $stpl->studienplan_id;
+			$s->new = true;
+			$s->insertvon = get_uid();
+			$s->data = json_encode($s->data);
+			$s->save();
+		    }
+		}
+		
+		//TODO copy gemeinsames Studienprogramm
 	    }
 	}
     }
