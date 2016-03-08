@@ -5,7 +5,7 @@ require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../../include/akadgrad.class.php');
 require_once('../../../../../../include/studiensemester.class.php');
-require_once('../../../../include/studienjahr.class.php');
+require_once('../../../../include/studienjahrAddonStgv.class.php');
 require_once('../../functions.php');
 
 $studienplan_id = filter_input(INPUT_GET, "studienplan_id");
@@ -19,7 +19,7 @@ elseif(($studienplan_id == false))
     returnAJAX(false, "Fehler beim lesen der GET Variablen");    
 }
 
-$studienjahr = new studienjahr();
+$studienjahr = new studienjahrAddonStgv();
 $studienjahr->getAll($studienplan_id);
 
 $data = $studienjahr->result;

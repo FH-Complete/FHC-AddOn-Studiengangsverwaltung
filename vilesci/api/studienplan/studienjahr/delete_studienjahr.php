@@ -3,7 +3,7 @@
 require_once('../../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
-require_once('../../../../include/studienjahr.class.php');
+require_once('../../../../include/studienjahrAddonStgv.class.php');
 require_once('../../functions.php');
 
 $uid = get_uid();
@@ -33,7 +33,7 @@ else
 
 function mapDataToStudienjahr($data)
 {
-    $bt = new studienjahr();
+    $bt = new studienjahrAddonStgv();
     $bt->studienjahr_id = $data->studienjahr_id;
     return $bt;
 }

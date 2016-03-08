@@ -1153,6 +1153,7 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienjahr LIMIT 1;
     $qry = "CREATE TABLE addon.tbl_stgv_studienjahr
 			(
 				studienjahr_id integer NOT NULL,
+				studienjahr_kurzbz varchar(16) NOT NULL,
 				studienplan_id integer NOT NULL,
 				bezeichnung varchar(32),
 				data jsonb,
@@ -1172,6 +1173,7 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienjahr LIMIT 1;
 		ALTER TABLE addon.tbl_stgv_studienjahr ALTER COLUMN studienjahr_id SET DEFAULT nextval('addon.tbl_stgv_studienjahr_studienjahr_id_seq');
 
 		ALTER TABLE addon.tbl_stgv_studienjahr ADD CONSTRAINT fk_studienjahr_studienplan FOREIGN KEY (studienplan_id) REFERENCES lehre.tbl_studienplan (studienplan_id) ON DELETE RESTRICT ON UPDATE CASCADE;
+		ALTER TABLE addon.tbl_stgv_studienjahr ADD CONSTRAINT fk_stgv_studienjahr_studienjahr FOREIGN KEY (studienjahr_kurzbz) REFERENCES public.tbl_studienjahr (studienjahr_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 		GRANT SELECT ON addon.tbl_stgv_studienjahr TO web;
 		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_studienjahr TO vilesci;

@@ -24,7 +24,7 @@
 //require_once('../../../inlcude/basis_db.class.php');
 require_once (dirname(__FILE__).'/../../../include/basis_db.class.php');
 
-class studienjahr extends basis_db
+class studienjahrAddonStgv extends basis_db
 {
 	public $new;			//  boolean
 	public $result = array();
@@ -32,6 +32,7 @@ class studienjahr extends basis_db
 	//Tabellenspalten
 	public $studienjahr_id;//  integer
 	public $studienplan_id;	//  integer
+	public $studienjahr_kurzbz;
 	public $bezeichnung; //string
 	public $data;	//jsonb
 	public $insertamum;		//  timestamp
@@ -72,6 +73,7 @@ class studienjahr extends basis_db
 			{
 				$this->studienjahr_id = $row->studienjahr_id;
 				$this->studienplan_id = $row->studienplan_id;
+				$this->studienjahr_kurzbz = $row->studienjahr_kurzbz;
 				$this->bezeichnung = $row->bezeichnung;
 				$this->data = json_decode($row->data);
 				$this->insertamum = $row->insertamum;
@@ -107,10 +109,11 @@ class studienjahr extends basis_db
 		{
 			while($row = $this->db_fetch_object())
 			{
-				$obj = new studienjahr();
+				$obj = new studienjahrAddonStgv();
 
 				$obj->studienjahr_id = $row->studienjahr_id;
 				$obj->studienplan_id = $row->studienplan_id;
+				$obj->studienjahr_kurzbz = $row->studienjahr_kurzbz;
 				$obj->bezeichnung = $row->bezeichnung;
 				$obj->data = json_decode($row->data);
 				$obj->insertamum = $row->insertamum;
@@ -161,8 +164,9 @@ class studienjahr extends basis_db
 		{
 			//Neuen Datensatz einfuegen
 
-			$qry='BEGIN; INSERT INTO addon.tbl_stgv_studienjahr (studienplan_id, bezeichnung, data, insertamum, insertvon) VALUES('.
+			$qry='BEGIN; INSERT INTO addon.tbl_stgv_studienjahr (studienplan_id, studienjahr_kurzbz, bezeichnung, data, insertamum, insertvon) VALUES('.
 			     $this->db_add_param($this->studienplan_id, FHC_INTEGER).', '.
+			     $this->db_add_param($this->studienjahr_kurzbz, FHC_STRING).', '.
 			     $this->db_add_param($this->bezeichnung, FHC_STRING).', '.
 			     $this->db_add_param($this->data).', now(),'.
 			     $this->db_add_param($this->insertvon).');';
@@ -171,6 +175,7 @@ class studienjahr extends basis_db
 		{
 			$qry='UPDATE addon.tbl_stgv_studienjahr SET '.
 				'studienplan_id='.$this->db_add_param($this->studienplan_id, FHC_INTEGER).', '.
+				'studienjahr_kurzbz='.$this->db_add_param($this->studienjahr_kurzbz).', '.
 				'bezeichnung='.$this->db_add_param($this->bezeichnung).', '.
 				'data='.$this->db_add_param($this->data).', '.
 				'updateamum= now(), '.

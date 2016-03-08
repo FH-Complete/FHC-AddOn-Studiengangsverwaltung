@@ -4,6 +4,7 @@ angular.module('stgv2')
 			var ctrl = this;
 			ctrl.data = "";
 			ctrl.spracheList = [];
+			ctrl.studienjahrList = [];
 			
 			//enable tooltips
 			$(document).ready(function(){
@@ -54,6 +55,26 @@ angular.module('stgv2')
 				errorService.setError(getErrorMsg(error));
 			});
 			
+			//loading StudienjahrList
+			$http({
+				method: 'GET',
+				url: './api/helper/studienjahr.php',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				}
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					ctrl.studienjahrList = response.data.info;
+				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
+			});
+			
 			ctrl.loadDataGrid = function ()
 			{
 				$("#dataGridStudienjahr").datagrid({
@@ -98,7 +119,7 @@ angular.module('stgv2')
 					},
 					columns: [[
 						{field: 'studienjahr_id', align: 'right', title:'ID'},
-						{field: 'bezeichnung', align:'right', title:'Studienjahr'},
+						{field: 'studienjahr_kurzbz', align:'right', title:'Studienjahr'},
 						{field: 'ausbildungssemester', align:'right', 
 							formatter: function(value)
 							{

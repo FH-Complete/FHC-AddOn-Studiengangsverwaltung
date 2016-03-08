@@ -26,11 +26,14 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-4">
+			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="studienjahr">Studienjahr</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm" name="studienjahr" ng-model="ctrl.studienjahr.bezeichnung"/>
+						<select class="form-control input-sm" ng-model="ctrl.studienjahr.studienjahr_kurzbz">
+							<option ng-repeat="studienjahr in ctrl.studienjahrList">{{studienjahr.studienjahr_kurzbz}}</option>
+						</select>
+						<!--<input type="text" class="form-control input-sm" name="studienjahr" ng-model="ctrl.studienjahr.bezeichnung"/>-->
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title=""><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 				</div>
