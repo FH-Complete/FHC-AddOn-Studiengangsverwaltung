@@ -2,8 +2,8 @@ angular.module('stgv2')
 		.controller('StateMainCtrl', function ($rootScope, $stateParams, errorService) {
 			var ctrl = this;
 			ctrl.url = './api/studienordnung/studienordnungTree.php?stgkz=' + $stateParams.stgkz + '&state=' + $stateParams.state;			
-			//Studienordnungsdaten in TreeGrid laden
 			
+			//Studienordnungsdaten in TreeGrid laden
 			ctrl.loadTreegrid = function()
 			{
 				$("#treeGrid").treegrid({
@@ -97,7 +97,6 @@ angular.module('stgv2')
 						}
 					},
 					onLoadError: function (arguments) {
-						//TODO error handling
 						console.log(arguments);
 					}
 				});

@@ -209,11 +209,9 @@ angular.module('stgv2')
 							ctrl.foerdervertrag = new Foerdervertrag();
 							ctrl.foerdervertrag.studiengang_kz = $scope.stgkz;
 							ctrl.foerdervertrag.foerdervertrag_id = response.data.info;
-		//					$("#dataGridFoerdervertrag").datagrid('reload');
 							$($scope.uploader.queue).each(function(k,v){
 								v.upload();
 							});
-							//TODO select recently added Reihungstest in Datagrid
 							$scope.form_foerdervertrag.$setPristine();
 							$("#dataGridFoerdervertrag").datagrid('reload');
 							successService.setMessage(response.data.info);
@@ -246,7 +244,6 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						//TODO success 
 						if(response.data.erfolg)
 						{
 							$("#dataGridFoerdervertrag").datagrid('reload');

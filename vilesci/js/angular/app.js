@@ -77,61 +77,6 @@ angular.module("stgv2")
 				}
 			};
 
-//			$rootScope.studienordnung = null;
-//			$rootScope.studienplan = null;
-//
-//			$rootScope.setStudienordnung = function (studienordnung_id)
-//			{
-//				StudienordnungService.getStudienordnung(studienordnung_id).then(function(result){
-//					$rootScope.studienordnung = result;
-//				},function(error){
-//					
-//				});
-//				
-//				
-////				$http({
-////					method: 'GET',
-////					url: './api/studienordnung/metadaten/metadaten.php?studienordnung_id=' + studienordnung_id
-////				}).then(function success(response) {
-////					if (response.data.erfolg)
-////					{
-////						$rootScope.studienordnung = response.data.info;
-////					}
-////					else
-////					{
-////						errorService.setError(getErrorMsg(response));
-////					}
-////				}, function error(response) {
-////					errorService.setError(getErrorMsg(response));
-////				});
-//			};
-//
-//			$rootScope.setStudienplan = function (studienplan_id)
-//			{
-//				StudienplanService.getStudienplan(studienplan_id).then(function(result){
-//					$rootScope.studienplan = result;
-//				},function(error){
-//					
-//				});
-//				
-////				$http({
-////					method: 'GET',
-////					url: './api/studienplan/eckdaten/eckdaten.php?studienplan_id=' + studienplan_id
-////				}).then(function success(response) {
-////					if (response.data.erfolg)
-////					{
-////						$rootScope.studienplan = response.data.info;
-////					}
-////					else
-////					{
-////						errorService.setError(getErrorMsg(response));
-////					}
-////				}, function error(response) {
-////					errorService.setError(getErrorMsg(response));
-////				});
-//			};
-
-
 			function detectIE() {
 				var ua = window.navigator.userAgent;
 
@@ -187,64 +132,107 @@ angular.module("stgv2")
 				errorService.setError(getErrorMsg(response));
 			});
 		})
-		.controller("MenuCtrl", function ($scope, $state, $compile, $stateParams, errorService, $http, successService) {
+		.controller("MenuCtrl", function ($scope, $state, $compile, $stateParams, errorService, $http, successService, StudienordnungStatusService) {
 			var ctrl = this;
 			ctrl.studienordnung_id = "";
 			ctrl.statusList = "";
+			
+			//loading SpracheList
+			StudienordnungStatusService.getStudienordnungStatusList().then(function(result){
+				ctrl.statusList = result;
+				console.log(result);
+				$compile($('#mm1').contents())($scope);
+				$compile($('#mm2').contents())($scope);
 
-			//TODO user Service
-			$http({
-				method: "GET",
-				url: "./api/helper/studienordnungStatus.php"
-			}).then(function success(response) {
-				if (response.data.erfolg)
+				var item = $('#mm2').menu('findItem', 'Löschen');
+				$('#mm2').menu('appendItem',
 				{
-					ctrl.statusList = response.data.info;
-					$compile($('#mm1').contents())($scope);
-					$compile($('#mm2').contents())($scope);
-					
-					var item = $('#mm2').menu('findItem', 'Löschen');
-					$('#mm2').menu('appendItem',
+					parent: item.target,
+					text: "Studienordnung",
+					onclick: function () {
+						ctrl.delete("studienordnung");
+					}
+				});
+
+				$('#mm2').menu('appendItem',
+				{
+					parent: item.target,
+					text: "Studienplan",
+					onclick: function () {
+						ctrl.delete("studienplan");
+					}
+				});
+
+				var item = $('#mm3').menu('findItem', 'Status ändern zu');
+
+				$(ctrl.statusList).each(function (i, v) {
+					$('#mm3').menu('appendItem',
 					{
 						parent: item.target,
-						text: "Studienordnung",
+						text: v.bezeichnung,
 						onclick: function () {
-							ctrl.delete("studienordnung");
+							ctrl.changeStatus(v.status_kurzbz);
 						}
 					});
+				});
 
-					$('#mm2').menu('appendItem',
-					{
-						parent: item.target,
-						text: "Studienplan",
-						onclick: function () {
-							ctrl.delete("studienplan");
-						}
-					});
-
-					var item = $('#mm3').menu('findItem', 'Status ändern zu');
-
-					$(ctrl.statusList).each(function (i, v) {
-						$('#mm3').menu('appendItem',
-						{
-							parent: item.target,
-							text: v.bezeichnung,
-							onclick: function () {
-								ctrl.changeStatus(v.status_kurzbz);
-							}
-						});
-					});
-
-					$compile($('#mm4').contents())($scope);
-
-				}
-				else
-				{
-					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
+				$compile($('#mm4').contents())($scope);
+			},function(error){
+				errorService.setError(getErrorMsg(error));
 			});
+
+//			$http({
+//				method: "GET",
+//				url: "./api/helper/studienordnungStatus.php"
+//			}).then(function success(response) {
+//				if (response.data.erfolg)
+//				{
+//					ctrl.statusList = response.data.info;
+//					$compile($('#mm1').contents())($scope);
+//					$compile($('#mm2').contents())($scope);
+//					
+//					var item = $('#mm2').menu('findItem', 'Löschen');
+//					$('#mm2').menu('appendItem',
+//					{
+//						parent: item.target,
+//						text: "Studienordnung",
+//						onclick: function () {
+//							ctrl.delete("studienordnung");
+//						}
+//					});
+//
+//					$('#mm2').menu('appendItem',
+//					{
+//						parent: item.target,
+//						text: "Studienplan",
+//						onclick: function () {
+//							ctrl.delete("studienplan");
+//						}
+//					});
+//
+//					var item = $('#mm3').menu('findItem', 'Status ändern zu');
+//
+//					$(ctrl.statusList).each(function (i, v) {
+//						$('#mm3').menu('appendItem',
+//						{
+//							parent: item.target,
+//							text: v.bezeichnung,
+//							onclick: function () {
+//								ctrl.changeStatus(v.status_kurzbz);
+//							}
+//						});
+//					});
+//
+//					$compile($('#mm4').contents())($scope);
+//
+//				}
+//				else
+//				{
+//					errorService.setError(getErrorMsg(response));
+//				}
+//			}, function error(response) {
+//				errorService.setError(getErrorMsg(response));
+//			});
 
 
 			ctrl.createStudienordnung = function ()

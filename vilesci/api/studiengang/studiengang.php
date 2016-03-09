@@ -7,7 +7,7 @@ require_once('../../../../../include/studiengang.class.php');
 require_once ('../../../include/studienordnungStatus.class.php');
 require_once('../functions.php');
 
-//TODO
+//TODO debug
 $DEBUG = true;
 
 $uid = get_uid();

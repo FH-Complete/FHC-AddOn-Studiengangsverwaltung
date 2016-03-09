@@ -220,7 +220,7 @@ angular.module('stgv2')
 						
 						if(row.type==="modul")
 						{
-							//TODO set editors for module editing
+							//set editors for module editing
 							exportCol.editor = {type: "checkbox"};
 							lvinfo.editor = {type: "checkbox"};
 							lehrauftrag.editor = {type: "checkbox"};
@@ -376,10 +376,8 @@ angular.module('stgv2')
 					},
 					onBeforeDrop: function(target, source, point)
 					{
-						//TODO set values depending on target node
+						//set values depending on target node
 						//e.g. children of modules
-						console.log(target);
-						console.log(source)
 						if(source.typ !== "modul")
 						{
 							if(target.lehrform_kurzbz === "kMod")
@@ -452,7 +450,7 @@ angular.module('stgv2')
 								changeTreeIcons("stplTree", "stplTreeGrid", target);
 								if (response.data.erfolg)
 								{
-									//TODO workaround to change icon
+									
 								}
 								else
 								{
@@ -534,35 +532,6 @@ angular.module('stgv2')
 			}, function(error){
 				
 			});
-//			//get Selected Studienplan if selected in TreeGrid
-//			var node = $("#treeGrid").treegrid('getSelected');
-//			if(node)
-//			{
-//				ctrl.studienplan = node;
-//				ctrl.initSemesterList();
-//				ctrl.initStplTree();
-//			}
-//			else
-//			{
-//				//if not selected get data from DB
-//				$http({
-//					method: 'GET',
-//					url: './api/studienplan/eckdaten/eckdaten.php?studienplan_id=' + $scope.studienplan_id
-//				}).then(function success(response) {
-//					if (response.data.erfolg)
-//					{
-//						ctrl.studienplan = response.data.info;
-//						ctrl.initSemesterList();
-//						ctrl.initStplTree();
-//					}
-//					else
-//					{
-//						errorService.setError(getErrorMsg(response));
-//					}
-//				}, function error(response) {
-//					errorService.setError(getErrorMsg(response));
-//				});
-//			}
 
 			//TODO load from Service
 			//load organisationseinheiten
@@ -691,7 +660,6 @@ angular.module('stgv2')
 					},
 					onLoadSuccess: function (row)
 					{
-//						console.log(row);
 						$(this).treegrid("enableDnd", row ? row.id : null);
 						if(selection !== undefined)
 						{

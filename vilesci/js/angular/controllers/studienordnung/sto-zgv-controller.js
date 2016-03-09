@@ -71,7 +71,7 @@ angular.module('stgv2')
 				}
 				else
 				{
-					//TODO studiengangsart ist nicht gesetzt
+					alert("Bitte definieren Sie die Studiengangsart unter 'Eckdaten'");
 				}
 			};
 			

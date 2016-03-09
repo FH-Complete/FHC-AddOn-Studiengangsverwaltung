@@ -1,5 +1,3 @@
-//TODO check if lehreverzeichnis exists
-
 angular.module('stgv2')
 		.controller('NewLehrveranstaltungCtrl', function ($scope, $http, errorService, StudiengangService, OrgformService, SpracheService) {
 			var ctrl = this;
@@ -19,8 +17,6 @@ angular.module('stgv2')
 			
 			ctrl.setLehrformDependencies = function()
 			{
-				//TODO
-				console.log(ctrl.data.lehrform_kurzbz);
 				switch(ctrl.data.lehrform_kurzbz)
 				{
 					case 'iMod':

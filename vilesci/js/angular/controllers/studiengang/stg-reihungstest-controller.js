@@ -168,7 +168,6 @@ angular.module('stgv2')
 						if (response.data.erfolg)
 						{
 							$("#dataGridReihungstest").datagrid('reload');
-							//TODO select recently added Reihungstest in Datagrid
 							ctrl.reihungstest = new Reihungstest();
 							successService.setMessage(response.data.info);
 							$scope.form.$setPristine();

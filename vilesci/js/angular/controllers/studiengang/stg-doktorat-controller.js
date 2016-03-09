@@ -119,7 +119,6 @@ angular.module('stgv2')
 								v.upload();
 							});
 							$("#dataGridDoktorat").datagrid('reload');
-							//TODO select recently added Doktorat in Datagrid
 							$scope.form.$setPristine();
 							successService.setMessage(response.data.info);
 						}

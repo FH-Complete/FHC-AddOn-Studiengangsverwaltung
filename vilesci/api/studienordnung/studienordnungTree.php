@@ -8,7 +8,7 @@ require_once ('../../../include/studienplanAddonStgv.class.php');
 require_once ('../../../include/studienordnungAddonStgv.class.php');
 require_once('../functions.php');
 
-//TODO
+//TODO debug
 $DEBUG = true;
 
 $sto_array = array();
