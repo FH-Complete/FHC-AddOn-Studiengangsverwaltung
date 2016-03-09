@@ -140,7 +140,6 @@ angular.module("stgv2")
 			//loading SpracheList
 			StudienordnungStatusService.getStudienordnungStatusList().then(function(result){
 				ctrl.statusList = result;
-				console.log(result);
 				$compile($('#mm1').contents())($scope);
 				$compile($('#mm2').contents())($scope);
 

@@ -148,6 +148,7 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script src="js/angular/directives/timeFormat-directive.js" type="text/javascript"></script>
 	<script src="js/angular/directives/integerOnly-directive.js" type="text/javascript"></script>
 	<script src="js/angular/directives/charactersOnly-directive.js" type="text/javascript"></script>
+	<script src="js/angular/directives/onNgRepeatFinished-directive.js" type="text/javascript"></script>
 	
 	<!-- Colorpicker -->
 	<link rel="stylesheet" href="../../../skin/colorpicker.css" type="text/css"/>

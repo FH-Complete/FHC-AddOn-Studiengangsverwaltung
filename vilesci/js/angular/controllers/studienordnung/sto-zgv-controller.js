@@ -54,6 +54,11 @@ angular.module('stgv2')
 					'seperate-binary': false
 				}
 			});
+			$("#editor").on('paste', function(event){
+				event.preventDefault();
+				var clipboardData = event.originalEvent.clipboardData.getData("text");
+				$("#editor").html(clipboardData);
+			});
 			
 			ctrl.loadInitialData = function(){
 				if(ctrl.studienordnung.studiengangsart != null)

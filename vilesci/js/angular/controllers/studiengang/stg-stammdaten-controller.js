@@ -8,8 +8,8 @@ angular.module('stgv2')
 			ctrl.zuordnung = false;
 			
 			//enable tooltips
-			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip();
+			$scope.$on("ngRepeatFinished",function(){
+				console.log($('[data-toggle="tooltip"]').tooltip());
 			});
 
 			ctrl.save = function()

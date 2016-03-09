@@ -6,8 +6,8 @@ angular.module('stgv2')
 			ctrl.data.studienordnung_id = $scope.studienordnung_id;
 			ctrl.temp = [];
 			
-			//enable tooltips
-			$(document).ready(function(){
+			//enable tooltips after ngRepeat finished
+			$scope.$on("ngRepeatFinished",function(){
 				$('[data-toggle="tooltip"]').tooltip();
 			});
 
@@ -63,6 +63,8 @@ angular.module('stgv2')
 					ctrl.data.data[1].elements[index].push(ctrl.temp[index-1]);
 					ctrl.temp = [];
 				}
+				ctrl.parseJson();
+				ctrl.save();
 			};
 
 			ctrl.removeListItem = function (event)

@@ -34,11 +34,11 @@
 		<div class="btn-group">
 			<a class="btn btn-default" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
 			<a class="btn btn-default" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
-			<a class="btn btn-default" data-edit="html" title="Clear Formatting"><i class='glyphicon glyphicon-pencil'></i></a>
+			<a class="btn btn-default" data-edit="clearformat" title="Clear Formatting" onClick="$('#editor').html($('#editor').text());"><i class='glyphicon glyphicon-fire'></i></a>
 		</div>
 	</div>
 	<form method="post" enctype="multipart/form-data" id='submitForm'>
-		<div id="editor" class="lead" data-placeholder="This is a basic example with a simple toolbar.">
+		<div id="editor" class="lead editor" data-placeholder="This is a basic example with a simple toolbar.">
 		</div>
 		<button class="btn btn-large btn-primary" ng-click="ctrl.preview()">Preview</button>
 		<button class="btn btn-large btn-default" ng-click="ctrl.save()">Submit</button>

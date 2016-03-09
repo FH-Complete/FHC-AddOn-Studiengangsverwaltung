@@ -378,7 +378,7 @@ h5
 
 .editor
 {
-	font-size: initial;
+	font-size: 12px;
 }
 
 .tooltip-inner {
@@ -421,4 +421,7 @@ h5
 	padding-top: 10px;
 }
 
-
+.draggable
+{
+	cursor: pointer;
+}

@@ -45,7 +45,7 @@
 				<div class="form-group">
 					<label for="akadGrad">Akademischer Grad</label>
 					<div class="input-group">
-						<select class="form-control input-sm" name="akadGrad" ng-model="ctrl.data.akadgrad_id" disabled>
+						<select class="form-control input-sm" name="akadGrad" ng-model="ctrl.data.akadgrad_id">
 							<option ng-repeat="akadGrad in ctrl.akadGradList" value="{{akadGrad.akadgrad_id}}">{{akadGrad.titel}}</option>
 						</select>
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Für technische Studiengänge ist 'Bachelor of Science in Engineering' oder 'Master of Science in Engineering' auszuwählen."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>

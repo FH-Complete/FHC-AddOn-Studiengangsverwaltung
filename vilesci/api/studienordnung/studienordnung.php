@@ -5,12 +5,14 @@ require_once('../../../../../include/functions.inc.php');
 require_once('../../../../../include/benutzerberechtigung.class.php');
 require_once ('../../../include/studienplanAddonStgv.class.php');
 require_once ('../../../include/studienordnungAddonStgv.class.php');
+require_once ('../../../../../include/studiengang.class.php');
 require_once('../functions.php');
 
 $studienordnung_id = filter_input(INPUT_GET, "studienordnung_id");
 $studienplan_id = filter_input(INPUT_GET, "studienplan_id");
 
 $studienordnung = new StudienordnungAddonStgv();
+$studiengang = new studiengang();
 
 if (!is_null($studienordnung_id))
 {
@@ -24,7 +26,7 @@ else
 {
     $studienordnung->getAll();
     $data = array();
-    foreach ($studienordnung->resul as $sto)
+    foreach ($studienordnung->result as $sto)
     {
 	$obj = new stdClass();
 	$obj->studienordnung_id = $sto->studienordnung_id;
@@ -52,6 +54,8 @@ else
     }
     returnAJAX(true, $data);
 }
+$studiengang->load($studienordnung->studiengang_kz);
+//var_dump($studiengang);
 
 $data = array(
     "studienordnung_id" => $studienordnung->studienordnung_id,
@@ -72,7 +76,8 @@ $data = array(
     "updateamum" => $studienordnung->updateamum,
     "updatevon" => $studienordnung->updatevon,
     "insertamum" => $studienordnung->insertamum,
-    "insertvon" => $studienordnung->insertvon
+    "insertvon" => $studienordnung->insertvon,
+    "studiengangsart" => $studiengang->typ
 );
 
 

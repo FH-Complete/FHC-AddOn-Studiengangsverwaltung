@@ -29,6 +29,11 @@ angular.module('stgv2')
 					'seperate-binary': false
 				}
 			});
+			$("#editor").on('paste', function(event){
+				event.preventDefault();
+				var clipboardData = event.originalEvent.clipboardData.getData("text");
+				$("#editor").html(clipboardData);
+			});
 
 			$scope.$watch("ctrl.data.aenderungsvariante_kurzbz", function (newValue, oldValue) {
 				var length = 0;

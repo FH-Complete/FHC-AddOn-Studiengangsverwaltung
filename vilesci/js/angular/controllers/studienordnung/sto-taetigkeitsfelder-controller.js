@@ -51,18 +51,14 @@ angular.module('stgv2')
 				}).then(function success(response) {
 					if (response.data.erfolg)
 					{
-						console.log(response);
 						if (response.data.info.length > 0)
 						{
 							ctrl.data = response.data.info[0];
 							$("#ueberblick-editor").html(ctrl.data.ueberblick);
-	//						ctrl.data.data = JSON.parse(ctrl.data.data);
 							$(ctrl.data.data.branchen.elements).each(function(key, value)
 							{
-								console.log(value);
 								ctrl.drawList("branchen_lists",value.title);
 								$(value.elements).each(function(k, v){
-									console.log(v);
 									ctrl.drawListItem('branchen_lists', v);
 								});
 							});
@@ -136,6 +132,11 @@ angular.module('stgv2')
 				if(text!="")
 				{
 					var list = $("#"+div_id).find("ul li ul").last() ;
+					if(list.length === 0)
+					{
+						list = $("#"+div_id).append('<ul class="list-group dropzone"><li class="list-group-item"><span class="list_title">&nbsp;</span><span class="badge" ng-click="ctrl.removeList($event)"><span class="glyphicon glyphicon-trash"></span></span><ul class="list-group sortable sortable-list"></ul></li></ul>');
+						list = $(list).find("ul li ul").last();
+					}
 					var html = $(list).append('<li class="list-group-item draggable">'+text+'<span class="badge" ng-click="ctrl.removeListItem($event)"><span class="glyphicon glyphicon-trash"></span></span></li>');
 					$compile(html)(scope);
 				}

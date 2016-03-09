@@ -1,12 +1,12 @@
 <div class="contentWrapper" ng-controller="StoQualifikationszieleCtrl as ctrl">
 	<form id="stoQualifikationsziele" onsubmit="return false;">
-		<div ng-repeat="ele in ctrl.data.data">
+		<div ng-repeat="ele in ctrl.data.data" on-ng-repeat-finished>
 			<div class="row">
 				<div class="col-sm-8">
 					<h4>
 						{{ele.header}}
-						<span ng-if="ele.header !='Qualifikationsziele'"><a href="#" data-toggle="tooltip" data-placement="right" title="Es handelt sich um einen fixen Textbaustein, der normalerweise unverändert bleibt."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
-						<span ng-if="ele.header =='Qualifikationsziele'"><a href="#" data-toggle="tooltip" data-placement="right" title="Im ersten Textfeld erfolgt eine zusammenfassende kurze Beschreibung der zentralen Qualifikationen der AbsolventInnen. Im zweiten Textfeld findet sich ein fixer Textbaustein, der ggf. ergänzt werden kann. Unterhalb des dritten und vierten Textfelds werden die konkreten Qualifikationen / Lernergebnisse eingegeben. Jedes Qualifikationsziel / Lernergebnis wird separat eingegeben."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+						<span ng-show="ele.header !='Qualifikationsziele'"><a href="#" data-toggle="tooltip" data-placement="right" title="Es handelt sich um einen fixen Textbaustein, der normalerweise unverändert bleibt."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+						<span ng-show="ele.header =='Qualifikationsziele'"><a href="#" data-toggle="tooltip" data-placement="right" title="Im ersten Textfeld erfolgt eine zusammenfassende kurze Beschreibung der zentralen Qualifikationen der AbsolventInnen. Im zweiten Textfeld findet sich ein fixer Textbaustein, der ggf. ergänzt werden kann. Unterhalb des dritten und vierten Textfelds werden die konkreten Qualifikationen / Lernergebnisse eingegeben. Jedes Qualifikationsziel / Lernergebnis wird separat eingegeben."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</h4>
 				</div>
 			</div>
