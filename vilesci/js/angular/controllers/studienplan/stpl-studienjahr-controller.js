@@ -45,7 +45,6 @@ angular.module('stgv2')
 			//loading data
 			StudienplanService.getStudienplan($scope.studienplan_id).then(function (result) {
 				ctrl.data = result;
-				console.log(ctrl.data);
 				StudienordnungService.getStudienordnungByStudienplan($scope.studienplan_id).then(function (result) {
 					ctrl.data.status_kurzbz = result.status_kurzbz;
 				}, function (error) {
@@ -84,7 +83,6 @@ angular.module('stgv2')
 					singleSelect:true,
 					onLoadSuccess: function (data)
 					{
-						console.log(data);
 						return data.info;
 						//Error Handling happens in loadFilter
 					},
@@ -93,7 +91,6 @@ angular.module('stgv2')
 						console.log(error);
 					},
 					loadFilter: function (data) {
-						console.log(data);
 						var result = {};
 						if (data.erfolg)
 						{
@@ -126,13 +123,11 @@ angular.module('stgv2')
 								var string = "";
 								angular.forEach(value, function(v, i)
 								{
-									console.log(v);
 									if(v === true)
 									{
 										string+= i+" ";
 									}
 								});
-								console.log(string);
 								return string;
 								
 							},
@@ -155,30 +150,32 @@ angular.module('stgv2')
 			};
 
 			ctrl.save = function () {
-				var saveData = {data: ""}
-				saveData.data = angular.copy(ctrl.studienjahr);
-				saveData.data.data = JSON.stringify(saveData.data.data);
-				console.log(saveData);
-				$http({
-					method: 'POST',
-					url: './api/studienplan/studienjahr/save_studienjahr.php',
-					data: $.param(saveData),
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					}
-				}).then(function success(response) {
-					if (response.data.erfolg)
-					{
-						$("#dataGridStudienjahr").treegrid('reload');
-						successService.setMessage(response.data.info);
-					}
-					else
-					{
+				if ($scope.form.$valid)
+				{
+					var saveData = {data: ""}
+					saveData.data = angular.copy(ctrl.studienjahr);
+					saveData.data.data = JSON.stringify(saveData.data.data);
+					$http({
+						method: 'POST',
+						url: './api/studienplan/studienjahr/save_studienjahr.php',
+						data: $.param(saveData),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response) {
+						if (response.data.erfolg)
+						{
+							$("#dataGridStudienjahr").datagrid('reload');
+							successService.setMessage(response.data.info);
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+					}, function error(response) {
 						errorService.setError(getErrorMsg(response));
-					}
-				}, function error(response) {
-					errorService.setError(getErrorMsg(response));
-				});
+					});
+				}
 			};
 			
 			ctrl.range = function (max)

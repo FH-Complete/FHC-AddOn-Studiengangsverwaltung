@@ -29,8 +29,8 @@
 			<div class="col-sm-2">
 				<div class="form-group">
 					<label for="studienjahr">Studienjahr</label>
-					<div class="input-group">
-						<select class="form-control input-sm" ng-model="ctrl.studienjahr.studienjahr_kurzbz">
+					<div class="input-group" ng-class="{'has-error': (form.$submitted && form.studienjahr.$error.required)}">
+						<select class="form-control input-sm" name="studienjahr" ng-model="ctrl.studienjahr.studienjahr_kurzbz" required>
 							<option ng-repeat="studienjahr in ctrl.studienjahrList">{{studienjahr.studienjahr_kurzbz}}</option>
 						</select>
 						<!--<input type="text" class="form-control input-sm" name="studienjahr" ng-model="ctrl.studienjahr.bezeichnung"/>-->
