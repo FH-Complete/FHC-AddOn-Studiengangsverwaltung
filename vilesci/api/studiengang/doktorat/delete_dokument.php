@@ -8,7 +8,15 @@ require_once('../../../../../../include/dms.class.php');
 require_once('../../../../include/doktorat.class.php');
 
 require_once('../../functions.php');
-//TODO Berechtigung
+
+$uid = get_uid();
+$berechtigung = new benutzerberechtigung();
+$berechtigung->getBerechtigungen($uid);
+if(!$berechtigung->isBerechtigt("stgv/deleteDokument",null,"suid"))
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um Dokumente zu löschen.", "detail"=>"stgv/deleteDokument");
+    returnAJAX(FALSE, $error);
+}
 
 $dms_id = filter_input(INPUT_GET, "dms_id");
 $doktorat_id = filter_input(INPUT_GET, "doktorat_id");

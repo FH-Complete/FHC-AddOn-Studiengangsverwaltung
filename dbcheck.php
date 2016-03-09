@@ -1186,6 +1186,36 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienjahr LIMIT 1;
 	echo ' addon.tbl_stgv_studienjahr: Tabelle hinzugefuegt<br>';
 }
 
+//Berechtigung fuer Dokumentupload
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/uploadDokument' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/uploadDokument','Recht zum Upload von Dokumenten.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/uploadDokument','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Upload von Dokumenten.<br>';
+    }
+}
+
+//Berechtigung zum Löschen von Dokumenten
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/deleteDokument' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/deleteDokument','Recht zum Löschen von Dokumenten.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/deleteDokument','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Löschen von Dokumenten.<br>';
+    }
+}
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 

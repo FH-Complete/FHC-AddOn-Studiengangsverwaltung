@@ -8,9 +8,15 @@ require_once('../../../../../../include/dms.class.php');
 require_once('../../../../include/doktorat.class.php');
 require_once('../../functions.php');
 
-//TODO Berechtigungen
-
 $uid = get_uid();
+$berechtigung = new benutzerberechtigung();
+$berechtigung->getBerechtigungen($uid);
+if(!$berechtigung->isBerechtigt("stgv/uploadDokument",null,"suid"))
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um Dokumente hochzuladen.", "detail"=>"stgv/uploadDokument");
+    returnAJAX(FALSE, $error);
+}
+
 $doktorat_id = filter_input(INPUT_POST, "doktorat_id");
 $dms_id = filter_input(INPUT_POST, "dms_id");
 
