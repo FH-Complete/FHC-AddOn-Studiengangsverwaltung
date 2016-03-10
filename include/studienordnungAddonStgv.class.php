@@ -277,10 +277,6 @@ class StudienordnungAddonStgv extends studienordnung
 	    $this->errormsg = 'studiengang_kz muss eine gültige Zahl sein';
 	    return false;
 	}
-	
-//	$qry = "SELECT sto.*, s.bezeichnung as status_bezeichnung FROM lehre.tbl_studienordnung sto JOIN addon.tbl_stgv_studienordnungstatus s USING(status_kurzbz) WHERE "
-//		. "status_kurzbz=" . $this->db_add_param($status_kurzbz, FHC_STRING) . ""
-//		. " AND studiengang_kz=" . $this->db_add_param($studiengang_kz, FHC_INTEGER) . ";";
 
 	if (is_null($studiensemester_kurzbz))
 	{

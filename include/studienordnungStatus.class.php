@@ -40,7 +40,7 @@ class StudienordnungStatus extends basis_db {
     }
 
     public function getAll() {
-	$qry = "SELECT * FROM addon.tbl_stgv_studienordnungstatus ORDER BY reihenfolge;";
+	$qry = "SELECT * FROM lehre.tbl_studienordnungstatus ORDER BY reihenfolge;";
 
 	if (!$this->db_query($qry)) {
 	    $this->errormsg = 'Fehler bei einer Datenbankabfrage';
