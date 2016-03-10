@@ -98,7 +98,7 @@ angular.module('stgv2')
 							{
 								value.ausbildungssemester = value.data.gueltigFuer;
 							});
-							ctrl.data = data.info;
+//							ctrl.data = data.info;
 							result.rows = data.info;
 							return result;
 						}
@@ -144,7 +144,7 @@ angular.module('stgv2')
 			
 			ctrl.loadStudienjahrDetails = function(row)
 			{
-				ctrl.studienjahr = angular.copy(row);	
+				ctrl.studienjahr = angular.copy(row);
 				$scope.$apply();
 				$("#stplStudienjahrDetails").show();
 			};
