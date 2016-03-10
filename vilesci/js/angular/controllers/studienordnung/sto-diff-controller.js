@@ -21,6 +21,7 @@ angular.module('stgv2')
 					ctrl.old.studienordnung_id = $scope.studienordnung_id;
 					ctrl.loadStudienordnungList(ctrl.old);
 					ctrl.loadStudienordnungList(ctrl.new);
+					ctrl.loadStudienplanList(ctrl.old);
 				}
 			}, function (error) {
 				errorService.setError(getErrorMsg(error));

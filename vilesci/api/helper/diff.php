@@ -14,6 +14,7 @@ require_once('../../../include/qualifikationsziel.class.php');
 require_once('../../../include/zugangsvoraussetzung.class.php');
 require_once('../../../include/aufnahmeverfahren.class.php');
 require_once('../../../include/auslandssemester.class.php');
+require_once('../../../include/berufspraktikum.class.php');
 
 require_once('../functions.php');
 
@@ -318,9 +319,6 @@ if(($studienplan_id_old !== 'undefined') && ($studienplan_id_new !== 'undefined'
     $stpl_new = new StudienplanAddonStgv();
     $stpl_new->loadStudienplan($studienplan_id_new);
     
-//    var_dump($stpl_old);
-//    var_dump($stpl_new);
-    
     $diff_array["Studienpläne"]["Version"]["old"] = $stpl_old->version;
     $diff_array["Studienpläne"]["Version"]["new"] = $stpl_new->version;
     $diff_array["Studienpläne"]["Version"]["diff"] = $diff->render($stpl_old->version, $stpl_new->version);
@@ -353,14 +351,89 @@ if(($studienplan_id_old !== 'undefined') && ($studienplan_id_new !== 'undefined'
     $diff_array["Studienpläne"]["Erläuterungen"]["new"] = $stpl_new->erlaeuterungen;
     $diff_array["Studienpläne"]["Erläuterungen"]["diff"] = $diff->render($stpl_old->erlaeuterungen, $stpl_new->erlaeuterungen);
     
+    //Auslandssemester
     $auslandssemester_old = new auslandssemester();
     $auslandssemester_old->getAll($stpl_old->studienplan_id);
     
     $auslandssemester_new = new auslandssemester();
     $auslandssemester_new->getAll($stpl_new->studienplan_id);
     
-    var_dump($auslandssemester_old->result);
-    var_dump($auslandssemester_new->result);
+    $diff_array["Studienpläne"]["Auslandssemester"]["old"] = "";
+    $diff_array["Studienpläne"]["Auslandssemester"]["new"] = "";
+    $diff_array["Studienpläne"]["Auslandssemester"]["diff"] = "";
+    
+    if(count($auslandssemester_old->result) !== 0)
+    {
+	foreach($auslandssemester_old->result as $a)
+	{
+	    foreach($a->data as $sem => $value)
+	    {
+		if($value->optional || $value->verpflichtend)
+		{
+		    $diff_array["Studienpläne"]["Auslandssemester"]["old"] .= ($sem+1).". Semester ".($value->optional? "optional" : "verpflichtend")."</br>";
+		}
+	    }
+	}
+    }
+    
+    if(count($auslandssemester_new->result) !== 0)
+    {
+	foreach($auslandssemester_new->result as $a)
+	{
+	    foreach($a->data as $sem => $value)
+	    {
+		if($value->optional || $value->verpflichtend)
+		{
+		    $diff_array["Studienpläne"]["Auslandssemester"]["diff"] .= ($sem+1).". Semester ".($value->optional? "optional" : "verpflichtend")."</br>";
+		}
+	    }
+	}
+    }
+    
+    //Berufspraktikum
+    $berufspraktikum_old = new berufspraktikum();
+    $berufspraktikum_old->getAll($stpl_old->studienplan_id);
+    
+    $berufspraktikum_new = new berufspraktikum();
+    $berufspraktikum_new->getAll($stpl_new->studienplan_id);
+    
+    $diff_array["Studienpläne"]["Berufspraktikum"]["old"] = "";
+    $diff_array["Studienpläne"]["Berufspraktikum"]["new"] = "";
+    $diff_array["Studienpläne"]["Berufspraktikum"]["diff"] = "";
+    
+    if(count($berufspraktikum_old->result) !== 0)
+    {
+	foreach($berufspraktikum_old->result as $a)
+	{
+	    foreach($a->data as $sem => $value)
+	    {
+		if($value->semester)
+		{
+		     $diff_array["Studienpläne"]["Berufspraktikum"]["old"] .= "<b>".($sem+1).". Semester</b></br>";
+		     $diff_array["Studienpläne"]["Berufspraktikum"]["old"] .= "ECTS: ".$value->ects."</br>";
+		     $diff_array["Studienpläne"]["Berufspraktikum"]["old"] .= "Dauer: ".$value->dauer."</br>";
+		     $diff_array["Studienpläne"]["Berufspraktikum"]["old"] .= "Stunden: ".$value->stunden."</br>";
+		}
+	    }
+	}
+    }
+    
+    if(count($berufspraktikum_new->result) !== 0)
+    {
+	foreach($berufspraktikum_new->result as $a)
+	{
+	    foreach($a->data as $sem => $value)
+	    {
+		if($value->semester)
+		{
+		     $diff_array["Studienpläne"]["Berufspraktikum"]["diff"] .= "<b>".($sem+1).". Semester</b></br>";
+		     $diff_array["Studienpläne"]["Berufspraktikum"]["diff"] .= "ECTS: ".$value->ects."</br>";
+		     $diff_array["Studienpläne"]["Berufspraktikum"]["diff"] .= "Dauer: ".$value->dauer."</br>";
+		     $diff_array["Studienpläne"]["Berufspraktikum"]["diff"] .= "Stunden: ".$value->stunden."</br>";
+		}
+	    }
+	}
+    }
     
 }
 

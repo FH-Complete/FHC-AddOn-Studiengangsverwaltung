@@ -84,8 +84,10 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="(prop,diff) in item">
+						{{prop}}
 						<td class="bold">{{prop}}</td>
-						<td ng-bind-html="diff.old"></td>
+						<td ng-if="prop!='Auslandssemester' && prop!='Berufspraktikum'" ng-bind-html="diff.old"></td>
+						<td ng-if="prop=='Auslandssemester' || prop=='Berufspraktikum'" ng-bind-html="stoCtrl.insertHTML(diff.old)"></td>
 						<td ng-bind-html="stoCtrl.insertHTML(diff.diff)"></td>
 					</tr>
 				</tbody>
