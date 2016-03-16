@@ -198,6 +198,20 @@ if($result = @$db->db_query("SELECT 1 FROM system.tbl_rolle WHERE rolle_kurzbz='
     }
 }
 
+//Rolle für Addon
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_rolle WHERE rolle_kurzbz='addonStgvAdmin' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_rolle(rolle_kurzbz, beschreibung) VALUES ('addonStgvAdmin','Rolle Administrator für Addon Studiengangsverwaltung');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_rolle: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_rolle: Rolle Administrator für Addon Studiengangsverwaltung hinzugefügt.<br>';
+    }
+}
+
 //Berechtigung für Addon
 if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='addon/studiengangsverwaltung' LIMIT 1"))
 {
@@ -717,7 +731,7 @@ if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berecht
     if($db->db_num_rows($result)==0)
     {
 	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/changeStoStateAdmin','Ändern des Sto Status im Addon Studiengangsverwaltung in alle Stati');
-		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/changeStoStateAdmin','admin','suid');";
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/changeStoStateAdmin','addonStgvAdmin','suid');";
 
 	if (!$db->db_query($qry))
 	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
