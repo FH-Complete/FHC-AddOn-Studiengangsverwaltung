@@ -1230,6 +1230,36 @@ if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berecht
     }
 }
 
+//Berechtigung zum Ändern von Studienordnungen in allen Stati
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/changeStoAdmin' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/changeStoAdmin','Recht zum Ändern von Studienordnungen in allen Stati.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/changeStoAdmin','addonStgvAdmin','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Ändern von Studienordnungen in allen Stati.<br>';
+    }
+}
+
+//Berechtigung zum Ändern von Studienplänen in allen Stati
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/changeStplAdmin' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/changeStplAdmin','Recht zum Ändern von Studienplänen in allen Stati.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/changeStplAdmin','addonStgvAdmin','suid');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' system.tbl_berechtigung: Recht zum Ändern von Studienplänen in allen Stati.<br>';
+    }
+}
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 

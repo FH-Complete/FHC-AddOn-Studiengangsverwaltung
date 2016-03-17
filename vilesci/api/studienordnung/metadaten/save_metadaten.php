@@ -23,6 +23,13 @@ $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQ
 $data = (Object) $data["data"];
 
 $studienordnung = mapDataToStudienordnung($data);
+
+if($studienordnung->status_kurzbz != "development" && !($berechtigung->isBerechtigt("stgv/changeStoAdmin")))
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um Studienordnungen in diesem Status zu ändern.", "detail"=>"stgv/changeStoAdmin");
+    returnAJAX(FALSE, $error);
+}
+
 if($studienordnung->save())
 {
     if(!empty($data->beschluesse))

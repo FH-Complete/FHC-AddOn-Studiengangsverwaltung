@@ -35,6 +35,14 @@ elseif (($dms_id == false) || ($studienordnung_id == false))
 }
 
 $studienordnung = new studienordnungAddonStgv();
+$studienordnung->loadStudienordnung($studienordnung_id);
+
+if($studienordnung->status_kurzbz != "development" && !($berechtigung->isBerechtigt("stgv/changeStoAdmin")))
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um Studienordnungen in diesem Status zu ändern.", "detail"=>"stgv/changeStoAdmin");
+    returnAJAX(FALSE, $error);
+}
+
 if($studienordnung->deleteDokument($studienordnung_id, $dms_id))
 {
     returnAJAX(true,"Dokument erfolgreich gelöscht.");

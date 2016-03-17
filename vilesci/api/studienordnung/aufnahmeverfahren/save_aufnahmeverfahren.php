@@ -5,6 +5,7 @@ require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
 
 require_once('../../../../include/aufnahmeverfahren.class.php');
+require_once('../../../../include/studienordnungAddonStgv.class.php');
 require_once('../../functions.php');
 
 $uid = get_uid();
@@ -20,6 +21,15 @@ $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQ
 $data = (Object) $data["data"];
 
 $aufnahmeverfahren = mapDataToAufnahmeverfahren($data);
+
+$studienordnung = new studienordnungAddonStgv();
+$studienordnung->loadStudienordnung($aufnahmeverfahren->studienordnung_id);
+
+if($studienordnung->status_kurzbz != "development" && !($berechtigung->isBerechtigt("stgv/changeStoAdmin")))
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um Studienordnungen in diesem Status zu ändern.", "detail"=>"stgv/changeStoAdmin");
+    returnAJAX(FALSE, $error);
+}
 
 if($aufnahmeverfahren->save())
 {
