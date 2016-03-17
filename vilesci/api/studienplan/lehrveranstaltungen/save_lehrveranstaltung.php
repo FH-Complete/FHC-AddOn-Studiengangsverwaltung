@@ -6,11 +6,20 @@ require_once('../../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../../include/lehrveranstaltung.class.php');
 require_once('../../functions.php');
 
+$uid = get_uid();
+$berechtigung = new benutzerberechtigung();
+$berechtigung->getBerechtigungen($uid);
+
+if(!$berechtigung->isBerechtigt("stgv/createLehrveranstaltung",null,"suid"))
+{
+    $error = array("message"=>"Sie haben nicht die Berechtigung um Lehrveranstaltungen anzulegen.", "detail"=>"stgv/createLehrveranstaltung");
+    returnAJAX(FALSE, $error);
+}
+
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
 $data = (Object) $data["data"];
 
 $lehrveranstaltung = mapDataToLehrveranstaltung($data);
-
 
 if($lehrveranstaltung->save())
 {

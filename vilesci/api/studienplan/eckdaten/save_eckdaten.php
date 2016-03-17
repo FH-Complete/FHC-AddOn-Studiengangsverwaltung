@@ -23,9 +23,9 @@ $studienplan = mapDataToStudienplan($data);
 $studienordnung = new StudienordnungAddonStgv();
 $studienordnung->loadStudienordnung($studienplan->studienordnung_id);
 
-if($studienordnung->status_kurzbz != "development")
+if($studienordnung->status_kurzbz != "development" && !($berechtigung->isBerechtigt("stgv/changeStplAdmin")))
 {
-    $error = array("message"=>"Sie haben nicht die Berechtigung um Studienpläne in diesem Status ändern.", "detail"=>"stgv/changeStudienplan");
+    $error = array("message"=>"Sie haben nicht die Berechtigung um Studienpläne in diesem Status ändern.", "detail"=>"stgv/changeStplAdmin");
     returnAJAX(FALSE, $error);
 }
 

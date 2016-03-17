@@ -30,9 +30,9 @@ foreach ($data as $key)
     $studienordnung = new StudienordnungAddonStgv();
     $studienordnung->loadStudienordnung($stpl->studienordnung_id);
 
-    if($studienordnung->status_kurzbz !== "development")
+    if($studienordnung->status_kurzbz != "development" && !($berechtigung->isBerechtigt("stgv/changeStplAdmin")))
     {
-	$error = array("message"=>"Sie haben nicht die Berechtigung um Studienpläne in diesem Status zu ändern.", "detail"=>"stgv/changeStudienplan");
+	$error = array("message"=>"Sie haben nicht die Berechtigung um Studienpläne in diesem Status zu ändern.", "detail"=>"stgv/changeStplAdmin");
 	returnAJAX(FALSE, $error);
     }
     if (!isZuordnungGuelitg($key["studienplan_id"], $key["studiensemester_kurzbz"]))
