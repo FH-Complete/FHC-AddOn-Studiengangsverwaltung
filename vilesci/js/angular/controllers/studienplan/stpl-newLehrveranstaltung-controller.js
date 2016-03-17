@@ -38,7 +38,6 @@ angular.module('stgv2')
 			
 			ctrl.setLehrtypDependencies = function()
 			{
-				console.log(ctrl.data.lehrtyp_kurzbz);
 				if(ctrl.data.lehrtyp_kurzbz === "modul")
 				{
 					ctrl.data.zeugnis = false;

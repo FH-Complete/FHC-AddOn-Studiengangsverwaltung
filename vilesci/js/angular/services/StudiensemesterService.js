@@ -32,7 +32,6 @@ angular.module('stgv2')
 				var def = $q.defer();
 				if (StoreService.get(storeId) !== null)
 				{
-					console.log("data from store");
 					def.resolve(StoreService.get(storeId));
 					return def.promise;
 				}
@@ -44,7 +43,6 @@ angular.module('stgv2')
 					}).then(function success(response) {
 						if (response.data.erfolg)
 						{
-							console.log("data from http")
 							StoreService.set(storeId, response.data.info);
 							def.resolve(response.data.info);
 							return def.promise;

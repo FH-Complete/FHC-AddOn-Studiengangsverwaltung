@@ -9,7 +9,7 @@ angular.module('stgv2')
 			
 			//enable tooltips
 			$scope.$on("ngRepeatFinished",function(){
-				console.log($('[data-toggle="tooltip"]').tooltip());
+				$('[data-toggle="tooltip"]').tooltip();
 			});
 
 			ctrl.save = function()

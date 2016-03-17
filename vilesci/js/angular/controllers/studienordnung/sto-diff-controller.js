@@ -56,7 +56,6 @@ angular.module('stgv2')
 				}).then(function success(response) {
 					if (response.data.erfolg)
 					{
-						console.log(response.data.info);
 						selection.studienplanList = response.data.info;
 					}
 					else

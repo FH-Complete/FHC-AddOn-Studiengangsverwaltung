@@ -64,16 +64,11 @@ angular.module('stgv2')
 					},
 					onClickRow: function (index, row)
 					{
-						console.log(index);
-						console.log(row);
-//						var row = $("#dataGridReihungstest").datagrid("getSelected");
 						ctrl.loadReihungstestDetails(row);
 						if ($("#save").is(":visible"))
 							ctrl.changeButtons();
 					},
 					onDblClickRow: function(index, row){
-						console.log(index);
-						console.log(row);
 						return false;
 					},
 					columns: [[
@@ -111,7 +106,6 @@ angular.module('stgv2')
 
 			ctrl.loadReihungstestDetails = function (row)
 			{
-				console.log(row);
 				ctrl.reihungstest = angular.copy(row);
 				ctrl.reihungstest.datum = formatStringToDate(row.datum);
 				ctrl.reihungstest.uhrzeit = formatStringToTime(row.uhrzeit, ":");

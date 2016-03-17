@@ -7,7 +7,6 @@ angular.module('stgv2')
 				var studienordnung = StoreService.get(storeId);
 				if ((studienordnung !== null) && (studienordnung.studienordnung_id === studienordnung_id))
 				{
-					console.log("data from store");
 					def.resolve(studienordnung);
 					return def.promise;
 				}
@@ -18,7 +17,6 @@ angular.module('stgv2')
 						method: "GET",
 						url: "./api/studienordnung/studienordnung.php?studienordnung_id=" + studienordnung_id
 					}).then(function success(response) {
-						console.log("data from http");
 						if (response.data.erfolg)
 						{
 							StoreService.set(storeId, response.data.info);
@@ -40,7 +38,6 @@ angular.module('stgv2')
 				var studienordnung = StoreService.get(storeId);
 				if ((studienordnung !== null) && (studienordnung.studienplan_id === studienplan_id))
 				{
-					console.log("data from store");
 					def.resolve(studienordnung);
 					return def.promise;
 				}
@@ -51,7 +48,6 @@ angular.module('stgv2')
 						method: "GET",
 						url: "./api/studienordnung/studienordnung.php?studienplan_id=" + studienplan_id
 					}).then(function success(response) {
-						console.log("data from http");
 						if (response.data.erfolg)
 						{
 							StoreService.set(storeId, response.data.info);

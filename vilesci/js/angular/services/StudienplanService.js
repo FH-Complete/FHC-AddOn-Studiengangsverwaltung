@@ -9,7 +9,6 @@ angular.module('stgv2')
 				var studienplan = StoreService.get(storeId);
 				if ((studienplan !== null) && (studienplan.studienplan_id === studienplan_id))
 				{
-					console.log("data from store");
 					def.resolve(studienplan);
 					return def.promise;
 				}
@@ -19,7 +18,6 @@ angular.module('stgv2')
 						method: "GET",
 						url: "./api/studienplan/studienplan.php?studienplan_id=" + studienplan_id
 					}).then(function success(response) {
-						console.log("data from http");
 						if (response.data.erfolg)
 						{
 							def.resolve(response.data.info);

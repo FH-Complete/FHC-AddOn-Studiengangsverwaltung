@@ -24,9 +24,7 @@ angular.module("stgv2")
 				{
 					bw = 200;
 				}
-				console.log(bw);
 				var x = ww / 2 - bw / 2;
-//				console.log(x);
 				bx.css("left", x + "px");
 				bx.css("top", "200px");
 			};

@@ -70,8 +70,8 @@ angular.module('stgv2')
 						$("#editor").html(response.data);
 						$("#initialData").show();
 						ctrl.preview();
-					}, function error(response) {
-						console.log(response);
+					}, function error(error) {
+						console.log(error);
 					});
 				}
 				else

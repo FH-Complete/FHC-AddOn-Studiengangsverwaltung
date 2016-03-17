@@ -138,7 +138,6 @@ angular.module('stgv2')
 				{
 					var updateData = {data: ""}
 					updateData.data = ctrl.doktorat;
-					console.log(updateData);
 					$http({
 						method: 'POST',
 						url: './api/studiengang/doktorat/update_doktorat.php',

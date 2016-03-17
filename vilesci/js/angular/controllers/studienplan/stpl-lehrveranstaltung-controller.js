@@ -105,10 +105,6 @@ angular.module('stgv2')
 							});
 						}
 					},
-					rowStyler: function(index, row)
-					{
-//						console.log(index, row);
-					},
 					loadFilter: function (data)
 					{
 						if (data.erfolg)
@@ -178,7 +174,6 @@ angular.module('stgv2')
 					},
 					onClickRow: function (row)
 					{
-						console.log(row);
 						if (row.type != "sem")
 						{
 							if(ctrl.studienplan.status_kurzbz === 'development')
@@ -195,18 +190,6 @@ angular.module('stgv2')
 							$("#deleteNode").linkbutton("disable");
 							$("#editNode").linkbutton("disable");
 						}
-					},
-					onDblClickRow: function(row)
-					{
-//						console.log(row);
-//						$("#saveChanges").linkbutton("enable");
-//						if(editingId !== null)
-//						{
-//							$("#stplTreeGrid").treegrid('endEdit', editingId);
-//							editingId = null;
-//						}
-//						editingId = row.id;
-//						$("#stplTreeGrid").treegrid('beginEdit', row.id);
 					},
 					onBeforeEdit: function(row)
 					{
@@ -229,7 +212,6 @@ angular.module('stgv2')
 						else
 						{
 							var parent = $(this).treegrid('getParent',row.id);
-							console.log(parent);
 							if(parent.type !== "modul")
 							{
 								benotung.editor = {type: "checkbox"};
@@ -353,11 +335,9 @@ angular.module('stgv2')
 								errorService.setError(getErrorMsg(response));
 							});
 						}
-//						changeTreeIcons("stplTree", "stplTreeGrid");
 					},
 					onBeforeDrag: function (row)
 					{
-//						console.log(row.type);
 						if (row.type === "sem")
 						{
 							return false;
@@ -391,7 +371,6 @@ angular.module('stgv2')
 							
 						}
 						
-//						console.log(target);
 						if(source.stpllv_pflicht === undefined)
 						{
 							source.stpllv_pflicht = true;
@@ -404,7 +383,6 @@ angular.module('stgv2')
 						
 						if(source.export === undefined)
 						{
-//							console.log(ctrl.studienplan.status_kurzbz);
 							if(ctrl.studienplan.status_kurzbz !== "development")
 							{
 								source.export = false;
@@ -508,17 +486,13 @@ angular.module('stgv2')
 				$.extend($.fn.datagrid.defaults.editors, {
 					checkbox: {
 						init: function(container, options){
-//							console.log(container, options);
 							var input = $('<input type="checkbox">').appendTo(container);
-//							console.log(input);
 							return input;
 						},
 						getValue: function(target){
-//							console.log(target);
 							return $(target).prop('checked');
 						},
 						setValue: function(target, value){
-//							console.log(target, value);
 							$(target).prop('checked',value);
 						}
 					}
@@ -653,7 +627,6 @@ angular.module('stgv2')
 					},
 					onClickRow: function (row)
 					{
-						console.log(row);
 						ctrl.meta = row;
 						ctrl.meta.oe = ctrl.getOeName(ctrl.meta.oe_kurzbz);
 						$scope.$apply();

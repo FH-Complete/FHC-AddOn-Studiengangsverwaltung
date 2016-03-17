@@ -7,7 +7,6 @@ angular.module('stgv2')
 				var def = $q.defer();
 				if (StoreService.get(storeId) !== null)
 				{
-					console.log("data from store");
 					def.resolve(StoreService.get(storeId));
 					return def.promise;
 				}
@@ -17,7 +16,6 @@ angular.module('stgv2')
 						method: "GET",
 						url: "./api/helper/studiengang.php"
 					}).then(function success(response) {
-						console.log("data from http");
 						if (response.data.erfolg)
 						{
 							StoreService.set(storeId, response.data.info);
