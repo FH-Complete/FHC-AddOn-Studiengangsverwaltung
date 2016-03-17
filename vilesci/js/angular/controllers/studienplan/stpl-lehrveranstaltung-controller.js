@@ -84,14 +84,16 @@ angular.module('stgv2')
 						{field: 'ects',align: 'right', title:'ECTS'},
 						{field: 'semesterstunden',align: 'right', title:'Semesterstunden'},
 						{field: 'lehrform_kurzbz',align: 'right', title:'Lehrform'},
-						{field: 'lvnr',align: 'right', title:'LVNR'},
-						{field: 'curriculum',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Studienplan', formatter: booleanToIconFormatter},
-						{field: 'export',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Export', formatter: booleanToIconFormatter},
-						{field: 'benotung',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Benotung', formatter: booleanToIconFormatter},
-						{field: 'zeugnis',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Zeugnis', formatter: booleanToIconFormatter},
-						{field: 'lvinfo',align: 'center', /*editor: {type: 'checkbox'},*/ title:'LV-Info', formatter: booleanToIconFormatter},
+                                                {field: 'stpllv_pflicht',align: 'center', title:'Pflicht', formatter: booleanToIconFormatter},
+                                                {field: 'export',align: 'center', /*editor: {type: 'checkbox'},*/ title:'StudPlan', formatter: booleanToIconFormatter},	
+                                                {field: 'lehrform_kurzbz',align: 'center', title:'Gen'},
+                                                {field: 'lehre',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Lehre/CIS', formatter: booleanToIconFormatter},
+                                                {field: 'lvinfo',align: 'center', /*editor: {type: 'checkbox'},*/ title:'LV-Info', formatter: booleanToIconFormatter},
+                                                {field: 'benotung',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Benotung', formatter: booleanToIconFormatter},
+                                                {field: 'zeugnis',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Zeugnis', formatter: booleanToIconFormatter},
 						{field: 'lehrauftrag',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Lehrauftrag', formatter: booleanToIconFormatter},
-						{field: 'lehre',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Lehre', formatter: booleanToIconFormatter}
+						{field: 'lvnr',align: 'right', title:'LVNR'}
+						//{field: 'curriculum',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Studienplan', formatter: booleanToIconFormatter}
 					]],
 					onContextMenu: function(e ,row)
 					{
@@ -109,49 +111,15 @@ angular.module('stgv2')
 					{
 						if (data.erfolg)
 						{
+                                                    return data.info;
 							var tree = [];
 							$(data.info).each(function (i, v)
 							{
 								if (v.stpllv_semester == 0)
 								{
-									tree.push(generateChildren(v));
+									//tree.push(generateChildren(v));
 								}
 							});
-							for (var i = 1; i <= ctrl.studienplan.regelstudiendauer; i++)
-							{
-								var children = [];
-								$(data.info).each(function (j, v)
-								{
-									if (v.stpllv_semester == i)
-									{
-										children.push(generateChildren(v, i));
-									}
-								});
-								
-								//sort by name
-								children.sort(function(a,b){
-									return a.bezeichnung > b.bezeichnung;
-								});
-								
-								//sort by type -> modules after lv
-								children.sort(function(a,b){
-									return a.type > b.type;
-								});
-
-								var node = {};
-								node.id = i + '_sem';
-								node.bezeichnung = i + '. Semester';
-								node.type = "sem";
-								node.sem = i;
-								node.iconCls = "tree-folder";
-								if (children.length != 0)
-								{
-									node.children = children;
-									node.state = 'closed';
-								}
-								tree.push(node);
-							}
-
 							return tree;
 						}
 						else
@@ -194,7 +162,7 @@ angular.module('stgv2')
 					onBeforeEdit: function(row)
 					{
 						var benotung = $(this).treegrid('getColumnOption','benotung');
-						var curriculum = $(this).treegrid('getColumnOption','curriculum');
+//						var curriculum = $(this).treegrid('getColumnOption','curriculum');
 						var exportCol = $(this).treegrid('getColumnOption','export');
 						var zeugnis = $(this).treegrid('getColumnOption','zeugnis');
 						var lvinfo = $(this).treegrid('getColumnOption','lvinfo');
@@ -216,7 +184,7 @@ angular.module('stgv2')
 							{
 								benotung.editor = {type: "checkbox"};
 							}
-							curriculum.editor = {type: "checkbox"};
+//							curriculum.editor = {type: "checkbox"};
 							exportCol.editor = {type: "checkbox"};
 							zeugnis.editor = {type: "checkbox"};
 							lvinfo.editor = {type: "checkbox"};
@@ -230,7 +198,7 @@ angular.module('stgv2')
 						var parent = $("#stplTreeGrid").treegrid('getParent', lv.id);
 
 						var benotung = $(this).treegrid('getColumnOption','benotung');
-						var curriculum = $(this).treegrid('getColumnOption','curriculum');
+//						var curriculum = $(this).treegrid('getColumnOption','curriculum');
 						var exportCol = $(this).treegrid('getColumnOption','export');
 						var zeugnis = $(this).treegrid('getColumnOption','zeugnis');
 						var lvinfo = $(this).treegrid('getColumnOption','lvinfo');
@@ -238,7 +206,7 @@ angular.module('stgv2')
 						var lehre = $(this).treegrid('getColumnOption','lehre');
 
 						benotung.editor = null;
-						curriculum.editor = null;
+//						curriculum.editor = null;
 						exportCol.editor = null;
 						zeugnis.editor = null;
 						lvinfo.editor = null;
@@ -356,6 +324,9 @@ angular.module('stgv2')
 					},
 					onBeforeDrop: function(target, source, point)
 					{
+                                                var node = $("#stplTreeGrid").treegrid("find",source._parentId);
+                                                node.ects -= parseFloat(source.ects);
+                                                $("#stplTreeGrid").treegrid("refresh",node.id);
 						//set values depending on target node
 						//e.g. children of modules
 						if(source.typ !== "modul")
@@ -428,7 +399,11 @@ angular.module('stgv2')
 								changeTreeIcons("stplTree", "stplTreeGrid", target);
 								if (response.data.erfolg)
 								{
-									
+									//$("#stplTreeGrid").treegrid("reload",{nodeId: target.id});
+                                                                        //TODO recalculate ects sums
+                                                                        var parentId = source._parentId;
+                                                                        target.ects += parseFloat(source.ects);
+                                                                        $("#stplTreeGrid").treegrid("refresh",target.id);
 								}
 								else
 								{
@@ -743,13 +718,13 @@ angular.module('stgv2')
 function generateChildren(item, sem)
 {
 	var children = [];
-	if (item.children.length != 0)
-	{
-		$(item.children).each(function (i, v)
-		{
-			children.push(generateChildren(v, sem));
-		});
-	}
+//	if (item.children.length != 0)
+//	{
+//		$(item.children).each(function (i, v)
+//		{
+//			children.push(generateChildren(v, sem));
+//		});
+//	}
 	var node = {};
 	node.id = item.studienplan_lehrveranstaltung_id;
 	node.lehrveranstaltung_id = item.lehrveranstaltung_id

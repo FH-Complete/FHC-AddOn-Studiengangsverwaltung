@@ -7,7 +7,7 @@ require_once('../../../include/studienplanAddonStgv.class.php');
 require_once('../../../include/studienordnungAddonStgv.class.php');
 require_once('../../../include/auslandssemester.class.php');
 require_once('../../../include/berufspraktikum.class.php');
-require_once('../../../include/studienjahr.class.php');
+require_once('../../../include/studienjahrAddonStgv.class.php');
 require_once('../functions.php');
 
 $uid = get_uid();
@@ -36,7 +36,7 @@ if($berechtigung->isBerechtigt("stgv/deleteStudienplan", null, "suid"))
     $berufspraktikum = new berufspraktikum();
     $berufspraktikum->getAll($studienplan_id);
     
-    $studienjahr = new studienjahr();
+    $studienjahr = new studienjahrAddonStgv();
     $studienjahr->getAll($studienplan_id);
 
     if($studienordnung->status_kurzbz == "development")

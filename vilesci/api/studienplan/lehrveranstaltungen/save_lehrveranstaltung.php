@@ -31,6 +31,9 @@ else
     returnAJAX(false, $error);
 }
 
+//TODO generate Lehreverzeichnis
+//TODO check if lehreverzeichnis exists
+
 function mapDataToLehrveranstaltung($data)
 {
     $lv = new lehrveranstaltung();

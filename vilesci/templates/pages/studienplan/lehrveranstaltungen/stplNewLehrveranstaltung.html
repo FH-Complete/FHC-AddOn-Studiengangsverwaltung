@@ -5,7 +5,7 @@
 				<div class="col-sm-2">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
 						<label for="kurzbz">Kurzbz*</label>
-						<input strip-html type="text" class="form-control input-sm" name="kurzbz" ng-model="newLvCtrl.data.kurzbz" ng-change="newLvCtrl.updateLehreverzeichnis()" required/>
+						<input strip-html type="text" class="form-control input-sm" name="kurzbz" ng-model="newLvCtrl.data.kurzbz" required/>
 					</div>
 				</div>
 				<div class="col-sm-6">
@@ -27,7 +27,7 @@
 				<div class="col-sm-4">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
 						<label for="orgform">Organisationsform*</label>
-						<select class="form-control input-sm" name="orgform" ng-model="newLvCtrl.data.orgform_kurzbz" ng-change="newLvCtrl.updateLehreverzeichnis()" required>
+						<select class="form-control input-sm" name="orgform" ng-model="newLvCtrl.data.orgform_kurzbz" required>
 							<option ng-repeat="orgform in newLvCtrl.orgformList" value="{{orgform.orgform_kurzbz}}">{{orgform.bezeichnung}}</option>
 						</select>
 					</div>
@@ -68,12 +68,12 @@
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-2">
+				<!--<div class="col-sm-2">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
 						<label for="lvverzeichnis">Lehreverzeichnis*</label>
 						<input strip-html type="text" class="form-control input-sm"  name="lehreverzeichnis" ng-model="newLvCtrl.data.lehreverzeichnis" required/>
 					</div>
-				</div>
+				</div>-->
 			</div>
 			<div class="row">
 				<div class="col-sm-2">
