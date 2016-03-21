@@ -1,40 +1,61 @@
 <div class="contentWrapper" ng-controller="StoQualifikationszieleCtrl as ctrl">
 	<form id="stoQualifikationsziele" onsubmit="return false;">
-		<div ng-repeat="ele in ctrl.data.data" on-ng-repeat-finished>
 			<div class="row">
 				<div class="col-sm-8">
 					<h4>
-						{{ele.header}}
-						<span ng-show="ele.header !='Qualifikationsziele'"><a href="#" data-toggle="tooltip" data-placement="right" title="Es handelt sich um einen fixen Textbaustein, der normalerweise unverändert bleibt."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
-						<span ng-show="ele.header =='Qualifikationsziele'"><a href="#" data-toggle="tooltip" data-placement="right" title="Im ersten Textfeld erfolgt eine zusammenfassende kurze Beschreibung der zentralen Qualifikationen der AbsolventInnen. Im zweiten Textfeld findet sich ein fixer Textbaustein, der ggf. ergänzt werden kann. Unterhalb des dritten und vierten Textfelds werden die konkreten Qualifikationen / Lernergebnisse eingegeben. Jedes Qualifikationsziel / Lernergebnis wird separat eingegeben."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+						Bildungsauftrag FH-Studiengänge
+						<a href="#" data-toggle="tooltip" data-placement="right" title="Es handelt sich um einen fixen Textbaustein, der normalerweise unverändert bleibt."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a>
 					</h4>
 				</div>
 			</div>
-			<div class="row" ng-if="ele.header=='Qualifikationsziele'">
+			<div class="row" >
+				<div class="col-sm-8">
+					<div class="form-group">
+						<textarea strip-html class="form-control input-sm" rows="5" ng-model="ctrl.data.data[0].fixed[0]"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-8">
+					<h4>
+						Qualifikationsziele 
+						<a href="#" data-toggle="tooltip" data-placement="right" title="Im ersten Textfeld erfolgt eine zusammenfassende kurze Beschreibung der zentralen Qualifikationen der AbsolventInnen. Im zweiten Textfeld findet sich ein fixer Textbaustein, der ggf. ergänzt werden kann. Unterhalb des dritten und vierten Textfelds werden die konkreten Qualifikationen / Lernergebnisse eingegeben. Jedes Qualifikationsziel / Lernergebnis wird separat eingegeben."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a>
+					</h4>
+				</div>
+			</div>
+			<div class="row">
 				<div class="col-sm-8">
 					<div class="form-group">
 						<textarea strip-html class="form-control input-sm" rows="5" ng-model='ctrl.data.data[1].elements[0]'></textarea>
 					</div>
 				</div>
 			</div>
+			
 			<div class="row">
 				<div class="col-sm-8">
-					<div class="form-group">
-						<textarea strip-html class="form-control input-sm" rows="5" ng-model="ele.fixed[0]"></textarea>
-					</div>
-				</div>
-			</div>
-			<div class="row" ng-repeat="item in ele.fixed.slice(1, ele.fixed.length) track by $index">
-				<div class="col-sm-8">
-					<textarea strip-html class="form-control input-sm" rows="2" ng-model="ele.fixed[$index+1]"></textarea>
+					<textarea strip-html class="form-control input-sm" rows="2" ng-model="ctrl.data.data[1].fixed[1]"></textarea>
 					<div class="input-group">
-						<input strip-html type="text" class="form-control input-sm" ng-model="ctrl.temp[$index]"/>
+						<input strip-html id="input_1" type="text" class="form-control input-sm" ng-model="$scope.test1"/>
 						<span class="input-group-btn">
-							<button class="btn btn-primary btn-sm" type="button" ng-click="ctrl.addListItem('zielList_'+($index+1), $index+1)">Aufzählung hinzufügen</button>
+							<button class="btn btn-primary btn-sm" type="button" ng-click="ctrl.addListItem('zielList_1', 'input_1')">Aufzählung hinzufügen</button>
 						</span>
 					</div>
-					<ul id="zielList_{{$index+1}}" class="list-group">
-						<li ng-repeat="item in ctrl.data.data[1].elements[$index+1]" class="list-group-item">{{item}}<span class="badge" ng-click="ctrl.removeListItem($event)"><span class="glyphicon glyphicon-trash"></span></span></li>
+					<ul id="zielList_1" class="list-group">
+						
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-8">
+					<textarea strip-html class="form-control input-sm" rows="2" ng-model="ctrl.data.data[1].fixed[2]"></textarea>
+					<div class="input-group">
+						<input strip-html id="input_2" type="text" class="form-control input-sm" ng-model="$scope.test"/>
+						<span class="input-group-btn">
+							<button class="btn btn-primary btn-sm" type="button" ng-click="ctrl.addListItem('zielList_2', 'input_2')">Aufzählung hinzufügen</button>
+						</span>
+					</div>
+					<ul id="zielList_2" class="list-group">
+						
 					</ul>
 				</div>
 			</div>

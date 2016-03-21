@@ -1,6 +1,7 @@
 angular.module('stgv2')
 		.controller('StoQualifikationszieleCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, $compile) {
 			$scope.studienordnung_id = $stateParams.studienordnung_id;
+			var scope = $scope;
 			var ctrl = this;
 			ctrl.data = new Qualifikationsziel();
 			ctrl.data.studienordnung_id = $scope.studienordnung_id;
@@ -20,6 +21,14 @@ angular.module('stgv2')
 					if (response.data.info.length > 0)
 					{
 						ctrl.data = response.data.info[0];
+						$(ctrl.data.data[1].elements[1]).each(function(key, value)
+						{
+							ctrl.drawListItem('zielList_1', value);
+						});
+						$(ctrl.data.data[1].elements[2]).each(function(key, value)
+						{
+							ctrl.drawListItem('zielList_2', value);
+						});
 					}
 				}
 				else
@@ -32,6 +41,7 @@ angular.module('stgv2')
 
 			ctrl.save = function () {
 				var saveData = {data: ""}
+				ctrl.parseJson();
 				saveData.data = angular.copy(ctrl.data);
 				saveData.data.data = JSON.stringify(saveData.data.data);
 				$http({
@@ -56,21 +66,30 @@ angular.module('stgv2')
 				});
 			};
 
-			ctrl.addListItem = function (list_id, index)
+			ctrl.drawListItem = function (div_id, text)
 			{
-				if ((ctrl.temp[index-1] !== "") && (ctrl.temp[index-1] != undefined))
+				if(text!="")
 				{
-					ctrl.data.data[1].elements[index].push(ctrl.temp[index-1]);
-					ctrl.temp = [];
+					var list = $("#"+div_id);
+					var html = $(list).append('<li class="list-group-item">'+text+'<span class="badge" ng-click="ctrl.removeListItem($event)"><span class="glyphicon glyphicon-trash"></span></span></li>');
+					$compile(html)(scope);
 				}
-				ctrl.parseJson();
-				ctrl.save();
+			};
+
+			ctrl.addListItem = function (list_id, input_id)
+			{
+				var value = $("#"+input_id).val();
+				if(value!="")
+				{
+					ctrl.drawListItem(list_id, value);
+					$("#"+input_id).val("");
+					ctrl.save();
+				}
 			};
 
 			ctrl.removeListItem = function (event)
 			{
 				$(event.target).parent().parent().remove();
-				ctrl.parseJson();
 				ctrl.save();
 			};
 
