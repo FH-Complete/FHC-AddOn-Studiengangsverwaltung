@@ -64,7 +64,6 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<script type="text/javascript" src="./js/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 	<!-- TreeGrid DnD Extension -->
 	<script type="text/javascript" src="./js/treegrid-dnd/treegrid-dnd.js"></script>
-	
 
 	<!-- Bootstrap JS -->
 	<script src="./css/bootstrap-3.3.5/dist/js/bootstrap.js"></script>
@@ -166,7 +165,7 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<link href="js/bootstrap-wysiwyg-2.0/css/style.css" rel="stylesheet" type="text/css"/>
 	<link href="../vendor/fortawesome/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
 	
-	<script src="js/studienordnung_lvregel.js" type="text/javascript"></script>
+	<!--<script src="js/studienordnung_lvregel.js" type="text/javascript"></script>-->
 	
     </head>
     <body ng-controller="AppCtrl as appCtrl">
