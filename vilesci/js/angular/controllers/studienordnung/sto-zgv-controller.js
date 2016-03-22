@@ -55,9 +55,9 @@ angular.module('stgv2')
 				}
 			});
 			$("#editor").on('paste', function(event){
-				event.preventDefault();
-				var clipboardData = event.originalEvent.clipboardData.getData("text");
-				$("#editor").html(clipboardData);
+				setTimeout(function(){
+					$("#editor").html($("#editor").html());
+				},100);
 			});
 			
 			ctrl.loadInitialData = function(){

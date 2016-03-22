@@ -96,7 +96,7 @@ angular.module('stgv2')
 				StudienordnungStatusService.getStudienordnungStatusList()
 						.then(function (result) {
 							ctrl.studienordnungStatusList = result;
-							var filtered = $filter('filter')(ctrl.studienordnungStatusList, {status_kurzbz: newValue});
+							var filtered = $filter('filter')(ctrl.studienordnungStatusList, {status_kurzbz: newValue},true);
 							if (filtered.length === 1)
 							{
 								ctrl.status = filtered[0];

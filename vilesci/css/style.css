@@ -425,3 +425,8 @@ h5
 {
 	cursor: pointer;
 }
+
+blockquote
+{
+	font-size: inherit !important;
+}
