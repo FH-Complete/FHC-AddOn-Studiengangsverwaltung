@@ -165,8 +165,6 @@ if (!$rechte->isBerechtigt('basis/addon')) {
 	<link href="js/bootstrap-wysiwyg-2.0/css/style.css" rel="stylesheet" type="text/css"/>
 	<link href="../vendor/fortawesome/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
 	
-	<!--<script src="js/studienordnung_lvregel.js" type="text/javascript"></script>-->
-	
     </head>
     <body ng-controller="AppCtrl as appCtrl">
 	<div id='layoutWrapper' class="easyui-layout">

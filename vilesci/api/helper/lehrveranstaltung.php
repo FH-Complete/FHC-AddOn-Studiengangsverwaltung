@@ -7,19 +7,28 @@ require_once('../../../../../include/lehrveranstaltung.class.php');
 
 require_once('../functions.php');
 
+$filter = filter_input(INPUT_POST, "filter");
+
+if(is_null($filter))
+{
+    returnAJAX(false, "Variable filter nicht gesetzt");    
+}
+elseif($filter == false)
+{
+    returnAJAX(false, "Fehler beim lesen der GET Variablen");    
+}
+
 $lehrveranstaltung = new lehrveranstaltung();
-$lehrveranstaltung->load_lva(257);
+$lehrveranstaltung->search($filter);
 
 $lv_array = array();
 
 foreach($lehrveranstaltung->lehrveranstaltungen as $key=>$lv)
 {
     $temp = new stdClass();
-    $temp->id = $lv->lehrveranstaltung_id;
-    $temp->name = $lv->bezeichnung;
+    $temp->lehrveranstaltung_id = $lv->lehrveranstaltung_id;
+    $temp->bezeichnung = $lv->bezeichnung;
     array_push($lv_array, $temp);
-    if($key==10)
-	break;
 }
 returnAJAX(true, $lv_array)
 

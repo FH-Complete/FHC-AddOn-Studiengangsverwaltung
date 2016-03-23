@@ -19,6 +19,12 @@ angular.module('stgv2')
 					"value": "alle"
 				}];
 			var editingId = null;
+			ctrl.lvRegelTypen = [];
+			ctrl.LVREGELnewcounter=0; // Counter fuer neue Regeln
+			ctrl.LVREGELStudienplanLehrveranstaltungID=''; // ID der ausgewaehlten Lehrveranstaltungszuordnung
+			ctrl.LVREGELLehrveranstaltungAutocompleteArray = new Array(); // Enthaelt die IDs der Input Felder die zu Autocomplete Feldern werden sollen
+			scope.lvs = [];
+			scope.bezeichnung = "";
 			
 			ctrl.initSemesterList = function()
 			{
@@ -84,13 +90,13 @@ angular.module('stgv2')
 						{field: 'ects',align: 'right', title:'ECTS'},
 						{field: 'semesterstunden',align: 'right', title:'Semesterstunden'},
 						{field: 'lehrform_kurzbz',align: 'right', title:'Lehrform'},
-                                                {field: 'stpllv_pflicht',align: 'center', title:'Pflicht', formatter: booleanToIconFormatter},
-                                                {field: 'export',align: 'center', /*editor: {type: 'checkbox'},*/ title:'StudPlan', formatter: booleanToIconFormatter},	
-                                                {field: 'lehrform_kurzbz',align: 'center', title:'Gen'},
-                                                {field: 'lehre',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Lehre/CIS', formatter: booleanToIconFormatter},
-                                                {field: 'lvinfo',align: 'center', /*editor: {type: 'checkbox'},*/ title:'LV-Info', formatter: booleanToIconFormatter},
-                                                {field: 'benotung',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Benotung', formatter: booleanToIconFormatter},
-                                                {field: 'zeugnis',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Zeugnis', formatter: booleanToIconFormatter},
+						{field: 'stpllv_pflicht',align: 'center', title:'Pflicht', formatter: booleanToIconFormatter},
+						{field: 'export',align: 'center', /*editor: {type: 'checkbox'},*/ title:'StudPlan', formatter: booleanToIconFormatter},	
+						{field: 'lehrform_kurzbz',align: 'center', title:'Gen'},
+						{field: 'lehre',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Lehre/CIS', formatter: booleanToIconFormatter},
+						{field: 'lvinfo',align: 'center', /*editor: {type: 'checkbox'},*/ title:'LV-Info', formatter: booleanToIconFormatter},
+						{field: 'benotung',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Benotung', formatter: booleanToIconFormatter},
+						{field: 'zeugnis',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Zeugnis', formatter: booleanToIconFormatter},
 						{field: 'lehrauftrag',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Lehrauftrag', formatter: booleanToIconFormatter},
 						{field: 'lvnr',align: 'right', title:'LVNR'}
 						//{field: 'curriculum',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Studienplan', formatter: booleanToIconFormatter}
@@ -142,6 +148,7 @@ angular.module('stgv2')
 					},
 					onClickRow: function (row)
 					{
+						console.log(row);
 						if (row.type != "sem")
 						{
 							if(ctrl.studienplan.status_kurzbz === 'development')
@@ -149,6 +156,7 @@ angular.module('stgv2')
 								$("#deleteNode").linkbutton("enable");
 								$("#editNode").linkbutton("enable");
 							}
+							ctrl.loadLVRegeln(row.studienplan_lehrveranstaltung_id);
 							ctrl.meta = angular.copy(row);
 							ctrl.meta.oe = ctrl.getOeName(ctrl.meta.oe_kurzbz);
 							$scope.$apply();
@@ -168,6 +176,7 @@ angular.module('stgv2')
 						var lvinfo = $(this).treegrid('getColumnOption','lvinfo');
 						var lehrauftrag = $(this).treegrid('getColumnOption','lehrauftrag');
 						var lehre = $(this).treegrid('getColumnOption','lehre');
+						var pflicht = $(this).treegrid('getColumnOption','stpllv_pflicht');
 						
 						if(row.type==="modul")
 						{
@@ -176,6 +185,7 @@ angular.module('stgv2')
 							lvinfo.editor = {type: "checkbox"};
 							lehrauftrag.editor = {type: "checkbox"};
 							lehre.editor = {type: "checkbox"};
+							pflicht.editor = {type: "checkbox"};
 						}
 						else
 						{
@@ -190,6 +200,7 @@ angular.module('stgv2')
 							lvinfo.editor = {type: "checkbox"};
 							lehrauftrag.editor = {type: "checkbox"};
 							lehre.editor = {type: "checkbox"};
+							pflicht.editor = {type: "checkbox"};
 						}
 					},
 					onAfterEdit: function(row, changes)
@@ -204,6 +215,7 @@ angular.module('stgv2')
 						var lvinfo = $(this).treegrid('getColumnOption','lvinfo');
 						var lehrauftrag = $(this).treegrid('getColumnOption','lehrauftrag');
 						var lehre = $(this).treegrid('getColumnOption','lehre');
+						var pflicht = $(this).treegrid('getColumnOption','stpllv_pflicht');
 
 						benotung.editor = null;
 //						curriculum.editor = null;
@@ -212,10 +224,11 @@ angular.module('stgv2')
 						lvinfo.editor = null;
 						lehrauftrag.editor = null;
 						lehre.editor = null;
+						pflicht.editor = null;
 							
 						//update studienplan_lehrveranstaltung
 						var data = {};
-						data.semester = lv.sem;
+						data.semester = lv.semester;
 						if(parent.type != "sem")
 						{
 							data.studienplan_lehrveranstaltung_id_parent = parent.id;
@@ -229,7 +242,7 @@ angular.module('stgv2')
 						data.export = lv.export;
 						data.pflicht = lv.stpllv_pflicht;
 						
-						if((changes.curriculum !== undefined) || (changes.export !== undefined))
+						if((changes.curriculum !== undefined) || (changes.export !== undefined) || (changes.stpllv_pflicht !== undefined))
 						{
 							var updateData = {data: ""};
 							updateData.data = data;
@@ -713,6 +726,381 @@ angular.module('stgv2')
 			$scope.$on("setFilter", function(event, args){
 				ctrl.setFilter(args.lv_id, args.oe_kurzbz, args.lehrtyp_kurzbz, args.semester);
 			});
+			
+			$scope.tabs = [
+				{label: 'Details', link: 'details'},
+				{label: 'LV Regeln', link: 'lvRegeln'},
+			];
+			
+			$scope.selectedTab = $scope.tabs[0];
+			$scope.setSelectedTab = function (tab)
+			{
+				$scope.selectedTab = tab;
+			};
+			
+			$scope.getSelectedTabName = function()
+			{
+				return $scope.selectedTab.label;
+			}
+
+			$scope.getTabClass = function (tab)
+			{
+				if ($scope.selectedTab == tab)
+				{
+					return "active";
+				}
+				else
+				{
+					return "";
+				}
+			};
+			
+			ctrl.loadLVRegeln = function(studienplan_lehrveranstaltung_id)
+			{
+				if(ctrl.lvRegelTypen.length == 0)
+				{
+					$http({
+						method: 'POST',
+						url: "../../../soap/fhcomplete.php",
+						data: $.param({
+							"typ": "json",
+							"class": "lvregel",
+							"method":"loadLVRegelTypen"
+						}),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response) {
+						ctrl.lvRegelTypen = response.data.result;
+						ctrl.loadRegeln(studienplan_lehrveranstaltung_id);
+					}, function error(response) {
+						errorService.setError(getErrorMsg(response));
+					});	
+				}
+				else
+				{
+					ctrl.loadRegeln(studienplan_lehrveranstaltung_id);
+				}
+			};
+			
+			ctrl.loadRegeln = function(studienplan_lehrveranstaltung_id)
+			{
+				ctrl.LVREGELStudienplanLehrveranstaltungID = studienplan_lehrveranstaltung_id;
+				$http({
+					method: 'POST',
+					url: "../../../soap/fhcomplete.php",
+					data: $.param({
+						"typ": "json",
+						"class": "lvregel",
+						"method":	"getLVRegelTree",
+						"parameter_0": studienplan_lehrveranstaltung_id
+					}),
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
+				}).then(function success(response) {
+					if(response.data.error=='true' && response.data.errormsg!=null)
+						alert('Fehler:'+response.data.errormsg);
+					else
+						ctrl.drawLVRegeln(response.data.return);
+				}, function error(response) {
+					errorService.setError(getErrorMsg(response));
+				});
+			};
+			
+			ctrl.drawLVRegeln = function(data)
+			{
+				var html = $('#tab-regel').html(ctrl.getChilds(data));
+				$compile(html)(scope);
+				ctrl.LVRegelAddAutocomplete();
+			};
+			
+			ctrl.getChilds = function(data, parent)
+			{
+				parent = (typeof parent === "undefined") ? "" : parent;
+				var obj = '';
+				obj = obj+'<ul id="lvregel_ul'+parent+'">';
+
+				for(var i in data)
+				{
+					obj = obj+ctrl.drawRegel(data[i][0]);
+
+					if(!jQuery.isEmptyObject(data[i]['childs']))
+						obj=obj+getChilds(data[i]['childs'], data[i][0].lvregel_id);
+
+				}		
+
+				obj = obj+'</ul>';
+
+				if(parent=='')
+				{
+					// Hinzufuegen Button
+					obj = obj+'<a href="#Hinzufuegen" title="Regel hinzufügen" ng-click="stplCtrl.addRegel(\'\')"><img src="../../../skin/images/plus.png" /> Regel hinzufügen</a>';
+				}
+				return obj;
+			};
+			
+			ctrl.addRegel = function(lvregel_id_parent)
+			{
+				ctrl.LVREGELnewcounter++;
+
+				var regel= new Object();
+				regel.neu=true;
+				regel.lvregel_id='NEU_'+ctrl.LVREGELnewcounter;
+				regel.parameter='';
+				regel.operator='u';
+				regel.regeltyp_kurzbz='';
+				regel.lehrveranstaltung_id='';
+				regel.studienplan_lehrveranstaltung_id = ctrl.LVREGELStudienplanLehrveranstaltungID;
+				regel.lvregel_id_parent=lvregel_id_parent;
+
+				console.log($('#lvregel_ul'+lvregel_id_parent));
+				console.log(regel);
+				if($('#lvregel_ul'+lvregel_id_parent).length>0)
+				{	
+					var html = $('#lvregel_ul'+lvregel_id_parent).append(ctrl.drawRegel(regel));
+					$compile(html)(scope);
+				}
+				else
+				{
+					var html = $('#lvregel_li'+lvregel_id_parent).append('<ul id="lvregel_ul'+lvregel_id_parent+'">'+ctrl.drawRegel(regel)+'<ul>');
+					$compile(html)(scope);
+				}
+				ctrl.LVRegelAddAutocomplete();
+			};
+			
+			ctrl.drawRegel = function(regel)
+			{
+				var val='';
+
+				if(regel.neu==true)
+					var neustyle='class="newLVRegel"';
+				else
+					var neustyle='';
+
+				val = val+'<li id="lvregel_li'+regel.lvregel_id+'" '+neustyle+'>';
+
+				val = val+'<input size="2" type="hidden" value="'+regel.lvregel_id+'" />';
+				val = val+'<input type="hidden" id="lvregel_lvregel_id_parent'+regel.lvregel_id+'" value="'+ClearNull(regel.lvregel_id_parent)+'" />';
+				val = val+'<input type="hidden" id="lvregel_studienplan_lehrveranstaltung_id'+regel.lvregel_id+'" value="'+regel.studienplan_lehrveranstaltung_id+'" />';
+				if(regel.neu==true)
+				{
+					val = val+'<input type="hidden" id="lvregel_neu_'+regel.lvregel_id+'" value="true" />';
+				}
+				else
+					val = val+'<input type="hidden" id="lvregel_neu_'+regel.lvregel_id+'" value="false"/>';
+
+				// Operator DropDown
+				val = val+'<select id="lvregel_operator'+regel.lvregel_id+'">';
+				val = val+'<option value="u" '+(regel.operator=='u'?'selected':'')+'>U</option>';
+				val = val+'<option value="o" '+(regel.operator=='o'?'selected':'')+'>O</option>';
+				val = val+'<option value="x" '+(regel.operator=='x'?'selected':'')+'>X</option>';
+				val = val+'</select>';
+
+				//LVRegelTypen
+				val = val+'<select id="lvregel_lvregeltyp'+regel.lvregel_id+'" onchange="LVRegelTypChange(\''+regel.lvregel_id+'\')">';
+				
+				for(var i in ctrl.lvRegelTypen)
+				{
+					if(ctrl.lvRegelTypen[i].lvregeltyp_kurzbz==regel.lvregeltyp_kurzbz)
+						var selected='selected';
+					else
+						var selected='';
+
+					val = val+'<option value="'+ctrl.lvRegelTypen[i].lvregeltyp_kurzbz+'" '+selected+'>'+ctrl.lvRegelTypen[i].bezeichnung+'</option>';
+				}
+				val = val+'</select>';
+
+				// Parameter
+				// Input Feld verstecken wenn der Typ LVpositiv ist
+				if(regel.lvregeltyp_kurzbz=='lvpositiv' || regel.lvregeltyp_kurzbz=='lvpositivabschluss')
+					var style='style="display:none"';
+				else
+					var style='';
+
+				val = val+'<input type="text" '+style+' size="1" id="lvregel_parameter'+regel.lvregel_id+'" value="'+ClearNull(regel.parameter)+'" />';
+
+				if(regel.lvregeltyp_kurzbz=='lvpositiv' || regel.lvregeltyp_kurzbz=='lvpositivabschluss')
+					var style='';
+				else
+					var style='style="display: none"';
+
+				val = val+'<span '+style+' id="lvregel_lehrveranstaltung_data'+regel.lvregel_id+'">';
+				// Lehrveranstaltung ID
+				//val = val+'<input type="hidden" size="4" id="lvregel_lehrveranstaltung_id'+regel.lvregel_id+'" value="'+ClearNull(regel.lehrveranstaltung_id)+'" />';
+				
+				// Autocomplete Feld fuer Lehrveranstaltung
+				var autocompletebezeichnung = ClearNull(regel.lehrveranstaltung_bezeichnung);
+				if(regel.lehrveranstaltung_bezeichnung==undefined)
+				{
+					autocompletebezeichnung='Lehrveranstaltungsname eingeben';
+				}
+				//val = val+'<input type="text" size="12" id="lvregel_lehrveranstaltung_id_autocomplete'+regel.lvregel_id+'" value="'+autocompletebezeichnung+'" lvregel_id="'+regel.lvregel_id+'"/>';
+//				val += '<input type="hidden" id="lvregel_lehrveranstaltung_id'+regel.lvregel_id+'" value="{{stplCtrl.lehrveranstaltung_id}}">';
+				val += '<input id="lvregel_lehrveranstaltung_id_autocomplete_input'+regel.lvregel_id+'" type="text" ng-model="bezeichnung" ng-change="stplCtrl.loadLvs()"/>';
+				val += '<select id="lvregel_lehrveranstaltung_id_autocomplete'+regel.lvregel_id+'" ng-model="stplCtrl.lehrveranstaltung_id" onChange="setLvBezeichnung(\''+regel.lvregel_id+'\');"><option ng-repeat="lv in lvs | filter:bezeichnung" value="{{lv.lehrveranstaltung_id}}">{{lv.bezeichnung}}</option></select>'
+				if(regel.lehrveranstaltung_bezeichnung==null || regel.lehrveranstaltung_bezeichnung=='undefined' || regel.lehrveranstaltung_bezeichnung=='')
+					var lvbezeichnung = 'klicken um LV auszuwählen';
+				else
+					var lvbezeichnung = regel.lehrveranstaltung_bezeichnung;
+
+				val = val+' <a href="#" style="font-size: x-small" onclick="LVRegelShowAutocomplete(\''+regel.lvregel_id+'\',true);return false;" id="lvregel_lehrveranstaltung_span'+regel.lvregel_id+'">'+lvbezeichnung+'</a>';
+				// Die Autocomplete Funktionalitaet wird erst hinzugefuegt, wenn das Input Feld tatsaechlich existiert und
+				// bis dort hin zwischengespeichert
+				ctrl.LVREGELLehrveranstaltungAutocompleteArray[ctrl.LVREGELLehrveranstaltungAutocompleteArray.length]=regel.lvregel_id;
+				val = val+'</span>';
+
+				// Speichern Button
+				val = val+' <input type="button" ng-click="stplCtrl.saveRegel(\''+regel.lvregel_id+'\');" value="ok">';
+
+				if(regel.neu==true)
+				{
+					// Loeschen Button
+					val = val+' <a href="#Loeschen" title="Regel entfernen" onclick="$(\'#lvregel_li'+regel.lvregel_id+'\').remove(); return false;"><img src="../../../skin/images/delete_round.png" height="12px"/></a>';
+				}
+				else
+				{
+					// Hinzufuegen Button
+					val = val+' <a href="#Hinzufuegen" title="Unterregel hinzufügen" ng-click="stplCtrl.addRegel('+regel.lvregel_id+');"><img src="../../../skin/images/plus.png" /></a>';
+
+					// Loeschen Button
+					val = val+' <a href="#Loeschen" title="Regel entfernen" ng-click="stplCtrl.deleteRegel('+regel.lvregel_id+');"><img src="../../../skin/images/delete_round.png" height="12px"/></a>';
+				}
+				val = val+'</li>';
+				return val;
+			};
+			
+			ctrl.loadLvs = function()
+			{
+				if(scope.bezeichnung.length >= 3)
+				{
+					$http({
+						method: 'POST',
+						url: "./api/helper/lehrveranstaltung.php",
+						data: $.param({
+							"filter": scope.bezeichnung
+						}),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response) {
+						console.log(response);
+						if(response.data.erfolg)
+						{
+							scope.lvs = response.data.info;
+						}
+					}, function error(response) {
+						errorService.setError(getErrorMsg(response));
+					});
+				}
+			};
+			
+			
+			/**
+			* Speichert eine Regel
+			*/
+		   ctrl.saveRegel = function(id)
+		   {
+			   var neu = $('#lvregel_neu_'+id).val();
+			   var lvregeltyp_kurzbz = $('#lvregel_lvregeltyp'+id+' option:selected').val();
+			   var parameter = $('#lvregel_parameter'+id).val();
+			   var lehrveranstaltung_id = ctrl.lehrveranstaltung_id;
+			   var operator = $('#lvregel_operator'+id+' option:selected').val();
+			   var studienplan_lehrveranstaltung_id = $('#lvregel_studienplan_lehrveranstaltung_id'+id).val();
+			   var lvregel_id_parent = $('#lvregel_lvregel_id_parent'+id).val();
+			   var lehrveranstaltung_bezeichnung=$('#lvregel_lehrveranstaltung_span'+id).text();
+			   console.log(lehrveranstaltung_bezeichnung);
+			   lvregel_id_parent=ClearNull(lvregel_id_parent);
+
+			   // Vorhandene Eintraege werden vor dem Speichern geladen
+			   if(neu=='false')
+			   {
+				   loaddata = {
+					   "method": "load",
+					   "parameter_0": id
+				   };
+			   }
+			   else
+				   loaddata={};
+
+			   savedata = {
+				   "lvregeltyp_kurzbz":lvregeltyp_kurzbz,
+				   "parameter":parameter,
+				   "lehrveranstaltung_id":lehrveranstaltung_id,
+				   "operator":operator,
+				   "studienplan_lehrveranstaltung_id":studienplan_lehrveranstaltung_id,
+				   "lvregel_id_parent":lvregel_id_parent
+			   };
+			   
+			   $http({
+					method: 'POST',
+					url: "../../../soap/fhcomplete.php",
+					data: $.param({
+						"typ": "json",
+						"class": "lvregel",
+						"method": "save",
+						"loaddata": JSON.stringify(loaddata),
+						"savedata": JSON.stringify(savedata)
+					}),
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
+				}).then(function success(response) {
+					if(response.data.error=='true')
+						alert('Fehler:'+response.data.errormsg);
+					else
+					{
+						// Gespeicherte Zeile neue Zeichnen
+						//$('#lvregel_li'+id).parent().append(drawRegel(data.result[0]));
+						response.data.result[0].lehrveranstaltung_bezeichnung=lehrveranstaltung_bezeichnung;
+						var html = $(ctrl.drawRegel(response.data.result[0])).insertAfter('#lvregel_li'+id);
+						$compile(html)(scope);
+						// Neu Zeile entfernen
+						$('#lvregel_li'+id).remove();
+						ctrl.LVRegelAddAutocomplete();
+						ctrl.loadRegeln(studienplan_lehrveranstaltung_id);
+					}
+				}, function error(response) {
+					errorService.setError(getErrorMsg(response));
+				});
+		   };
+		   
+		   /** 
+			* Loescht eine Regel
+			*/
+		   ctrl.deleteRegel = function(id)
+		   {
+			   $http({
+					method: 'POST',
+					url: "../../../soap/fhcomplete.php",
+					data: $.param({
+						"typ": "json",
+						"class": "lvregel",
+						"method": "delete",
+						"parameter_0":id
+					}),
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
+				}).then(function success(response) {
+					console.log(response);
+					if(response.data.error=='true')
+						alert('Fehler:'+response.data.errormsg);
+					else
+						$('#lvregel_li'+id).remove();
+				}, function error(response) {
+					errorService.setError(getErrorMsg(response));
+				});
+			};
+		   
+			ctrl.LVRegelAddAutocomplete = function()
+			{
+				for(var i in ctrl.LVREGELLehrveranstaltungAutocompleteArray)
+				{
+					$('#lvregel_lehrveranstaltung_id_autocomplete'+ctrl.LVREGELLehrveranstaltungAutocompleteArray[i]).hide();
+					$('#lvregel_lehrveranstaltung_id_autocomplete_input'+ctrl.LVREGELLehrveranstaltungAutocompleteArray[i]).hide();
+				}
+			};
 		});
 
 function generateChildren(item, sem)
@@ -818,3 +1206,52 @@ function booleanToIconFormatter(value)
 		return "";
 }
 
+/**
+ * Entfernt Null Werte
+ */
+function ClearNull(value)
+{
+	if(value===null)
+		return '';
+	else
+		return value;
+}
+
+function LVRegelTypChange(id)
+{
+	var typ = $('#lvregel_lvregeltyp'+id+' option:selected').val();
+
+	if(typ=='lvpositiv' || typ=='lvpositivabschluss')
+	{
+		$('#lvregel_lehrveranstaltung_data'+id).show();
+		$('#lvregel_parameter'+id).hide();
+	}
+	else
+	{
+		$('#lvregel_lehrveranstaltung_data'+id).hide();
+		$('#lvregel_parameter'+id).show();
+	}
+};
+
+function LVRegelShowAutocomplete(lvregel_id,show)
+{
+	if(show)
+	{
+		$('#lvregel_lehrveranstaltung_id_autocomplete'+lvregel_id).show();
+		$('#lvregel_lehrveranstaltung_id_autocomplete_input'+lvregel_id).show();
+		$('#lvregel_lehrveranstaltung_id_autocomplete_input'+lvregel_id).focus();
+		$('#lvregel_lehrveranstaltung_id_autocomplete_input'+lvregel_id).select();
+		$('#lvregel_lehrveranstaltung_span'+lvregel_id).hide();
+	}
+	else
+	{
+		$('#lvregel_lehrveranstaltung_id_autocomplete'+lvregel_id).hide();
+		$('#lvregel_lehrveranstaltung_id_autocomplete_input'+lvregel_id).hide();
+		$('#lvregel_lehrveranstaltung_span'+lvregel_id).show();
+	}
+}
+
+function setLvBezeichnung(lvregel_id)
+{
+	$('#lvregel_lehrveranstaltung_span'+lvregel_id).text($("#lvregel_lehrveranstaltung_id_autocomplete"+lvregel_id+" option:selected").text());
+}

@@ -59,7 +59,10 @@
 			</table>
 		</div>
 	</div>
-	<div id="lvMetadata">
+	<ul class="nav nav-tabs">
+		<li ng-repeat="tab in tabs" tab="tab" ng-class="getTabClass(tab)"><a ng-click="setSelectedTab(tab)">{{tab.label}}</a></li>
+	</ul>
+	<div id="lvMetadata" class="tabContainer" ng-show="getSelectedTabName()=='Details'">
 		<div class="row">
 			<div class="col-sm-10">
 				<span class="spanTitle">{{stplCtrl.meta.name}}</span>
@@ -123,6 +126,13 @@
 			</div>
 			<div class="col-sm-1">
 				<span>LAS: </span><span>{{stplCtrl.meta.las}}</span>
+			</div>
+		</div>
+	</div>
+	<div id="lvRegeln" class="tabContainer" ng-show="getSelectedTabName()=='LV Regeln'">
+		<div class="row">
+			<div id="tab-regel" class="col-sm-10">
+				LV Regeln
 			</div>
 		</div>
 	</div>
