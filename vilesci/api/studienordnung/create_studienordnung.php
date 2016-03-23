@@ -13,7 +13,7 @@ require_once('../../../include/aufnahmeverfahren.class.php');
 require_once('../../../include/studienplanAddonStgv.class.php');
 require_once('../../../include/auslandssemester.class.php');
 require_once('../../../include/berufspraktikum.class.php');
-require_once('../../../../../include/studienjahr.class.php');
+require_once('../../../include/studienjahrAddonStgv.class.php');
 
 require_once('../functions.php');
 
@@ -195,7 +195,7 @@ if ($studienordnung->save())
 		    }
 		}
 		
-		$studienjahr = new studienjahr();
+		$studienjahr = new studienjahrAddonStgv();
 		$studienjahr->getAll($value->studienplan_id);
 		if(!empty($studienjahr->result))
 		{

@@ -59,6 +59,11 @@ angular.module('stgv2')
 					$("#editor").html($("#editor").html());
 				},100);
 			});
+                        
+			ctrl.deleteSelection = function()
+			{
+				window.getSelection().deleteFromDocument();
+			};
 			
 			ctrl.loadInitialData = function(){
 				if(ctrl.studienordnung.studiengangsart != null)

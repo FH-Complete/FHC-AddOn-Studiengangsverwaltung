@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StplLehrveranstaltungCtrl', function ($scope, $http, $state, $stateParams, errorService, $compile, StudienplanService, successService) {
+		.controller('StplLehrveranstaltungCtrl', function ($scope, $http, $state, $stateParams, errorService, $compile, StudienplanService, successService, StudiensemesterService) {
 			$scope.studienplan_id = $stateParams.studienplan_id;
 			var ctrl = this;
 			var scope = $scope;
@@ -25,6 +25,14 @@ angular.module('stgv2')
 			ctrl.LVREGELLehrveranstaltungAutocompleteArray = new Array(); // Enthaelt die IDs der Input Felder die zu Autocomplete Feldern werden sollen
 			scope.lvs = [];
 			scope.bezeichnung = "";
+			ctrl.studienSemesterList = [];
+			
+			//loading Studiensemester list
+			StudiensemesterService.getStudiensemesterList().then(function (result) {
+				ctrl.studiensemesterList = result;
+			}, function (error) {
+				errorService.setError(getErrorMsg(error));
+			});
 			
 			ctrl.initSemesterList = function()
 			{
@@ -92,7 +100,7 @@ angular.module('stgv2')
 						{field: 'lehrform_kurzbz',align: 'right', title:'Lehrform'},
 						{field: 'stpllv_pflicht',align: 'center', title:'Pflicht', formatter: booleanToIconFormatter},
 						{field: 'export',align: 'center', /*editor: {type: 'checkbox'},*/ title:'StudPlan', formatter: booleanToIconFormatter},	
-						{field: 'lehrform_kurzbz',align: 'center', title:'Gen'},
+						{field: 'genehmigung',align: 'center', title:'Gen', formatter: booleanToIconFormatter},
 						{field: 'lehre',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Lehre/CIS', formatter: booleanToIconFormatter},
 						{field: 'lvinfo',align: 'center', /*editor: {type: 'checkbox'},*/ title:'LV-Info', formatter: booleanToIconFormatter},
 						{field: 'benotung',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Benotung', formatter: booleanToIconFormatter},
@@ -177,6 +185,7 @@ angular.module('stgv2')
 						var lehrauftrag = $(this).treegrid('getColumnOption','lehrauftrag');
 						var lehre = $(this).treegrid('getColumnOption','lehre');
 						var pflicht = $(this).treegrid('getColumnOption','stpllv_pflicht');
+						var genehmigung = $(this).treegrid('getColumnOption','genehmigung');
 						
 						if(row.type==="modul")
 						{
@@ -186,6 +195,7 @@ angular.module('stgv2')
 							lehrauftrag.editor = {type: "checkbox"};
 							lehre.editor = {type: "checkbox"};
 							pflicht.editor = {type: "checkbox"};
+							genehmigung.editor = {type: "checkbox"};
 						}
 						else
 						{
@@ -201,6 +211,7 @@ angular.module('stgv2')
 							lehrauftrag.editor = {type: "checkbox"};
 							lehre.editor = {type: "checkbox"};
 							pflicht.editor = {type: "checkbox"};
+							genehmigung.editor = {type: "checkbox"};
 						}
 					},
 					onAfterEdit: function(row, changes)
@@ -216,6 +227,7 @@ angular.module('stgv2')
 						var lehrauftrag = $(this).treegrid('getColumnOption','lehrauftrag');
 						var lehre = $(this).treegrid('getColumnOption','lehre');
 						var pflicht = $(this).treegrid('getColumnOption','stpllv_pflicht');
+						var genehmigung = $(this).treegrid('getColumnOption','genehmigung');
 
 						benotung.editor = null;
 //						curriculum.editor = null;
@@ -225,6 +237,7 @@ angular.module('stgv2')
 						lehrauftrag.editor = null;
 						lehre.editor = null;
 						pflicht.editor = null;
+						genehmigung.editor = null;
 							
 						//update studienplan_lehrveranstaltung
 						var data = {};
@@ -241,8 +254,9 @@ angular.module('stgv2')
 						data.curriculum = lv.curriculum;
 						data.export = lv.export;
 						data.pflicht = lv.stpllv_pflicht;
+						data.genehmigung = lv.genehmigung;
 						
-						if((changes.curriculum !== undefined) || (changes.export !== undefined) || (changes.stpllv_pflicht !== undefined))
+						if((changes.curriculum !== undefined) || (changes.export !== undefined) || (changes.stpllv_pflicht !== undefined) || (changes.genehmigung !== undefined))
 						{
 							var updateData = {data: ""};
 							updateData.data = data;
@@ -338,8 +352,12 @@ angular.module('stgv2')
 					onBeforeDrop: function(target, source, point)
 					{
                                                 var node = $("#stplTreeGrid").treegrid("find",source._parentId);
-                                                node.ects -= parseFloat(source.ects);
-                                                $("#stplTreeGrid").treegrid("refresh",node.id);
+                                                if(node != null)
+                                                {
+                                                    node.ects -= parseFloat(source.ects);
+                                                    $("#stplTreeGrid").treegrid("refresh",node.id);
+                                                }
+                                                
 						//set values depending on target node
 						//e.g. children of modules
 						if(source.typ !== "modul")
@@ -393,6 +411,7 @@ angular.module('stgv2')
 						data.pflicht = true;
 						data.export = target.export;
 						data.curriculum = target.curriculum;
+                                                data.genehmigung = target.genehmigung;
 						//TODO errorhandling
 						
 						//update moved entry
@@ -730,6 +749,7 @@ angular.module('stgv2')
 			$scope.tabs = [
 				{label: 'Details', link: 'details'},
 				{label: 'LV Regeln', link: 'lvRegeln'},
+				{label: 'LV Info', link: 'lvInfo'},
 			];
 			
 			$scope.selectedTab = $scope.tabs[0];
@@ -854,8 +874,6 @@ angular.module('stgv2')
 				regel.studienplan_lehrveranstaltung_id = ctrl.LVREGELStudienplanLehrveranstaltungID;
 				regel.lvregel_id_parent=lvregel_id_parent;
 
-				console.log($('#lvregel_ul'+lvregel_id_parent));
-				console.log(regel);
 				if($('#lvregel_ul'+lvregel_id_parent).length>0)
 				{	
 					var html = $('#lvregel_ul'+lvregel_id_parent).append(ctrl.drawRegel(regel));
@@ -984,7 +1002,6 @@ angular.module('stgv2')
 							'Content-Type': 'application/x-www-form-urlencoded'
 						}
 					}).then(function success(response) {
-						console.log(response);
 						if(response.data.erfolg)
 						{
 							scope.lvs = response.data.info;
@@ -1009,7 +1026,6 @@ angular.module('stgv2')
 			   var studienplan_lehrveranstaltung_id = $('#lvregel_studienplan_lehrveranstaltung_id'+id).val();
 			   var lvregel_id_parent = $('#lvregel_lvregel_id_parent'+id).val();
 			   var lehrveranstaltung_bezeichnung=$('#lvregel_lehrveranstaltung_span'+id).text();
-			   console.log(lehrveranstaltung_bezeichnung);
 			   lvregel_id_parent=ClearNull(lvregel_id_parent);
 
 			   // Vorhandene Eintraege werden vor dem Speichern geladen
@@ -1083,7 +1099,6 @@ angular.module('stgv2')
 						'Content-Type': 'application/x-www-form-urlencoded'
 					}
 				}).then(function success(response) {
-					console.log(response);
 					if(response.data.error=='true')
 						alert('Fehler:'+response.data.errormsg);
 					else
@@ -1159,6 +1174,7 @@ function generateChildren(item, sem)
 	node.export = item.export;
 	node.lehrauftrag = item.lehrauftrag;
 	node.lehre = item.lehre;
+	node.genehmigung = item.genehmigung
 	if (children.length != 0)
 	{
 		node.children = children;

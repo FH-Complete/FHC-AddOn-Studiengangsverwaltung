@@ -54,6 +54,7 @@ function mapDataToStudienplan($data)
     $stpl->updatevon = get_uid();
     $stpl->export = parseBoolean($data->export);
     $stpl->curriculum = parseBoolean($data->curriculum);
+    $stpl->genehmigung = parseBoolean($data->genehmigung);
 
     return $stpl;
 }

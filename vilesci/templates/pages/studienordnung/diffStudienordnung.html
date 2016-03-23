@@ -67,7 +67,7 @@
 	<div ng-repeat="(header, item) in stoCtrl.diff">
 		<div class="row">
 			<div class="col-sm-10">
-				<a href="#" ng-model="collapse[header]" ng-click="collapse[header] = !collapse[header]"><h2>{{header}}</h2></a>
+				<a href="#" ng-model="collapse[header]" ng-click="collapse[header] = !collapse[header]"><h2>{{header}}<img ng-show="!collapse[header]" src="../../../skin/images/asc.gif" alt=""/><img ng-show="collapse[header]" src="../../../skin/images/desc.gif" alt=""/></h2></a>
 			</div>
 		</div>
 		<div>

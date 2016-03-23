@@ -22,6 +22,11 @@ angular.module('stgv2')
 					$("#editor").html($("#editor").html());
 				},100);
 			});
+                        
+			ctrl.deleteSelection = function()
+			{
+				window.getSelection().deleteFromDocument();
+			};
 			
 			$http({
 				method: 'GET',

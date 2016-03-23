@@ -39,11 +39,15 @@ angular.module('stgv2')
 					toolbarSelector: '[data-role=ueberblick-editor-toolbar]'
 				});
 				$("#ueberblick-editor").on('paste', function(event){
-					event.preventDefault();
-					var clipboardData = event.originalEvent.clipboardData.getData("text");
-					$("#ueberblick-editor").html(clipboardData);
+					setTimeout(function(){
+							$("#ueberblick-editor").html($("#ueberblick-editor").html());
+					},100);
 				});
-			
+                                
+				ctrl.deleteSelection = function()
+				{
+					window.getSelection().deleteFromDocument();
+				};
 			
 				$http({
 					method: 'GET',
@@ -175,8 +179,11 @@ angular.module('stgv2')
 			
 			ctrl.removeList = function(event)
 			{
-				$(event.target).parent().parent().remove();
-				ctrl.save();
+				if(confirm("Wollen Sie die Liste wirklich löschen?"))
+				{
+					$(event.target).parent().parent().remove();
+					ctrl.save();
+				}
 			};
 
 			ctrl.parseJson = function ()

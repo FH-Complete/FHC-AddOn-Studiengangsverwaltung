@@ -136,6 +136,27 @@
 			</div>
 		</div>
 	</div>
+	<div id="lvInfo" class="tabContainer" ng-show="getSelectedTabName()=='LV Info'">
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label for="studiensemester">Studiensemester</label>
+					<div class="input-group">
+						<select class="form-control input-sm" name="studiensemester" ng-model="stplCtrl.meta.studiensemester">
+							<option ng-repeat="sem in stplCtrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div id="tab-lvinfo" class="col-sm-10">
+					<a ng-if="stplCtrl.meta.lehrveranstaltung_id && stplCtrl.meta.studiensemester" ng-href="../../lvinfo/cis/view.php?lv_id={{stplCtrl.meta.lehrveranstaltung_id}}&studiensemester_kurzbz={{stplCtrl.meta.studiensemester}}" target="_blank">LV Infos anzeigen</a>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div id="dialog" title="Neue Lehrveranstaltung anlegen">
 
 	</div>

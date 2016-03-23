@@ -9,7 +9,7 @@ require_once ('../../../include/studienordnungAddonStgv.class.php');
 require_once('../functions.php');
 
 //TODO debug
-$DEBUG = true;
+$DEBUG = false;
 
 $sto_array = array();
 

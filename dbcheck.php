@@ -635,34 +635,6 @@ if (!$result = @$db->db_query("SELECT lvinfo FROM lehre.tbl_lehrveranstaltung LI
 	echo ' lehre.tbl_lehrveranstaltung: Spalte lvinfo hinzugefügt.<br>'; 
 }
 
-//zusätzliche Lehrform integratives Modul
-if($result = @$db->db_query("SELECT 1 FROM lehre.tbl_lehrform WHERE lehrform_kurzbz='iMod' LIMIT 1"))
-{
-    if($db->db_num_rows($result)==0)
-    {
-	$qry = "INSERT INTO lehre.tbl_lehrform(lehrform_kurzbz, bezeichnung, verplanen, bezeichnung_kurz, bezeichnung_lang) VALUES ('iMod','integratives Modul',true,'{IMOD,IMOD}','{integratives Modul,integratives Modul}');";
-
-	if (!$db->db_query($qry))
-	    echo '<strong>lehre.tbl_lehrform: ' . $db->db_last_error() . '</strong><br>';
-	else
-	    echo ' lehre.tbl_lehrform: Neue Lehrform integratives Modul hinzugefügt.<br>';
-    }
-}
-
-//zusätzliche Lehrform kumulatives Modul
-if($result = @$db->db_query("SELECT 1 FROM lehre.tbl_lehrform WHERE lehrform_kurzbz='kMod' LIMIT 1"))
-{
-    if($db->db_num_rows($result)==0)
-    {
-	$qry = "INSERT INTO lehre.tbl_lehrform(lehrform_kurzbz, bezeichnung, verplanen, bezeichnung_kurz, bezeichnung_lang) VALUES ('kMod','kumulatives Modul',true,'{KMOD,KMOD}','{kumulatives Modul,kumulatives Modul}');";
-
-	if (!$db->db_query($qry))
-	    echo '<strong>lehre.tbl_lehrform: ' . $db->db_last_error() . '</strong><br>';
-	else
-	    echo ' lehre.tbl_lehrform: Neue Lehrform kumulatives Modul hinzugefügt.<br>';
-    }
-}
-
 //Tabelle addon.tbl_stgv_lehrtyp_lehrform
 if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_lehrtyp_lehrform LIMIT 1;")) {
     $qry = "CREATE TABLE addon.tbl_stgv_lehrtyp_lehrform
@@ -694,6 +666,37 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_lehrtyp_lehrform LIM
     else
 	echo ' addon.tbl_stgv_lehrtyp_lehrform: Tabelle hinzugefuegt<br>';
 }
+
+//zusätzliche Lehrform integratives Modul
+if($result = @$db->db_query("SELECT 1 FROM lehre.tbl_lehrform WHERE lehrform_kurzbz='iMod' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO lehre.tbl_lehrform(lehrform_kurzbz, bezeichnung, verplanen, bezeichnung_kurz, bezeichnung_lang) VALUES ('iMod','integratives Modul',true,'{IMOD,IMOD}','{integratives Modul,integratives Modul}')"
+                . "INSERT INTO addon.tbl_stgv_lehrtyp_lehrform(lehrtyp_kurzbz, lehrform_kurzbz) VALUES ('modul','iMod');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>lehre.tbl_lehrform: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' lehre.tbl_lehrform: Neue Lehrform integratives Modul hinzugefügt.<br>';
+    }
+}
+
+//zusätzliche Lehrform kumulatives Modul
+if($result = @$db->db_query("SELECT 1 FROM lehre.tbl_lehrform WHERE lehrform_kurzbz='kMod' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO lehre.tbl_lehrform(lehrform_kurzbz, bezeichnung, verplanen, bezeichnung_kurz, bezeichnung_lang) VALUES ('kMod','kumulatives Modul',true,'{KMOD,KMOD}','{kumulatives Modul,kumulatives Modul}');"
+            . "INSERT INTO addon.tbl_stgv_lehrtyp_lehrform(lehrtyp_kurzbz, lehrform_kurzbz) VALUES ('modul','kMod');";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>lehre.tbl_lehrform: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' lehre.tbl_lehrform: Neue Lehrform kumulatives Modul hinzugefügt.<br>';
+    }
+}
+
 
 //Tabelle addon.tbl_stgv_doktorat
 if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_doktorat LIMIT 1;")) {

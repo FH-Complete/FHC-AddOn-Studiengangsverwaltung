@@ -2,7 +2,7 @@ angular.module('stgv2')
 		.controller('NewLehrveranstaltungCtrl', function ($scope, $http, errorService, StudiengangService, OrgformService, SpracheService) {
 			var ctrl = this;
 			ctrl.data = new Lehrveranstaltung();
-			ctrl.studiengangList = "";
+			ctrl.studiengangList =[];
 			ctrl.orgformList = [{
 					orgform_kurzbz: null,
 					bezeichnung: ""
@@ -41,16 +41,19 @@ angular.module('stgv2')
 				if(ctrl.data.lehrtyp_kurzbz === "modul")
 				{
 					ctrl.data.zeugnis = false;
+					ctrl.loadOrganisationseinheitenList("Studiengang");
 				}
 				else
 				{
 					ctrl.data.zeugnis = true;
+					ctrl.loadOrganisationseinheitenList("Institut");
 				}
 			}
 			
 			//loading Studiengang list
 			StudiengangService.getStudiengangList().then(function(result){
 				ctrl.studiengangList = result;
+				console.log(ctrl.studiengangList);
 			},function(error){
 				errorService.setError(getErrorMsg(error));
 			});
@@ -80,21 +83,27 @@ angular.module('stgv2')
 			});
 			
 			//load organisationseinheiten
-			$http({
-				method: 'GET',
-				url: './api/helper/organisationseinheitByTyp.php?oetyp_kurzbz=Institut'
-			}).then(function success(response) {
-				if (response.data.erfolg)
-				{
-					ctrl.oeList = response.data.info;
-				}
-				else
-				{
+			ctrl.loadOrganisationseinheitenList = function(oetyp_kurzbz)
+			{
+				if(oetyp_kurzbz === undefined)
+					oetyp_kurzbz = "Institut";
+				
+				$http({
+					method: 'GET',
+					url: './api/helper/organisationseinheitByTyp.php?oetyp_kurzbz='+oetyp_kurzbz
+				}).then(function success(response) {
+					if (response.data.erfolg)
+					{
+						ctrl.oeList = response.data.info;
+					}
+					else
+					{
+						errorService.setError(getErrorMsg(response));
+					}
+				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
-				}
-			}, function error(response) {
-				errorService.setError(getErrorMsg(response));
-			});
+				});
+			}
 			
 			//loading spracheList
 			SpracheService.getSpracheList().then(function(result){

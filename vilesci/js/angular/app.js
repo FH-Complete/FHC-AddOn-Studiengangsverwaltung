@@ -5,7 +5,7 @@ var stgv2 = angular.module("stgv2", ['ui.router', 'ngSanitize', 'angularFileUplo
 angular.module("stgv2")
 		.controller("AppCtrl", function ($state, errorService, $http, StudiengangService, StoreService)
 		{
-			var storeList = ["studiengangList", "standortList","orgformList","aenderungsvarianteList","akadgradList","studiensemesterList","studienordnungStatusList","studienplan", "studienordnung"];
+			var storeList = ["studiengangList", "standortList", "orgformList", "aenderungsvarianteList","akadgradList","studiensemesterList","studienordnungStatusList","studienplan", "studienordnung"];
 			
 			angular.forEach(storeList, function(v, i){
 				StoreService.remove(v);
@@ -20,7 +20,7 @@ angular.module("stgv2")
 				{
 					if (data.erfolg)
 					{
-						StudiengangService.setStudiengangList(data.info);
+//						StudiengangService.setStudiengangList(data.info);
 						return data.info;
 					}
 					else
@@ -422,7 +422,7 @@ angular.module("stgv2")
 				{label: 'Metadaten', link: '.metadaten'},
 				{label: 'Eckdaten', link: '.eckdaten'},
 				{label: 'Gültigkeit', link: '.gueltigkeit'},
-				{label: 'Module', link: '.module'},
+//				{label: 'Module', link: '.module'},
 				{label: 'Lehrveranstaltungen', link: '.lehrveranstaltungen'},
 				{label: 'Auslandssemester', link: '.auslandssemester'},
 				{label: 'Berufspraktikum', link: '.berufspraktikum'},

@@ -35,7 +35,7 @@
 			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.art.$error.required)}">
 					<label for="art">Studiengangsart</label>
-					<select class="form-control input-sm" name="art" ng-model="ctrl.data.studiengangsart" required>
+					<select class="form-control input-sm" name="art" ng-model="ctrl.data.studiengangsart" required disabled>
 						<option ng-repeat="stgArt in ctrl.studiengangartList" value="{{stgArt.typ}}">{{stgArt.bezeichnung}}</option>
 					</select>
 					<!--<input strip-html type="text" class="form-control input-sm" name="art" ng-model="ctrl.data.studiengangsart"/>-->
@@ -65,8 +65,8 @@
 			</div>
 			<div class="col-sm-2">
 				<div class="form-group">
-					<label for="gueltigbis">Standort</label>
-					<select class="form-control input-sm" name="gueltigbis" ng-model="ctrl.data.standort_id">
+					<label for="standort">Standort</label>
+					<select class="form-control input-sm" name="standort" ng-model="ctrl.data.standort_id">
 						<option ng-repeat="standort in ctrl.standortList" value="{{standort.standort_id}}">{{standort.bezeichnung}}</option>
 					</select>
 				</div>

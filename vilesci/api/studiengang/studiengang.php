@@ -8,7 +8,7 @@ require_once ('../../../include/studienordnungStatus.class.php');
 require_once('../functions.php');
 
 //TODO debug
-$DEBUG = true;
+$DEBUG = false;
 
 $uid = get_uid();
 $berechtigung = new benutzerberechtigung();
