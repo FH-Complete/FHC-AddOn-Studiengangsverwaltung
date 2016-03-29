@@ -248,7 +248,7 @@ angular.module('stgv2')
 							
 						//update studienplan_lehrveranstaltung
 						var data = {};
-						data.semester = lv.semester;
+						data.semester = lv.stpllv_semester;
 						if(parent.type != "sem")
 						{
 							data.studienplan_lehrveranstaltung_id_parent = parent.id;
@@ -410,6 +410,7 @@ angular.module('stgv2')
 					{
 						var data = {};
 						data.semester = target.sem;
+						source.stpllv_semester = target.sem;
 						if(target.type != "sem")
 						{
 							data.studienplan_lehrveranstaltung_id_parent = target.id;
