@@ -9,7 +9,7 @@ angular.module('stgv2')
 				ects: ""
 			};
 			ctrl.studienplan = "";
-			ctrl.oeList = "";
+			ctrl.oeList = [];
 			ctrl.oe_kurzbz = "";
 			ctrl.lehrtypList = "";
 			ctrl.lehrtyp_kurzbz = "lv";
@@ -98,8 +98,8 @@ angular.module('stgv2')
 						{field: 'ects',align: 'right', title:'ECTS'},
 						{field: 'semesterstunden',align: 'right', title:'Semesterstunden'},
 						{field: 'lehrform_kurzbz',align: 'right', title:'Lehrform'},
-						{field: 'stpllv_pflicht',align: 'center', title:'Pflicht', formatter: booleanToIconFormatter},
 						{field: 'export',align: 'center', /*editor: {type: 'checkbox'},*/ title:'StudPlan', formatter: booleanToIconFormatter},	
+						{field: 'stpllv_pflicht',align: 'center', title:'Pflicht', formatter: booleanToIconFormatter},
 						{field: 'genehmigung',align: 'center', title:'Gen', formatter: booleanToIconFormatter},
 						{field: 'lehre',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Lehre/CIS', formatter: booleanToIconFormatter},
 						{field: 'lvinfo',align: 'center', /*editor: {type: 'checkbox'},*/ title:'LV-Info', formatter: booleanToIconFormatter},
@@ -351,12 +351,12 @@ angular.module('stgv2')
 					},
 					onBeforeDrop: function(target, source, point)
 					{
-                                                var node = $("#stplTreeGrid").treegrid("find",source._parentId);
-                                                if(node != null)
-                                                {
-                                                    node.ects -= parseFloat(source.ects);
-                                                    $("#stplTreeGrid").treegrid("refresh",node.id);
-                                                }
+						var node = $("#stplTreeGrid").treegrid("find",source._parentId);
+						if(node != null)
+						{
+							node.ects -= parseFloat(source.ects);
+							$("#stplTreeGrid").treegrid("refresh",node.id);
+						}
                                                 
 						//set values depending on target node
 						//e.g. children of modules
@@ -394,10 +394,13 @@ angular.module('stgv2')
 								source.export = true;
 							}
 						}
+						if(source.genehmigung === undefined)
+						{
+							source.genehmigung = true;
+						}
 					},
 					onDrop: function (target, source, point)
 					{
-						
 						var data = {};
 						data.semester = target.sem;
 						if(target.type != "sem")
@@ -409,9 +412,9 @@ angular.module('stgv2')
 							data.studienplan_lehrveranstaltung_id_parent = "";
 						}
 						data.pflicht = true;
-						data.export = target.export;
-						data.curriculum = target.curriculum;
-                                                data.genehmigung = target.genehmigung;
+						data.export = source.export;
+						data.curriculum = source.curriculum;
+						data.genehmigung = source.genehmigung;
 						//TODO errorhandling
 						
 						//update moved entry
@@ -432,10 +435,10 @@ angular.module('stgv2')
 								if (response.data.erfolg)
 								{
 									//$("#stplTreeGrid").treegrid("reload",{nodeId: target.id});
-                                                                        //TODO recalculate ects sums
-                                                                        var parentId = source._parentId;
-                                                                        target.ects += parseFloat(source.ects);
-                                                                        $("#stplTreeGrid").treegrid("refresh",target.id);
+									//TODO recalculate ects sums
+									var parentId = source._parentId;
+									target.ects += parseFloat(source.ects);
+									$("#stplTreeGrid").treegrid("refresh",target.id);
 								}
 								else
 								{
@@ -522,7 +525,27 @@ angular.module('stgv2')
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
-					ctrl.oeList = response.data.info;
+					var institute = response.data.info;
+					$http({
+						method: 'GET',
+						url: './api/helper/organisationseinheitByTyp.php?oetyp_kurzbz=Studiengang'
+					}).then(function success(response) {
+						if (response.data.erfolg)
+						{
+							angular.forEach(institute, function(value, index){
+								ctrl.oeList.push(value);
+							});
+							angular.forEach(response.data.info, function(value, index){
+								ctrl.oeList.push(value);
+							});
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+					}, function error(response) {
+						errorService.setError(getErrorMsg(response));
+					});
 				}
 				else
 				{
@@ -531,6 +554,8 @@ angular.module('stgv2')
 			}, function error(response) {
 				errorService.setError(getErrorMsg(response));
 			});
+			
+			
 
 			//TODO load from Service
 			//load lehrtypen
@@ -1130,7 +1155,7 @@ function generateChildren(item, sem)
 //	}
 	var node = {};
 	node.id = item.studienplan_lehrveranstaltung_id;
-	node.lehrveranstaltung_id = item.lehrveranstaltung_id
+	node.lehrveranstaltung_id = item.lehrveranstaltung_id;
 	node.bezeichnung = item.bezeichnung;
 	node.type = item.lehrtyp_kurzbz;
 	switch(item.lehrtyp_kurzbz)
@@ -1174,7 +1199,7 @@ function generateChildren(item, sem)
 	node.export = item.export;
 	node.lehrauftrag = item.lehrauftrag;
 	node.lehre = item.lehre;
-	node.genehmigung = item.genehmigung
+	node.genehmigung = item.genehmigung;
 	if (children.length != 0)
 	{
 		node.children = children;

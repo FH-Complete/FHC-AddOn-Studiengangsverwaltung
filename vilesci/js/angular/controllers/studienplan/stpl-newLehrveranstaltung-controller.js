@@ -53,7 +53,6 @@ angular.module('stgv2')
 			//loading Studiengang list
 			StudiengangService.getStudiengangList().then(function(result){
 				ctrl.studiengangList = result;
-				console.log(ctrl.studiengangList);
 			},function(error){
 				errorService.setError(getErrorMsg(error));
 			});
@@ -257,7 +256,6 @@ angular.module('stgv2')
 							args.oe_kurzbz = ctrl.data.oe_kurzbz;
 							args.lehrtyp_kurzbz = ctrl.data.lehrtyp_kurzbz;
 							args.semester = ctrl.data.semester;
-							console.log(args);
 							$scope.$emit("setFilter", args);
 						}
 						else

@@ -423,7 +423,7 @@ angular.module("stgv2")
 				{label: 'Eckdaten', link: '.eckdaten'},
 				{label: 'Gültigkeit', link: '.gueltigkeit'},
 //				{label: 'Module', link: '.module'},
-				{label: 'Lehrveranstaltungen', link: '.lehrveranstaltungen'},
+				{label: 'Studienplanmatrix', link: '.lehrveranstaltungen'},
 				{label: 'Auslandssemester', link: '.auslandssemester'},
 				{label: 'Berufspraktikum', link: '.berufspraktikum'},
 				{label: 'Studienjahr', link: '.studienjahr'},

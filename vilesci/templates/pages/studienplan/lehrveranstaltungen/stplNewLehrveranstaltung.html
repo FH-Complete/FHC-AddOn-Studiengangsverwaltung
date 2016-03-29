@@ -102,7 +102,7 @@
 						<label for="sws">SWS</label>
 						<div class="input-group">
 							<input integer-only="positive" type="text" class="form-control input-sm" name="sws" ng-model="newLvCtrl.data.sws"/>
-							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Semesterwochenstunden"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
 				</div>
@@ -111,7 +111,7 @@
 						<label for="lvs">LVS</label>
 						<div class="input-group">
 							<input integer-only="positive" type="text" class="form-control input-sm"  name="lvs" ng-model="newLvCtrl.data.lvs"/>
-							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Lehrveranstaltungsstunden (LVS) Die Summe an Stunden welche Studierende konsumieren. Im Gegensatz zu den ALVS handelt es sich hier um die Sicht eines einzelnen Studierenden. (Nicht eingerechnet werden zusätzlich zu leistende Stunden um die entsprechenden ECTS-Punkte zu erhalten, also unbetreute Stunden.)"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
 				</div>
@@ -120,7 +120,7 @@
 						<label for="alvs">ALVS</label>
 						<div class="input-group">
 							<input integer-only="positive" type="text" class="form-control input-sm"  name="alvs" ng-model="newLvCtrl.data.alvs"/>
-							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Angebotene Lehrveranstaltungsstunden (ALVS) Die Summe der Stunden einer Lehrveranstaltung, welche aus Sicht des Studiengangs geleistet bzw. angeboten werden. Durch Gruppenteilung erhöhen sich die ALVS gegenüber der LVS."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
 				</div>
@@ -129,7 +129,7 @@
 						<label for="lvps">LVPS</label>
 						<div class="input-group">
 							<input integer-only="positive" type="text" class="form-control input-sm"  name="lvps" ng-model="newLvCtrl.data.lvps"/>
-							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="LV-Plan Stunden (LVPLS) Summe der Stunden welche tatsächlich im LV-Plan eingetragen werden. Studierende sind in diesen Stunden an Zeit und Ort gebunden."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
 				</div>
@@ -138,7 +138,7 @@
 						<label for="las">LAS</label>
 						<div class="input-group">
 							<input integer-only="positive" type="text" class="form-control input-sm"  name="las" ng-model="newLvCtrl.data.las"/>
-							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="test"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Lehrauftragstunden (bisher: Semesterstunden) Summe der Stunden für welche ein Lehrauftrag angelegt wird."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
 				</div>
@@ -283,8 +283,11 @@
 				</div>
 				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
 					<div class="form-group">
-						<label for="semesterwochen">Semesterwochen</label>
-						<input integer-only="positive" type="text" class="form-control input-sm"  name="semesterwochen" ng-model="newLvCtrl.data.semesterwochen"/>
+						<label for="semesterwochen">SW</label>
+						<div class="input-group">
+							<input integer-only="positive" type="text" class="form-control input-sm"  name="semesterwochen" ng-model="newLvCtrl.data.semesterwochen"/>
+							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Semesterwochen."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+						</div>
 					</div>
 				</div>
 				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
