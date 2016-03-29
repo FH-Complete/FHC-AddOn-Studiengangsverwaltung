@@ -27,6 +27,10 @@ angular.module('stgv2')
 			scope.bezeichnung = "";
 			ctrl.studienSemesterList = [];
 			
+			$(document).ready(function(){
+				$('[data-toggle="tooltip"]').tooltip();
+			});
+			
 			//loading Studiensemester list
 			StudiensemesterService.getStudiensemesterList().then(function (result) {
 				ctrl.studiensemesterList = result;
@@ -96,7 +100,10 @@ angular.module('stgv2')
 					columns: [[
 						{field: 'bezeichnung', width:'300', title:'Lehrveranstaltung'},
 						{field: 'ects',align: 'right', title:'ECTS'},
-						{field: 'semesterstunden',align: 'right', title:'Semesterstunden'},
+//						{field: 'semesterstunden',align: 'right', title:'LAS (Semesterstunden)'},
+						{field: 'lvs', align: 'right', title:'LVS'},
+						{field: 'alvs', align: 'right', title:'ALVS'},
+						{field: 'sws', align: 'right', title:'SWS'},
 						{field: 'lehrform_kurzbz',align: 'right', title:'Lehrform'},
 						{field: 'export',align: 'center', /*editor: {type: 'checkbox'},*/ title:'StudPlan', formatter: booleanToIconFormatter},	
 						{field: 'stpllv_pflicht',align: 'center', title:'Pflicht', formatter: booleanToIconFormatter},
@@ -1189,7 +1196,7 @@ function generateChildren(item, sem)
 	node.semesterwochen = item.semesterwochen;
 	node.lvs = item.lvs;
 	node.alvs = item.alvs;
-	node.lvps = item.lvps;
+	node.lvps = item.semesterstunden;
 	node.las = item.las;
 	node.benotung = item.benotung;
 	node.zeugnis = item.zeugnis;

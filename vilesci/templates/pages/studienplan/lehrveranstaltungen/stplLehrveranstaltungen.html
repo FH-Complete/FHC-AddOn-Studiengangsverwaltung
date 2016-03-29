@@ -75,8 +75,11 @@
 			<div class="col-sm-1">
 				<span>ECTS: </span><span>{{stplCtrl.meta.ects}}</span>
 			</div>
-			<div class="col-sm-1">
+			<!--<div class="col-sm-1">
 				<span>Semesterstd: </span><span>{{stplCtrl.meta.semesterstunden}}</span>
+			</div>-->
+			<div class="col-sm-2">
+				<span>LAS (Semesterstunden): </span><span>{{stplCtrl.meta.semesterstunden}}</span>
 			</div>
 			<div class="col-sm-1">
 				<span>LVNR: </span><span>{{stplCtrl.meta.lvnr}}</span>
@@ -110,22 +113,31 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-1">
-				<span>Semesterwochen: </span><span>{{stplCtrl.meta.semesterwochen}}</span>
+				<span>SW: </span><span>{{stplCtrl.meta.semesterwochen}}</span>
 			</div>
 			<div class="col-sm-1">
-				<span>SWS: </span><span>{{stplCtrl.meta.sws}}</span>
+				<a href="#" data-toggle="tooltip" data-placement="right" title="Semesterwochenstunden">
+					<span>SWS: </span>
+				</a>
+				<span>{{stplCtrl.meta.sws}}</span>
 			</div>
 			<div class="col-sm-1">
-				<span>LVS: </span><span>{{stplCtrl.meta.lvs}}</span>
+				<a href="#" data-toggle="tooltip" data-placement="right" title="Lehrveranstaltungsstunden (LVS) Die Summe an Stunden welche Studierende konsumieren. Im Gegensatz zu den ALVS handelt es sich hier um die Sicht eines einzelnen Studierenden. (Nicht eingerechnet werden zusätzlich zu leistende Stunden um die entsprechenden ECTS-Punkte zu erhalten, also unbetreute Stunden.)">
+					<span>LVS: </span>
+				</a>
+				<span>{{stplCtrl.meta.lvs}}</span>
 			</div>
 			<div class="col-sm-1">
-				<span>ALVS: </span><span>{{stplCtrl.meta.alvs}}</span>
+				<a href="#" data-toggle="tooltip" data-placement="right" title="Angebotene Lehrveranstaltungsstunden (ALVS) Die Summe der Stunden einer Lehrveranstaltung, welche aus Sicht des Studiengangs geleistet bzw. angeboten werden. Durch Gruppenteilung erhöhen sich die ALVS gegenüber der LVS.">
+					<span>ALVS: </span>
+				</a>
+				<span>{{stplCtrl.meta.alvs}}</span>
 			</div>
-			<div class="col-sm-1">
-				<span>LVPS: </span><span>{{stplCtrl.meta.lvps}}</span>
-			</div>
-			<div class="col-sm-1">
-				<span>LAS: </span><span>{{stplCtrl.meta.las}}</span>
+			<div class="col-sm-2">
+				<a href="#" data-toggle="tooltip" data-placement="right" title="LV-Plan Stunden (LVPLS) Summe der Stunden welche tatsächlich im LV-Plan eingetragen werden. Studierende sind in diesen Stunden an Zeit und Ort gebunden.">
+					<span>LVPLS (Planstunden): </span>
+				</a>
+				<span>{{stplCtrl.meta.lvps}}</span>
 			</div>
 		</div>
 	</div>
