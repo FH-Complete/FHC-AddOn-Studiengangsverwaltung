@@ -43,44 +43,64 @@ if($berechtigung->isBerechtigt("stgv/deleteStudienplan", null, "suid"))
     {
 	$studienplan = new StudienplanAddonStgv();
 	
-	if(!$studienplan->hasSemesterZugeordnet($studienplan_id))
+	if($studienplan->hasSemesterZugeordnet($studienplan_id))
 	{
-	    $studienplan->loadStudienplanLV($studienplan_id);
-	    if(count($studienplan->result) > 0)
+	    if($berechtigung->isBerechtigt("stgv/changeStplAdmin", null, "suid"))
 	    {
-		$error = array("message"=>"Studienplan kann nicht gelöscht werden. Es sind noch Lehrveranstaltungen verknüpft.", "detail"=>$studienplan->errormsg);
-		returnAJAX(false, $error);
-	    }
-	    
-	    foreach($auslandssemester->result as $t)
-	    {
-		$auslandssemester->delete($t->auslandssemester_id);
-	    }
-	    
-	    foreach($berufspraktikum->result as $t)
-	    {
-		$berufspraktikum->delete($t->berufspraktikum_id);
-	    }
-	    
-	    foreach($studienjahr->result as $t)
-	    {
-		$studienjahr->delete($t->studienjahr_id);
-	    }
-	    
-
-	    if($studienplan->delete($studienplan_id))
-	    {
-		returnAJAX(true, "Studienplan erfolgreich gelöscht");
+		$studiensemester = $studienplan->loadStudiensemesterFromStudienplan($studienplan_id);
+		if ($studiensemester != FALSE)
+		{
+		    foreach ($studiensemester as $sem)
+		    {
+			$studienplan->deleteSemesterZuordnung($studienplan_id, $sem);
+		    }
+		}
 	    }
 	    else
 	    {
-		$error = array("message"=>"Fehler beim Löschen des Studienplans.", "detail"=>$studienplan->errormsg);
+		$error = array("message"=>"Studienplan kann nicht gelöscht werden. Es sind Studiensemester mit dem Studienplan verknüpft.", "detail"=>$studienplan->errormsg);
 		returnAJAX(false, $error);
 	    }
+	    
+	}
+	$studienplan->loadStudienplanLV($studienplan_id);
+	if($berechtigung->isBerechtigt("stgv/changeStplAdmin", null, "suid"))
+	{
+	    foreach($studienplan->result as $stpllv)
+	    {
+		$studienplan->deleteStudienplanLehrveranstaltung($stpllv->studienplan_lehrveranstaltung_id);
+	    }
+
+	}
+	elseif(count($studienplan->result) > 0)
+	{
+	    $error = array("message"=>"Studienplan kann nicht gelöscht werden. Es sind noch Lehrveranstaltungen verknüpft.", "detail"=>$studienplan->errormsg);
+	    returnAJAX(false, $error);
+	}
+
+	foreach($auslandssemester->result as $t)
+	{
+	    $auslandssemester->delete($t->auslandssemester_id);
+	}
+
+	foreach($berufspraktikum->result as $t)
+	{
+	    $berufspraktikum->delete($t->berufspraktikum_id);
+	}
+
+	foreach($studienjahr->result as $t)
+	{
+	    $studienjahr->delete($t->studienjahr_id);
+	}
+
+
+	if($studienplan->delete($studienplan_id))
+	{
+	    returnAJAX(true, "Studienplan erfolgreich gelöscht");
 	}
 	else
 	{
-	    $error = array("message"=>"Studienplan kann nicht gelöscht werden. Es sind Studiensemester mit dem Studienplan verknüpft.", "detail"=>$studienplan->errormsg);
+	    $error = array("message"=>"Fehler beim Löschen des Studienplans.", "detail"=>$studienplan->errormsg);
 	    returnAJAX(false, $error);
 	}
     }

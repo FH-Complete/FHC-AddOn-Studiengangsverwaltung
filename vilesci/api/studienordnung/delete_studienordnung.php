@@ -9,6 +9,7 @@ require_once('../../../include/taetigkeitsfeld.class.php');
 require_once('../../../include/qualifikationsziel.class.php');
 require_once('../../../include/zugangsvoraussetzung.class.php');
 require_once('../../../include/aufnahmeverfahren.class.php');
+require_once('../../../include/beschluss.class.php');
 require_once('../functions.php');
 
 $uid = get_uid();
@@ -42,6 +43,9 @@ if($berechtigung->isBerechtigt("stgv/deleteStudienordnung", null, "suid"))
     
     $aufnahmeverfahren = new aufnahmeverfahren();
     $aufnahmeverfahren->getAll($studienordnung->studienordnung_id);
+    
+    $beschluss = new beschluss();
+    $beschluss->getAll($studienordnung->studienordnung_id);
 	
     if($studienordnung->status_kurzbz == "development")
     {
@@ -70,6 +74,11 @@ if($berechtigung->isBerechtigt("stgv/deleteStudienordnung", null, "suid"))
 	foreach($aufnahmeverfahren->result as $a)
 	{
 	    $aufnahmeverfahren->delete($a->aufnahmeverfahren_id);
+	}
+	
+	foreach($beschluss->result as $b)
+	{
+	    $beschluss->delete($b->beschluss_id);
 	}
 
 	if($studienordnung->delete($studienordnung_id))
