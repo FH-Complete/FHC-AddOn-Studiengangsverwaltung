@@ -4,6 +4,7 @@ require_once('../../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../../include/lehrveranstaltung.class.php');
+require_once('../../../../include/studienplanAddonStgv.class.php');
 require_once('../../functions.php');
 
 $uid = get_uid();
@@ -19,10 +20,38 @@ if(!$berechtigung->isBerechtigt("stgv/createLehrveranstaltung",null,"suid"))
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
 $data = (Object) $data["data"];
 
+if(isset($data->lehrveranstaltung_id))
+{
+    $lehrveranstaltung_id = $data->lehrveranstaltung_id;
+    $studienplan_lehrveranstaltung_id = $data->studienplan_lehrveranstaltung_id;
+}
+
 $lehrveranstaltung = mapDataToLehrveranstaltung($data);
 
 if($lehrveranstaltung->save())
 {
+    if(isset($lehrveranstaltung_id) && $lehrveranstaltung_id !== NULL)
+    {
+	$studienplan = new studienplanAddonStgv();
+	$studienplan->loadStudienplanLehrveranstaltung($studienplan_lehrveranstaltung_id);
+	$studienplan->new = true;
+	$studienplan->lehrveranstaltung_id = $lehrveranstaltung->lehrveranstaltung_id;
+	$lehrveranstaltung->loadLehrveranstaltungStudienplan($studienplan->studienplan_id);
+	if($studienplan->saveStudienplanLehrveranstaltung())
+	{
+	    $studienplan_lehrveranstaltung_id_new = $studienplan->studienplan_lehrveranstaltung_id;
+	    $children = $lehrveranstaltung->getLehrveranstaltungTreeChilds($studienplan_lehrveranstaltung_id);
+	    if(is_array($children))
+	    {
+		foreach($children as $lv)
+		{
+		    $studienplan->loadStudienplanLehrveranstaltung($lv->studienplan_lehrveranstaltung_id);
+		    $studienplan->studienplan_lehrveranstaltung_id_parent = $studienplan_lehrveranstaltung_id_new;
+		    $studienplan->saveStudienplanLehrveranstaltung();
+		}
+	    }
+	}
+    }
     returnAJAX(true, array($lehrveranstaltung->lehrveranstaltung_id));
 }
 else
