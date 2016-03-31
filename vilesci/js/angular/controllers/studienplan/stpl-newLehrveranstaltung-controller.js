@@ -15,6 +15,20 @@ angular.module('stgv2')
 			ctrl.semesterList = [0,1,2,3,4,5,6,7,8,9];
 			ctrl.lvSuggestionList = "";
 			
+			$scope.$on("editLehrveranstaltung", function(event, data)
+			{
+				ctrl.data = data;
+				if(ctrl.data.lehrtyp_kurzbz === "modul")
+				{
+					ctrl.loadOrganisationseinheitenList("Studiengang");
+				}
+				else
+				{
+					ctrl.loadOrganisationseinheitenList("Institut");
+				}
+				ctrl.loadLehrform();
+			});
+			
 			ctrl.setLehrformDependencies = function()
 			{
 				switch(ctrl.data.lehrform_kurzbz)
@@ -271,6 +285,44 @@ angular.module('stgv2')
 					$scope.form.$setPristine();
 				}
 			};
+			
+			ctrl.updateLehrveranstaltung = function()
+			{
+				if($scope.form.$valid)
+				{
+					var saveData = {data: ""}
+					saveData.data = ctrl.data;
+					$http({
+						method: 'POST',
+						url: './api/studienplan/lehrveranstaltungen/update_lehrveranstaltung.php',
+						data: $.param(saveData),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response){
+						if(response.data.erfolg)
+						{
+							var args = {};
+							args.lv_id = response.data.info[0];
+							args.oe_kurzbz = ctrl.data.oe_kurzbz;
+							args.lehrtyp_kurzbz = ctrl.data.lehrtyp_kurzbz;
+							args.semester = ctrl.data.semester;
+							$scope.$emit("setFilter", args);
+							$("#stplTreeGrid").treegrid("update",{id: ctrl.data.id, row: ctrl.data});
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+					}, function error(response){
+						errorService.setError(getErrorMsg(response));
+					});
+				}
+				else
+				{
+					$scope.form.$setPristine();
+				}
+			}
 		});
 		
 	function Lehrveranstaltung()

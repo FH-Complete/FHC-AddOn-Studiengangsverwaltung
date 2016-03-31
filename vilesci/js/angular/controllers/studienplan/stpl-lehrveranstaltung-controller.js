@@ -96,7 +96,7 @@ angular.module('stgv2')
 							var row = $("#stplTreeGrid").treegrid('getSelected');
 							editingId = row.id;
 							$("#stplTreeGrid").treegrid('beginEdit', editingId);
-							}
+						}
 					}],
 					columns: [[
 						{field: 'bezeichnung', width:'300', title:'Lehrveranstaltung'},
@@ -703,6 +703,13 @@ angular.module('stgv2')
 					}
 				});
 			};
+			
+			ctrl.copyAndReplaceLehrveranstaltung = function()
+			{
+				alert("copied and removed");
+				var node = $('#stplTreeGrid').treegrid('getSelected');
+				console.log(node);
+			}
 
 			ctrl.removeStudienplanLehrveranstaltung = function ()
 			{
@@ -752,7 +759,7 @@ angular.module('stgv2')
 				return returnObject;
 			};
 			
-			ctrl.dialog = function()
+			ctrl.dialog = function(lv)
 			{
 				$http({
 					method: 'GET',
@@ -771,6 +778,13 @@ angular.module('stgv2')
 						collapsible: true,
 						resizable: true,
 						maximizable: true,
+						onOpen: function()
+						{
+							if(lv !== undefined)
+							{
+								$scope.$broadcast("editLehrveranstaltung", lv);
+							}
+						},
 						onClose: function()
 						{
 							$("#farbe").ColorPicker("destroy");
@@ -1167,6 +1181,12 @@ angular.module('stgv2')
 					$('#lvregel_lehrveranstaltung_id_autocomplete_input'+ctrl.LVREGELLehrveranstaltungAutocompleteArray[i]).hide();
 				}
 			};
+			
+			ctrl.editLehrveranstaltung = function()
+			{
+				var row = $("#stplTreeGrid").treegrid('getSelected');
+				ctrl.dialog(row);
+			}
 		});
 
 function generateChildren(item, sem)

@@ -7,7 +7,9 @@
 	<div id="stplTree">
 		<table id="stplTreeGrid" class="easyui-treegrid">
 		</table>
-		<div id="stplTreeGridContextMenu" class="easyui-menu" style="width:120px;">
+		<div id="stplTreeGridContextMenu" class="easyui-menu" style="width:200px;">
+			<!--<div ng-click='stplCtrl.copyAndReplaceLehrveranstaltung()' data-options="iconCls:'icon-copy'">Durch Kopie ersetzen</div>-->
+			<div ng-click='stplCtrl.editLehrveranstaltung()' data-options="iconCls:'icon-edit'">Editieren</div>
 			<div ng-click='stplCtrl.removeStudienplanLehrveranstaltung()' data-options="iconCls:'icon-remove'">Remove</div>
 		</div>
 	</div>

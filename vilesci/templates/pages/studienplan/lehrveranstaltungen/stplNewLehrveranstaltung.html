@@ -304,7 +304,8 @@
 				<div class="col-sm-1">
 					<div class="form-group">
 						<div>
-							<button type="submit" class="btn btn-success btn-sm" ng-click="newLvCtrl.loadSuggestion()">Vorschlag laden</button>
+							<button ng-show="!newLvCtrl.data.lehrveranstaltung_id" type="submit" class="btn btn-success btn-sm" ng-click="newLvCtrl.loadSuggestion()">Vorschlag laden</button>
+							<button ng-show="newLvCtrl.data.lehrveranstaltung_id" type="submit" class="btn btn-success btn-sm" ng-click="newLvCtrl.updateLehrveranstaltung()">Speichern</button>
 						</div>
 					</div>
 				</div>
