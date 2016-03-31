@@ -9,6 +9,7 @@ require_once('../functions.php');
 $oe_kurzbz = filter_input(INPUT_GET, "oe_kurzbz");
 $lehrtyp_kurzbz = filter_input(INPUT_GET, "lehrtyp_kurzbz");
 $semester = filter_input(INPUT_GET, "semester");
+$studiengang_kz = filter_input(INPUT_GET, "studiengang_kz");
 $sort = filter_input(INPUT_GET, "sort");
 $order = filter_input(INPUT_GET, "order");
 
@@ -39,7 +40,11 @@ elseif(is_null($semester))
 {
     returnAJAX(false, "Variable semester nicht gesetzt");   
 }
-elseif($oe_kurzbz === false || $lehrtyp_kurzbz === false || $semester === false)
+elseif(is_null($studiengang_kz))
+{
+    returnAJAX(false, "Variable studiengang_kz nicht gesetzt");   
+}
+elseif($oe_kurzbz === false || $lehrtyp_kurzbz === false || $semester === false || $studiengang_kz == false)
 {
     returnAJAX(false, "Fehler beim lesen der GET Variablen");    
 }
@@ -50,45 +55,62 @@ if($semester == "null")
 }
 
 $lehrveranstaltung = new lehrveranstaltung();
-if($lehrveranstaltung->load_lva_oe($oe_kurzbz, true, $lehrtyp_kurzbz, $sortString, $semester))
-{
-    $lv_array = array();
+$lv_array = array();
 
-    foreach($lehrveranstaltung->lehrveranstaltungen as $key=>$lv)
+if(($oe_kurzbz == "alle") && ($studiengang_kz != "alle"))
+{
+    if(!$lehrveranstaltung->load_lva($studiengang_kz, null, null, null, true, $sortString, null, $lehrtyp_kurzbz))
     {
-	$temp = new stdClass();
-	$temp->id = $lv->lehrveranstaltung_id;
-	$temp->bezeichnung = $lv->bezeichnung;
-	$temp->ects = $lv->ects;
-	$temp->type = $lv->lehrtyp_kurzbz;
-	$temp->kurzbz = $lv->kurzbz;
-	$temp->semester = $lv->semester;
-	$temp->sprache = $lv->sprache;
-	$temp->semesterstunden = $lv->semesterstunden;
-	$temp->lehrform_kurzbz = $lv->lehrform_kurzbz;
-	$temp->bezeichnung_english = $lv->bezeichnung_english;
-	$temp->orgform_kurzbz = $lv->orgform_kurzbz;
-	$temp->incoming = $lv->incoming;
-	$temp->oe_kurzbz = $lv->oe_kurzbz;
-	$temp->semesterwochen = $lv->semesterwochen;
-	$temp->lvnr = $lv->lvnr;
-	$temp->sws = $lv->sws;
-	$temp->lvs = $lv->lvs;
-	$temp->alvs = $lv->alvs;
-	$temp->lvps = $lv->lvps;
-	$temp->las = $lv->las;
-	$temp->benotung = $lv->benotung;
-	$temp->lvinfo = $lv->lvinfo;
-	$temp->zeugnis = $lv->zeugnis;
-	$temp->lehre = $lv->lehre;
-	$temp->lehrauftrag = $lv->lehrauftrag;
-	array_push($lv_array, $temp);
+	returnAJAX(false, $lehrveranstaltung->errormsg);
+    }
+}
+elseif (($oe_kurzbz != "alle") && ($studiengang_kz == "alle"))
+{
+    if(!$lehrveranstaltung->load_lva_oe($oe_kurzbz, true, $lehrtyp_kurzbz, $sortString, $semester))
+    {
+	returnAJAX(false, $lehrveranstaltung->errormsg);
     }
 }
 else
 {
-    returnAJAX(false, $lehrveranstaltung->errormsg);
+    if(!$lehrveranstaltung->load_lva($studiengang_kz, null, null, null, true, $sortString, $oe_kurzbz, $lehrtyp_kurzbz))
+    {
+	returnAJAX(false, $lehrveranstaltung->errormsg);
+    }
 }
+
+foreach($lehrveranstaltung->lehrveranstaltungen as $key=>$lv)
+{
+    $temp = new stdClass();
+    $temp->id = $lv->lehrveranstaltung_id;
+    $temp->studiengang_kz = $lv->studiengang_kz;
+    $temp->bezeichnung = $lv->bezeichnung;
+    $temp->ects = $lv->ects;
+    $temp->type = $lv->lehrtyp_kurzbz;
+    $temp->kurzbz = $lv->kurzbz;
+    $temp->semester = $lv->semester;
+    $temp->sprache = $lv->sprache;
+    $temp->semesterstunden = $lv->semesterstunden;
+    $temp->lehrform_kurzbz = $lv->lehrform_kurzbz;
+    $temp->bezeichnung_english = $lv->bezeichnung_english;
+    $temp->orgform_kurzbz = $lv->orgform_kurzbz;
+    $temp->incoming = $lv->incoming;
+    $temp->oe_kurzbz = $lv->oe_kurzbz;
+    $temp->semesterwochen = $lv->semesterwochen;
+    $temp->lvnr = $lv->lvnr;
+    $temp->sws = $lv->sws;
+    $temp->lvs = $lv->lvs;
+    $temp->alvs = $lv->alvs;
+    $temp->lvps = $lv->lvps;
+    $temp->las = $lv->las;
+    $temp->benotung = $lv->benotung;
+    $temp->lvinfo = $lv->lvinfo;
+    $temp->zeugnis = $lv->zeugnis;
+    $temp->lehre = $lv->lehre;
+    $temp->lehrauftrag = $lv->lehrauftrag;
+    array_push($lv_array, $temp);
+}
+
 returnAJAX(true, $lv_array)
 
 

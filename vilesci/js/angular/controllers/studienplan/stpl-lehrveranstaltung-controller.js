@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StplLehrveranstaltungCtrl', function ($scope, $http, $state, $stateParams, errorService, $compile, StudienplanService, successService, StudiensemesterService) {
+		.controller('StplLehrveranstaltungCtrl', function ($scope, $http, $state, $stateParams, errorService, $compile, StudienplanService, successService, StudiensemesterService, StudiengangService, StudienordnungService) {
 			$scope.studienplan_id = $stateParams.studienplan_id;
 			var ctrl = this;
 			var scope = $scope;
@@ -9,7 +9,7 @@ angular.module('stgv2')
 				ects: ""
 			};
 			ctrl.studienplan = "";
-			ctrl.oeList = [];
+			ctrl.oeList = [{bezeichnung: "Keine Auswahl", oe_kurzbz: "alle"}];
 			ctrl.oe_kurzbz = "";
 			ctrl.lehrtypList = "";
 			ctrl.lehrtyp_kurzbz = "lv";
@@ -26,6 +26,7 @@ angular.module('stgv2')
 			scope.lvs = [];
 			scope.bezeichnung = "";
 			ctrl.studienSemesterList = [];
+			ctrl.studiengangList = [{bezeichnung: "Keine Auswahl", studiengang_kz: "alle"}];
 			
 			$(document).ready(function(){
 				$('[data-toggle="tooltip"]').tooltip();
@@ -563,7 +564,19 @@ angular.module('stgv2')
 				errorService.setError(getErrorMsg(response));
 			});
 			
-			
+			StudiengangService.getStudiengangList().then(function (result) {
+				angular.forEach(result, function(value, index){
+					ctrl.studiengangList.push(value);
+				});
+				StudienordnungService.getStudienordnungByStudienplan($scope.studienplan_id).then(function (result) {
+					ctrl.studienordnung = result;
+					ctrl.studiengang_kz = ctrl.studienordnung.studiengang_kz;
+				}, function (error) {
+					errorService.setError(getErrorMsg(error));
+				});
+			}, function (error) {
+				errorService.setError(getErrorMsg(error));
+			});
 
 			//TODO load from Service
 			//load lehrtypen
@@ -606,6 +619,11 @@ angular.module('stgv2')
 					alert("Bitte wählen Sie eine Organisationseinheit aus.");
 					return false;
 				}
+				if(ctrl.studiengang_kz === "alle" && ctrl.oe_kurzbz === "alle")
+				{
+					alert("Bitte wählen Sie eine Organisationseinheit oder einen Studiengang aus.");
+					return false;
+				}
 				var lehrtyp_kurzbz = $("#lehrtyp").val();
 				var semester = $("#semester").val();
 				if (semester === "? string: ?")
@@ -614,7 +632,7 @@ angular.module('stgv2')
 				}
 
 				$("#lvTreeGrid").treegrid({
-					url: "./api/helper/lehrveranstaltungByOe.php?oe_kurzbz=" + oe_kurzbz + "&lehrtyp_kurzbz=" + lehrtyp_kurzbz + "&semester=" + semester,
+					url: "./api/helper/lehrveranstaltungByOe.php?oe_kurzbz=" + oe_kurzbz + "&lehrtyp_kurzbz=" + lehrtyp_kurzbz + "&semester=" + semester + "&studiengang_kz=" + ctrl.studiengang_kz,
 					method: 'GET',
 					idField: 'id',
 					treeField: 'bezeichnung',

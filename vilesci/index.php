@@ -24,7 +24,7 @@ $uid = get_uid();
 $rechte = new benutzerberechtigung();
 $rechte->getBerechtigungen($uid);
 
-if (!$rechte->isBerechtigt('basis/addon')) {
+if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
     die('Sie haben keine Berechtigung fuer diese Seite');
 }
 ?>
