@@ -25,22 +25,6 @@ angular.module('stgv2')
 				errorService.setError(getErrorMsg(error));
 			});
 
-//			$http({
-//				method: 'GET',
-//				url: './api/studienplan/metadaten/metadaten.php?studienplan_id=' + $scope.studienplan_id
-//			}).then(function success(response) {
-//				if (response.data.erfolg)
-//				{
-//					ctrl.data = response.data.info;
-//				}
-//				else
-//				{
-//					errorService.setError(getErrorMsg(response));
-//				}
-//			}, function error(response) {
-//				errorService.setError(getErrorMsg(response));
-//			});
-
 			ctrl.save = function () {
 				var saveData = {data: ""}
 				saveData.data = ctrl.data;

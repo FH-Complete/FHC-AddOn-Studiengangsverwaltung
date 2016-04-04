@@ -706,30 +706,31 @@ angular.module('stgv2')
 			
 			ctrl.copyAndReplaceLehrveranstaltung = function()
 			{
-				var node = $('#stplTreeGrid').treegrid('getSelected');
-				console.log(node);
-				var saveData = {data: ""}
-				saveData.data = angular.copy(node);
-				$http({
-					method: 'POST',
-					url: './api/studienplan/lehrveranstaltungen/save_lehrveranstaltung.php',
-					data: $.param(saveData),
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					}
-				}).then(function success(response){
-					console.log(response);
-					if(response.data.erfolg)
-					{
-						$('#stplTreeGrid').treegrid('reload');
-					}
-					else
-					{
+				if(confirm("Wollen Sie dieses Element wirklich durch eine Kopie ersetzen?"))
+				{
+					var node = $('#stplTreeGrid').treegrid('getSelected');
+					var saveData = {data: ""}
+					saveData.data = angular.copy(node);
+					$http({
+						method: 'POST',
+						url: './api/studienplan/lehrveranstaltungen/save_lehrveranstaltung.php',
+						data: $.param(saveData),
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function success(response){
+						if(response.data.erfolg)
+						{
+							$('#stplTreeGrid').treegrid('reload');
+						}
+						else
+						{
+							errorService.setError(getErrorMsg(response));
+						}
+					}, function error(response){
 						errorService.setError(getErrorMsg(response));
-					}
-				}, function error(response){
-					errorService.setError(getErrorMsg(response));
-				});
+					});
+				}
 			}
 
 			ctrl.removeStudienplanLehrveranstaltung = function ()

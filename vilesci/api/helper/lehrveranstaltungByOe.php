@@ -83,10 +83,12 @@ foreach($lehrveranstaltung->lehrveranstaltungen as $key=>$lv)
 {
     $temp = new stdClass();
     $temp->id = $lv->lehrveranstaltung_id;
+    $temp->lehrveranstaltung_id = $lv->lehrveranstaltung_id;
     $temp->studiengang_kz = $lv->studiengang_kz;
     $temp->bezeichnung = $lv->bezeichnung;
     $temp->ects = $lv->ects;
     $temp->type = $lv->lehrtyp_kurzbz;
+    $temp->lehrtyp_kurzbz = $lv->lehrtyp_kurzbz;
     $temp->kurzbz = $lv->kurzbz;
     $temp->semester = $lv->semester;
     $temp->sprache = $lv->sprache;
