@@ -710,6 +710,7 @@ angular.module('stgv2')
 				console.log(node);
 				var saveData = {data: ""}
 				saveData.data = angular.copy(node);
+				saveData.data.bezeichnung=saveData.data.bezeichnung+' Kopie';
 				$http({
 					method: 'POST',
 					url: './api/studienplan/lehrveranstaltungen/save_lehrveranstaltung.php',
