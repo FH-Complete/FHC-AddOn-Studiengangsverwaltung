@@ -1,18 +1,34 @@
 angular.module('stgv2')
 		.controller('StateMainCtrl', function ($rootScope, $stateParams, errorService) {
 			var ctrl = this;
-			ctrl.url = './api/studienordnung/studienordnungTree.php?stgkz=' + $stateParams.stgkz + '&state=' + $stateParams.state;			
-			
+			ctrl.url = './api/studienordnung/studienordnungTree.php?stgkz=' + $stateParams.stgkz + '&state=' + $stateParams.state;
+
 			//Studienordnungsdaten in TreeGrid laden
 			ctrl.loadTreegrid = function()
 			{
+				// Ueberschreiben der autoSizeColumn Funktion da es sonst zu Performanceproblemen kommt
+				var origTreegrid_autoSizeColumn = $.fn.datagrid.methods['autoSizeColumn'];
+				$.extend($.fn.treegrid.methods, {
+				    autoSizeColumn: function(jq, field) {
+				        $.each(jq, function() {
+				            var opts = $(this).treegrid('options');
+				            if (!opts.skipAutoSizeColumns) {
+				                var tg_jq = $(this);
+				                if (field) origTreegrid_autoSizeColumn(tg_jq, field);
+				                else origTreegrid_autoSizeColumn(tg_jq);
+				            }
+				        });
+				    }
+				});
 				$("#treeGrid").treegrid({
 					method: 'GET',
 					url: ctrl.url,
 					idField: 'id',
 					treeField: 'bezeichnung',
 					fit: true,
-					rownumbers: true,
+					rownumbers: false,
+					skipAutoSizeColumns: true,
+					autoRowHeight: false,
 					multiSort: true,
 					columns: [[
 						{field: 'bezeichnung', width: 250, title:'Version',sortable:true},
@@ -23,7 +39,7 @@ angular.module('stgv2')
 						{field: 'gueltigvon', align:'left', title:'gültig von',sortable:true},
 						{field: 'gueltigbis', align:'left', title:'gültig bis',sortable:true},
 						{field: 'orgform_kurzbz', align:'left', title:'Orgform',sortable:true},
-						{field: 'ects_stpl', align:'left', title:'ECTS', 
+						{field: 'ects_stpl', align:'left', title:'ECTS',
 							formatter: function(val)
 							{
 								if(val != undefined)
@@ -42,9 +58,9 @@ angular.module('stgv2')
 						{
 							$(data.info).each(function(i,v){
 								/* removing state for elements without children;
-								 * otherwise treegrid will crash when trying 
+								 * otherwise treegrid will crash when trying
 								 * to expand that node
-								 */ 
+								 */
 								if(v.children.length === 0)
 								{
 									delete v.state;
@@ -101,11 +117,11 @@ angular.module('stgv2')
 					}
 				});
 			};
-			
+
 			ctrl.loadTreegrid();
-			
+
 			$rootScope.$on("loadTreeGrid", function(event, args){
-				ctrl.url = './api/studienordnung/studienordnungTree.php?stgkz=' + args.stgkz + '&state=' + args.state;		
+				ctrl.url = './api/studienordnung/studienordnungTree.php?stgkz=' + args.stgkz + '&state=' + args.state;
 				ctrl.loadTreegrid();
 			});
 		});

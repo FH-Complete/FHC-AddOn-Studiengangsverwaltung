@@ -27,18 +27,18 @@ angular.module('stgv2')
 			scope.bezeichnung = "";
 			ctrl.studienSemesterList = [];
 			ctrl.studiengangList = [{bezeichnung: "Keine Auswahl", studiengang_kz: "alle"}];
-			
+
 			$(document).ready(function(){
 				$('[data-toggle="tooltip"]').tooltip();
 			});
-			
+
 			//loading Studiensemester list
 			StudiensemesterService.getStudiensemesterList().then(function (result) {
 				ctrl.studiensemesterList = result;
 			}, function (error) {
 				errorService.setError(getErrorMsg(error));
 			});
-			
+
 			ctrl.initSemesterList = function()
 			{
 				for(var j=0; j<=ctrl.studienplan.regelstudiendauer; j++)
@@ -50,14 +50,31 @@ angular.module('stgv2')
 					ctrl.semesterList.push(item);
 				}
 			};
-			
+
 			ctrl.initStplTree = function ()
 			{
+
+				// Ueberschreiben der autoSizeColumn Funktion da es sonst zu Performanceproblemen kommt
+				var origTreegrid_autoSizeColumn = $.fn.datagrid.methods['autoSizeColumn'];
+				$.extend($.fn.treegrid.methods, {
+				    autoSizeColumn: function(jq, field) {
+				        $.each(jq, function() {
+				            var opts = $(this).treegrid('options');
+				            if (!opts.skipAutoSizeColumns) {
+				                var tg_jq = $(this);
+				                if (field) origTreegrid_autoSizeColumn(tg_jq, field);
+				                else origTreegrid_autoSizeColumn(tg_jq);
+				            }
+				        });
+				    }
+				});
 				$("#stplTreeGrid").treegrid({
 					url: "./api/studienplan/lehrveranstaltungen/lehrveranstaltungTree.php?studienplan_id=" + $scope.studienplan_id,
 					idField: "id",
 					treeField: "bezeichnung",
-					rownumbers: true,
+					rownumbers: false,
+					skipAutoSizeColumns: true,
+					autoRowHeight: false,
 					fit: true,
 					toolbar: [{
 						id: 'saveChanges',
@@ -106,7 +123,7 @@ angular.module('stgv2')
 						{field: 'alvs', align: 'right', title:'ALVS'},
 						{field: 'sws', align: 'right', title:'SWS'},
 						{field: 'lehrform_kurzbz',align: 'right', title:'Lehrform'},
-						{field: 'export',align: 'center', /*editor: {type: 'checkbox'},*/ title:'StudPlan', formatter: booleanToIconFormatter},	
+						{field: 'export',align: 'center', /*editor: {type: 'checkbox'},*/ title:'StudPlan', formatter: booleanToIconFormatter},
 						{field: 'stpllv_pflicht',align: 'center', title:'Pflicht', formatter: booleanToIconFormatter},
 						{field: 'genehmigung',align: 'center', title:'Gen', formatter: booleanToIconFormatter},
 						{field: 'lehre',align: 'center', /*editor: {type: 'checkbox'},*/ title:'Lehre/CIS', formatter: booleanToIconFormatter},
@@ -133,7 +150,7 @@ angular.module('stgv2')
 					{
 						if (data.erfolg)
 						{
-                                                    return data.info;
+                            return data.info;
 							var tree = [];
 							$(data.info).each(function (i, v)
 							{
@@ -194,7 +211,7 @@ angular.module('stgv2')
 						var lehre = $(this).treegrid('getColumnOption','lehre');
 						var pflicht = $(this).treegrid('getColumnOption','stpllv_pflicht');
 						var genehmigung = $(this).treegrid('getColumnOption','genehmigung');
-						
+
 						if(row.type==="modul")
 						{
 							//set editors for module editing
@@ -246,7 +263,7 @@ angular.module('stgv2')
 						lehre.editor = null;
 						pflicht.editor = null;
 						genehmigung.editor = null;
-							
+
 						//update studienplan_lehrveranstaltung
 						var data = {};
 						data.semester = lv.stpllv_semester;
@@ -263,7 +280,7 @@ angular.module('stgv2')
 						data.export = lv.export;
 						data.pflicht = lv.stpllv_pflicht;
 						data.genehmigung = lv.genehmigung;
-						
+
 						if((changes.curriculum !== undefined) || (changes.export !== undefined) || (changes.stpllv_pflicht !== undefined) || (changes.genehmigung !== undefined))
 						{
 							var updateData = {data: ""};
@@ -293,8 +310,8 @@ angular.module('stgv2')
 								errorService.setError(getErrorMsg(response));
 							});
 						}
-						
-						if((changes.benotung !== undefined) 
+
+						if((changes.benotung !== undefined)
 								|| (changes.zeugnis !== undefined)
 								|| (changes.lvinfo !== undefined)
 								|| (changes.lehrauftrag !== undefined)
@@ -365,7 +382,7 @@ angular.module('stgv2')
 							node.ects -= parseFloat(source.ects);
 							$("#stplTreeGrid").treegrid("refresh",node.id);
 						}
-                                                
+
 						//set values depending on target node
 						//e.g. children of modules
 						if(source.typ !== "modul")
@@ -378,19 +395,19 @@ angular.module('stgv2')
 							{
 								source.benotung = false;
 							}
-							
+
 						}
-						
+
 						if(source.stpllv_pflicht === undefined)
 						{
 							source.stpllv_pflicht = true;
 						}
-						
+
 						if(source.curriculum === undefined)
 						{
 							source.curriculum = true;
 						}
-						
+
 						if(source.export === undefined)
 						{
 							if(ctrl.studienplan.status_kurzbz !== "development")
@@ -425,7 +442,7 @@ angular.module('stgv2')
 						data.curriculum = source.curriculum;
 						data.genehmigung = source.genehmigung;
 						//TODO errorhandling
-						
+
 						//update moved entry
 						if(source.moving)
 						{
@@ -485,7 +502,7 @@ angular.module('stgv2')
 									$('#'+idView2 + source.id).attr('node-id', response.data.info[0]);
 									$('#'+idView2 + source.id).attr('id',idView2 + response.data.info[0]);
 									var  row = $('#stplTreeGrid').treegrid('find', source.id);
-									
+
 									row.id = response.data.info[0];
 									row.sem = saveData.data.semester;
 									//needed to detect later if node is moved in tree or dropped from another tree
@@ -501,7 +518,7 @@ angular.module('stgv2')
 						}
 					}
 				});
-				
+
 				$.extend($.fn.datagrid.defaults.editors, {
 					checkbox: {
 						init: function(container, options){
@@ -523,7 +540,7 @@ angular.module('stgv2')
 				ctrl.initSemesterList();
 				ctrl.initStplTree();
 			}, function(error){
-				
+
 			});
 
 			//TODO load from Service
@@ -563,7 +580,7 @@ angular.module('stgv2')
 			}, function error(response) {
 				errorService.setError(getErrorMsg(response));
 			});
-			
+
 			StudiengangService.getStudiengangList().then(function (result) {
 				angular.forEach(result, function(value, index){
 					ctrl.studiengangList.push(value);
@@ -595,7 +612,7 @@ angular.module('stgv2')
 			}, function error(response) {
 				errorService.setError(getErrorMsg(response));
 			});
-			
+
 			$("#lvTreeGrid").treegrid({
 				url: '',
 				method: 'get',
@@ -703,7 +720,7 @@ angular.module('stgv2')
 					}
 				});
 			};
-			
+
 			ctrl.copyAndReplaceLehrveranstaltung = function()
 			{
 				if(confirm("Wollen Sie dieses Element wirklich durch eine Kopie ersetzen?"))
@@ -768,7 +785,7 @@ angular.module('stgv2')
 					console.log("fail");
 				}
 			};
-			
+
 			ctrl.getOeName = function(oe_kurzbz)
 			{
 				var returnObject = "not found";
@@ -782,7 +799,7 @@ angular.module('stgv2')
 				})
 				return returnObject;
 			};
-			
+
 			ctrl.dialog = function(lv)
 			{
 				$http({
@@ -818,7 +835,7 @@ angular.module('stgv2')
 					errorService.setError(getErrorMsg(response));
 				});
 			};
-			
+
 			ctrl.setFilter = function(lv_id, oe_kurzbz, lehrtyp_kurzbz, semester)
 			{
 				$("#oe").val(oe_kurzbz);
@@ -830,23 +847,23 @@ angular.module('stgv2')
 				ctrl.loadLehrveranstaltungen(lv_id);
 				$("#dialog").dialog('close');
 			};
-			
+
 			$scope.$on("setFilter", function(event, args){
 				ctrl.setFilter(args.lv_id, args.oe_kurzbz, args.lehrtyp_kurzbz, args.semester);
 			});
-			
+
 			$scope.tabs = [
 				{label: 'Details', link: 'details'},
 				{label: 'LV Regeln', link: 'lvRegeln'},
 				{label: 'LV Info', link: 'lvInfo'},
 			];
-			
+
 			$scope.selectedTab = $scope.tabs[0];
 			$scope.setSelectedTab = function (tab)
 			{
 				$scope.selectedTab = tab;
 			};
-			
+
 			$scope.getSelectedTabName = function()
 			{
 				return $scope.selectedTab.label;
@@ -863,7 +880,7 @@ angular.module('stgv2')
 					return "";
 				}
 			};
-			
+
 			ctrl.loadLVRegeln = function(studienplan_lehrveranstaltung_id)
 			{
 				if(ctrl.lvRegelTypen.length == 0)
@@ -884,14 +901,14 @@ angular.module('stgv2')
 						ctrl.loadRegeln(studienplan_lehrveranstaltung_id);
 					}, function error(response) {
 						errorService.setError(getErrorMsg(response));
-					});	
+					});
 				}
 				else
 				{
 					ctrl.loadRegeln(studienplan_lehrveranstaltung_id);
 				}
 			};
-			
+
 			ctrl.loadRegeln = function(studienplan_lehrveranstaltung_id)
 			{
 				ctrl.LVREGELStudienplanLehrveranstaltungID = studienplan_lehrveranstaltung_id;
@@ -916,14 +933,14 @@ angular.module('stgv2')
 					errorService.setError(getErrorMsg(response));
 				});
 			};
-			
+
 			ctrl.drawLVRegeln = function(data)
 			{
 				var html = $('#tab-regel').html(ctrl.getChilds(data));
 				$compile(html)(scope);
 				ctrl.LVRegelAddAutocomplete();
 			};
-			
+
 			ctrl.getChilds = function(data, parent)
 			{
 				parent = (typeof parent === "undefined") ? "" : parent;
@@ -937,7 +954,7 @@ angular.module('stgv2')
 					if(!jQuery.isEmptyObject(data[i]['childs']))
 						obj=obj+getChilds(data[i]['childs'], data[i][0].lvregel_id);
 
-				}		
+				}
 
 				obj = obj+'</ul>';
 
@@ -948,7 +965,7 @@ angular.module('stgv2')
 				}
 				return obj;
 			};
-			
+
 			ctrl.addRegel = function(lvregel_id_parent)
 			{
 				ctrl.LVREGELnewcounter++;
@@ -964,7 +981,7 @@ angular.module('stgv2')
 				regel.lvregel_id_parent=lvregel_id_parent;
 
 				if($('#lvregel_ul'+lvregel_id_parent).length>0)
-				{	
+				{
 					var html = $('#lvregel_ul'+lvregel_id_parent).append(ctrl.drawRegel(regel));
 					$compile(html)(scope);
 				}
@@ -975,7 +992,7 @@ angular.module('stgv2')
 				}
 				ctrl.LVRegelAddAutocomplete();
 			};
-			
+
 			ctrl.drawRegel = function(regel)
 			{
 				var val='';
@@ -1006,7 +1023,7 @@ angular.module('stgv2')
 
 				//LVRegelTypen
 				val = val+'<select id="lvregel_lvregeltyp'+regel.lvregel_id+'" onchange="LVRegelTypChange(\''+regel.lvregel_id+'\')">';
-				
+
 				for(var i in ctrl.lvRegelTypen)
 				{
 					if(ctrl.lvRegelTypen[i].lvregeltyp_kurzbz==regel.lvregeltyp_kurzbz)
@@ -1035,7 +1052,7 @@ angular.module('stgv2')
 				val = val+'<span '+style+' id="lvregel_lehrveranstaltung_data'+regel.lvregel_id+'">';
 				// Lehrveranstaltung ID
 				//val = val+'<input type="hidden" size="4" id="lvregel_lehrveranstaltung_id'+regel.lvregel_id+'" value="'+ClearNull(regel.lehrveranstaltung_id)+'" />';
-				
+
 				// Autocomplete Feld fuer Lehrveranstaltung
 				var autocompletebezeichnung = ClearNull(regel.lehrveranstaltung_bezeichnung);
 				if(regel.lehrveranstaltung_bezeichnung==undefined)
@@ -1076,7 +1093,7 @@ angular.module('stgv2')
 				val = val+'</li>';
 				return val;
 			};
-			
+
 			ctrl.loadLvs = function()
 			{
 				if(scope.bezeichnung.length >= 3)
@@ -1100,8 +1117,8 @@ angular.module('stgv2')
 					});
 				}
 			};
-			
-			
+
+
 			/**
 			* Speichert eine Regel
 			*/
@@ -1136,7 +1153,7 @@ angular.module('stgv2')
 				   "studienplan_lehrveranstaltung_id":studienplan_lehrveranstaltung_id,
 				   "lvregel_id_parent":lvregel_id_parent
 			   };
-			   
+
 			   $http({
 					method: 'POST',
 					url: "../../../soap/fhcomplete.php",
@@ -1169,8 +1186,8 @@ angular.module('stgv2')
 					errorService.setError(getErrorMsg(response));
 				});
 		   };
-		   
-		   /** 
+
+		   /**
 			* Loescht eine Regel
 			*/
 		   ctrl.deleteRegel = function(id)
@@ -1196,7 +1213,7 @@ angular.module('stgv2')
 					errorService.setError(getErrorMsg(response));
 				});
 			};
-		   
+
 			ctrl.LVRegelAddAutocomplete = function()
 			{
 				for(var i in ctrl.LVREGELLehrveranstaltungAutocompleteArray)
@@ -1205,7 +1222,7 @@ angular.module('stgv2')
 					$('#lvregel_lehrveranstaltung_id_autocomplete_input'+ctrl.LVREGELLehrveranstaltungAutocompleteArray[i]).hide();
 				}
 			};
-			
+
 			ctrl.editLehrveranstaltung = function()
 			{
 				var row = $("#stplTreeGrid").treegrid('getSelected');
@@ -1285,12 +1302,12 @@ function changeTreeIcons(divId, treeId, target)
 	$(".tree-folder.tree-file").each(function(index, value){
 		$(value).removeClass("tree-file");
 	});
-	
+
 	//remove tree-file class to change empty sem node to folder after move
 	$(".tree-folder-open.tree-file").each(function(index, value){
 		$(value).removeClass("tree-file tree-folder-open").addClass("tree-folder");
 	});
-	
+
 	$("#"+divId).find('tr[node-id] td[field]:nth-child(1)').each(function(i,v)
 	{
 		var ele = $("#"+treeId).treegrid('find', $(v).parent().attr("node-id"));
