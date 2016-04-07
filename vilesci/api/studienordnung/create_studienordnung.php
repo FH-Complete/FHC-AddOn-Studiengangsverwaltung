@@ -44,8 +44,8 @@ if (($data->vorlage_studienordnung_id != 'null') && $data->vorlage_studienordnun
     $studienordnung->studiengangbezeichnung_englisch = $sto_vorlage->studiengangbezeichnung_englisch;
     $studienordnung->studiengangkurzbzlang = $sto_vorlage->studiengangkurzbzlang;
     $studienordnung->akadgrad_id = $sto_vorlage->akadgrad_id;
-    
-    $sto_vorlage->getDokumente($sto_vorlage->studienordnung_id);    
+
+    $sto_vorlage->getDokumente($sto_vorlage->studienordnung_id);
 }
 
 if ($studienordnung->save())
@@ -80,10 +80,10 @@ if ($studienordnung->save())
 	{
 	    $studienordnung->saveDokument($dok_id);
 	}
-	
+
 	$zugangsvoraussetzung = new zugangsvoraussetzung();
 	$zugangsvoraussetzung->getAll($sto_vorlage->studienordnung_id);
-	
+
 	foreach($zugangsvoraussetzung->result as $z)
 	{
 	    $z->new = true;
@@ -92,10 +92,10 @@ if ($studienordnung->save())
 	    $z->data = json_encode($z->data);
 	    $z->save();
 	}
-	
+
 	$aufnahmeverfahren = new aufnahmeverfahren();
 	$aufnahmeverfahren->getAll($sto_vorlage->studienordnung_id);
-	
+
 	foreach($aufnahmeverfahren->result as $a)
 	{
 	    $a->new = true;
@@ -115,7 +115,8 @@ if ($studienordnung->save())
 		$stpl = new StudienplanAddonStgv();
 		$stpl->new = true;
 		$stpl->version = $value->version;
-		$stpl->bezeichnung = $value->bezeichnung;
+        $stpl->bezeichnung = $studienordnung->version.'-'.$value->orgform_kurzbz;
+		//$stpl->bezeichnung = $value->bezeichnung;
 		$stpl->studienordnung_id = $studienordnung->studienordnung_id;
 		$stpl->orgform_kurzbz = $value->orgform_kurzbz;
 		$stpl->regelstudiendauer = $value->regelstudiendauer;
@@ -166,7 +167,7 @@ if ($studienordnung->save())
 		$data = $lv->getLvTree($value->studienplan_id);
 
 		saveStudienplanLehrveranstaltung($data, $stpl->studienplan_id, null);
-		
+
 		$auslandssemester = new auslandssemester();
 		$auslandssemester->getAll($value->studienplan_id);
 		if(!empty($auslandssemester->result))
@@ -180,7 +181,7 @@ if ($studienordnung->save())
 			$aSem->save();
 		    }
 		}
-		
+
 		$berufspraktikum = new berufspraktikum();
 		$berufspraktikum->getAll($value->studienplan_id);
 		if(!empty($berufspraktikum->result))
@@ -194,7 +195,7 @@ if ($studienordnung->save())
 			$bPraktikum->save();
 		    }
 		}
-		
+
 		$studienjahr = new studienjahrAddonStgv();
 		$studienjahr->getAll($value->studienplan_id);
 		if(!empty($studienjahr->result))
@@ -208,7 +209,7 @@ if ($studienordnung->save())
 			$s->save();
 		    }
 		}
-		
+
 		//TODO copy gemeinsames Studienprogramm
 	    }
 	}
