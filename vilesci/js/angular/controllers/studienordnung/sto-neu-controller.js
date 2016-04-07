@@ -17,7 +17,7 @@ angular.module('stgv2')
 				aenderungsvariante_kurzbz: "",
 				vorlage_studienordnung_id: ''
 			};
-			
+
 			$("#editor").wysiwyg(
 			{
 				'form':
@@ -31,12 +31,12 @@ angular.module('stgv2')
 					$("#editor").html($("#editor").html());
 				},100);
 			});
-			
+
 			ctrl.deleteSelection = function()
 			{
 				window.getSelection().deleteFromDocument();
 			};
-			
+
 			//loading Studiensemester list
 			StudiensemesterService.getStudiensemesterList()
 					.then(function (result) {
@@ -53,7 +53,7 @@ angular.module('stgv2')
 				}, function (error) {
 					errorService.setError(getErrorMsg(error));
 				});
-			
+
 			//loading Studiengang list
 			StudiengangService.getStudiengangList()
 				.then(function (result) {
@@ -68,7 +68,7 @@ angular.module('stgv2')
 				}, function (error) {
 					errorService.setError(getErrorMsg(error));
 				});
-			
+
 			ctrl.loadStudienordnungList = function ()
 			{
 				//loading Studienordnung list
@@ -88,7 +88,7 @@ angular.module('stgv2')
 					errorService.setError(getErrorMsg(response));
 				});
 			}
-			
+
 			//loading initialStatus
 			StudienordnungStatusService.getStudienordnungStatusList()
 				.then(function (result) {
@@ -96,13 +96,13 @@ angular.module('stgv2')
 					ctrl.sto.status_kurzbz = ctrl.initialStatus.status_kurzbz;
 
 				});
-					
+
 			ctrl.save = function () {
 				if($scope.form.$valid)
 				{
 					ctrl.sto.begruendung = JSON.stringify($("#editor").html());
 					var saveData = {data: ""}
-					saveData.data = ctrl.sto;				
+					saveData.data = ctrl.sto;
 					$http({
 						method: 'POST',
 						url: './api/studienordnung/create_studienordnung.php',
@@ -129,10 +129,15 @@ angular.module('stgv2')
 					$scope.form.$setPristine();
 				}
 			};
-			
+
 			ctrl.updateVersion = function()
 			{
 				var stg = $filter('filter')(ctrl.studiengangList, {studiengang_kz: ctrl.sto.stg_kz})[0];
-				ctrl.sto.version = ctrl.sto.stg_kz+"-"+stg.kurzbzlang+"-"+ctrl.sto.gueltigvon;
+				var version_stg_kz = ctrl.sto.stg_kz;
+				if(version_stg_kz.length==2)
+					version_stg_kz="00"+version_stg_kz;
+				if(version_stg_kz.length==3)
+					version_stg_kz="0"+version_stg_kz;
+				ctrl.sto.version = version_stg_kz+"-"+(stg.typ+stg.kurzbz).toUpperCase()+"-"+ctrl.sto.gueltigvon;
 			}
 		});
