@@ -203,7 +203,7 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 		</div>
 		<div id="mm5"  >
 		    <div>
-                <a href="http://fhcomplete.technikum-wien.at/dokuwiki/" target="_blank">Hilfe</a>
+                <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=stgvt:allgemeines" target="_blank">Hilfe</a>
             </div>
             <div>
 		        <a href="http://www.fhcomplete.org" target="_blank">fhcomplete.org</a>
