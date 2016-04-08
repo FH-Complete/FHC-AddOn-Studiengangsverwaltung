@@ -82,7 +82,8 @@ angular.module('stgv2')
 							disabled: true,
 							iconCls: 'icon-save',
 							text: 'Speichern',
-							handler: function(){
+							handler: function()
+							{
 								if(editingId !== null)
 								{
 									$("#stplTreeGrid").treegrid('endEdit', editingId);
@@ -96,7 +97,8 @@ angular.module('stgv2')
 							disabled: true,
 							iconCls: 'glyphicon glyphicon-remove red',
 							text: 'Aus Studienplan entfernen',
-							handler: function(){
+							handler: function()
+							{
 								$("#deleteNode").linkbutton("disable");
 								ctrl.removeStudienplanLehrveranstaltung();
 							}
@@ -106,7 +108,8 @@ angular.module('stgv2')
 							disabled: true,
 							iconCls: 'icon-edit',
 							text: 'Attribute editieren',
-							handler: function(){
+							handler: function()
+							{
 								$("#saveChanges").linkbutton("enable");
 								if(editingId !== null)
 								{
@@ -160,7 +163,8 @@ angular.module('stgv2')
 					]],
 					onContextMenu: function(e ,row)
 					{
-						if (row && row.type != "sem" && ctrl.studienplan.status_kurzbz === "development") {
+						if (row && row.type != "sem" && ctrl.studienplan.status_kurzbz === "development")
+						{
 							e.preventDefault();
 							$(this).treegrid('select', row.id);
 							$('#stplTreeGridContextMenu').menu();
@@ -175,6 +179,7 @@ angular.module('stgv2')
 						if (data.erfolg)
 						{
                             return data.info;
+							/*
 							var tree = [];
 							$(data.info).each(function (i, v)
 							{
@@ -184,6 +189,7 @@ angular.module('stgv2')
 								}
 							});
 							return tree;
+							*/
 						}
 						else
 						{
@@ -313,23 +319,28 @@ angular.module('stgv2')
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded'
 								}
-							}).then(function success(response) {
-								if (response.data.erfolg)
+							}).then(
+								function success(response)
 								{
-									successService.setMessage("Daten erfolgreich geändert.");
-								}
-								else
-								{
-									for(var prop in changes)
+									if (response.data.erfolg)
 									{
-										row[prop] = !changes[prop];
+										successService.setMessage("Daten erfolgreich geändert.");
 									}
-									$("#stplTreeGrid").treegrid('refreshRow', row.id);
+									else
+									{
+										for(var prop in changes)
+										{
+											row[prop] = !changes[prop];
+										}
+										$("#stplTreeGrid").treegrid('refreshRow', row.id);
+										errorService.setError(getErrorMsg(response));
+									}
+								},
+								function error(response)
+								{
 									errorService.setError(getErrorMsg(response));
 								}
-							}, function error(response) {
-								errorService.setError(getErrorMsg(response));
-							});
+							);
 						}
 
 						if((changes.benotung !== undefined)
@@ -484,8 +495,11 @@ angular.module('stgv2')
 									//$("#stplTreeGrid").treegrid("reload",{nodeId: target.id});
 									//TODO recalculate ects sums
 									var parentId = source._parentId;
-									target.ects += parseFloat(source.ects);
+									target.ects = parseFloat(target.ects) + parseFloat(source.ects);
 									$("#stplTreeGrid").treegrid("refresh",target.id);
+
+									// Reload Subtree to ensure all Entrys are visible
+									$('#stplTreeGrid').treegrid('reload', parentId);
 								}
 								else
 								{
@@ -511,23 +525,39 @@ angular.module('stgv2')
 								}
 							}).then(function success(response) {
 								changeTreeIcons("stplTree", "stplTreeGrid", target);
+
 								if (response.data.erfolg)
 								{
-									//node-id an neue DB-ID anpassen
-									var root = $('#stplTreeGrid').treegrid('getRoot');
-									var idView1 = $('tr[node-id='+root.id+']:eq(0)').attr("id").replace(root.id,'');
-									var idView2 = $('tr[node-id='+root.id+']:eq(1)').attr("id").replace(root.id,'');
-									$($('#stplTreeGrid').treegrid('find', source.id)).attr('node-id', response.data.info[0]);
-									$('#'+idView1 + source.id).attr('node-id', response.data.info[0]);
-									$('#'+idView1 + source.id).attr('id',idView1 + response.data.info[0]);
-									$('#'+idView2 + source.id).attr('node-id', response.data.info[0]);
-									$('#'+idView2 + source.id).attr('id',idView2 + response.data.info[0]);
-									var  row = $('#stplTreeGrid').treegrid('find', source.id);
+									try
+									{
+										//node-id an neue DB-ID anpassen
+										var root = $('#stplTreeGrid').treegrid('getRoot');
+										var idView1 = $('tr[node-id='+root.id+']:eq(0)').attr("id").replace(root.id,'');
+										//var idView2 = $('tr[node-id='+root.id+']:eq(1)').attr("id").replace(root.id,'');
+										$($('#stplTreeGrid').treegrid('find', source.id)).attr('node-id', response.data.info[0]);
+										$('#'+idView1 + source.id).attr('node-id', response.data.info[0]);
+										$('#'+idView1 + source.id).attr('id',idView1 + response.data.info[0]);
+										//$('#'+idView2 + source.id).attr('node-id', response.data.info[0]);
+										//$('#'+idView2 + source.id).attr('id',idView2 + response.data.info[0]);
+										var  row = $('#stplTreeGrid').treegrid('find', source.id);
 
-									row.id = response.data.info[0];
-									row.sem = saveData.data.semester;
-									//needed to detect later if node is moved in tree or dropped from another tree
-									row.moving = true;
+										row.id = response.data.info[0];
+										row.sem = saveData.data.semester;
+										//needed to detect later if node is moved in tree or dropped from another tree
+										row.moving = true;
+
+										// Reload LV Tree - If we dont reload you cant drag the same lv a second time
+										$('#lvTreeGrid').treegrid('reload');
+
+										// Reload Subtree to ensure all Data is available.
+										// otherwise editing afterwards will fail
+										var parentNode = $('#stplTreeGrid').treegrid('getParent', response.data.info[0]);
+										$('#stplTreeGrid').treegrid('reload', parentNode);
+									}
+									catch(e)
+									{
+										console.log("Error",e);
+									}
 								}
 								else
 								{
@@ -637,7 +667,7 @@ angular.module('stgv2')
 			$("#lvTreeGrid").treegrid({
 				url: '',
 				method: 'get',
-				rownumbers: true,
+				rownumbers: false,
 				idField: 'id',
 				treeField: 'bezeichnung',
 				fit: true,
@@ -674,7 +704,9 @@ angular.module('stgv2')
 					method: 'GET',
 					idField: 'id',
 					treeField: 'bezeichnung',
-					rownumbers: true,
+					rownumbers: false,
+					skipAutoSizeColumns: true,
+					autoRowHeight: false,
 					multiSort: true,
 					columns: [[
 						{field: 'bezeichnung', align: 'left', width:'250', sortable: true,title:'Lehrveranstaltung'},

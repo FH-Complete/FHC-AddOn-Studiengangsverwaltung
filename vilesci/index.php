@@ -35,7 +35,7 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 	<title>Studiengangsverwaltung 2</title>
 	<!--<link rel="stylesheet" href="../../../skin/fhcomplete.css" type="text/css">-->
 	<!--<link rel="stylesheet" href="../../../skin/vilesci.css" type="text/css">-->
-	
+
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="./css/bootstrap-3.3.5/dist/css/bootstrap.css">
 	<link rel="stylesheet" href="./css/bootstrap-3.3.5/dist/css/bootstrap-theme.css">
@@ -44,18 +44,18 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 	<link rel="stylesheet" type="text/css" href="./js/jquery-easyui-1.4.4/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="./js/jquery-easyui-1.4.4/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="./js/jquery-easyui-1.4.4/themes/color.css">
-	
+
 	<!-- JQuery UI CSS -->
 	<link href="./js/jquery-ui-1.11.4.custom/jquery-ui.css" rel="stylesheet" type="text/css">
 	<link href="js/jquery-ui-1.11.4.custom/jquery-ui.theme.css" rel="stylesheet" type="text/css"/>
 	<link href="js/jquery-ui-1.11.4.custom/jquery-ui.structure.css" rel="stylesheet" type="text/css"/>
-	
+
 	<!-- App CSS -->
 	<link rel="stylesheet" type="text/css" href="./css/style.css">
 
 	<!-- jQuery -->
 	<script type="text/javascript" src="./js/jquery-1.11.3.js"></script>
-	
+
 	<!-- JQuery UI -->
 	<script type="text/javascript" src="./js/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
 
@@ -67,7 +67,7 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 
 	<!-- Bootstrap JS -->
 	<script src="./css/bootstrap-3.3.5/dist/js/bootstrap.js"></script>
-	
+
 	<!-- JavaScript Helper-->
 	<script type="text/javascript" src="./js/functions.js"></script>
 
@@ -80,7 +80,7 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 	<script type="text/javascript" src="./js/angular/ui.bootstrap/ui-bootstrap-0.14.2.min.js"></script>
 	<script type="text/javascript" src="./js/angular/app.js"></script>
 	<script type="text/javascript" src="./js/angular/states.js"></script>
-	
+
 	<!-- Services -->
 	<script src="js/angular/services/AenderungsvarianteService.js" type="text/javascript"></script>
 	<script src="js/angular/services/AkadgradService.js" type="text/javascript"></script>
@@ -96,14 +96,14 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 	<script type="text/javascript" src="./js/angular/services/errorService.js"></script>
 	<script src="js/angular/services/storeService.js" type="text/javascript"></script>
 	<script type="text/javascript" src="./js/angular/services/successService.js"></script>
-	
+
 	<!-- Angular Storage -->
 	<script src="js/angular/angular-storage.js" type="text/javascript"></script>
-	
+
 	<!-- Other Controller -->
 	<script type="text/javascript" src="./js/angular/controllers/error-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/success-controller.js"></script>
-	
+
 	<!-- Angular Studiengang Controllers -->
 	<script type="text/javascript" src="./js/angular/controllers/studiengang/stg-main-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studiengang/stg-stammdaten-controller.js"></script>
@@ -124,7 +124,7 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 	<script src="js/angular/controllers/studienordnung/sto-diff-controller.js" type="text/javascript"></script>
 	<script src="js/angular/controllers/studienordnung/sto-zgv-controller.js" type="text/javascript"></script>
 	<script src="js/angular/controllers/studienordnung/sto-aufnahmeverfahren-controller.js" type="text/javascript"></script>
-	
+
 	<!-- Angular Studienplan Controllers -->
 	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-neu-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studienplan/stpl-metadaten-controller.js"></script>
@@ -135,10 +135,10 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 	<script src="js/angular/controllers/studienplan/stpl-auslandssemester-controller.js" type="text/javascript"></script>
 	<script src="js/angular/controllers/studienplan/stpl-berufspraktikum-controller.js" type="text/javascript"></script>
 	<script src="js/angular/controllers/studienplan/stpl-studienjahr-controller.js" type="text/javascript"></script>
-	
+
 	<!-- Angular State Controllers -->
 	<script type="text/javascript" src="./js/angular/controllers/state/state-main-controller.js"></script>
-	
+
 	<!-- Directives -->
 	<script type="text/javascript" src="./js/angular/directives/error-directive.js"></script>
 	<script type="text/javascript" src="./js/angular/directives/numericOnly-directive.js"></script>
@@ -148,23 +148,23 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 	<script src="js/angular/directives/integerOnly-directive.js" type="text/javascript"></script>
 	<script src="js/angular/directives/charactersOnly-directive.js" type="text/javascript"></script>
 	<script src="js/angular/directives/onNgRepeatFinished-directive.js" type="text/javascript"></script>
-	
+
 	<!-- Colorpicker -->
 	<link rel="stylesheet" href="../../../skin/colorpicker.css" type="text/css"/>
 	<script type="text/javascript" src="../../../include/js/colorpicker.js"></script>
-	
+
 	<!-- Timepicker -->
 	<link rel="stylesheet" href="../../../skin/jquery.ui.timepicker.css" type="text/css"/>
 	<script type="text/javascript" src="../../../include/js/jquery.ui.timepicker.js"></script>
-	
+
 	<!-- Angular File Upload -->
 	<script src="js/angular/angular-file-upload/dist/angular-file-upload.js" type="text/javascript"></script>
-	
+
 	<script src="js/jquery.hotkeys.js" type="text/javascript"></script>
 	<script src="js/bootstrap-wysiwyg-2.0/src/bootstrap-wysiwyg.js" type="text/javascript"></script>
 	<link href="js/bootstrap-wysiwyg-2.0/css/style.css" rel="stylesheet" type="text/css"/>
 	<link href="../vendor/fortawesome/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
-	
+
     </head>
     <body ng-controller="AppCtrl as appCtrl">
 	<div id='layoutWrapper' class="easyui-layout">
@@ -201,9 +201,13 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 		<div id="mm4" style="width:100px;">
 		    <div ng-click='menuCtrl.diff()'>Diff</div>
 		</div>
-		<div id="mm5" class="menu-content" style="background:#f0f0f0;padding:10px;text-align:left">
-		    <img src="http://fhcomplete.org/img/FHC-LogoOhneText.svg" style="width:38px;height:38px">
-		    <p style="font-size:14px;color:#444;"><a href="http://www.fhcomplete.org" target="_blank">fhcomplete.org</a></p>
+		<div id="mm5"  >
+		    <div>
+                <a href="http://fhcomplete.technikum-wien.at/dokuwiki/" target="_blank">Hilfe</a>
+            </div>
+            <div>
+		        <a href="http://www.fhcomplete.org" target="_blank">fhcomplete.org</a>
+            </div>
 		</div>
 	    </div>
 	    <div id="west" data-options="region:'west', split: true, maxWidth: 400" ng-controller="TreeCtrl">
@@ -221,7 +225,7 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 		    <div id="centerNorth" data-options="region:'north', split:true, height: 200" border="false" ng-controller="TreeGridCtrl as gridCtrl" >
 			<!--<div id="treeGridWrapper" >-->
 			<table id="treeGrid" class="easyui-treegrid">
-			    
+
 			</table>
 			<!--</div>-->
 		    </div>
