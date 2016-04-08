@@ -76,45 +76,69 @@ angular.module('stgv2')
 					skipAutoSizeColumns: true,
 					autoRowHeight: false,
 					fit: true,
-					toolbar: [{
-						id: 'saveChanges',
-						disabled: true,
-						iconCls: 'icon-save',
-						text: 'Speichern',
-						handler: function(){
-							if(editingId !== null)
+					toolbar: [
+						{
+							id: 'saveChanges',
+							disabled: true,
+							iconCls: 'icon-save',
+							text: 'Speichern',
+							handler: function(){
+								if(editingId !== null)
+								{
+									$("#stplTreeGrid").treegrid('endEdit', editingId);
+									$("#saveChanges").linkbutton("disable");
+									$("#editNode").linkbutton("disable");
+								}
+							}
+						},
+						{
+							id: 'deleteNode',
+							disabled: true,
+							iconCls: 'glyphicon glyphicon-remove red',
+							text: 'Aus Studienplan entfernen',
+							handler: function(){
+								$("#deleteNode").linkbutton("disable");
+								ctrl.removeStudienplanLehrveranstaltung();
+							}
+						},
+						{
+							id: 'editNode',
+							disabled: true,
+							iconCls: 'icon-edit',
+							text: 'Attribute editieren',
+							handler: function(){
+								$("#saveChanges").linkbutton("enable");
+								if(editingId !== null)
+								{
+									$("#stplTreeGrid").treegrid('endEdit', editingId);
+									editingId = null;
+								}
+								var row = $("#stplTreeGrid").treegrid('getSelected');
+								editingId = row.id;
+								$("#stplTreeGrid").treegrid('beginEdit', editingId);
+							}
+						},
+						{
+							id: 'ReloadTree',
+							disabled: false,
+							iconCls: 'icon-reload',
+							text: 'Aktualisieren',
+							handler: function()
 							{
-								$("#stplTreeGrid").treegrid('endEdit', editingId);
-								$("#saveChanges").linkbutton("disable");
-								$("#editNode").linkbutton("disable");
+								$("#stplTreeGrid").treegrid('reload');
+							}
+						},
+						{
+							id: 'ExpandNodes',
+							disabled: false,
+							iconCls: 'icon-edit',
+							text: 'Alle aufklappen',
+							handler: function()
+							{
+								$("#stplTreeGrid").treegrid('expandAll');
 							}
 						}
-					},{
-						id: 'deleteNode',
-						disabled: true,
-						iconCls: 'glyphicon glyphicon-remove red',
-						text: 'LV löschen',
-						handler: function(){
-							$("#deleteNode").linkbutton("disable");
-							ctrl.removeStudienplanLehrveranstaltung();
-						}
-					},{
-						id: 'editNode',
-						disabled: true,
-						iconCls: 'icon-edit',
-						text: 'LV editieren',
-						handler: function(){
-							$("#saveChanges").linkbutton("enable");
-							if(editingId !== null)
-							{
-								$("#stplTreeGrid").treegrid('endEdit', editingId);
-								editingId = null;
-							}
-							var row = $("#stplTreeGrid").treegrid('getSelected');
-							editingId = row.id;
-							$("#stplTreeGrid").treegrid('beginEdit', editingId);
-						}
-					}],
+					],
 					columns: [[
 						{field: 'bezeichnung', width:'300', title:'Lehrveranstaltung'},
 						{field: 'ects',align: 'right', title:'ECTS'},
@@ -181,7 +205,6 @@ angular.module('stgv2')
 					},
 					onClickRow: function (row)
 					{
-						console.log(row);
 						if (row.type != "sem")
 						{
 							if(ctrl.studienplan.status_kurzbz === 'development')
@@ -221,15 +244,13 @@ angular.module('stgv2')
 							lehre.editor = {type: "checkbox"};
 							pflicht.editor = {type: "checkbox"};
 							genehmigung.editor = {type: "checkbox"};
+							benotung.editor = {type: "checkbox"};
 						}
 						else
 						{
 							var parent = $(this).treegrid('getParent',row.id);
-							if(parent.type !== "modul")
-							{
-								benotung.editor = {type: "checkbox"};
-							}
-//							curriculum.editor = {type: "checkbox"};
+							benotung.editor = {type: "checkbox"};
+							//curriculum.editor = {type: "checkbox"};
 							exportCol.editor = {type: "checkbox"};
 							zeugnis.editor = {type: "checkbox"};
 							lvinfo.editor = {type: "checkbox"};
