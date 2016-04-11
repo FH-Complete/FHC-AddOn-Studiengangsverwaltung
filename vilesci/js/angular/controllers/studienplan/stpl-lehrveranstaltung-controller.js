@@ -10,7 +10,7 @@ angular.module('stgv2')
 			};
 			ctrl.studienplan = "";
 			ctrl.oeList = [{bezeichnung: "Keine Auswahl", oe_kurzbz: "alle"}];
-			ctrl.oe_kurzbz = "";
+			ctrl.oe_kurzbz = "alle";
 			ctrl.lehrtypList = "";
 			ctrl.lehrtyp_kurzbz = "lv";
 			ctrl.semester = "null";

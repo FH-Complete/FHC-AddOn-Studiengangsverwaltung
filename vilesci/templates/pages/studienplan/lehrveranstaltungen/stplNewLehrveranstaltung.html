@@ -38,7 +38,7 @@
 						<input strip-html type="text" class="form-control input-sm" name="bezeichnung" ng-model="newLvCtrl.data.bezeichnung" required/>
 					</div>
 				</div>
-                                <div class="col-sm-6">
+                <div class="col-sm-6">
 					<div class="form-group">
 						<label for="bezeichnung_englisch">Bezeichnung Englisch</label>
 						<input strip-html type="text" class="form-control input-sm"  name="bezeichnung_englisch" ng-model="newLvCtrl.data.bezeichnung_english"/>
@@ -72,7 +72,7 @@
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-3">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
 						<label for="sprache">Sprache*</label>
 						<select class="form-control input-sm" name="sprache" ng-model="newLvCtrl.data.sprache" required>
@@ -101,7 +101,7 @@
 					<div class="form-group">
 						<label for="sws">SWS</label>
 						<div class="input-group">
-							<input integer-only="positive" type="text" class="form-control input-sm" name="sws" ng-model="newLvCtrl.data.sws"/>
+							<input numeric-only="positive" style="min-width: 40px" type="text" class="form-control input-sm" name="sws" ng-model="newLvCtrl.data.sws"/>
 							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Semesterwochenstunden"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
@@ -110,7 +110,7 @@
 					<div class="form-group">
 						<label for="lvs">LVS</label>
 						<div class="input-group">
-							<input integer-only="positive" type="text" class="form-control input-sm"  name="lvs" ng-model="newLvCtrl.data.lvs"/>
+							<input integer-only="positive" style="min-width: 40px" type="text" class="form-control input-sm"  name="lvs" ng-model="newLvCtrl.data.lvs"/>
 							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Lehrveranstaltungsstunden (LVS) Die Summe an Stunden welche Studierende konsumieren. Im Gegensatz zu den ALVS handelt es sich hier um die Sicht eines einzelnen Studierenden. (Nicht eingerechnet werden zusätzlich zu leistende Stunden um die entsprechenden ECTS-Punkte zu erhalten, also unbetreute Stunden.)"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
@@ -119,16 +119,16 @@
 					<div class="form-group">
 						<label for="alvs">ALVS</label>
 						<div class="input-group">
-							<input integer-only="positive" type="text" class="form-control input-sm"  name="alvs" ng-model="newLvCtrl.data.alvs"/>
+							<input integer-only="positive" style="min-width: 40px" type="text" class="form-control input-sm"  name="alvs" ng-model="newLvCtrl.data.alvs"/>
 							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Angebotene Lehrveranstaltungsstunden (ALVS) Die Summe der Stunden einer Lehrveranstaltung, welche aus Sicht des Studiengangs geleistet bzw. angeboten werden. Durch Gruppenteilung erhöhen sich die ALVS gegenüber der LVS."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
 				</div>
 				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
 					<div class="form-group">
-						<label for="lvps">LVPLS (Planstunden)</label>
+						<label for="lvps">LVPLS</label>
 						<div class="input-group">
-							<input integer-only="positive" type="text" class="form-control input-sm"  name="lvps" ng-model="newLvCtrl.data.lvps"/>
+							<input integer-only="positive" style="min-width: 40px" type="text" class="form-control input-sm"  name="lvps" ng-model="newLvCtrl.data.lvps"/>
 							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="LV-Plan Stunden (LVPLS) Summe der Stunden welche tatsächlich im LV-Plan eingetragen werden. Studierende sind in diesen Stunden an Zeit und Ort gebunden."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
@@ -137,7 +137,7 @@
 					<div class="form-group">
 						<label for="las">LAS</label>
 						<div class="input-group">
-							<input integer-only="positive" type="text" class="form-control input-sm"  name="las" ng-model="newLvCtrl.data.las"/>
+							<input integer-only="positive" style="min-width: 40px" type="text" class="form-control input-sm"  name="las" ng-model="newLvCtrl.data.las"/>
 							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Lehrauftragstunden (bisher: Semesterstunden) Summe der Stunden für welche ein Lehrauftrag angelegt wird."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
@@ -148,12 +148,14 @@
 						<input integer-only="positive" type="text" class="form-control input-sm"  name="semesterstunden" ng-model="newLvCtrl.data.semesterstunden"/>
 					</div>
 				</div>-->
+				<!--
 				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
 					<div class="form-group">
 						<label for="semester_alternativ">Sem alternativ</label>
 						<input integer-only="positive" type="text" class="form-control input-sm"  name="semester_alternativ" ng-model="newLvCtrl.data.semester_alternativ"/>
 					</div>
 				</div>
+			-->
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label for="sort">Sort</label>
@@ -227,7 +229,7 @@
 				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
 					<div class="form-group">
 						<label for="lvnr">LVNR</label>
-						<input integer-only="positive" type="text" class="form-control input-sm"  name="lvnr" ng-model="newLvCtrl.data.lvnr"/>
+						<input type="text" class="form-control input-sm"  name="lvnr" ng-model="newLvCtrl.data.lvnr"/>
 					</div>
 				</div>
 				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
@@ -266,6 +268,7 @@
 				</div>
 			</div>-->
 			<div class="row">
+				<!--
 				<div class="col-sm-3">
 					<div class="form-group">
 						<label for="farbe">Farbe</label>
@@ -275,17 +278,20 @@
 						</div>
 					</div>
 				</div>
+			-->
+				<!--
 				<div class="col-sm-3">
 					<div class="form-group">
 						<label for="anzahlsemester">Anzahl Semester</label>
 						<input integer-only="positive" type="text" class="form-control input-sm"  name="anzahlsemester" ng-model="newLvCtrl.data.anzahlsemester"/>
 					</div>
 				</div>
+			-->
 				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
 					<div class="form-group">
-						<label for="semesterwochen">SW</label>
+						<label for="semesterwochen">Semesterwochen</label>
 						<div class="input-group">
-							<input integer-only="positive" type="text" class="form-control input-sm"  name="semesterwochen" ng-model="newLvCtrl.data.semesterwochen"/>
+							<input integer-only="positive" style="min-width: 40px" type="text" class="form-control input-sm"  name="semesterwochen" ng-model="newLvCtrl.data.semesterwochen"/>
 							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Semesterwochen."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
