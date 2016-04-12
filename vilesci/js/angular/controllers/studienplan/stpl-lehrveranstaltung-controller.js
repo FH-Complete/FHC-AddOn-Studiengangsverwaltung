@@ -167,11 +167,20 @@ angular.module('stgv2')
 						{
 							e.preventDefault();
 							$(this).treegrid('select', row.id);
-							$('#stplTreeGridContextMenu').menu();
+
+							//$compile($('#stplTreeGridContextMenu').contents())($scope);
+
+
 							$('#stplTreeGridContextMenu').menu('show', {
 								left: e.pageX,
 								top: e.pageY
 							});
+						}
+						else
+						{
+							// Kein Kontextmenue anzeigen wenn nicht erlaubt
+							// Sonst wird das Kontextmenue des Browsers angezeigt
+							$('#stplTreeGridContextMenu').menu('destroy');
 						}
 					},
 					loadFilter: function (data)
@@ -208,6 +217,35 @@ angular.module('stgv2')
 						$(this).treegrid("enableDnd", row ? row.id : null);
 						//workaround to change tree icons
 						changeTreeIcons("stplTree", "stplTreeGrid");
+
+						$('#stplTreeGridContextMenu').empty();
+
+						$('#stplTreeGridContextMenu').menu();
+
+						$('#stplTreeGridContextMenu').menu('appendItem',
+						{
+							text: 'Durch Kopie ersetzen',
+							iconCls:'icon-copy',
+							onclick: function () {
+								ctrl.copyAndReplaceLehrveranstaltung();
+							}
+						});
+						$('#stplTreeGridContextMenu').menu('appendItem',
+						{
+							text: 'Editieren',
+							iconCls:'icon-edit',
+							onclick: function () {
+								ctrl.editLehrveranstaltung();
+							}
+						});
+						$('#stplTreeGridContextMenu').menu('appendItem',
+						{
+							text: 'Aus Studienplan entfernen',
+							iconCls:'glyphicon glyphicon-remove red',
+							onclick: function () {
+								ctrl.removeStudienplanLehrveranstaltung();
+							}
+						});
 					},
 					onClickRow: function (row)
 					{

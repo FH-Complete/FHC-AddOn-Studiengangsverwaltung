@@ -6,11 +6,11 @@ angular.module("stgv2")
 		.controller("AppCtrl", function ($state, errorService, $http, StudiengangService, StoreService)
 		{
 			var storeList = ["studiengangList", "standortList", "orgformList", "aenderungsvarianteList","akadgradList","studiensemesterList","studienordnungStatusList","studienplan", "studienordnung"];
-			
+
 			angular.forEach(storeList, function(v, i){
 				StoreService.remove(v);
 			});
-			
+
 			$('#west_tree').tree({
 				url: "./api/studiengang/studiengang.php",
 				method: "get",
@@ -136,7 +136,7 @@ angular.module("stgv2")
 			var ctrl = this;
 			ctrl.studienordnung_id = "";
 			ctrl.statusList = "";
-			
+
 			//loading SpracheList
 			StudienordnungStatusService.getStudienordnungStatusList().then(function(result){
 				ctrl.statusList = result;
@@ -189,7 +189,7 @@ angular.module("stgv2")
 //					ctrl.statusList = response.data.info;
 //					$compile($('#mm1').contents())($scope);
 //					$compile($('#mm2').contents())($scope);
-//					
+//
 //					var item = $('#mm2').menu('findItem', 'Löschen');
 //					$('#mm2').menu('appendItem',
 //					{
@@ -392,7 +392,7 @@ angular.module("stgv2")
 			{
 				$scope.selectedTab = tab;
 			};
-			
+
 			//set substate from url
 			var substate = $state.current.name.split(".");
 			if(substate.length === 2)
@@ -417,7 +417,7 @@ angular.module("stgv2")
 		})
 		.controller("studienplanTabCtrl", function ($scope, $state, $filter) {
 			//TODO tabs from config
-	
+
 			$scope.tabs = [
 				{label: 'Metadaten', link: '.metadaten'},
 				{label: 'Eckdaten', link: '.eckdaten'},
@@ -447,7 +447,7 @@ angular.module("stgv2")
 					$('#centerLayout').layout('collapse', 'north');
 				}
 			};
-			
+
 			//set substate from url
 			var substate = $state.current.name.split(".");
 			if(substate.length === 2)
