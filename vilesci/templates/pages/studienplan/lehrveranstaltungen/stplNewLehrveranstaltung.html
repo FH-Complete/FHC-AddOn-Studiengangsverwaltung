@@ -3,7 +3,7 @@
 		<form id="stplMetadaten" name="form" novalidate>
 			<div class="row">
 				<div class="col-sm-3">
-					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
+					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.lehrtyp.$error.required)}">
 						<label for="lehrtyp">Lehrtyp*</label>
 						<select class="form-control input-sm" name="lehrtyp" ng-model="newLvCtrl.data.lehrtyp_kurzbz" ng-change="newLvCtrl.loadLehrform()" required>
 							<option ng-repeat="lehrtyp in newLvCtrl.lehrtypList" value="{{lehrtyp.lehrtyp_kurzbz}}">{{lehrtyp.bezeichnung}}</option>
@@ -11,7 +11,7 @@
 					</div>
 				</div>
 				<div class="col-sm-3">
-					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
+					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.lehrform.$error.required)}">
 						<label for="lehrvorm">Lehrform*</label>
 						<select class="form-control input-sm" name="lehrform" ng-model="newLvCtrl.data.lehrform_kurzbz" ng-change="newLvCtrl.setLehrformDependencies()" required>
 							<option ng-repeat="lehrform in newLvCtrl.lehrformList" value="{{lehrform.lehrform_kurzbz}}">{{lehrform.bezeichnung}}</option>
@@ -33,7 +33,7 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-6">
-					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
+					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.bezeichnung.$error.required)}">
 						<label for="bezeichnung">Bezeichnung*</label>
 						<input strip-html type="text" class="form-control input-sm" name="bezeichnung" ng-model="newLvCtrl.data.bezeichnung" required/>
 					</div>
@@ -47,7 +47,7 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-5">
-					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
+					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.oe.$error.required)}">
 						<label for="oe">Organistaionseinheit*</label>
 						<select class="form-control input-sm" name="oe" ng-model="newLvCtrl.data.oe_kurzbz" required>
 							<option ng-repeat="oe in newLvCtrl.oeList" value="{{oe.oe_kurzbz}}">{{oe.organisationseinheittyp_kurzbz}} - {{oe.bezeichnung}}</option>
@@ -55,7 +55,7 @@
 					</div>
 				</div>
 				<div class="col-sm-4">
-					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
+					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.orgform.$error.required)}">
 						<label for="orgform">Organisationsform*</label>
 						<select class="form-control input-sm" name="orgform" ng-model="newLvCtrl.data.orgform_kurzbz" required>
 							<option ng-repeat="orgform in newLvCtrl.orgformList" value="{{orgform.orgform_kurzbz}}">{{orgform.bezeichnung}}</option>
@@ -65,7 +65,7 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-4">
-					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
+					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.studiengang.$error.required)}">
 						<label for="studiengang">Studiengang*</label>
 						<select class="form-control input-sm" name="studiengang" ng-model="newLvCtrl.data.studiengang_kz" required>
 							<option ng-repeat="studiengang in newLvCtrl.studiengangList" value="{{studiengang.studiengang_kz}}">{{studiengang.typ | uppercase}} - {{studiengang.bezeichnung}}</option>
@@ -73,7 +73,7 @@
 					</div>
 				</div>
 				<div class="col-sm-3">
-					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
+					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.sprache.$error.required)}">
 						<label for="sprache">Sprache*</label>
 						<select class="form-control input-sm" name="sprache" ng-model="newLvCtrl.data.sprache" required>
 							<option ng-repeat="sprache in newLvCtrl.spracheList">{{sprache.sprache}}</option>
