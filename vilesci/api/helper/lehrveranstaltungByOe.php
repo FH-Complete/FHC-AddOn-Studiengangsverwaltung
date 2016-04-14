@@ -30,23 +30,23 @@ if($sortString == " ")
 
 if(is_null($oe_kurzbz))
 {
-    returnAJAX(false, "Variable oe_kurzbz nicht gesetzt");    
+    returnAJAX(false, "Variable oe_kurzbz nicht gesetzt");
 }
 elseif(is_null($lehrtyp_kurzbz))
 {
-    returnAJAX(false, "Variable lehrtyp_kurzbz nicht gesetzt");   
+    returnAJAX(false, "Variable lehrtyp_kurzbz nicht gesetzt");
 }
 elseif(is_null($semester))
 {
-    returnAJAX(false, "Variable semester nicht gesetzt");   
+    returnAJAX(false, "Variable semester nicht gesetzt");
 }
 elseif(is_null($studiengang_kz))
 {
-    returnAJAX(false, "Variable studiengang_kz nicht gesetzt");   
+    returnAJAX(false, "Variable studiengang_kz nicht gesetzt");
 }
 elseif($oe_kurzbz === false || $lehrtyp_kurzbz === false || $semester === false || $studiengang_kz == false)
 {
-    returnAJAX(false, "Fehler beim lesen der GET Variablen");    
+    returnAJAX(false, "Fehler beim lesen der GET Variablen");
 }
 
 if($semester == "null")
@@ -59,7 +59,7 @@ $lv_array = array();
 
 if(($oe_kurzbz == "alle") && ($studiengang_kz != "alle"))
 {
-    if(!$lehrveranstaltung->load_lva($studiengang_kz, null, null, null, true, $sortString, null, $lehrtyp_kurzbz))
+    if(!$lehrveranstaltung->load_lva($studiengang_kz, $semester, null, null, true, $sortString, null, $lehrtyp_kurzbz))
     {
 	returnAJAX(false, $lehrveranstaltung->errormsg);
     }
@@ -73,7 +73,7 @@ elseif (($oe_kurzbz != "alle") && ($studiengang_kz == "alle"))
 }
 else
 {
-    if(!$lehrveranstaltung->load_lva($studiengang_kz, null, null, null, true, $sortString, $oe_kurzbz, $lehrtyp_kurzbz))
+    if(!$lehrveranstaltung->load_lva($studiengang_kz, $semester, null, null, true, $sortString, $oe_kurzbz, $lehrtyp_kurzbz))
     {
 	returnAJAX(false, $lehrveranstaltung->errormsg);
     }
