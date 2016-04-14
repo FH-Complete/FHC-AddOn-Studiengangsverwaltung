@@ -202,11 +202,14 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 		    <div ng-click='menuCtrl.diff()'>Diff</div>
 		</div>
 		<div id="mm5"  >
-		    <div>
+            <div>
                 <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=stgvt:allgemeines" target="_blank">Hilfe</a>
             </div>
             <div>
-		        <a href="http://www.fhcomplete.org" target="_blank">fhcomplete.org</a>
+                <a href="https://signavio.technikum-wien.at/p/portal#/model/eceaf658462b4c4ca733d3987ebc8468" target="_blank">Signavio</a>
+            </div>
+            <div>
+		        <a href="mailto:fhcomplete@technikum-wien.at" target="_blank">Support: fhcomplete@technium-wien.at</a>
             </div>
 		</div>
 	    </div>
