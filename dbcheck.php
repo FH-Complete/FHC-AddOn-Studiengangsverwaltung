@@ -672,7 +672,7 @@ if($result = @$db->db_query("SELECT 1 FROM lehre.tbl_lehrform WHERE lehrform_kur
 {
     if($db->db_num_rows($result)==0)
     {
-	$qry = "INSERT INTO lehre.tbl_lehrform(lehrform_kurzbz, bezeichnung, verplanen, bezeichnung_kurz, bezeichnung_lang) VALUES ('iMod','integratives Modul',true,'{IMOD,IMOD}','{integratives Modul,integratives Modul}')"
+	$qry = "INSERT INTO lehre.tbl_lehrform(lehrform_kurzbz, bezeichnung, verplanen, bezeichnung_kurz, bezeichnung_lang) VALUES ('iMod','integratives Modul',true,'{IMOD,IMOD}','{integratives Modul,integratives Modul}');"
                 . "INSERT INTO addon.tbl_stgv_lehrtyp_lehrform(lehrtyp_kurzbz, lehrform_kurzbz) VALUES ('modul','iMod');";
 
 	if (!$db->db_query($qry))
