@@ -497,8 +497,16 @@ angular.module('stgv2')
 					onDrop: function (target, source, point)
 					{
 						var data = {};
-						data.semester = target.sem;
-						source.stpllv_semester = target.sem;
+						if(typeof target.sem =='undefined')
+						{
+							data.semester = target.stpllv_semester;
+							source.stpllv_semester = target.stpllv_semester;
+						}
+						else
+						{
+							data.semester = target.sem;
+							source.stpllv_semester = target.sem;
+						}
 						if(target.type != "sem")
 						{
 							data.studienplan_lehrveranstaltung_id_parent = target.id;
