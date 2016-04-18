@@ -86,6 +86,7 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 	<script src="js/angular/services/AkadgradService.js" type="text/javascript"></script>
 	<script src="js/angular/services/OrgformService.js" type="text/javascript"></script>
 	<script src="js/angular/services/OrtService.js" type="text/javascript"></script>
+    <script src="js/angular/services/LehrveranstaltungService.js" type="text/javascript"></script>
 	<script src="js/angular/services/SpracheService.js" type="text/javascript"></script>
 	<script src="js/angular/services/StandortService.js" type="text/javascript"></script>
 	<script src="js/angular/services/StudiengangService.js" type="text/javascript"></script>

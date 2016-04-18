@@ -39,6 +39,7 @@ $data = (Object) $data["data"];
 
 $lehrveranstaltung = mapDataToLehrveranstaltung($data);
 
+/*
 $studienplan = new StudienplanAddonStgv();
 $studienplan->getStudienplanLehrveranstaltung($lehrveranstaltung->lehrveranstaltung_id);
 
@@ -55,6 +56,8 @@ if(count($studienplan->result) > 1)
 	$error = array("message"=>"Lehrveranstaltung ist in anderen Studienplänen vorhanden. Es konnten nicht alle Daten gepseichert werden.", "detail"=>$studienplanIds);
 	returnAJAX(false, $error);
 }
+*/
+
 
 if($lehrveranstaltung->save())
 {
@@ -70,7 +73,8 @@ function mapDataToLehrveranstaltung($data)
 {
 	$lv = new lehrveranstaltung($data->lehrveranstaltung_id);
 
-	if(isset($data->bezeichnung))
+	$gesperrt = $lv->isGesperrt($data->lehrveranstaltung_id);
+	if(!$gesperrt && isset($data->bezeichnung))
 	{
 		$lv->bezeichnung = $data->bezeichnung;
 		$lv->studiengang_kz = $data->studiengang_kz;
@@ -105,6 +109,22 @@ function mapDataToLehrveranstaltung($data)
 		$lv->farbe = $data->farbe;
 		$lv->sws = $data->sws;
 		$lv->lvs = $data->lvs;
+		$lv->alvs = $data->alvs;
+		$lv->lvps = $data->lvps;
+		$lv->las = $data->las;
+		$lv->benotung = parseBoolean($data->benotung);
+		$lv->lvinfo = parseBoolean($data->lvinfo);
+		$lv->lehrauftrag = parseBoolean($data->lehrauftrag);
+	}
+	elseif($gesperrt && isset($data->bezeichnung))
+	{
+		$lv->anmerkung = $data->anmerkung;
+		$lv->lehre = parseBoolean($data->lehre);
+		$lv->sort = $data->sort;
+		$lv->zeugnis = parseBoolean($data->zeugnis);
+		$lv->projektarbeit = parseBoolean($data->projektarbeit);
+		$lv->incoming = $data->incoming;
+		$lv->raumtyp_kurzbz = $data->raumtyp_kurzbz;
 		$lv->alvs = $data->alvs;
 		$lv->lvps = $data->lvps;
 		$lv->las = $data->las;

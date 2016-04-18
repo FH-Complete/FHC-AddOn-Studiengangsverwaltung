@@ -1,7 +1,7 @@
 angular.module('stgv2')
-		.controller('NewLehrveranstaltungCtrl', function ($scope, $http, errorService, StudiengangService, OrgformService, SpracheService) {
+		.controller('NewLehrveranstaltungCtrl', function ($scope, $http, errorService, StudiengangService, OrgformService, SpracheService, LehrveranstaltungService) {
 			var ctrl = this;
-			ctrl.data = new Lehrveranstaltung();
+			ctrl.data = new LehrveranstaltungService.getLVTemplate();
 			ctrl.studiengangList =[];
 			ctrl.orgformList = [{
 					orgform_kurzbz: null,
@@ -14,7 +14,7 @@ angular.module('stgv2')
 			ctrl.raumtypList = "";
 			ctrl.semesterList = [0,1,2,3,4,5,6,7,8,9];
 			ctrl.lvSuggestionList = "";
-			
+
 			$scope.$on("editLehrveranstaltung", function(event, data)
 			{
 				ctrl.data = data;
@@ -28,7 +28,7 @@ angular.module('stgv2')
 				}
 				ctrl.loadLehrform();
 			});
-			
+
 			ctrl.setLehrformDependencies = function()
 			{
 				switch(ctrl.data.lehrform_kurzbz)
@@ -49,35 +49,43 @@ angular.module('stgv2')
 						break;
 				}
 			};
-			
+
 			ctrl.setLehrtypDependencies = function()
 			{
 				if(ctrl.data.lehrtyp_kurzbz === "modul")
 				{
 					ctrl.data.zeugnis = false;
+					ctrl.data.lvinfo = false;
+					ctrl.data.benotung = false;
+					ctrl.data.lehrauftrag = false;
+					ctrl.data.lehre = false;
 					ctrl.loadOrganisationseinheitenList("Studiengang");
 				}
 				else
 				{
 					ctrl.data.zeugnis = true;
+					ctrl.data.lvinfo = true;
+					ctrl.data.benotung = true;
+					ctrl.data.lehrauftrag = true;
+					ctrl.data.lehre = true;
 					ctrl.loadOrganisationseinheitenList("Institut");
 				}
 			}
-			
+
 			//loading Studiengang list
 			StudiengangService.getStudiengangList().then(function(result){
 				ctrl.studiengangList = result;
 			},function(error){
 				errorService.setError(getErrorMsg(error));
 			});
-			
+
 			//loading orgform list
 			OrgformService.getOrgformList().then(function(result){
 				ctrl.orgformList = ctrl.orgformList.concat(result);
 			},function(error){
 				errorService.setError(getErrorMsg(error));
 			});
-			
+
 			//load lehrtypen
 			$http({
 				method: 'GET',
@@ -94,13 +102,13 @@ angular.module('stgv2')
 			}, function error(response) {
 				errorService.setError(getErrorMsg(response));
 			});
-			
+
 			//load organisationseinheiten
 			ctrl.loadOrganisationseinheitenList = function(oetyp_kurzbz)
 			{
 				if(oetyp_kurzbz === undefined)
 					oetyp_kurzbz = "Institut";
-				
+
 				$http({
 					method: 'GET',
 					url: './api/helper/organisationseinheitByTyp.php?oetyp_kurzbz='+oetyp_kurzbz
@@ -117,14 +125,14 @@ angular.module('stgv2')
 					errorService.setError(getErrorMsg(response));
 				});
 			}
-			
+
 			//loading spracheList
 			SpracheService.getSpracheList().then(function(result){
 				ctrl.spracheList = result;
 			},function(error){
 				errorService.setError(getErrorMsg(error));
 			});
-			
+
 			//loading raumtypList
 			$http({
 				method: 'GET',
@@ -141,19 +149,19 @@ angular.module('stgv2')
 			}, function error(response) {
 				errorService.setError(getErrorMsg(response));
 			});
-			
+
 			//enable tooltips
 			$(document).ready(function(){
 				$('[data-toggle="tooltip"]').tooltip();
 				$("#farbe").ColorPicker(
 				{
-					onSubmit: function(hsb, hex, rgb, el) 
+					onSubmit: function(hsb, hex, rgb, el)
 					{
 						$(el).val(hex);
 						$(el).ColorPickerHide();
 						$("#farbevorschau").attr("style","background-color: #"+hex+"; border: 1px solid #999999; cursor: default");
 					},
-					onBeforeShow: function () 
+					onBeforeShow: function ()
 					{
 						$(this).ColorPickerSetColor(this.value);
 					}
@@ -163,13 +171,13 @@ angular.module('stgv2')
 					$(this).ColorPickerSetColor(this.value);
 				});
 			});
-			
+
 			ctrl.updateColor = function()
 			{
 				var val = $("#farbe").val();
 				$("#farbevorschau").attr("style","background-color: #"+val+"; border: 1px solid #999999; cursor: default");
 			}
-			
+
 			ctrl.updateLehreverzeichnis = function()
 			{
 				var kurzbz = $('input[name="kurzbz"]').val();
@@ -186,7 +194,7 @@ angular.module('stgv2')
 				$("input[name=\'lehreverzeichnis\']").val(string);
 				ctrl.data.lehreverzeichnis = string;
 			};
-			
+
 			ctrl.loadSuggestion = function()
 			{
 				$scope.form.$setPristine();
@@ -220,7 +228,7 @@ angular.module('stgv2')
 					errorService.setError(getErrorMsg(response));
 				});
 			};
-			
+
 			ctrl.loadLehrform = function()
 			{
 				//loading lehrformList
@@ -239,16 +247,16 @@ angular.module('stgv2')
 				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
 				});
-				
+
 				ctrl.setLehrtypDependencies();
 			};
-			
+
 			//set predefined OE
 			ctrl.data.oe_kurzbz = $("#oe").val();
 			ctrl.data.lehrtyp_kurzbz = $("#lehrtyp").val();
 			ctrl.loadLehrform();
-			
-			
+
+
 			ctrl.saveLehrveranstaltung = function()
 			{
 				if($scope.form.$valid)
@@ -285,7 +293,7 @@ angular.module('stgv2')
 					$scope.form.$setPristine();
 				}
 			};
-			
+
 			ctrl.updateLehrveranstaltung = function()
 			{
 				if($scope.form.$valid)
@@ -324,47 +332,3 @@ angular.module('stgv2')
 				}
 			}
 		});
-		
-	function Lehrveranstaltung()
-	{
-		this.studiengang_kz = null;
-		this.bezeichnung = null;
-		this.kurzbz = null;
-		this.lehrform_kurzbz = null;
-		this.semester = 0;
-		this.ects = null;
-		this.semesterstunden = null;
-		this.anmerkung = null;
-		this.lehre = true;
-		this.lehreverzeichnis = null;
-		this.aktiv = true;
-		this.insertvon = null;
-		this.planfaktor = null;
-		this.planlektoren = null;
-		this.planpersonalkosten = null;
-		this.plankostenprolektor = null;
-		this.sort = null;
-		this.zeugnis = false;
-		this.projektarbeit = false;
-		this.sprache = null;
-		this.koordinator = null;
-		this.bezeichnung_english = null;
-		this.orgform_kurzbz = null;
-		this.incoming = null;
-		this.lehrtyp_kurzbz = null;
-		this.oe_kurzbz = null;
-		this.raumtyp_kurzbz = null;
-		this.anzahlsemester = null;
-		this.semesterwochen = null;
-		this.lvnr = null;
-		this.semester_alternativ = null;
-		this.farbe = null;
-		this.sws = null;
-		this.lvs = null;
-		this.alvs = null;
-		this.lvps = null;
-		this.las = null;
-		this.benotung = false;
-		this.lvinfo = false;
-		this.lehrauftrag = true;
-	}

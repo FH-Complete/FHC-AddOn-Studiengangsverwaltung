@@ -1,10 +1,27 @@
 <?php
-
+/* Copyright (C) 2016 fhcomplete.org
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+ *
+ * Authors: Stefan Puraner	<puraner@technikum-wien.at>
+ *          Andreas Oesterreicher <andreas.oesterreicher@technikum-wien.at>
+ */
 require_once('../../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../../include/lehrveranstaltung.class.php');
-
 require_once('../../../../include/studienplanAddonStgv.class.php');
 require_once('../../functions.php');
 
@@ -13,11 +30,11 @@ $parent_id = filter_input(INPUT_POST, "id");
 
 if(is_null($studienplan_id))
 {
-    returnAJAX(false, "Variable studienplan_id nicht gesetzt");    
+    returnAJAX(false, "Variable studienplan_id nicht gesetzt");
 }
 elseif(($studienplan_id == false))
 {
-    returnAJAX(false, "Fehler beim lesen der GET Variablen");    
+    returnAJAX(false, "Fehler beim lesen der GET Variablen");
 }
 
 $data = array();
@@ -63,6 +80,15 @@ else
                 $lv->parentId = $parent_id;
                 $lv->id = $lv->studienplan_lehrveranstaltung_id;
                 $lv->type = $lv->lehrtyp_kurzbz;
+
+                $studienplan = new StudienplanAddonStgv();
+                $studienplan->getStudienplanLehrveranstaltung($lv->lehrveranstaltung_id);
+                $lv->zugewieseneStudienplaene='';
+                foreach($studienplan->result as $row_stpl)
+                    $lv->zugewieseneStudienplaene.=$row_stpl->bezeichnung.' ';
+                $lv_obj = new lehrveranstaltung();
+                $lv->gesperrt = $lv_obj->isGesperrt($lv->lehrveranstaltung_id);
+
                 if($lehrveranstaltung->hasChildren($lv->studienplan_lehrveranstaltung_id))
                 {
                     $lv->state = "closed";
@@ -97,6 +123,15 @@ else
                 $lv->parentId = $lv->studienplan_lehrveranstaltung_id_parent;
                 $lv->id = $lv->studienplan_lehrveranstaltung_id;
                 $lv->type = $lv->lehrtyp_kurzbz;
+
+                $studienplan = new StudienplanAddonStgv();
+                $studienplan->getStudienplanLehrveranstaltung($lv->lehrveranstaltung_id);
+                $lv->zugewieseneStudienplaene='';
+                foreach($studienplan->result as $row_stpl)
+                    $lv->zugewieseneStudienplaene.=$row_stpl->bezeichnung.' ';
+                $lv_obj = new lehrveranstaltung();
+                $lv->gesperrt = $lv_obj->isGesperrt($lv->lehrveranstaltung_id);
+
                 if($lehrveranstaltung->hasChildren($lv->studienplan_lehrveranstaltung_id))
                 {
                     $lv->state = "closed";
@@ -123,12 +158,12 @@ else
         usort($data, "cmp_name");
     }
 }
-
 returnAJAX(true, $data);
 
 function cmp_name($a, $b)
 {
-    if ($a->bezeichnung == $b->bezeichnung) {
+    if ($a->bezeichnung == $b->bezeichnung)
+    {
         return 0;
     }
     return ($a->bezeichnung < $b->bezeichnung) ? -1 : 1;
@@ -136,7 +171,8 @@ function cmp_name($a, $b)
 
 function cmp_type($a, $b)
 {
-    if ($a->type == $b->type) {
+    if ($a->type == $b->type)
+    {
         return 0;
     }
     return ($a->type < $b->type) ? -1 : 1;

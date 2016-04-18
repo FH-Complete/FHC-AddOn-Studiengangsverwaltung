@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StplLehrveranstaltungCtrl', function ($scope, $http, $state, $stateParams, errorService, $compile, StudienplanService, successService, StudiensemesterService, StudiengangService, StudienordnungService) {
+		.controller('StplLehrveranstaltungCtrl', function ($scope, $http, $state, $stateParams, errorService, $compile, StudienplanService, successService, StudiensemesterService, StudiengangService, StudienordnungService, LehrveranstaltungService) {
 			$scope.studienplan_id = $stateParams.studienplan_id;
 			var ctrl = this;
 			var scope = $scope;
@@ -8,6 +8,7 @@ angular.module('stgv2')
 				name: "",
 				ects: ""
 			};
+
 			ctrl.studienplan = "";
 			ctrl.oeList = [{bezeichnung: "Keine Auswahl", oe_kurzbz: "alle"}];
 			ctrl.oe_kurzbz = "alle";
@@ -908,7 +909,7 @@ angular.module('stgv2')
 					var html = $("#dialog").html(response.data);
 					$compile(html)(scope);
 					$("#dialog").dialog({
-						title: 'Neue Lehrveranstaltung anlegen',
+						title: 'Lehrveranstaltung',
 						width: '80%',
 						height: '80%',
 						closed: false,
@@ -923,6 +924,17 @@ angular.module('stgv2')
 							if(lv !== undefined)
 							{
 								$scope.$broadcast("editLehrveranstaltung", lv);
+							}
+							else
+							{
+								var lvnewtemplate = new LehrveranstaltungService.getLVTemplate();
+								lvnewtemplate.studiengang_kz=ctrl.studiengang_kz;
+								lvnewtemplate.lehrtyp_kurzbz='lv';
+								lvnewtemplate.sprache=ctrl.studienplan.sprache;
+								lvnewtemplate.orgform_kurzbz=ctrl.studienplan.orgform_kurzbz;
+								lvnewtemplate.gesperrt=false;
+
+								$scope.$broadcast("editLehrveranstaltung", lvnewtemplate);
 							}
 						},
 						onClose: function()

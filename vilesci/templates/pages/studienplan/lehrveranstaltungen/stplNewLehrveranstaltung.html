@@ -5,7 +5,7 @@
 				<div class="col-sm-3">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.lehrtyp.$error.required)}">
 						<label for="lehrtyp">Lehrtyp*</label>
-						<select class="form-control input-sm" name="lehrtyp" ng-model="newLvCtrl.data.lehrtyp_kurzbz" ng-change="newLvCtrl.loadLehrform()" required>
+						<select class="form-control input-sm" name="lehrtyp" ng-model="newLvCtrl.data.lehrtyp_kurzbz" ng-change="newLvCtrl.loadLehrform()" required ng-disabled="newLvCtrl.data.gesperrt">
 							<option ng-repeat="lehrtyp in newLvCtrl.lehrtypList" value="{{lehrtyp.lehrtyp_kurzbz}}">{{lehrtyp.bezeichnung}}</option>
 						</select>
 					</div>
@@ -13,7 +13,7 @@
 				<div class="col-sm-3">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.lehrform.$error.required)}">
 						<label for="lehrvorm">Lehrform*</label>
-						<select class="form-control input-sm" name="lehrform" ng-model="newLvCtrl.data.lehrform_kurzbz" ng-change="newLvCtrl.setLehrformDependencies()" required>
+						<select class="form-control input-sm" name="lehrform" ng-model="newLvCtrl.data.lehrform_kurzbz" ng-change="newLvCtrl.setLehrformDependencies()" required ng-disabled="newLvCtrl.data.gesperrt">
 							<option ng-repeat="lehrform in newLvCtrl.lehrformList" value="{{lehrform.lehrform_kurzbz}}">{{lehrform.bezeichnung}}</option>
 						</select>
 					</div>
@@ -21,7 +21,7 @@
 				<div class="col-sm-2">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
 						<label for="kurzbz">Kurzbz*</label>
-						<input strip-html type="text" class="form-control input-sm" name="kurzbz" ng-model="newLvCtrl.data.kurzbz" required/>
+						<input strip-html type="text" class="form-control input-sm" name="kurzbz" ng-model="newLvCtrl.data.kurzbz" required ng-disabled="newLvCtrl.data.gesperrt"/>
 					</div>
 				</div>
 				<!--<div class="col-sm-2">
@@ -35,13 +35,13 @@
 				<div class="col-sm-6">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.bezeichnung.$error.required)}">
 						<label for="bezeichnung">Bezeichnung*</label>
-						<input strip-html type="text" class="form-control input-sm" name="bezeichnung" ng-model="newLvCtrl.data.bezeichnung" required/>
+						<input strip-html type="text" class="form-control input-sm" name="bezeichnung" ng-model="newLvCtrl.data.bezeichnung" required ng-disabled="newLvCtrl.data.gesperrt"/>
 					</div>
 				</div>
                 <div class="col-sm-6">
 					<div class="form-group">
 						<label for="bezeichnung_englisch">Bezeichnung Englisch</label>
-						<input strip-html type="text" class="form-control input-sm"  name="bezeichnung_englisch" ng-model="newLvCtrl.data.bezeichnung_english"/>
+						<input strip-html type="text" class="form-control input-sm"  name="bezeichnung_englisch" ng-model="newLvCtrl.data.bezeichnung_english" ng-disabled="newLvCtrl.data.gesperrt"/>
 					</div>
 				</div>
 			</div>
@@ -49,7 +49,7 @@
 				<div class="col-sm-5">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.oe.$error.required)}">
 						<label for="oe">Organistaionseinheit*</label>
-						<select class="form-control input-sm" name="oe" ng-model="newLvCtrl.data.oe_kurzbz" required>
+						<select class="form-control input-sm" name="oe" ng-model="newLvCtrl.data.oe_kurzbz" required ng-disabled="newLvCtrl.data.gesperrt">
 							<option ng-repeat="oe in newLvCtrl.oeList" value="{{oe.oe_kurzbz}}">{{oe.organisationseinheittyp_kurzbz}} - {{oe.bezeichnung}}</option>
 						</select>
 					</div>
@@ -57,7 +57,7 @@
 				<div class="col-sm-4">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.orgform.$error.required)}">
 						<label for="orgform">Organisationsform*</label>
-						<select class="form-control input-sm" name="orgform" ng-model="newLvCtrl.data.orgform_kurzbz" required>
+						<select class="form-control input-sm" name="orgform" ng-model="newLvCtrl.data.orgform_kurzbz" required ng-disabled="newLvCtrl.data.gesperrt">
 							<option ng-repeat="orgform in newLvCtrl.orgformList" value="{{orgform.orgform_kurzbz}}">{{orgform.bezeichnung}}</option>
 						</select>
 					</div>
@@ -67,7 +67,7 @@
 				<div class="col-sm-4">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.studiengang.$error.required)}">
 						<label for="studiengang">Studiengang*</label>
-						<select class="form-control input-sm" name="studiengang" ng-model="newLvCtrl.data.studiengang_kz" required>
+						<select class="form-control input-sm" name="studiengang" ng-model="newLvCtrl.data.studiengang_kz" required ng-disabled="newLvCtrl.data.gesperrt">
 							<option ng-repeat="studiengang in newLvCtrl.studiengangList" value="{{studiengang.studiengang_kz}}">{{studiengang.typ | uppercase}} - {{studiengang.bezeichnung}}</option>
 						</select>
 					</div>
@@ -75,7 +75,7 @@
 				<div class="col-sm-3">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.sprache.$error.required)}">
 						<label for="sprache">Sprache*</label>
-						<select class="form-control input-sm" name="sprache" ng-model="newLvCtrl.data.sprache" required>
+						<select class="form-control input-sm" name="sprache" ng-model="newLvCtrl.data.sprache" required ng-disabled="newLvCtrl.data.gesperrt">
 							<option ng-repeat="sprache in newLvCtrl.spracheList">{{sprache.sprache}}</option>
 						</select>
 					</div>
@@ -83,7 +83,7 @@
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label for="semester">Semester</label>
-						<select class="form-control input-sm" name="semester" ng-model="newLvCtrl.data.semester">
+						<select class="form-control input-sm" name="semester" ng-model="newLvCtrl.data.semester" ng-disabled="newLvCtrl.data.gesperrt">
 							<option ng-repeat="semester in newLvCtrl.semesterList" value="{{semester}}">{{semester}}</option>
 						</select>
 					</div>
@@ -93,7 +93,7 @@
 				<div class="col-sm-2">
 					<div class="form-group">
 						<label for="ects">ECTS</label>
-						<input numeric-only='positive' type="text" class="form-control input-sm"  name="ects" ng-model="newLvCtrl.data.ects"/>
+						<input numeric-only='positive' type="text" class="form-control input-sm"  name="ects" ng-model="newLvCtrl.data.ects" ng-disabled="newLvCtrl.data.gesperrt"/>
 					</div>
 				</div>
 				<!--TODO tooltips definieren-->
@@ -101,7 +101,7 @@
 					<div class="form-group">
 						<label for="sws">SWS</label>
 						<div class="input-group">
-							<input numeric-only="positive" style="min-width: 40px" type="text" class="form-control input-sm" name="sws" ng-model="newLvCtrl.data.sws"/>
+							<input numeric-only="positive" style="min-width: 40px" type="text" class="form-control input-sm" name="sws" ng-model="newLvCtrl.data.sws" ng-disabled="newLvCtrl.data.gesperrt"/>
 							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Semesterwochenstunden"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
@@ -110,7 +110,7 @@
 					<div class="form-group">
 						<label for="lvs">LVS</label>
 						<div class="input-group">
-							<input integer-only="positive" style="min-width: 40px" type="text" class="form-control input-sm"  name="lvs" ng-model="newLvCtrl.data.lvs"/>
+							<input integer-only="positive" style="min-width: 40px" type="text" class="form-control input-sm"  name="lvs" ng-model="newLvCtrl.data.lvs" ng-disabled="newLvCtrl.data.gesperrt"/>
 							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Lehrveranstaltungsstunden (LVS) Die Summe an Stunden welche Studierende konsumieren. Im Gegensatz zu den ALVS handelt es sich hier um die Sicht eines einzelnen Studierenden. (Nicht eingerechnet werden zusätzlich zu leistende Stunden um die entsprechenden ECTS-Punkte zu erhalten, also unbetreute Stunden.)"><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
@@ -174,7 +174,7 @@
 					<div class="checkbox">
 						</br>
 						<label>
-							<input type="checkbox" name="aktiv" ng-model="newLvCtrl.data.aktiv" ng-checked="true"/>
+							<input type="checkbox" name="aktiv" ng-model="newLvCtrl.data.aktiv" ng-checked="true" ng-disabled="newLvCtrl.data.gesperrt"/>
 							Aktiv
 						</label>
 					</div>
@@ -229,7 +229,7 @@
 				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
 					<div class="form-group">
 						<label for="lvnr">LVNR</label>
-						<input type="text" class="form-control input-sm"  name="lvnr" ng-model="newLvCtrl.data.lvnr"/>
+						<input type="text" class="form-control input-sm"  name="lvnr" ng-model="newLvCtrl.data.lvnr" ng-disabled="newLvCtrl.data.gesperrt"/>
 					</div>
 				</div>
 				<div class="col-sm-2" ng-show="newLvCtrl.data.lehrtyp_kurzbz!='modul'">
@@ -291,7 +291,7 @@
 					<div class="form-group">
 						<label for="semesterwochen">Semesterwochen</label>
 						<div class="input-group">
-							<input integer-only="positive" style="min-width: 40px" type="text" class="form-control input-sm"  name="semesterwochen" ng-model="newLvCtrl.data.semesterwochen"/>
+							<input integer-only="positive" style="min-width: 40px" type="text" class="form-control input-sm"  name="semesterwochen" ng-model="newLvCtrl.data.semesterwochen"  ng-disabled="newLvCtrl.data.gesperrt"/>
 							<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Semesterwochen."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 						</div>
 					</div>
