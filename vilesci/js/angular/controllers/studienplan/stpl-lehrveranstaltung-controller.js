@@ -177,12 +177,6 @@ angular.module('stgv2')
 								top: e.pageY
 							});
 						}
-						else
-						{
-							// Kein Kontextmenue anzeigen wenn nicht erlaubt
-							// Sonst wird das Kontextmenue des Browsers angezeigt
-							$('#stplTreeGridContextMenu').menu('destroy');
-						}
 					},
 					loadFilter: function (data)
 					{
