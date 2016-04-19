@@ -54,20 +54,26 @@ angular.module('stgv2')
 			{
 				if(ctrl.data.lehrtyp_kurzbz === "modul")
 				{
-					ctrl.data.zeugnis = false;
-					ctrl.data.lvinfo = false;
-					ctrl.data.benotung = false;
-					ctrl.data.lehrauftrag = false;
-					ctrl.data.lehre = false;
+                    if(!ctrl.data.lehrveranstaltung_id)
+                    {
+    					ctrl.data.zeugnis = false;
+    					ctrl.data.lvinfo = false;
+    					ctrl.data.benotung = false;
+    					ctrl.data.lehrauftrag = false;
+    					ctrl.data.lehre = false;
+                    }
 					ctrl.loadOrganisationseinheitenList("Studiengang");
 				}
 				else
 				{
-					ctrl.data.zeugnis = true;
-					ctrl.data.lvinfo = true;
-					ctrl.data.benotung = true;
-					ctrl.data.lehrauftrag = true;
-					ctrl.data.lehre = true;
+                    if(!ctrl.data.lehrveranstaltung_id)
+                    {
+    					ctrl.data.zeugnis = true;
+    					ctrl.data.lvinfo = true;
+    					ctrl.data.benotung = true;
+    					ctrl.data.lehrauftrag = true;
+    					ctrl.data.lehre = true;
+                    }
 					ctrl.loadOrganisationseinheitenList("Institut");
 				}
 			}
