@@ -55,9 +55,9 @@
 					</div>
 				</div>
 				<div class="col-sm-4">
-					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.orgform.$error.required)}">
+					<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.orgform.$error.required && !newLvCtrl.data.gesperrt))}">
 						<label for="orgform">Organisationsform*</label>
-						<select class="form-control input-sm" name="orgform" ng-model="newLvCtrl.data.orgform_kurzbz" required ng-disabled="newLvCtrl.data.gesperrt">
+						<select class="form-control input-sm" name="orgform" ng-model="newLvCtrl.data.orgform_kurzbz" ng-required="!newLvCtrl.data.gesperrt" ng-disabled="newLvCtrl.data.gesperrt">
 							<option ng-repeat="orgform in newLvCtrl.orgformList" value="{{orgform.orgform_kurzbz}}">{{orgform.bezeichnung}}</option>
 						</select>
 					</div>
@@ -330,7 +330,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-show="form.$pristine && !form.$dirty && form.$submitted">
+				<tr ng-show="!newLvCtrl.data.lehrveranstaltung_id && form.$pristine && !form.$dirty && form.$submitted">
 					<td><input form="newLehrveranstaltung" type="submit" class="btn btn-success btn-sm" ng-click="newLvCtrl.saveLehrveranstaltung()" value="erstellen" /></td>
 					<td colspan="3">neue Lehrveranstaltung anlegen</td>
 				</tr>

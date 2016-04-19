@@ -58,16 +58,20 @@ angular.module('stgv2')
 				// Ueberschreiben der autoSizeColumn Funktion da es sonst zu Performanceproblemen kommt
 				var origTreegrid_autoSizeColumn = $.fn.datagrid.methods['autoSizeColumn'];
 				$.extend($.fn.treegrid.methods, {
-				    autoSizeColumn: function(jq, field) {
-				        $.each(jq, function() {
-				            var opts = $(this).treegrid('options');
-				            if (!opts.skipAutoSizeColumns) {
-				                var tg_jq = $(this);
-				                if (field) origTreegrid_autoSizeColumn(tg_jq, field);
-				                else origTreegrid_autoSizeColumn(tg_jq);
-				            }
-				        });
-				    }
+					autoSizeColumn: function(jq, field)
+					{
+						$.each(jq, function() {
+							var opts = $(this).treegrid('options');
+							if (!opts.skipAutoSizeColumns)
+							{
+								var tg_jq = $(this);
+								if (field)
+									origTreegrid_autoSizeColumn(tg_jq, field);
+								else
+								origTreegrid_autoSizeColumn(tg_jq);
+							}
+						});
+					}
 				});
 				$("#stplTreeGrid").treegrid({
 					url: "./api/studienplan/lehrveranstaltungen/lehrveranstaltungTree.php?studienplan_id=" + $scope.studienplan_id,
@@ -169,20 +173,32 @@ angular.module('stgv2')
 							e.preventDefault();
 							$(this).treegrid('select', row.id);
 
-							//$compile($('#stplTreeGridContextMenu').contents())($scope);
-
+							$('#stplTreeGridContextMenu').menu('show', {
+								left: e.pageX,
+								top: e.pageY
+							});
+						}
+						if (row && row.type != "sem" && ctrl.studienplan.status_kurzbz !== "development")
+						{
+							e.preventDefault();
+							$(this).treegrid('select', row.id);
 
 							$('#stplTreeGridContextMenu').menu('show', {
 								left: e.pageX,
 								top: e.pageY
 							});
+
+							var item = $('#stplTreeGridContextMenu').menu('findItem', 'Durch Kopie ersetzen');
+							$('#stplTreeGridContextMenu').menu('disableItem', item.target);
+							var item = $('#stplTreeGridContextMenu').menu('findItem', 'Aus Studienplan entfernen');
+							$('#stplTreeGridContextMenu').menu('disableItem', item.target);
 						}
 					},
 					loadFilter: function (data)
 					{
 						if (data.erfolg)
 						{
-                            return data.info;
+							return data.info;
 							/*
 							var tree = [];
 							$(data.info).each(function (i, v)
@@ -219,6 +235,7 @@ angular.module('stgv2')
 
 						$('#stplTreeGridContextMenu').menu('appendItem',
 						{
+							id: 'ContextCopyItem',
 							text: 'Durch Kopie ersetzen',
 							iconCls:'icon-copy',
 							onclick: function () {
@@ -227,6 +244,7 @@ angular.module('stgv2')
 						});
 						$('#stplTreeGridContextMenu').menu('appendItem',
 						{
+							id: 'ContextEditItem',
 							text: 'Editieren',
 							iconCls:'icon-edit',
 							onclick: function () {
@@ -235,6 +253,7 @@ angular.module('stgv2')
 						});
 						$('#stplTreeGridContextMenu').menu('appendItem',
 						{
+							id: 'ContextRemoveItem',
 							text: 'Aus Studienplan entfernen',
 							iconCls:'glyphicon glyphicon-remove red',
 							onclick: function () {
@@ -1227,39 +1246,39 @@ angular.module('stgv2')
 			/**
 			* Speichert eine Regel
 			*/
-		   ctrl.saveRegel = function(id)
-		   {
-			   var neu = $('#lvregel_neu_'+id).val();
-			   var lvregeltyp_kurzbz = $('#lvregel_lvregeltyp'+id+' option:selected').val();
-			   var parameter = $('#lvregel_parameter'+id).val();
-			   var lehrveranstaltung_id = ctrl.lehrveranstaltung_id;
-			   var operator = $('#lvregel_operator'+id+' option:selected').val();
-			   var studienplan_lehrveranstaltung_id = $('#lvregel_studienplan_lehrveranstaltung_id'+id).val();
-			   var lvregel_id_parent = $('#lvregel_lvregel_id_parent'+id).val();
-			   var lehrveranstaltung_bezeichnung=$('#lvregel_lehrveranstaltung_span'+id).text();
-			   lvregel_id_parent=ClearNull(lvregel_id_parent);
+			ctrl.saveRegel = function(id)
+			{
+				var neu = $('#lvregel_neu_'+id).val();
+				var lvregeltyp_kurzbz = $('#lvregel_lvregeltyp'+id+' option:selected').val();
+				var parameter = $('#lvregel_parameter'+id).val();
+				var lehrveranstaltung_id = ctrl.lehrveranstaltung_id;
+				var operator = $('#lvregel_operator'+id+' option:selected').val();
+				var studienplan_lehrveranstaltung_id = $('#lvregel_studienplan_lehrveranstaltung_id'+id).val();
+				var lvregel_id_parent = $('#lvregel_lvregel_id_parent'+id).val();
+				var lehrveranstaltung_bezeichnung=$('#lvregel_lehrveranstaltung_span'+id).text();
+				lvregel_id_parent=ClearNull(lvregel_id_parent);
 
-			   // Vorhandene Eintraege werden vor dem Speichern geladen
-			   if(neu=='false')
-			   {
-				   loaddata = {
-					   "method": "load",
-					   "parameter_0": id
-				   };
-			   }
-			   else
-				   loaddata={};
+				// Vorhandene Eintraege werden vor dem Speichern geladen
+				if(neu=='false')
+				{
+					loaddata = {
+						"method": "load",
+						"parameter_0": id
+					};
+				}
+				else
+					loaddata={};
 
-			   savedata = {
-				   "lvregeltyp_kurzbz":lvregeltyp_kurzbz,
-				   "parameter":parameter,
-				   "lehrveranstaltung_id":lehrveranstaltung_id,
-				   "operator":operator,
-				   "studienplan_lehrveranstaltung_id":studienplan_lehrveranstaltung_id,
-				   "lvregel_id_parent":lvregel_id_parent
-			   };
+				savedata = {
+					"lvregeltyp_kurzbz":lvregeltyp_kurzbz,
+					"parameter":parameter,
+					"lehrveranstaltung_id":lehrveranstaltung_id,
+					"operator":operator,
+					"studienplan_lehrveranstaltung_id":studienplan_lehrveranstaltung_id,
+					"lvregel_id_parent":lvregel_id_parent
+				};
 
-			   $http({
+				$http({
 					method: 'POST',
 					url: "../../../soap/fhcomplete.php",
 					data: $.param({
@@ -1290,14 +1309,14 @@ angular.module('stgv2')
 				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
 				});
-		   };
+			};
 
-		   /**
+			/**
 			* Loescht eine Regel
 			*/
-		   ctrl.deleteRegel = function(id)
-		   {
-			   $http({
+			ctrl.deleteRegel = function(id)
+			{
+				$http({
 					method: 'POST',
 					url: "../../../soap/fhcomplete.php",
 					data: $.param({
