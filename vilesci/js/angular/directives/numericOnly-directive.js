@@ -6,9 +6,15 @@ angular.module("stgv2")
 					modelCtrl.$parsers.push(function (inputValue) {
 						var transformedInput;
 						if(attrs.numericOnly=="positive")
-							transformedInput = inputValue ? inputValue.replace(/[^\d.]/g, '') : null;
+						{
+							transformedInput = inputValue ? inputValue.replace(',', '.') : null;
+							transformedInput = transformedInput ? transformedInput.replace(/[^\d.]/g, '') : null;
+						}
 						else
-							transformedInput = inputValue ? inputValue.replace(/[^\d.-]/g, '') : null;
+						{
+							transformedInput = inputValue ? inputValue.replace(',', '.') : null;
+							transformedInput = transformedInput ? transformedInput.replace(/[^,\d.-]/g, '') : null;
+						}
 
 						if (transformedInput != inputValue) {
 							modelCtrl.$setViewValue(transformedInput);
