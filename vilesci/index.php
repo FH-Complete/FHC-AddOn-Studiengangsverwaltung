@@ -32,6 +32,9 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 <html ng-app="stgv2">
     <head>
 	<meta charset="UTF-8">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires" content="Sat, 01 Dec 2001 00:00:00 GMT">
 	<title>Studiengangsverwaltung 2</title>
 	<!--<link rel="stylesheet" href="../../../skin/fhcomplete.css" type="text/css">-->
 	<!--<link rel="stylesheet" href="../../../skin/vilesci.css" type="text/css">-->
