@@ -84,38 +84,162 @@ if($studienplan->studienplan_id!='')
 {
 	echo 'Prüfe Studienplan '.$studienplan->bezeichnung.'...<br><br>';
 
-	// Module in denen nicht genügend ECTS sind um das Modul abzuschließen
-	$qry = "
-	SELECT
-		tbl_lehrveranstaltung.bezeichnung, sl2.semester
-	FROM
-		lehre.tbl_studienordnung 
-		JOIN lehre.tbl_studienplan using(studienordnung_id)
-		JOIN lehre.tbl_studienplan_lehrveranstaltung sl2 USING(studienplan_id)
-		JOIN lehre.tbl_lehrveranstaltung using(lehrveranstaltung_id)
-	WHERE
-		tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id, FHC_INTEGER)."
-		AND tbl_lehrveranstaltung.ects>(
-			select sum(ects) 
+
+	echo '<h2>Bei folgenden kMod ist die "Bewertung" mit "ja" angegeben. (Muss "nein" sein)</h2>';
+	// Kumulatives Modul das bewertet wird
+	$qry = "SELECT
+				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
 			FROM 
-				lehre.tbl_studienplan_lehrveranstaltung sl1 join lehre.tbl_lehrveranstaltung l1 using(lehrveranstaltung_id)
-				where sl1.studienplan_lehrveranstaltung_id_parent=sl2.studienplan_lehrveranstaltung_id)";
+				lehre.tbl_studienplan
+				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
+				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
+			WHERE
+				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
+				AND	tbl_lehrveranstaltung.benotung=true
+				AND tbl_lehrveranstaltung.lehrform_kurzbz='kMod'
+			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
 
 	if($result = $db->db_query($qry))
 	{
 		if($db->db_num_rows($result)>0)
 		{
-			echo '<b>In folgenden Modulen sind nicht genügend ECTS vorhanden um das Modul abzuschließen:</b><br><br>';
 			while($row = $db->db_fetch_object($result))
 			{
 				$fehler++;
 				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
 			}
 		}
+		else
+		{
+			echo '<span class="ok">OK</span>';
+		}
 	}
 
+	// Integratives Pflichtmodul das nicht bewertet wird
+	echo '<h2>Bei folgenden iMod ist die "Bewertung" mit "nein" angegeben. (Muss "ja" sein)</h2>';
+
+	$qry = "SELECT
+				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
+			FROM 
+				lehre.tbl_studienplan
+				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
+				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
+			WHERE
+				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
+				AND	tbl_lehrveranstaltung.benotung=false
+				AND tbl_lehrveranstaltung.lehrform_kurzbz='iMod'
+			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
+
+	if($result = $db->db_query($qry))
+	{
+		if($db->db_num_rows($result)>0)
+		{
+			while($row = $db->db_fetch_object($result))
+			{
+				$fehler++;
+				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
+			}
+		}
+		else
+		{
+			echo '<span class="ok">OK</span>';
+		}
+	}
+
+	// Pflichtmodule bei denen die Attribute nicht passen
+	echo '<h2>Bei folgenden Pflichtmodulen sind die Attribute "StudPlan", "Pflicht", "Gen" usw nicht korrekt kodiert.</h2>';
+	$qry = "SELECT
+				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
+			FROM 
+				lehre.tbl_studienplan
+				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
+				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
+			WHERE
+				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
+				AND	tbl_studienplan_lehrveranstaltung.pflicht=true
+
+				AND (tbl_lehrveranstaltung.lehrform_kurzbz='kMod' 
+					AND (benotung=true OR lehrauftrag=true OR lehre=false OR lvinfo=false OR genehmigung=false OR curriculum=false)
+					)
+				AND (tbl_lehrveranstaltung.lehrform_kurzbz='iMod' 
+					AND (benotung=false OR lehrauftrag=true OR lehre=false OR lvinfo=false OR genehmigung=false OR curriculum=false)
+					)
+			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
+
+	if($result = $db->db_query($qry))
+	{
+		if($db->db_num_rows($result)>0)
+		{
+			while($row = $db->db_fetch_object($result))
+			{
+				$fehler++;
+				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
+			}
+		}
+		else
+			echo '<span class="ok">OK</span>';
+	}
+
+	// Bei folgenden Wahlmodulen passt die Attributskodierung nicht
+	echo '<h2>Bei folgenden Wahlmodulen sind die Attribute "StudPlan","Pflicht","Gen", usw nicht korrekt kodiert.</h2>';
+	$qry = "SELECT
+				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
+			FROM 
+				lehre.tbl_studienplan
+				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
+				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
+			WHERE
+				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
+				AND	tbl_studienplan_lehrveranstaltung.pflicht=true
+				AND tbl_lehrveranstaltung.lehrform_kurzbz='kMod'
+				AND (benotung=true OR lehrauftrag=true OR lehre=false OR lvinfo=false OR genehmigung=false OR curriculum=false)
+			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
+
+	if($result = $db->db_query($qry))
+	{
+		if($db->db_num_rows($result)>0)
+		{
+			while($row = $db->db_fetch_object($result))
+			{
+				$fehler++;
+				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
+			}
+		}
+		else
+			echo '<span class="ok">OK</span>';
+	}
+
+	// Bei folgenden Wahlmodulen passt die Attributskodierung nicht
+	echo '<h2>Bei folgenden Sonstigen Modulen sind die Attribute "StudPlan","Pflicht","Gen", usw nicht korrekt kodiert.</h2>';
+	$qry = "SELECT
+				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
+			FROM 
+				lehre.tbl_studienplan
+				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
+				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
+			WHERE
+				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
+				AND	tbl_studienplan_lehrveranstaltung.curriculum=false
+				AND tbl_lehrveranstaltung.lehrform_kurzbz='kMod'
+				AND (pflicht=true OR genehmigung=true OR benotung=true OR zeugnis=true OR lehrauftrag=true)
+			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
+
+	if($result = $db->db_query($qry))
+	{
+		if($db->db_num_rows($result)>0)
+		{
+			while($row = $db->db_fetch_object($result))
+			{
+				$fehler++;
+				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
+			}
+		}
+		else
+			echo '<span class="ok">OK</span>';
+	}
 
 	// Module in denen zu viele Pflich LVs sind
+	echo '<h2>Bei folgenden Modulen sind die Modul-ECTS kleiner als die ECTS-Summe der dazugehörigen Pflich-Lehrveranstaltungen</h2>';
 	$qry="
 	SELECT
 		tbl_studienplan.bezeichnung, tbl_lehrveranstaltung.bezeichnung, sl2.semester
@@ -137,16 +261,80 @@ if($studienplan->studienplan_id!='')
 	{
 		if($db->db_num_rows($result)>0)
 		{
-			echo '<br><br><b>In folgenden Modulen sind mehr PflichtLVs (ECTS) vorhanden als gesamt-ECTS im Modul:</b><br><br>';
 			while($row = $db->db_fetch_object($result))
 			{
 				$fehler++;
 				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
 			}
 		}
+		else
+			echo '<span class="ok">OK</span>';
 	}
 
+	echo '<h2>Bei folgenden Modulen sind die Modul-ECTS größer als die ECTS-Summe der dazugehörgien Lehrveranstaltungen.</h2>';
+	// Module in denen nicht genügend ECTS sind um das Modul abzuschließen
+	$qry = "
+	SELECT
+		tbl_lehrveranstaltung.bezeichnung, sl2.semester
+	FROM
+		lehre.tbl_studienordnung 
+		JOIN lehre.tbl_studienplan using(studienordnung_id)
+		JOIN lehre.tbl_studienplan_lehrveranstaltung sl2 USING(studienplan_id)
+		JOIN lehre.tbl_lehrveranstaltung using(lehrveranstaltung_id)
+	WHERE
+		tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id, FHC_INTEGER)."
+		AND tbl_lehrveranstaltung.ects>(
+			select sum(ects) 
+			FROM 
+				lehre.tbl_studienplan_lehrveranstaltung sl1 join lehre.tbl_lehrveranstaltung l1 using(lehrveranstaltung_id)
+				where sl1.studienplan_lehrveranstaltung_id_parent=sl2.studienplan_lehrveranstaltung_id)";
+
+	if($result = $db->db_query($qry))
+	{
+		if($db->db_num_rows($result)>0)
+		{
+			while($row = $db->db_fetch_object($result))
+			{
+				$fehler++;
+				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
+			}
+		}
+		else
+			echo '<span class="ok">OK</span>';
+	}
+
+
+	// Pruefen ob ECTS, LVS, ALVS, ... leer sind
+	echo '<h2>Bei folgenden LVs sind eines oder mehrere der folgenden Attribute nicht angegeben: ECTS, SWS, LVS, ALVS, LAS, LVPLS</h2>';
+	$qry = "SELECT
+				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester, tbl_lehrveranstaltung.lehrveranstaltung_id
+			FROM 
+				lehre.tbl_studienplan
+				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
+				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
+			WHERE
+				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
+				AND (ects is null OR sws is null OR lvs is null OR alvs is null OR lvps is null)
+				AND lehrtyp_kurzbz='lv'
+			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
+
+	if($result = $db->db_query($qry))
+	{
+		if($db->db_num_rows($result)>0)
+		{
+			while($row = $db->db_fetch_object($result))
+			{
+				$fehler++;
+				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung.' ('.$row->lehrveranstaltung_id.')';
+			}
+		}
+		else
+			echo '<span class="ok">OK</span>';
+	}
+	
+
 	// Pruefen ob ECTS>=SWS
+	echo '<h2>Bei folgenden LVs sind die ECTS &lt; SWS</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
 			FROM 
@@ -163,16 +351,18 @@ if($studienplan->studienplan_id!='')
 	{
 		if($db->db_num_rows($result)>0)
 		{
-			echo '<br><br><b>Bei folgenden Lehrveranstaltungen sind ECTS kleiner als die SWS</b><br><br>';
 			while($row = $db->db_fetch_object($result))
 			{
 				$fehler++;
 				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
 			}
 		}
+		else
+			echo '<span class="ok">OK</span>';
 	}
 	
 	// Pruefen ob ALVS>=LVS
+	echo '<h2>Bei folgenden LVs sind die ALVS &lt; LVS</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester, 
 				tbl_lehrveranstaltung.alvs, tbl_lehrveranstaltung.lvs
@@ -189,16 +379,18 @@ if($studienplan->studienplan_id!='')
 	{
 		if($db->db_num_rows($result)>0)
 		{
-			echo '<br><br><b>Bei folgenden Lehrveranstaltungen sind die ALVS kleiner als die LVS</b><br><br>';
 			while($row = $db->db_fetch_object($result))
 			{
 				$fehler++;
 				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung .'( ALVS: '.$row->alvs.' / LVS: '.$row->lvs.' )';
 			}
 		}
+		else
+			echo '<span class="ok">OK</span>';
 	}
 
 	// Pruefen ob unterschiedliche Wochenteiler vorhanden sind
+	echo '<h2>Bei folgenden LVs ergeben sich unterschiedliche Werte für die Semesterwochen (Berechnung: LVS / SWS)</h2>';
 	$qry = "SELECT
 				distinct tbl_lehrveranstaltung.lvs/tbl_lehrveranstaltung.sws as wochenteiler
 			FROM 
@@ -214,7 +406,6 @@ if($studienplan->studienplan_id!='')
 	{
 		if($db->db_num_rows($result)>1)
 		{
-			echo '<br><br><b>Es sind unterschiedliche Wochenteiler vorhanden</b><br><br>';
 			while($row = $db->db_fetch_object($result))
 			{
 				$fehler++;
@@ -249,9 +440,41 @@ if($studienplan->studienplan_id!='')
 				}
 			}
 		}
+		else
+			echo '<span class="ok">OK</span>';
+	}	
+
+	// Pruefen ob LVPLS>ALVS
+	echo '<h2>Bei folgenden LVs sind die LVPLS &gt; ALVS</h2>';
+	$qry = "SELECT
+				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester, 
+				tbl_lehrveranstaltung.alvs, tbl_lehrveranstaltung.lvps
+			FROM 
+				lehre.tbl_studienplan
+				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
+				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
+			WHERE
+				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
+				AND tbl_lehrveranstaltung.lvps>tbl_lehrveranstaltung.alvs
+			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
+
+	if($result = $db->db_query($qry))
+	{
+		if($db->db_num_rows($result)>0)
+		{
+			while($row = $db->db_fetch_object($result))
+			{
+				$fehler++;
+				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung .'( ALVS: '.$row->alvs.' / LVPLS: '.$row->lvps.' )';
+			}
+		}
+		else
+			echo '<span class="ok">OK</span>';
 	}
 
-	// Integratives Pflichtmodul das nicht bewertet wird
+
+	// Lehrveranstaltungen bei denen Studienplan=True muss eine Englische Bezeichnung vorhanden sein
+	echo '<h2>Bei folgenden Pflicht- und Wahl- LVs fehlt die englische Bezeichnung</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
 			FROM 
@@ -260,24 +483,26 @@ if($studienplan->studienplan_id!='')
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
 			WHERE
 				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
-				AND	tbl_lehrveranstaltung.benotung=false
-				AND tbl_lehrveranstaltung.lehrform_kurzbz='iMod'
+				AND	tbl_studienplan_lehrveranstaltung.curriculum=true
+				AND (tbl_lehrveranstaltung.bezeichnung_english is null OR tbl_lehrveranstaltung.bezeichnung_english is null)
 			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
 
 	if($result = $db->db_query($qry))
 	{
 		if($db->db_num_rows($result)>0)
 		{
-			echo '<br><br><b>Integratives Modul muss bewertet werden hat aber Bewertung auf Nein gesetzt</b><br><br>';
 			while($row = $db->db_fetch_object($result))
 			{
 				$fehler++;
 				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
 			}
 		}
+		else
+			echo '<span class="ok">OK</span>';
 	}
 
-	// Kumulatives Modul das bewertet wird
+	// Lehrveranstaltungen bei denen Studienplan=True muss eine Englische Bezeichnung vorhanden sein
+	echo '<h2>Bei folgenden LVs ist die Lehrform nicht angegeben</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
 			FROM 
@@ -286,23 +511,142 @@ if($studienplan->studienplan_id!='')
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
 			WHERE
 				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
-				AND	tbl_lehrveranstaltung.benotung=true
-				AND tbl_lehrveranstaltung.lehrform_kurzbz='kMod'
+				AND	lehrtyp_kurzbz='lv' AND lehrform_kurzbz is null
 			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
 
 	if($result = $db->db_query($qry))
 	{
 		if($db->db_num_rows($result)>0)
 		{
-			echo '<br><br><b>Kum. Modul darf nicht bewertet werden hat aber Bewertung auf Ja gesetzt</b><br><br>';
 			while($row = $db->db_fetch_object($result))
 			{
 				$fehler++;
 				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
 			}
 		}
+		else
+			echo '<span class="ok">OK</span>';
+	}
+
+	// Bei folgenden PflichtLVs passt die Attributskodierung nicht
+	echo '<h2>Bei folgenden Pflicht-LVs sind die Attribute "StudPlan","Pflicht","Gen", usw nicht korrekt kodiert.</h2>';
+	$qry = "SELECT
+				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
+			FROM 
+				lehre.tbl_studienplan
+				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
+				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
+			WHERE
+				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
+				AND tbl_lehrveranstaltung.lehrtyp_kurzbz='lv'
+				AND tbl_studienplan_lehrveranstaltung.pflicht=true
+				AND	tbl_studienplan_lehrveranstaltung.curriculum=true
+				AND (genehmigung=false OR benotung=false OR benotung=false OR zeugnis=false OR lehrauftrag=false OR curriculum=false OR lehre=false OR lvinfo=false)
+			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
+
+	if($result = $db->db_query($qry))
+	{
+		if($db->db_num_rows($result)>0)
+		{
+			while($row = $db->db_fetch_object($result))
+			{
+				$fehler++;
+				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
+			}
+		}
+		else
+			echo '<span class="ok">OK</span>';
+	}
+
+	// Bei folgenden WahlLVs passt die Attributskodierung nicht
+	echo '<h2>Bei folgenden Wahl-LVs sind die Attribute "StudPlan","Pflicht","Gen", usw nicht korrekt kodiert.</h2>';
+	$qry = "SELECT
+				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
+			FROM 
+				lehre.tbl_studienplan
+				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
+				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
+			WHERE
+				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
+				AND tbl_lehrveranstaltung.lehrtyp_kurzbz='lv'
+				AND tbl_studienplan_lehrveranstaltung.pflicht=false
+				AND tbl_studienplan_lehrveranstaltung.curriculum=true
+				AND (lehre=false OR lvinfo=false OR benotung=false OR zeugnis=false OR lehrauftrag=false)
+			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
+
+	if($result = $db->db_query($qry))
+	{
+		if($db->db_num_rows($result)>0)
+		{
+			while($row = $db->db_fetch_object($result))
+			{
+				$fehler++;
+				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
+			}
+		}
+		else
+			echo '<span class="ok">OK</span>';
+	}
+
+	// Bei folgenden Sonstigen LVs passt die Attributskodierung nicht
+	echo '<h2>Bei folgenden Sonstigen LVs sind die Attribute "StudPlan","Pflicht","Gen", usw nicht korrekt kodiert.</h2>';
+	$qry = "SELECT
+				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
+			FROM 
+				lehre.tbl_studienplan
+				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
+				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
+			WHERE
+				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
+				AND tbl_lehrveranstaltung.lehrtyp_kurzbz='lv'
+				AND tbl_studienplan_lehrveranstaltung.pflicht=false
+				AND tbl_studienplan_lehrveranstaltung.curriculum=false
+				AND (genehmigung=true OR benotung=true OR zeugnis=true)
+			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
+
+	if($result = $db->db_query($qry))
+	{
+		if($db->db_num_rows($result)>0)
+		{
+			while($row = $db->db_fetch_object($result))
+			{
+				$fehler++;
+				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
+			}
+		}
+		else
+			echo '<span class="ok">OK</span>';
 	}
 	
+	// ZUSATZPRUEFUNG: LAS > ALVS
+	echo '<h2>ZUSATZPRÜFUNG: Bei folgenden LVs sind LAS &gt; ALVS</h2>';
+	$qry = "SELECT
+				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
+			FROM 
+				lehre.tbl_studienplan
+				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
+				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
+			WHERE
+				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
+				AND	tbl_lehrveranstaltung.las>tbl_lehrveranstaltung.alvs 
+				AND las is not null AND las>0 AND alvs is not null AND alvs>0				
+			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
+
+	if($result = $db->db_query($qry))
+	{
+		if($db->db_num_rows($result)>0)
+		{
+			while($row = $db->db_fetch_object($result))
+			{
+				$fehler++;
+				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
+			}
+		}
+		else
+			echo '<span class="ok">OK</span>';
+	}
+
+
 	if($fehler==0)
 		echo '<br><br><span class="ok">Keine Fehler gefunden - Studienplan OK</span>';
 	else
