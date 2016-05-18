@@ -213,7 +213,7 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
                 <a href="https://signavio.technikum-wien.at/p/portal#/model/eceaf658462b4c4ca733d3987ebc8468" target="_blank">Signavio</a>
             </div>
             <div>
-		        <a href="mailto:fhcomplete@technikum-wien.at" target="_blank">Support: fhcomplete@technium-wien.at</a>
+		        <a href="mailto:fhcomplete@technikum-wien.at" target="_blank">Support: fhcomplete@technikum-wien.at</a>
             </div>
 		</div>
 	    </div>

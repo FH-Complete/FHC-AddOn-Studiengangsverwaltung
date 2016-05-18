@@ -31,7 +31,12 @@ $rechte = new benutzerberechtigung();
 $rechte->getBerechtigungen($uid);
 
 if(!$rechte->isBerechtigt('stgv/changeStplAdmin',null,'s'))
-	die($rechte->errormsg);
+{
+	$stg_arr=array();
+
+	$stg_arr = $rechte->getStgKz('stgv/createLehrveranstaltung');
+}
+
 
 $db = new basis_db();
 $studienplan = new studienplan();
@@ -42,14 +47,14 @@ if(isset($_GET['studienplan_id']))
 }
 
 $fehler=0;
-	
+
 echo '<doctype html>
 <html>
 <head>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="../../../skin/fhcomplete.css" type="text/css">
 		<link rel="stylesheet" href="../../../skin/vilesci.css" type="text/css">
-		
+
 </head>
 <body>
 <h1>Plausibilitätsprüfung von Studienplänen</h1>
@@ -57,11 +62,16 @@ echo '<doctype html>
 
 $qry = "SELECT distinct tbl_studienplan.studienplan_id, tbl_studienplan.bezeichnung
 		FROM
-			lehre.tbl_studienplan 
+			lehre.tbl_studienplan
 			JOIN lehre.tbl_studienordnung USING(studienordnung_id)
 		WHERE
-			tbl_studienordnung.status_kurzbz NOT IN('approved','expired','notApproved')
-		ORDER BY tbl_studienplan.bezeichnung";
+			tbl_studienordnung.status_kurzbz NOT IN('approved','expired','notApproved')";
+
+if(isset($stg_arr))
+{
+	$qry.=" AND studiengang_kz in(".$db->db_implode4SQL($stg_arr).")";
+}
+$qry.="	ORDER BY tbl_studienplan.bezeichnung";
 
 echo '<select name="studienplan_id">';
 if($result = $db->db_query($qry))
@@ -85,11 +95,11 @@ if($studienplan->studienplan_id!='')
 	echo 'Prüfe Studienplan '.$studienplan->bezeichnung.'...<br><br>';
 
 
-	echo '<h2>Bei folgenden kMod ist die "Bewertung" mit "ja" angegeben. (Muss "nein" sein)</h2>';
+	echo '<h2>Bei folgenden kumulativen Modulen ist die "Bewertung" mit "ja" angegeben. Bitte auf "nein" ändern.</h2>';
 	// Kumulatives Modul das bewertet wird
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
-			FROM 
+			FROM
 				lehre.tbl_studienplan
 				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
@@ -116,11 +126,11 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Integratives Pflichtmodul das nicht bewertet wird
-	echo '<h2>Bei folgenden iMod ist die "Bewertung" mit "nein" angegeben. (Muss "ja" sein)</h2>';
+	echo '<h2>Bei folgenden integrativen Modulen ist die "Bewertung" mit "nein" angegeben. Bitte auf "ja" ändern</h2>';
 
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
-			FROM 
+			FROM
 				lehre.tbl_studienplan
 				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
@@ -147,10 +157,11 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Pflichtmodule bei denen die Attribute nicht passen
-	echo '<h2>Bei folgenden Pflichtmodulen sind die Attribute "StudPlan", "Pflicht", "Gen" usw nicht korrekt kodiert.</h2>';
+	echo '<h2>Bei folgenden <b><u>Pflichtmodulen</u></b> sind die Attribute "StudPlan", "Pflicht", "Gen" usw nicht korrekt kodiert.<br>';
+	echo 'Bitte die Änderungen gemäß dem vorgesehenen Schema vornehmen (siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content</a>)</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
-			FROM 
+			FROM
 				lehre.tbl_studienplan
 				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
@@ -158,10 +169,10 @@ if($studienplan->studienplan_id!='')
 				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
 				AND	tbl_studienplan_lehrveranstaltung.pflicht=true
 
-				AND (tbl_lehrveranstaltung.lehrform_kurzbz='kMod' 
+				AND (tbl_lehrveranstaltung.lehrform_kurzbz='kMod'
 					AND (benotung=true OR lehrauftrag=true OR lehre=false OR lvinfo=false OR genehmigung=false OR curriculum=false)
 					)
-				AND (tbl_lehrveranstaltung.lehrform_kurzbz='iMod' 
+				AND (tbl_lehrveranstaltung.lehrform_kurzbz='iMod'
 					AND (benotung=false OR lehrauftrag=true OR lehre=false OR lvinfo=false OR genehmigung=false OR curriculum=false)
 					)
 			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
@@ -181,16 +192,17 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Bei folgenden Wahlmodulen passt die Attributskodierung nicht
-	echo '<h2>Bei folgenden Wahlmodulen sind die Attribute "StudPlan","Pflicht","Gen", usw nicht korrekt kodiert.</h2>';
+	echo '<h2>Bei folgenden <b><u>Wahlmodulen</u></b> sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
+	echo 'Bitte die Änderungen gemäß dem vorgesehenen Schema vornehmen (siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content</a>)</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
-			FROM 
+			FROM
 				lehre.tbl_studienplan
 				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
 			WHERE
 				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
-				AND	tbl_studienplan_lehrveranstaltung.pflicht=true
+				AND	tbl_studienplan_lehrveranstaltung.pflicht=false
 				AND tbl_lehrveranstaltung.lehrform_kurzbz='kMod'
 				AND (benotung=true OR lehrauftrag=true OR lehre=false OR lvinfo=false OR genehmigung=false OR curriculum=false)
 			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
@@ -210,10 +222,11 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Bei folgenden Wahlmodulen passt die Attributskodierung nicht
-	echo '<h2>Bei folgenden Sonstigen Modulen sind die Attribute "StudPlan","Pflicht","Gen", usw nicht korrekt kodiert.</h2>';
+	echo '<h2>Bei folgenden <b><u>Sonstigen Modulen</u></b> sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
+	echo 'Bitte die Änderungen gemäß dem vorgesehenen Schema vornehmen (siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content</a>)</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
-			FROM 
+			FROM
 				lehre.tbl_studienplan
 				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
@@ -238,21 +251,52 @@ if($studienplan->studienplan_id!='')
 			echo '<span class="ok">OK</span>';
 	}
 
+	echo '<h2>Bei folgenden Modulen ist der ECTS-Wert leer. Zulässig sind ganze Zahlen oder Komma-5 Werte. Falls es keine ECTS gibt, bitte "0" angeben</h2>';
+	// ECTS null
+	$qry = "SELECT
+				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
+			FROM
+				lehre.tbl_studienplan
+				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
+				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
+			WHERE
+				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
+				AND	tbl_lehrveranstaltung.ects is null
+				AND tbl_lehrveranstaltung.lehrform_kurzbz in('kMod','iMod')
+			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
+
+	if($result = $db->db_query($qry))
+	{
+		if($db->db_num_rows($result)>0)
+		{
+			while($row = $db->db_fetch_object($result))
+			{
+				$fehler++;
+				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
+			}
+		}
+		else
+		{
+			echo '<span class="ok">OK</span>';
+		}
+	}
+
 	// Module in denen zu viele Pflich LVs sind
-	echo '<h2>Bei folgenden Modulen sind die Modul-ECTS kleiner als die ECTS-Summe der dazugehörigen Pflich-Lehrveranstaltungen</h2>';
+	echo '<h2>Bei folgenden Modulen sind die Modul-ECTS kleiner als die ECTS-Summe der dazugehörigen Pflich-Lehrveranstaltungen.<br>
+	Bitte entsprechend ändern oder - falls keine Änderungen möglich sind - eine EMail an fhcomplete@'.DOMAIN.' übermitteln</h2>';
 	$qry="
 	SELECT
 		tbl_studienplan.bezeichnung, tbl_lehrveranstaltung.bezeichnung, sl2.semester
 	FROM
-		lehre.tbl_studienordnung 
+		lehre.tbl_studienordnung
 		JOIN lehre.tbl_studienplan using(studienordnung_id)
 		JOIN lehre.tbl_studienplan_lehrveranstaltung sl2 USING(studienplan_id)
 		JOIN lehre.tbl_lehrveranstaltung using(lehrveranstaltung_id)
 	WHERE
 		tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id, FHC_INTEGER)."
 		AND tbl_lehrveranstaltung.ects<(
-			select sum(ects) 
-			FROM 
+			select sum(ects)
+			FROM
 				lehre.tbl_studienplan_lehrveranstaltung sl1 join lehre.tbl_lehrveranstaltung l1 using(lehrveranstaltung_id)
 				where sl1.studienplan_lehrveranstaltung_id_parent=sl2.studienplan_lehrveranstaltung_id
 				and sl1.pflicht)";
@@ -271,21 +315,22 @@ if($studienplan->studienplan_id!='')
 			echo '<span class="ok">OK</span>';
 	}
 
-	echo '<h2>Bei folgenden Modulen sind die Modul-ECTS größer als die ECTS-Summe der dazugehörgien Lehrveranstaltungen.</h2>';
+	echo '<h2>Bei folgenden Modulen sind die Modul-ECTS größer als die ECTS-Summe der dazugehörgien Lehrveranstaltungen.<br>
+	Bitte entsprechend ändern oder - falls keine Änderungen möglich sind - eine EMail an fhcomplete@'.DOMAIN.' übermitteln</h2>';
 	// Module in denen nicht genügend ECTS sind um das Modul abzuschließen
 	$qry = "
 	SELECT
 		tbl_lehrveranstaltung.bezeichnung, sl2.semester
 	FROM
-		lehre.tbl_studienordnung 
+		lehre.tbl_studienordnung
 		JOIN lehre.tbl_studienplan using(studienordnung_id)
 		JOIN lehre.tbl_studienplan_lehrveranstaltung sl2 USING(studienplan_id)
 		JOIN lehre.tbl_lehrveranstaltung using(lehrveranstaltung_id)
 	WHERE
 		tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id, FHC_INTEGER)."
 		AND tbl_lehrveranstaltung.ects>(
-			select sum(ects) 
-			FROM 
+			select sum(ects)
+			FROM
 				lehre.tbl_studienplan_lehrveranstaltung sl1 join lehre.tbl_lehrveranstaltung l1 using(lehrveranstaltung_id)
 				where sl1.studienplan_lehrveranstaltung_id_parent=sl2.studienplan_lehrveranstaltung_id)";
 
@@ -303,12 +348,44 @@ if($studienplan->studienplan_id!='')
 			echo '<span class="ok">OK</span>';
 	}
 
+	echo '<h2>Es gibt LVs die keinem Modul zugeordnet sind. Bitte diese einem Modul zuordnen.<br>
+	 Falls kein entsprechendes Modul vorhanden ist, ist ein neues Modul zu erstellen.<br>
+	 Falls die LVs nicht mehr relevant sind, diese aus dem Studienplan entfernen.</h2>';
+	// ECTS null
+	$qry = "SELECT
+				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
+			FROM
+				lehre.tbl_studienplan
+				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
+				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
+			WHERE
+				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
+				AND	tbl_studienplan_lehrveranstaltung.studienplan_lehrveranstaltung_id_parent is null
+				AND tbl_lehrveranstaltung.lehrform_kurzbz NOT in('kMod','iMod')
+			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
+
+	if($result = $db->db_query($qry))
+	{
+		if($db->db_num_rows($result)>0)
+		{
+			while($row = $db->db_fetch_object($result))
+			{
+				$fehler++;
+				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
+			}
+		}
+		else
+		{
+			echo '<span class="ok">OK</span>';
+		}
+	}
 
 	// Pruefen ob ECTS, LVS, ALVS, ... leer sind
-	echo '<h2>Bei folgenden LVs sind eines oder mehrere der folgenden Attribute nicht angegeben: ECTS, SWS, LVS, ALVS, LAS, LVPLS</h2>';
+	echo '<h2>Bei folgenden LVs sind eines oder mehrere der folgenden Attribute nicht angegeben: ECTS, SWS, LVS, ALVS, LAS, LVPLS<br>
+	Falls keine ECTS, SWS, ... vorgesehen sind, bitte die Zahl "0" eintragen. <br>Falls keine Änderungen möglich sind, eine EMail an fhcomplete@'.DOMAIN.' übermitteln.</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester, tbl_lehrveranstaltung.lehrveranstaltung_id
-			FROM 
+			FROM
 				lehre.tbl_studienplan
 				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
@@ -331,13 +408,15 @@ if($studienplan->studienplan_id!='')
 		else
 			echo '<span class="ok">OK</span>';
 	}
-	
+
 
 	// Pruefen ob ECTS>=SWS
-	echo '<h2>Bei folgenden LVs sind die ECTS &lt; SWS</h2>';
+	echo '<h2>Bei folgenden LVs sind die ECTS &lt; SWS<br>
+	Falls es sich dabei um einen Fehler handelt, bitte die entsprechenden Änderungen vornehmen.<br>
+	Falls keine Änderungen möglich sind, eine EMail an fhcomplete@'.DOMAIN.' übermitteln</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
-			FROM 
+			FROM
 				lehre.tbl_studienplan
 				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
@@ -360,13 +439,14 @@ if($studienplan->studienplan_id!='')
 		else
 			echo '<span class="ok">OK</span>';
 	}
-	
+
 	// Pruefen ob ALVS>=LVS
-	echo '<h2>Bei folgenden LVs sind die ALVS &lt; LVS</h2>';
+	echo '<h2>Bei folgenden LVs sind die ALVS &lt; LVS<br>
+	Falls keine Änderungen möglich sind, eine EMail an fhcomplete@'.DOMAIN.' übermitteln</h2>';
 	$qry = "SELECT
-				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester, 
+				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester,
 				tbl_lehrveranstaltung.alvs, tbl_lehrveranstaltung.lvs
-			FROM 
+			FROM
 				lehre.tbl_studienplan
 				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
@@ -390,10 +470,11 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Pruefen ob unterschiedliche Wochenteiler vorhanden sind
-	echo '<h2>Bei folgenden LVs ergeben sich unterschiedliche Werte für die Semesterwochen (Berechnung: LVS / SWS)</h2>';
+	echo '<h2>Bei folgenden LVs ergeben sich unterschiedliche Werte für die Semesterwochen (Berechnung: LVS / SWS)<br>
+	Die Semesterwochen sollten jedoch überall gleich sein. Bitte die entsprechenden Änderungen durchführen oder - falls keine Änderungen möglich sind - eine EMail an fhcomplete@'.DOMAIN.' übermitteln.</h2>';
 	$qry = "SELECT
 				distinct tbl_lehrveranstaltung.lvs/tbl_lehrveranstaltung.sws as wochenteiler
-			FROM 
+			FROM
 				lehre.tbl_studienplan
 				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
@@ -413,7 +494,7 @@ if($studienplan->studienplan_id!='')
 
 				$qry = "SELECT
 						tbl_studienplan_lehrveranstaltung.semester, tbl_lehrveranstaltung.bezeichnung
-					FROM 
+					FROM
 						lehre.tbl_studienplan
 						JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 						JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
@@ -442,14 +523,15 @@ if($studienplan->studienplan_id!='')
 		}
 		else
 			echo '<span class="ok">OK</span>';
-	}	
+	}
 
 	// Pruefen ob LVPLS>ALVS
-	echo '<h2>Bei folgenden LVs sind die LVPLS &gt; ALVS</h2>';
+	echo '<h2>Bei folgenden LVs sind die LVPLS &gt; ALVS<br>
+	Dies ist nur selten der Fall bzw. korrekt. Bitte erforderlichenfalls die entsprechenden Änderungen vornehmen oder - falls keine Änderungen möglich sind - eine EMail an fhcomplete@'.DOMAIN.' übermitteln</h2>';
 	$qry = "SELECT
-				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester, 
+				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester,
 				tbl_lehrveranstaltung.alvs, tbl_lehrveranstaltung.lvps
-			FROM 
+			FROM
 				lehre.tbl_studienplan
 				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
@@ -474,10 +556,11 @@ if($studienplan->studienplan_id!='')
 
 
 	// Lehrveranstaltungen bei denen Studienplan=True muss eine Englische Bezeichnung vorhanden sein
-	echo '<h2>Bei folgenden Pflicht- und Wahl- LVs fehlt die englische Bezeichnung</h2>';
+	echo '<h2>Bei folgenden Pflicht- und Wahl- LVs fehlt die englische Bezeichnung<br>
+	Bitte ergänzen oder - falls keine Änderungen möglich sind - eine EMail an fhcomplete@'.DOMAIN.' übermitteln.</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
-			FROM 
+			FROM
 				lehre.tbl_studienplan
 				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
@@ -502,10 +585,11 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Lehrveranstaltungen bei denen Studienplan=True muss eine Englische Bezeichnung vorhanden sein
-	echo '<h2>Bei folgenden LVs ist die Lehrform nicht angegeben</h2>';
+	echo '<h2>Bei folgenden LVs ist die Lehrform nicht angegeben<br>
+	Bitte ergänzen oder - falls keine Änderungen möglich sind - eine EMail an fhcomplete@'.DOMAIN.' übermitteln.</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
-			FROM 
+			FROM
 				lehre.tbl_studienplan
 				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
@@ -529,10 +613,11 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Bei folgenden PflichtLVs passt die Attributskodierung nicht
-	echo '<h2>Bei folgenden Pflicht-LVs sind die Attribute "StudPlan","Pflicht","Gen", usw nicht korrekt kodiert.</h2>';
+	echo '<h2>Bei folgenden Pflicht-LVs sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
+	echo 'Bitte die Änderungen gemäß dem vorgesehenen Schema vornehmen (siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content</a>)</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
-			FROM 
+			FROM
 				lehre.tbl_studienplan
 				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
@@ -559,10 +644,11 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Bei folgenden WahlLVs passt die Attributskodierung nicht
-	echo '<h2>Bei folgenden Wahl-LVs sind die Attribute "StudPlan","Pflicht","Gen", usw nicht korrekt kodiert.</h2>';
+	echo '<h2>Bei folgenden Wahl-LVs sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
+	echo 'Bitte die Änderungen gemäß dem vorgesehenen Schema vornehmen (siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content</a>)</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
-			FROM 
+			FROM
 				lehre.tbl_studienplan
 				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
@@ -589,10 +675,11 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Bei folgenden Sonstigen LVs passt die Attributskodierung nicht
-	echo '<h2>Bei folgenden Sonstigen LVs sind die Attribute "StudPlan","Pflicht","Gen", usw nicht korrekt kodiert.</h2>';
+	echo '<h2>Bei folgenden Sonstigen LVs sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
+	echo 'Bitte die Änderungen gemäß dem vorgesehenen Schema vornehmen (siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content</a>)</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
-			FROM 
+			FROM
 				lehre.tbl_studienplan
 				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
@@ -617,19 +704,21 @@ if($studienplan->studienplan_id!='')
 		else
 			echo '<span class="ok">OK</span>';
 	}
-	
+
 	// ZUSATZPRUEFUNG: LAS > ALVS
-	echo '<h2>ZUSATZPRÜFUNG: Bei folgenden LVs sind LAS &gt; ALVS</h2>';
+	echo '<h2>Bei folgenden LVs sind LAS &gt; ALVS. <br>
+	Dies ist nur selten der Fall bzw. korrekt.(z.B. wenn mehrere Lehrpersonen gleichzeitig Lehrstunden abhalten).<br>
+	Bitte ggf. die entsprechenden Änderungen vornehmen oder - falls keine Änderungen möglich sind - eine EMail an fhcomplete@'.DOMAIN.' übermitteln.</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
-			FROM 
+			FROM
 				lehre.tbl_studienplan
 				JOIN lehre.tbl_studienplan_lehrveranstaltung USING(studienplan_id)
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
 			WHERE
 				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
-				AND	tbl_lehrveranstaltung.las>tbl_lehrveranstaltung.alvs 
-				AND las is not null AND las>0 AND alvs is not null AND alvs>0				
+				AND	tbl_lehrveranstaltung.las>tbl_lehrveranstaltung.alvs
+				AND las is not null AND las>0 AND alvs is not null AND alvs>0
 			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
 
 	if($result = $db->db_query($qry))
