@@ -54,7 +54,12 @@ echo '<doctype html>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="../../../skin/fhcomplete.css" type="text/css">
 		<link rel="stylesheet" href="../../../skin/vilesci.css" type="text/css">
-
+<style>
+	h2
+	{
+		margin-bottom: 0;
+	}
+</style>
 </head>
 <body>
 <h1>Plausibilitätsprüfung von Studienplänen</h1>
@@ -89,13 +94,13 @@ echo '</select>';
 echo '	<input type="submit" value="pruefen">
 	</form>
 ';
-
+$nummerierung = 1;
 if($studienplan->studienplan_id!='')
 {
 	echo 'Prüfe Studienplan '.$studienplan->bezeichnung.'...<br><br>';
 
 
-	echo '<h2>Bei folgenden kumulativen Modulen ist die "Bewertung" mit "ja" angegeben. Bitte auf "nein" ändern.</h2>';
+	echo '<br><br><br><h2>'.$nummerierung.'. Bei folgenden kumulativen Modulen ist die "Bewertung" mit "ja" angegeben. Bitte auf "nein" ändern.</h2>';
 	// Kumulatives Modul das bewertet wird
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
@@ -126,7 +131,7 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Integratives Pflichtmodul das nicht bewertet wird
-	echo '<h2>Bei folgenden integrativen Modulen ist die "Bewertung" mit "nein" angegeben. Bitte auf "ja" ändern</h2>';
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden integrativen Modulen ist die "Bewertung" mit "nein" angegeben. Bitte auf "ja" ändern</h2>';
 
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
@@ -147,7 +152,7 @@ if($studienplan->studienplan_id!='')
 			while($row = $db->db_fetch_object($result))
 			{
 				$fehler++;
-				echo '<br>Semester '.$row->semester.' - '.$row->bezeichnung;
+				echo 'Semester '.$row->semester.' - '.$row->bezeichnung;
 			}
 		}
 		else
@@ -157,7 +162,7 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Pflichtmodule bei denen die Attribute nicht passen
-	echo '<h2>Bei folgenden <b><u>Pflichtmodulen</u></b> sind die Attribute "StudPlan", "Pflicht", "Gen" usw nicht korrekt kodiert.<br>';
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden <b><u>Pflichtmodulen</u></b> sind die Attribute "StudPlan", "Pflicht", "Gen" usw nicht korrekt kodiert.<br>';
 	echo 'Bitte die Änderungen gemäß dem vorgesehenen Schema vornehmen (siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content</a>)</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
@@ -168,13 +173,15 @@ if($studienplan->studienplan_id!='')
 			WHERE
 				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
 				AND	tbl_studienplan_lehrveranstaltung.pflicht=true
-
-				AND (tbl_lehrveranstaltung.lehrform_kurzbz='kMod'
-					AND (benotung=true OR lehrauftrag=true OR lehre=false OR lvinfo=false OR genehmigung=false OR curriculum=false)
+				AND
+				(
+					(tbl_lehrveranstaltung.lehrform_kurzbz='kMod'
+					AND (benotung=true OR lehrauftrag=true OR lehre=false OR lvinfo=false OR genehmigung=false OR export=false)
 					)
-				AND (tbl_lehrveranstaltung.lehrform_kurzbz='iMod'
-					AND (benotung=false OR lehrauftrag=true OR lehre=false OR lvinfo=false OR genehmigung=false OR curriculum=false)
+				OR (tbl_lehrveranstaltung.lehrform_kurzbz='iMod'
+					AND (benotung=false OR lehrauftrag=true OR lehre=false OR lvinfo=false OR genehmigung=false OR export=false)
 					)
+				)
 			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
 
 	if($result = $db->db_query($qry))
@@ -192,7 +199,7 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Bei folgenden Wahlmodulen passt die Attributskodierung nicht
-	echo '<h2>Bei folgenden <b><u>Wahlmodulen</u></b> sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden <b><u>Wahlmodulen</u></b> sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
 	echo 'Bitte die Änderungen gemäß dem vorgesehenen Schema vornehmen (siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content</a>)</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
@@ -204,7 +211,8 @@ if($studienplan->studienplan_id!='')
 				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
 				AND	tbl_studienplan_lehrveranstaltung.pflicht=false
 				AND tbl_lehrveranstaltung.lehrform_kurzbz='kMod'
-				AND (benotung=true OR lehrauftrag=true OR lehre=false OR lvinfo=false OR genehmigung=false OR curriculum=false)
+				AND tbl_studienplan_lehrveranstaltung.export=true
+				AND (benotung=true OR lehrauftrag=true OR lehre=false OR lvinfo=false)
 			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
 
 	if($result = $db->db_query($qry))
@@ -221,8 +229,8 @@ if($studienplan->studienplan_id!='')
 			echo '<span class="ok">OK</span>';
 	}
 
-	// Bei folgenden Wahlmodulen passt die Attributskodierung nicht
-	echo '<h2>Bei folgenden <b><u>Sonstigen Modulen</u></b> sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
+	// Bei folgenden sonstigen Modulen passt die Attributskodierung nicht
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden <b><u>Sonstigen Modulen</u></b> sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
 	echo 'Bitte die Änderungen gemäß dem vorgesehenen Schema vornehmen (siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content</a>)</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
@@ -232,9 +240,9 @@ if($studienplan->studienplan_id!='')
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
 			WHERE
 				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
-				AND	tbl_studienplan_lehrveranstaltung.curriculum=false
+				AND	tbl_studienplan_lehrveranstaltung.export=false
 				AND tbl_lehrveranstaltung.lehrform_kurzbz='kMod'
-				AND (pflicht=true OR genehmigung=true OR benotung=true OR zeugnis=true OR lehrauftrag=true)
+				AND (pflicht=true OR genehmigung=true OR zeugnis=true)
 			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
 
 	if($result = $db->db_query($qry))
@@ -251,7 +259,7 @@ if($studienplan->studienplan_id!='')
 			echo '<span class="ok">OK</span>';
 	}
 
-	echo '<h2>Bei folgenden Modulen ist der ECTS-Wert leer. Zulässig sind ganze Zahlen oder Komma-5 Werte. Falls es keine ECTS gibt, bitte "0" angeben</h2>';
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden Modulen ist der ECTS-Wert leer. Zulässig sind ganze Zahlen oder Komma-5 Werte. Falls es keine ECTS gibt, bitte "0" angeben</h2>';
 	// ECTS null
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
@@ -282,8 +290,8 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Module in denen zu viele Pflich LVs sind
-	echo '<h2>Bei folgenden Modulen sind die Modul-ECTS kleiner als die ECTS-Summe der dazugehörigen Pflich-Lehrveranstaltungen.<br>
-	Bitte entsprechend ändern oder - falls keine Änderungen möglich sind - eine EMail an fhcomplete@'.DOMAIN.' übermitteln</h2>';
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden Modulen sind die Modul-ECTS kleiner als die ECTS-Summe der dazugehörigen Pflich-Lehrveranstaltungen.<br>
+	Bitte entsprechend ändern oder - falls keine Änderungen möglich sind - eine EMail an <a href="mailto: fhcomplete@'.DOMAIN.'">fhcomplete@'.DOMAIN.'</a> übermitteln</h2>';
 	$qry="
 	SELECT
 		tbl_studienplan.bezeichnung, tbl_lehrveranstaltung.bezeichnung, sl2.semester
@@ -315,8 +323,8 @@ if($studienplan->studienplan_id!='')
 			echo '<span class="ok">OK</span>';
 	}
 
-	echo '<h2>Bei folgenden Modulen sind die Modul-ECTS größer als die ECTS-Summe der dazugehörgien Lehrveranstaltungen.<br>
-	Bitte entsprechend ändern oder - falls keine Änderungen möglich sind - eine EMail an fhcomplete@'.DOMAIN.' übermitteln</h2>';
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden Modulen sind die Modul-ECTS größer als die ECTS-Summe der dazugehörgien Lehrveranstaltungen.<br>
+	Bitte entsprechend ändern oder - falls keine Änderungen möglich sind - eine EMail an <a href="mailto: fhcomplete@'.DOMAIN.'">fhcomplete@'.DOMAIN.'</a> übermitteln</h2>';
 	// Module in denen nicht genügend ECTS sind um das Modul abzuschließen
 	$qry = "
 	SELECT
@@ -348,7 +356,7 @@ if($studienplan->studienplan_id!='')
 			echo '<span class="ok">OK</span>';
 	}
 
-	echo '<h2>Es gibt LVs die keinem Modul zugeordnet sind. Bitte diese einem Modul zuordnen.<br>
+	echo '<br><br><br><h2>'.++$nummerierung.'. Es gibt LVs die keinem Modul zugeordnet sind. Bitte diese einem Modul zuordnen.<br>
 	 Falls kein entsprechendes Modul vorhanden ist, ist ein neues Modul zu erstellen.<br>
 	 Falls die LVs nicht mehr relevant sind, diese aus dem Studienplan entfernen.</h2>';
 	// ECTS null
@@ -381,8 +389,8 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Pruefen ob ECTS, LVS, ALVS, ... leer sind
-	echo '<h2>Bei folgenden LVs sind eines oder mehrere der folgenden Attribute nicht angegeben: ECTS, SWS, LVS, ALVS, LAS, LVPLS<br>
-	Falls keine ECTS, SWS, ... vorgesehen sind, bitte die Zahl "0" eintragen. <br>Falls keine Änderungen möglich sind, eine EMail an fhcomplete@'.DOMAIN.' übermitteln.</h2>';
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs sind eines oder mehrere der folgenden Attribute nicht angegeben: ECTS, SWS, LVS, ALVS, LAS, LVPLS<br>
+	Falls keine ECTS, SWS, ... vorgesehen sind, bitte die Zahl "0" eintragen. <br>Falls keine Änderungen möglich sind, eine EMail an <a href="mailto: fhcomplete@'.DOMAIN.'">fhcomplete@'.DOMAIN.'</a> übermitteln.</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester, tbl_lehrveranstaltung.lehrveranstaltung_id
 			FROM
@@ -411,9 +419,9 @@ if($studienplan->studienplan_id!='')
 
 
 	// Pruefen ob ECTS>=SWS
-	echo '<h2>Bei folgenden LVs sind die ECTS &lt; SWS<br>
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs sind die ECTS &lt; SWS<br>
 	Falls es sich dabei um einen Fehler handelt, bitte die entsprechenden Änderungen vornehmen.<br>
-	Falls keine Änderungen möglich sind, eine EMail an fhcomplete@'.DOMAIN.' übermitteln</h2>';
+	Falls keine Änderungen möglich sind, eine EMail an <a href="mailto: fhcomplete@'.DOMAIN.'">fhcomplete@'.DOMAIN.'</a> übermitteln</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
 			FROM
@@ -441,8 +449,8 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Pruefen ob ALVS>=LVS
-	echo '<h2>Bei folgenden LVs sind die ALVS &lt; LVS<br>
-	Falls keine Änderungen möglich sind, eine EMail an fhcomplete@'.DOMAIN.' übermitteln</h2>';
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs sind die ALVS &lt; LVS<br>
+	Falls keine Änderungen möglich sind, eine EMail an <a href="mailto: fhcomplete@'.DOMAIN.'">fhcomplete@'.DOMAIN.'</a> übermitteln</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester,
 				tbl_lehrveranstaltung.alvs, tbl_lehrveranstaltung.lvs
@@ -470,8 +478,8 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Pruefen ob unterschiedliche Wochenteiler vorhanden sind
-	echo '<h2>Bei folgenden LVs ergeben sich unterschiedliche Werte für die Semesterwochen (Berechnung: LVS / SWS)<br>
-	Die Semesterwochen sollten jedoch überall gleich sein. Bitte die entsprechenden Änderungen durchführen oder - falls keine Änderungen möglich sind - eine EMail an fhcomplete@'.DOMAIN.' übermitteln.</h2>';
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs ergeben sich unterschiedliche Werte für die Semesterwochen (Berechnung: LVS / SWS)<br>
+	Die Semesterwochen sollten jedoch überall gleich sein. Bitte die entsprechenden Änderungen durchführen oder - falls keine Änderungen möglich sind - eine EMail an <a href="mailto: fhcomplete@'.DOMAIN.'">fhcomplete@'.DOMAIN.'</a> übermitteln.</h2>';
 	$qry = "SELECT
 				distinct tbl_lehrveranstaltung.lvs/tbl_lehrveranstaltung.sws as wochenteiler
 			FROM
@@ -514,7 +522,7 @@ if($studienplan->studienplan_id!='')
 
 						if($cnt>5)
 						{
-							echo "<br>&nbsp;&nbsp;&nbsp;... noch ".($db->db_num_rows($result_lv)-5).' weitere';
+							echo "<br><b>&nbsp;&nbsp;&nbsp;... noch ".($db->db_num_rows($result_lv)-5).' weitere</b>';
 							break;
 						}
 					}
@@ -526,8 +534,8 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Pruefen ob LVPLS>ALVS
-	echo '<h2>Bei folgenden LVs sind die LVPLS &gt; ALVS<br>
-	Dies ist nur selten der Fall bzw. korrekt. Bitte erforderlichenfalls die entsprechenden Änderungen vornehmen oder - falls keine Änderungen möglich sind - eine EMail an fhcomplete@'.DOMAIN.' übermitteln</h2>';
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs sind die LVPLS &gt; ALVS<br>
+	Dies ist nur selten der Fall bzw. korrekt. Bitte erforderlichenfalls die entsprechenden Änderungen vornehmen oder - falls keine Änderungen möglich sind - eine EMail an <a href="mailto: fhcomplete@'.DOMAIN.'">fhcomplete@'.DOMAIN.'</a> übermitteln</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester,
 				tbl_lehrveranstaltung.alvs, tbl_lehrveranstaltung.lvps
@@ -556,8 +564,8 @@ if($studienplan->studienplan_id!='')
 
 
 	// Lehrveranstaltungen bei denen Studienplan=True muss eine Englische Bezeichnung vorhanden sein
-	echo '<h2>Bei folgenden Pflicht- und Wahl- LVs fehlt die englische Bezeichnung<br>
-	Bitte ergänzen oder - falls keine Änderungen möglich sind - eine EMail an fhcomplete@'.DOMAIN.' übermitteln.</h2>';
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden Pflicht- und Wahl- LVs fehlt die englische Bezeichnung<br>
+	Bitte ergänzen oder - falls keine Änderungen möglich sind - eine EMail an <a href="mailto: fhcomplete@'.DOMAIN.'">fhcomplete@'.DOMAIN.'</a> übermitteln.</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
 			FROM
@@ -566,8 +574,8 @@ if($studienplan->studienplan_id!='')
 				JOIN lehre.tbl_lehrveranstaltung USING(lehrveranstaltung_id)
 			WHERE
 				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
-				AND	tbl_studienplan_lehrveranstaltung.curriculum=true
-				AND (tbl_lehrveranstaltung.bezeichnung_english is null OR tbl_lehrveranstaltung.bezeichnung_english is null)
+				AND	tbl_studienplan_lehrveranstaltung.export=true
+				AND (tbl_lehrveranstaltung.bezeichnung_english is null OR trim(both ' ' FROM tbl_lehrveranstaltung.bezeichnung_english)='')
 			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
 
 	if($result = $db->db_query($qry))
@@ -585,8 +593,8 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Lehrveranstaltungen bei denen Studienplan=True muss eine Englische Bezeichnung vorhanden sein
-	echo '<h2>Bei folgenden LVs ist die Lehrform nicht angegeben<br>
-	Bitte ergänzen oder - falls keine Änderungen möglich sind - eine EMail an fhcomplete@'.DOMAIN.' übermitteln.</h2>';
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs ist die Lehrform nicht angegeben<br>
+	Bitte ergänzen oder - falls keine Änderungen möglich sind - eine EMail an <a href="mailto: fhcomplete@'.DOMAIN.'">fhcomplete@'.DOMAIN.'</a> übermitteln.</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
 			FROM
@@ -613,7 +621,7 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Bei folgenden PflichtLVs passt die Attributskodierung nicht
-	echo '<h2>Bei folgenden Pflicht-LVs sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden Pflicht-LVs sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
 	echo 'Bitte die Änderungen gemäß dem vorgesehenen Schema vornehmen (siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content</a>)</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
@@ -625,8 +633,8 @@ if($studienplan->studienplan_id!='')
 				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
 				AND tbl_lehrveranstaltung.lehrtyp_kurzbz='lv'
 				AND tbl_studienplan_lehrveranstaltung.pflicht=true
-				AND	tbl_studienplan_lehrveranstaltung.curriculum=true
-				AND (genehmigung=false OR benotung=false OR benotung=false OR zeugnis=false OR lehrauftrag=false OR curriculum=false OR lehre=false OR lvinfo=false)
+				AND	tbl_studienplan_lehrveranstaltung.export=true
+				AND (genehmigung=false OR benotung=false OR zeugnis=false OR lehrauftrag=false OR export=false OR lehre=false OR lvinfo=false)
 			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
 
 	if($result = $db->db_query($qry))
@@ -644,7 +652,7 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Bei folgenden WahlLVs passt die Attributskodierung nicht
-	echo '<h2>Bei folgenden Wahl-LVs sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden Wahl-LVs sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
 	echo 'Bitte die Änderungen gemäß dem vorgesehenen Schema vornehmen (siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content</a>)</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
@@ -656,7 +664,7 @@ if($studienplan->studienplan_id!='')
 				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
 				AND tbl_lehrveranstaltung.lehrtyp_kurzbz='lv'
 				AND tbl_studienplan_lehrveranstaltung.pflicht=false
-				AND tbl_studienplan_lehrveranstaltung.curriculum=true
+				AND tbl_studienplan_lehrveranstaltung.export=true
 				AND (lehre=false OR lvinfo=false OR benotung=false OR zeugnis=false OR lehrauftrag=false)
 			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
 
@@ -675,7 +683,7 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Bei folgenden Sonstigen LVs passt die Attributskodierung nicht
-	echo '<h2>Bei folgenden Sonstigen LVs sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden Sonstigen LVs sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
 	echo 'Bitte die Änderungen gemäß dem vorgesehenen Schema vornehmen (siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content</a>)</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
@@ -687,7 +695,7 @@ if($studienplan->studienplan_id!='')
 				tbl_studienplan.studienplan_id=".$db->db_add_param($studienplan->studienplan_id)."
 				AND tbl_lehrveranstaltung.lehrtyp_kurzbz='lv'
 				AND tbl_studienplan_lehrveranstaltung.pflicht=false
-				AND tbl_studienplan_lehrveranstaltung.curriculum=false
+				AND tbl_studienplan_lehrveranstaltung.export=false
 				AND (genehmigung=true OR benotung=true OR zeugnis=true)
 			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
 
@@ -706,9 +714,9 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// ZUSATZPRUEFUNG: LAS > ALVS
-	echo '<h2>Bei folgenden LVs sind LAS &gt; ALVS. <br>
+	echo '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs sind LAS &gt; ALVS. <br>
 	Dies ist nur selten der Fall bzw. korrekt.(z.B. wenn mehrere Lehrpersonen gleichzeitig Lehrstunden abhalten).<br>
-	Bitte ggf. die entsprechenden Änderungen vornehmen oder - falls keine Änderungen möglich sind - eine EMail an fhcomplete@'.DOMAIN.' übermitteln.</h2>';
+	Bitte ggf. die entsprechenden Änderungen vornehmen oder - falls keine Änderungen möglich sind - eine EMail an <a href="mailto: fhcomplete@'.DOMAIN.'">fhcomplete@'.DOMAIN.'</a> übermitteln.</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
 			FROM
@@ -741,4 +749,4 @@ if($studienplan->studienplan_id!='')
 	else
 		echo '<br><br><span class="error">Es wurden '.$fehler.' Fehler gefunden</span>';
 }
-
+echo '<br><br><br><br>';
