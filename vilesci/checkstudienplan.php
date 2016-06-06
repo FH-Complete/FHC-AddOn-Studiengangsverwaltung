@@ -648,7 +648,7 @@ if($studienplan->studienplan_id!='')
 				AND tbl_lehrveranstaltung.lehrtyp_kurzbz='lv'
 				/*AND tbl_studienplan_lehrveranstaltung.pflicht=false*/
 				AND tbl_studienplan_lehrveranstaltung.export=false
-				AND (genehmigung=true OR pflicht=true OR benotung=true OR zeugnis=true)
+				AND (genehmigung=true OR pflicht=true OR zeugnis=true)
 			ORDER BY tbl_studienplan_lehrveranstaltung.semester";
 
 	if($result = $db->db_query($qry))
