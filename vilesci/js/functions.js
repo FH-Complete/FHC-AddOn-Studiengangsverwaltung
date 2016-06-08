@@ -9,7 +9,7 @@ function getErrorMsg(error)
 		if (error.data.message.detail != undefined)
 			message += "<p>" + error.data.message.detail + "</p>";
 	}
-	
+
 	return message;
 }
 
@@ -32,13 +32,31 @@ function formatDateToString(val,row){
 	}
 }
 
+function pad(number)
+{
+ 	if (number < 10)
+	{
+		return '0' + number;
+	}
+	return number;
+}
+
+function formatDateAsString(val)
+{
+	return val.getFullYear() +
+	'-' + pad(val.getMonth() + 1) +
+	'-' + pad(val.getDate());
+}
+
 function formatStringToDate(val){
-	
+
 	if((val !== null) && (val !== undefined))
 	{
 		var bits = val.split(/\D/);
 		if(bits.length === 6)
+		{
 			return new Date(bits[0], --bits[1], bits[2], bits[3], bits[4], bits[5]);
+		}
 		else if(bits.length === 5)
 			return new Date(bits[0], --bits[1], bits[2], bits[3], bits[4]);
 		else if(bits.length === 3)
@@ -50,7 +68,7 @@ function formatStringToDate(val){
 	{
 		return null;
 	}
-	
+
 //	var date = new Date(Date.parse(val));
 //	return date;
 }

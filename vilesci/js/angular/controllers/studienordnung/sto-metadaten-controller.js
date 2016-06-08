@@ -10,7 +10,7 @@ angular.module('stgv2')
 			ctrl.aenderungsvarianteList = [];
 			ctrl.studienordnungStatusList = [];
 			ctrl.beschlussList = ["Studiengang","Kollegium","AQ Austria"];
-			
+
 			//enable tooltips
 			$(document).ready(function(){
 				$('[data-toggle="tooltip"]').tooltip();
@@ -20,7 +20,7 @@ angular.module('stgv2')
 			{
 				$rootScope.setStudienordnung($stateParams.studienordnung_id);
 			}
-			
+
 			$("#editor").wysiwyg(
 			{
 				'form':
@@ -34,7 +34,7 @@ angular.module('stgv2')
 					$("#editor").html($("#editor").html());
 				},100);
 			});
-			
+
 			ctrl.deleteSelection = function()
 			{
 				window.getSelection().deleteFromDocument();
@@ -126,7 +126,7 @@ angular.module('stgv2')
 						$("#editor").html(response.data.info.begruendung);
 						angular.forEach(ctrl.data.beschluesse, function(value, index){
 							if(value.datum != null)
-								ctrl.data.beschluesse[index].datum = formatStringToDate(value.datum);
+								ctrl.data.beschluesse[index].datum = formatDateAsString(formatStringToDate(value.datum));
 						});
 						ctrl.beschluesse = ctrl.data.beschluesse;
 					}
@@ -171,6 +171,6 @@ angular.module('stgv2')
 					});
 				}
 			};
-			
+
 			ctrl.loadData();
 		});

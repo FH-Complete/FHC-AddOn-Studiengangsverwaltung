@@ -17,11 +17,6 @@
  *
  * Authors: Stefan Puraner <stefan.puraner@technikum-wien.at>
  */
-/**
- * Klasse Fördervertrag
- * @create 10-01-2007
- */
-//require_once('../../../inlcude/basis_db.class.php');
 require_once (dirname(__FILE__).'/../../../include/basis_db.class.php');
 require_once (dirname(__FILE__).'/../../../include/dms.class.php');
 
@@ -39,8 +34,6 @@ class beschluss extends basis_db
 	public $insertvon;		//  bigint
 	public $updateamum;		//  timestamp
 	public $updatevon;		//  bigint
-	
-	public $dokumente = array();
 
 	/**
 	 * Konstruktor
@@ -97,14 +90,17 @@ class beschluss extends basis_db
 	}
 
 	/**
-	 * Liefert alle Förderverträge
+	 * Liefert alle Beschluesse
+	 * @param $studienordnung_id integer Optional Wenn eine ID uebereben wird,
+	 * dann werden nur die Datensaetze dieser Studienordnung geliefert
+	 * @return boolean true wenn ok, false im Fehlerfall
 	 */
 	public function getAll($studienordnung_id=null)
 	{
 		$qry = "SELECT * FROM addon.tbl_stgv_beschluesse ";
-		if($studienordnung_id!=null)
-			$qry.=" WHERE studienordnung_id=".$this->db_add_param($studienordnung_id);
-		$qry.=";";
+		if($studienordnung_id != null)
+			$qry .= " WHERE studienordnung_id=".$this->db_add_param($studienordnung_id);
+		$qry .= ";";
 
 		if($this->db_query($qry))
 		{
@@ -124,10 +120,10 @@ class beschluss extends basis_db
 				$this->result[] = $obj;
 			}
 			return true;
-		}
+	}
 		else
 		{
-			$this->errormsg = 'Fehler beim Laden der Förderverträge.';
+			$this->errormsg = 'Fehler beim Laden der Beschluesse.';
 			return false;
 		}
 	}
@@ -141,7 +137,7 @@ class beschluss extends basis_db
 		//Zahlenfelder pruefen
 		if(!is_numeric($this->studienordnung_id))
 		{
-			$this->errormsg='studienordnung_id enthaelt ungueltige Zeichen';
+			$this->errormsg = 'studienordnung_id enthaelt ungueltige Zeichen';
 			return false;
 		}
 
@@ -152,7 +148,7 @@ class beschluss extends basis_db
 	/**
 	 * Speichert den aktuellen Datensatz in die Datenbank
 	 * Wenn $neu auf true gesetzt ist wird ein neuer Datensatz angelegt
-	 * andernfalls wird der Datensatz mit der ID in $reihungstest_id aktualisiert
+	 * andernfalls wird der Datensatz mit der ID in $beschluss_id aktualisiert
 	 * @return true wenn ok, false im Fehlerfall
 	 */
 	public function save()
@@ -163,8 +159,7 @@ class beschluss extends basis_db
 		if($this->new)
 		{
 			//Neuen Datensatz einfuegen
-
-			$qry='BEGIN; INSERT INTO addon.tbl_stgv_beschluesse (studienordnung_id, datum, typ, insertamum, insertvon) VALUES('.
+			$qry = 'BEGIN; INSERT INTO addon.tbl_stgv_beschluesse (studienordnung_id, datum, typ, insertamum, insertvon) VALUES('.
 			     $this->db_add_param($this->studienordnung_id, FHC_INTEGER).', '.
 			     $this->db_add_param($this->datum).', '.
 			     $this->db_add_param($this->typ).', now(),'.
@@ -172,7 +167,7 @@ class beschluss extends basis_db
 		}
 		else
 		{
-			$qry='UPDATE addon.tbl_stgv_beschluesse SET '.
+			$qry = 'UPDATE addon.tbl_stgv_beschluesse SET '.
 				'studienordnung_id='.$this->db_add_param($this->studienordnung_id, FHC_INTEGER).', '.
 				'datum='.$this->db_add_param($this->datum).', '.
 				'typ='.$this->db_add_param($this->typ).', '.
@@ -180,7 +175,7 @@ class beschluss extends basis_db
 				'updatevon='.$this->db_add_param($this->updatevon).' '.
 				'WHERE beschluss_id='.$this->db_add_param($this->beschluss_id, FHC_INTEGER, false).';';
 		}
-		
+
 		if($this->db_query($qry))
 		{
 			if($this->new)
@@ -216,17 +211,22 @@ class beschluss extends basis_db
 			return false;
 		}
 	}
-	
+
+	/**
+	 * Entfernt einen Beschluss Eintrag
+	 * @param $beschluss_id integer ID des Eintrages
+	 * @return boolean true wenn ok, false im Fehlerfall
+	 */
 	public function delete($beschluss_id)
 	{
-	    $qry = "DELETE from addon.tbl_stgv_beschluesse WHERE beschluss_id=".$this->db_add_param($beschluss_id);
-	    
-	    if(!$this->db_query($qry))
-	    {
-		$this->errormsg = 'Fehler beim Löschen der Daten';
-		return false;
-	    }
-	    
-	    return true;
+		$qry = "DELETE from addon.tbl_stgv_beschluesse WHERE beschluss_id=".$this->db_add_param($beschluss_id, FHC_INTEGER);
+
+		if(!$this->db_query($qry))
+		{
+			$this->errormsg = 'Fehler beim Löschen der Daten';
+			return false;
+		}
+
+		return true;
 	}
 }
