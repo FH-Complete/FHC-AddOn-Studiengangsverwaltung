@@ -1289,6 +1289,26 @@ if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berecht
     }
 }
 
+// Unique Keys
+if($result = @$db->db_query("SELECT * FROM information_schema.table_constraints WHERE constraint_schema='addon' AND table_name='tbl_stgv_aufnahmeverfahren' AND constraint_name='uk_stgv_aufnahemverfahren_studienordnung_id' LIMIT 1;"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+		$qry = "ALTER TABLE addon.tbl_stgv_aufnahmeverfahren ADD CONSTRAINT uk_stgv_aufnahemverfahren_studienordnung_id UNIQUE (studienordnung_id);
+				ALTER TABLE addon.tbl_stgv_auslandssemester ADD CONSTRAINT uk_stgv_auslandssemester_studienplan_id UNIQUE (studienplan_id);
+				ALTER TABLE addon.tbl_stgv_berufspraktikum ADD CONSTRAINT uk_stgv_berufspraktikum_studienplan_id UNIQUE (studienplan_id);
+				ALTER TABLE addon.tbl_stgv_qualifikationsziele ADD CONSTRAINT uk_stgv_qualifikationsziele_studienordnung_id UNIQUE (studienordnung_id);
+				ALTER TABLE addon.tbl_stgv_taetigkeitsfelder ADD CONSTRAINT uk_stgv_taetigkeitsfelder_studienordnung_id UNIQUE (studienordnung_id);
+				ALTER TABLE addon.tbl_stgv_zugangsvoraussetzung ADD CONSTRAINT uk_stgv_zugangsvoraussetzung_studienordnung_id UNIQUE (studienordnung_id);";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>Unique Keys anlegen: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' Unique Keys fuer diverse Tabellen erstellt<br>';
+    }
+}
+
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
