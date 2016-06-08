@@ -1996,45 +1996,48 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			</xsl:call-template>
 		</text:span>
       </text:p>
-      <text:list xml:id="list120528168328504" text:continue-numbering="true" text:style-name="WWNum1">
-        <text:list-item>
-          <text:list>
-            <text:list-item>
-              <text:h text:style-name="P60" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2412_554519492"/><text:bookmark-start text:name="_Toc451354164"/>Auslandssemester<text:bookmark-end text:name="__RefHeading__2412_554519492"/><text:bookmark-end text:name="_Toc451354164"/></text:h>
-            </text:list-item>
-          </text:list>
-        </text:list-item>
-      </text:list>
-      <text:p text:style-name="Standard">
-        <text:span text:style-name="T14">Ein Auslandssemester ist</text:span>
-        <text:span text:style-name="T19"> </text:span>
 
-        <text:span text:style-name="T19">
-			<xsl:choose>
-				<xsl:when test="auslandssemester/semester/verpflichtend='true'">
-					verpflichtend
-				</xsl:when>
-				<xsl:otherwise>
-					optional
-				</xsl:otherwise>
-			</xsl:choose>
-		</text:span>
-        <text:span text:style-name="T14"> vorgesehen.</text:span>
-      </text:p>
+	  <xsl:if test="auslandssemester/semester">
+	      <text:list xml:id="list120528168328504" text:continue-numbering="true" text:style-name="WWNum1">
+	        <text:list-item>
+	          <text:list>
+	            <text:list-item>
+	              <text:h text:style-name="P60" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2412_554519492"/><text:bookmark-start text:name="_Toc451354164"/>Auslandssemester<text:bookmark-end text:name="__RefHeading__2412_554519492"/><text:bookmark-end text:name="_Toc451354164"/></text:h>
+	            </text:list-item>
+	          </text:list>
+	        </text:list-item>
+	      </text:list>
+	      <text:p text:style-name="Standard">
+	        <text:span text:style-name="T14">Ein Auslandssemester ist</text:span>
+	        <text:span text:style-name="T19"> </text:span>
 
-	  <xsl:apply-templates select="auslandssemester"/>
+	        <text:span text:style-name="T19">
+				<xsl:choose>
+					<xsl:when test="auslandssemester/semester/verpflichtend='true'">
+						verpflichtend
+					</xsl:when>
+					<xsl:otherwise>
+						optional
+					</xsl:otherwise>
+				</xsl:choose>
+			</text:span>
+	        <text:span text:style-name="T14"> vorgesehen.</text:span>
+	      </text:p>
 
-      <text:p text:style-name="P77"/>
-      <text:p text:style-name="P52">Erläuterungen zum Auslandssemester</text:p>
-      <text:p text:style-name="P12">
-        <text:span text:style-name="T14">
-			<xsl:call-template name="replace_linebreak">
-				<xsl:with-param name="string" select="auslandssemester_erlaeuterungen"/>
-			</xsl:call-template>
-		</text:span>
-      </text:p>
+		  <xsl:apply-templates select="auslandssemester"/>
 
-	  <xsl:if test="berufspraktikum">
+	      <text:p text:style-name="P77"/>
+	      <text:p text:style-name="P52">Erläuterungen zum Auslandssemester</text:p>
+	      <text:p text:style-name="P12">
+	        <text:span text:style-name="T14">
+				<xsl:call-template name="replace_linebreak">
+					<xsl:with-param name="string" select="auslandssemester_erlaeuterungen"/>
+				</xsl:call-template>
+			</text:span>
+	      </text:p>
+	  </xsl:if>
+
+	  <xsl:if test="berufspraktikum/semester">
 	      <text:list xml:id="list120528306467999" text:continue-list="list120528168328504" text:style-name="WWNum1">
 	        <text:list-item>
 	          <text:list>
@@ -2658,15 +2661,17 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 				  </text:p>
 				</table:table-cell>
 			  </table:table-row>
-			  <table:table-row table:style-name="TabelleModul.1">
-				<table:table-cell table:style-name="TabelleModul.A7" office:value-type="string">
-				  <text:p text:style-name="P81">Leistungsbeurteilung</text:p>
-				  <text:p text:style-name="P81">(falls Modulprüfung)</text:p>
-				</table:table-cell>
-				<table:table-cell table:style-name="TabelleModul.A7" office:value-type="string">
-				  <xsl:apply-templates select="lvinfo/leistungsb" />
-				</table:table-cell>
-			  </table:table-row>
+			  <xsl:if test="lvinfo">
+				  <table:table-row table:style-name="TabelleModul.1">
+					<table:table-cell table:style-name="TabelleModul.A7" office:value-type="string">
+					  <text:p text:style-name="P81">Leistungsbeurteilung</text:p>
+					  <text:p text:style-name="P81">(falls Modulprüfung)</text:p>
+					</table:table-cell>
+					<table:table-cell table:style-name="TabelleModul.A7" office:value-type="string">
+					  <xsl:apply-templates select="lvinfo/leistungsb" />
+					</table:table-cell>
+				  </table:table-row>
+			  </xsl:if>
 			</table:table>
 		</xsl:when>
 		<xsl:otherwise>
