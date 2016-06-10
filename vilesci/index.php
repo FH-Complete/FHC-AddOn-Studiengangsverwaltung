@@ -179,7 +179,8 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm2'">Bearbeiten</a>
 		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm3'">Status</a>
 		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm4'">Diff</a>
-		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm5',iconCls:'icon-help'">About</a>
+			<a href="#" class="easyui-menubutton" data-options="menu:'#mm5'">Export</a>
+		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm6',iconCls:'icon-help'">About</a>
 		</div>
 		<div id="mm1" style="width:150px;">
 		    <div ng-click='menuCtrl.createStudienordnung()'>Studienordnung</div>
@@ -205,7 +206,12 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 		<div id="mm4" style="width:100px;">
 		    <div ng-click='menuCtrl.diff()'>Diff</div>
 		</div>
-		<div id="mm5"  >
+		<div id="mm5" style="width:100px;">
+			<div ng-click="menuCtrl.export('pdf')">PDF</div>
+			<div ng-click="menuCtrl.export('odt')">ODT</div>
+			<div ng-click="menuCtrl.export('doc')">DOC</div>
+		</div>
+		<div id="mm6"  >
             <div>
                 <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=stgvt:allgemeines" target="_blank">Hilfe</a>
             </div>

@@ -102,13 +102,13 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       <style:table-properties style:width="16.73cm" fo:margin-left="-0.009cm" fo:margin-top="0cm" fo:margin-bottom="0cm" table:align="left" style:writing-mode="lr-tb"/>
     </style:style>
     <style:style style:name="Tabelle4.A" style:family="table-column">
-      <style:table-column-properties style:column-width="1.233cm"/>
+      <style:table-column-properties style:column-width="1.533cm"/> <!-- 1.233cm -->
     </style:style>
     <style:style style:name="Tabelle4.B" style:family="table-column">
       <style:table-column-properties style:column-width="8.634cm"/>
     </style:style>
     <style:style style:name="Tabelle4.C" style:family="table-column">
-      <style:table-column-properties style:column-width="1.519cm"/>
+      <style:table-column-properties style:column-width="1.619cm"/> <!-- 1.519cm -->
     </style:style>
     <style:style style:name="Tabelle4.D" style:family="table-column">
       <style:table-column-properties style:column-width="0.961cm"/>
@@ -1399,11 +1399,6 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       <text:p text:style-name="P23"/>
       <text:p text:style-name="P23"/>
       <text:p text:style-name="P2">
-        <draw:frame text:anchor-type="char" draw:z-index="0" draw:name="WordPictureWatermark2" draw:style-name="gr1" draw:text-style-name="P93" svg:width="20.998cm" svg:height="29.701cm" svg:x="-2.501cm" svg:y="-3.501cm">
-          <draw:image xlink:href="Pictures/10000000000004D8000006DAB37110F7.jpg" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad">
-            <text:p/>
-          </draw:image>
-        </draw:frame>
         <text:span text:style-name="page_20_number"/>
       </text:p>
       <text:p text:style-name="Deckblatt_20_Autor">
@@ -1586,14 +1581,15 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       <text:p text:style-name="P18"/>
       <text:list xml:id="list1922260572595372515" text:style-name="WWNum5">
         <text:list-item>
-          <text:h text:style-name="P56" text:outline-level="1"><text:bookmark-start text:name="__RefHeading__2392_554519492"/><text:bookmark-start text:name="_Toc451354154"/><text:bookmark text:name="_Toc114210880"/>Studienordnung<text:bookmark-end text:name="__RefHeading__2392_554519492"/><text:bookmark-end text:name="_Toc451354154"/></text:h>
+          <text:h text:style-name="P56" text:outline-level="1">Studienordnung</text:h>
         </text:list-item>
       </text:list>
+
       <text:list xml:id="list64427228017889994" text:style-name="WWNum1">
         <text:list-item>
           <text:list>
             <text:list-item>
-              <text:h text:style-name="P60" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2394_554519492"/><text:bookmark-start text:name="_Toc451354155"/>Metadaten<text:bookmark-end text:name="__RefHeading__2394_554519492"/><text:bookmark-end text:name="_Toc451354155"/></text:h>
+              <text:h text:style-name="P60" text:outline-level="2">Metadaten</text:h>
             </text:list-item>
           </text:list>
         </text:list-item>
@@ -1673,15 +1669,14 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       <text:p text:style-name="P30"/>
       <text:p text:style-name="P52">Beschreibung der Änderungen</text:p>
       <text:p text:style-name="P8">
-        <!--<text:span text:style-name="T14">-->
-			<xsl:value-of select="begruendung"  disable-output-escaping="yes"/>
-		<!--</text:span>-->
+    		<xsl:value-of select="begruendung"  disable-output-escaping="yes"/>
+
       </text:p>
       <text:list xml:id="list120527871223613" text:continue-numbering="true" text:style-name="WWNum1">
         <text:list-item>
           <text:list>
             <text:list-item>
-              <text:h text:style-name="P60" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2396_554519492"/><text:bookmark-start text:name="_Toc451354156"/>Eckdaten<text:bookmark-end text:name="__RefHeading__2396_554519492"/><text:bookmark-end text:name="_Toc451354156"/></text:h>
+              <text:h text:style-name="P60" text:outline-level="2">Eckdaten</text:h>
             </text:list-item>
           </text:list>
         </text:list-item>
@@ -1764,7 +1759,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         <text:list-item>
           <text:list>
             <text:list-item>
-              <text:h text:style-name="P61" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2400_554519492"/><text:bookmark-start text:name="_Toc451354158"/>Aufnahmeverfahren<text:bookmark-end text:name="__RefHeading__2400_554519492"/><text:bookmark-end text:name="_Toc451354158"/></text:h>
+              <text:h text:style-name="P60" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2400_554519492"/><text:bookmark-start text:name="_Toc451354158"/>Aufnahmeverfahren<text:bookmark-end text:name="__RefHeading__2400_554519492"/><text:bookmark-end text:name="_Toc451354158"/></text:h>
             </text:list-item>
           </text:list>
         </text:list-item>
@@ -1967,7 +1962,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P27">Sprache</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
-            <text:p text:style-name="P15"><xsl:value-of select="sprache"/></text:p>
+            <text:p text:style-name="P15"><xsl:value-of select="sprache_anzeige"/></text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row table:style-name="Tabelle3.1">
@@ -1989,8 +1984,8 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
           </text:list>
         </text:list-item>
       </text:list>
-      <text:p text:style-name="P12">
-        <text:span text:style-name="T18">
+      <text:p text:style-name="PNORMAL">
+        <text:span text:style-name="T14">
 			<xsl:call-template name="replace_linebreak">
 				<xsl:with-param name="string" select="erlaeuterungen"/>
 			</xsl:call-template>
@@ -2027,18 +2022,21 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 		  <xsl:apply-templates select="auslandssemester"/>
 
 	      <text:p text:style-name="P77"/>
-	      <text:p text:style-name="P52">Erläuterungen zum Auslandssemester</text:p>
-	      <text:p text:style-name="P12">
-	        <text:span text:style-name="T14">
-				<xsl:call-template name="replace_linebreak">
-					<xsl:with-param name="string" select="auslandssemester_erlaeuterungen"/>
-				</xsl:call-template>
-			</text:span>
-	      </text:p>
+
+		  <xsl:if test="auslandssemester_erlaeuterungen!=''">
+		      <text:p text:style-name="P52">Erläuterungen zum Auslandssemester</text:p>
+		      <text:p text:style-name="PNORMAL">
+		        <text:span text:style-name="T14">
+					<xsl:call-template name="replace_linebreak">
+						<xsl:with-param name="string" select="auslandssemester_erlaeuterungen"/>
+					</xsl:call-template>
+				</text:span>
+		      </text:p>
+		</xsl:if>
 	  </xsl:if>
 
 	  <xsl:if test="berufspraktikum/semester">
-	      <text:list xml:id="list120528306467999" text:continue-list="list120528168328504" text:style-name="WWNum1">
+	      <text:list xml:id="list120528306467999" text:continue-numbering="true" text:style-name="WWNum1">
 	        <text:list-item>
 	          <text:list>
 	            <text:list-item>
@@ -2056,14 +2054,16 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 
 		  <xsl:apply-templates select="berufspraktikum"/>
 
-	      <text:p text:style-name="P52"><text:soft-page-break/>Erläuterungen zum Berufspraktikum</text:p>
-	      <text:p text:style-name="P12">
-	        <text:span text:style-name="T14">
-				<xsl:call-template name="replace_linebreak">
-					<xsl:with-param name="string" select="berufspraktikum_erlaeuterungen"/>
-				</xsl:call-template>
-			</text:span>
-	      </text:p>
+		  <xsl:if test="berufspraktikum_erlaeuterungen!=''">
+		      <text:p text:style-name="P52"><text:soft-page-break/>Erläuterungen zum Berufspraktikum</text:p>
+		      <text:p text:style-name="PNORMAL">
+		        <text:span text:style-name="T14">
+					<xsl:call-template name="replace_linebreak">
+						<xsl:with-param name="string" select="berufspraktikum_erlaeuterungen"/>
+					</xsl:call-template>
+				</text:span>
+		      </text:p>
+		  </xsl:if>
 	</xsl:if>
       <text:p text:style-name="P6"/>
       <text:list xml:id="list120527799921646" text:continue-list="list120528306467999" text:style-name="WWNum1">
@@ -2676,7 +2676,6 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 		</xsl:when>
 		<xsl:otherwise>
 			<!-- ***** Lehrveranstaltung ***** -->
-			<text:p text:style-name="Text_20_body"/>
 			<table:table table:name="TabelleLV" table:style-name="TabelleLV">
 			  <table:table-column table:style-name="TabelleLV.A"/>
 			  <table:table-column table:style-name="TabelleLV.B"/>
@@ -2774,7 +2773,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 				</table:table-cell>
 				<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
 				  <text:p text:style-name="P85">
-					<text:span text:style-name="T37"><xsl:value-of select="sprache" /></text:span>
+					<text:span text:style-name="T37"><xsl:value-of select="sprache_anzeige" /></text:span>
 				  </text:p>
 				</table:table-cell>
 			  </table:table-row>
@@ -2851,12 +2850,13 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			</table:table>
 		</xsl:otherwise>
 	</xsl:choose>
-	<text:p text:style-name="P4"/>
+
 	<xsl:apply-templates select="childs" mode="modulbeschreibung"/>
 </xsl:template>
 
 <xsl:template match="childs" mode="modulbeschreibung">
 	<xsl:apply-templates select="lehrveranstaltung" mode="modulbeschreibung"/>
+	<text:p text:style-name="P4"/>
 </xsl:template>
 
 <!-- **** LVINFO ** -->

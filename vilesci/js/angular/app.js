@@ -4,7 +4,7 @@ var stgv2 = angular.module("stgv2", ['ui.router', 'ngSanitize', 'angularFileUplo
 	//initialize get if not there
     if (!$httpProvider.defaults.headers.get) {
         $httpProvider.defaults.headers.get = {};
-    }    
+    }
 	//disable IE ajax request caching
     $httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
     // extra
@@ -186,6 +186,7 @@ angular.module("stgv2")
 				});
 
 				$compile($('#mm4').contents())($scope);
+				$compile($('#mm5').contents())($scope);
 			},function(error){
 				errorService.setError(getErrorMsg(error));
 			});
@@ -382,6 +383,19 @@ angular.module("stgv2")
 				else
 				{
 					$state.go('studienordnungDiff', {"stgkz": $stateParams.stgkz});
+				}
+			};
+
+			ctrl.export = function (format)
+			{
+				var sto = $("#treeGrid").treegrid('getSelected');
+				if ((sto != null) && (sto.attributes[0].value == "studienordnung"))
+				{
+					window.location.href="export.php?studienordnung_id="+sto.studienordnung_id+"&output="+format;
+				}
+				else
+				{
+					alert('Bitte wählen Sie zuerst eine Studienordnung');
 				}
 			};
 		})

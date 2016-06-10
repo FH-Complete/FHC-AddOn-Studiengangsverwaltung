@@ -30,6 +30,7 @@ require_once('../../../include/akadgrad.class.php');
 require_once('../../../include/organisationsform.class.php');
 require_once('../../../include/standort.class.php');
 require_once('../../../include/lehrform.class.php');
+require_once('../../../include/sprache.class.php');
 require_once('../include/studienordnungAddonStgv.class.php');
 require_once('../include/studienplanAddonStgv.class.php');
 require_once('../include/aenderungsvariante.class.php');
@@ -40,9 +41,6 @@ require_once('../include/taetigkeitsfeld.class.php');
 require_once('../include/qualifikationsziel.class.php');
 require_once('../include/auslandssemester.class.php');
 require_once('../include/berufspraktikum.class.php');
-
-// Addon LVINFO
-require_once('../../lvinfo/include/lvinfo.class.php');
 
 $uid = get_uid();
 
@@ -70,11 +68,22 @@ if(isset($_GET['lvinfo']))
 		$output_lvinfo=true;
 	else
 		$output_lvinfo=false;
+
+	// Addon LVINFO
+	require_once('../../lvinfo/include/lvinfo.class.php');
+
 }
 else
 {
 	$output_lvinfo=false;
 }
+
+$sprache_arr=array();
+// Alle Sprachen laden
+$sprache = new sprache();
+$sprache->getAll();
+foreach($sprache->result as $row)
+	$sprache_arr[$row->sprache] = $row->bezeichnung_arr;
 
 $doc = new dokument_export('STGV_Sto');
 
@@ -166,8 +175,8 @@ foreach($stpl->result as $row_stpl)
 		array(
 			'semester'=>$sem,
 			'semester_summe_ects'=>$semester_summe_ects,
-			'semester_summe_sws'=>$semester_summe_sws,
-			'semester_summe_lvs'=>$semester_summe_lvs,
+			'semester_summe_sws'=>'', // TODO $semester_summe_sws,
+			'semester_summe_lvs'=>'', // TODO $semester_summe_lvs,
 			'lehrveranstaltungen'=>$lv_arr,
 		));
 		$summe_ects += $semester_summe_ects;
@@ -238,6 +247,7 @@ foreach($stpl->result as $row_stpl)
 		'pflicht_sws'=>$row_stpl->pflicht_sws,
 		'pflicht_lvs'=>$row_stpl->pflicht_lvs,
 		'sprache'=>$row_stpl->sprache,
+		'sprache_anzeige'=>(isset($sprache_arr[$row_stpl->sprache][DEFAULT_LANGUAGE])?$sprache_arr[$row_stpl->sprache][DEFAULT_LANGUAGE]:$row_stpl->sprache),
 		'sprache_kommentar'=>$row_stpl->sprache_kommentar,
 		'semester'=>$semester_arr,
 		'summe_ects'=>$summe_ects,
@@ -258,6 +268,9 @@ foreach($stpl->result as $row_stpl)
 $taetigkeitsfeld_ueberblick = '';
 $taetigkeitsfeld = new taetigkeitsfeld();
 $taetigkeitsfeld->getAll($studienordnung_id);
+$aufgaben_elements=array();
+$positionen_elements=array();
+$branchen_elements=array();
 if(isset($taetigkeitsfeld->result[0]))
 {
 	$taetigkeitsfeld_ueberblick = $taetigkeitsfeld->result[0]->ueberblick;
@@ -340,7 +353,7 @@ $data = array(
 	'aufnahmeverfahren'=>html2odt($aufnahmeverfahren->result[0]->data),
 	'studienplaene'=>$stpl_arr,
 	'taetigkeitsfeld_ueberblick'=>html2odt($taetigkeitsfeld_ueberblick),
-	'branchen_fixed'=>$branchen_fixed,
+	'branchen_fixed'=>html2odt($branchen_fixed),
 	'branchen_elements'=>$branchen_elements,
 	'positionen_fixed'=>$positionen_fixed,
 	'positionen_elements'=>$positionen_elements,
@@ -374,7 +387,7 @@ else
 function printLVTree($tree)
 {
 	global $semester_summe_sws, $semester_summe_lvs, $lehrform_arr;
-	global $output_lvinfo;
+	global $output_lvinfo, $sprache_arr;
 
 	$data = array();
 	$i=0;
@@ -401,6 +414,7 @@ function printLVTree($tree)
 			'genehmigung'=>($lv->genehmigung?'true':'false'),
 			'pflicht'=>($lv->stpllv_pflicht?'true':'false'),
 			'sprache'=>$lv->sprache,
+			'sprache_anzeige'=>(isset($sprache_arr[$lv->sprache][DEFAULT_LANGUAGE])?$sprache_arr[$lv->sprache][DEFAULT_LANGUAGE]:$lv->sprache),
 		);
 
 		if($output_lvinfo)
@@ -465,52 +479,105 @@ function html2odt($str)
 	$str = str_replace('<br>','<text:line-break/>',$str);
 
 	// FETT <b>
-	$str = str_replace('<b>','<text:span text:style-name="FETT">',$str);
-	$str = str_replace('</b>','</text:span>',$str);
+	$str = preg_replace('/<b>(.*?)<\/b>/s','<text:span text:style-name="FETT">$1</text:span>',$str);
 
 	// Kursiv <i>
-	$str = str_replace('<i>','<text:span text:style-name="KURSIV">',$str);
-	$str = str_replace('</i>','</text:span>',$str);
+	$str = preg_replace('/<i>(.*?)<\/i>/s','<text:span text:style-name="KURSIV">$1</text:span>',$str);
 
 	// Unterstrichen <u>
-	$str = str_replace('<u>','<text:span text:style-name="UNTERSTRICHEN">',$str);
-	$str = str_replace('</u>','</text:span>',$str);
+	$str = preg_replace('/<u>(.*?)<\/u>/s','<text:span text:style-name="UNTERSTRICHEN">$1</text:span>',$str);
 
 	// Durchgestrichen <strike>
-	$str = str_replace('<strike>','<text:span text:style-name="DURCHGESTRICHEN">',$str);
-	$str = str_replace('</strike>','</text:span>',$str);
+	$str = preg_replace('/<strike>(.*?)<\/strike>/s','<text:span text:style-name="DURCHGESTRICHEN">$1</text:span>',$str);
 
-	$str = str_replace('<div align="center">','</text:p><text:p text:style-name="ZENTRIERT">',$str);
-	$str = str_replace('<div align="left">','</text:p><text:p text:style-name="LINKSBUENDIG">',$str);
-	$str = str_replace('<div align="right">','</text:p><text:p text:style-name="RECHTSBUENDIG">',$str);
-	$str = str_replace('</div>','</text:p><text:p text:style-name="PNORMAL"> ',$str);
+	// DIV align ersetzten
+	$str = preg_replace('/<div align="center">(.*?)<\/div>/s','<text:p text:style-name="ZENTRIERT">$1</text:p>',$str);
+	$str = preg_replace('/<div align="left">(.*?)<\/div>/s','<text:p text:style-name="LINKSBUENDIG">$1</text:p>',$str);
+	$str = preg_replace('/<div align="right">(.*?)<\/div>/s','<text:p text:style-name="RECHTSBUENDIG">$1</text:p>',$str);
+	$str = preg_replace('/<div align="justify">(.*?)<\/div>/s','<text:p text:style-name="LINKSBUENDIG">$1</text:p>',$str);
 
-	// Sonstiges
-	$str = str_replace('<div align="justify">','</text:p><text:p text:style-name="LINKSBUENDIG">',$str);
-	$str = str_replace('<div>','</text:p><text:p text:style-name="LINKSBUENDIG">',$str);
+	$str = preg_replace('/<div>(.*?)<\/div>/s','$1',$str);
+	$str = preg_replace('/<div>(.*?)<\/div>/s','$1',$str);
 
-	// Aufzaehlung <ul>
-	$str = str_replace('<ul>','</text:p><text:list xml:id="list'.rand().'" text:style-name="LIST_UNORDERED">',$str);
-	$str = str_replace('</ul>','</text:list><text:p text:style-name="PNORMAL"> ',$str);
-
-	// Aufzaehlung <ol>
-	$str = str_replace('<ol>','</text:p><text:list xml:id="list'.rand().'" text:style-name="LIST_ORDERED">',$str);
-	$str = str_replace('</ol>','</text:list><text:p text:style-name="PNORMAL"> ',$str);
 
 	// List item <li>
-	$str = str_replace('<li>','<text:list-item><text:p text:style-name="PLIST"><text:span text:style-name="TLIST">',$str);
-	$str = str_replace('</li>','</text:span></text:p></text:list-item>',$str);
 
+	// 3. Ebene
+	$str = preg_replace('/<ul>(.*?)<ul>(.*?)<li>(.*?)<\/li>(.*?)<\/ul>(.*?)<\/ul>/s','<ul>$1<ul>$2<text:list-item><text:p text:style-name="PLIST"><text:span text:style-name="TLIST">$3</text:span></text:p></text:list-item>$4</ul>$5</ul>',$str);
+	// 2. Ebene
+	$str = preg_replace('/<ul>(.*?)<li>(.*?)<\/li>(.*?)<\/ul>/s','<ul>$1<text:list-item><text:p text:style-name="PLIST"><text:span text:style-name="TLIST">$2</text:span></text:p></text:list-item>$3</ul>',$str);
+	// 1. Ebene
+	$str = preg_replace('/<li>(.*?)<\/li>/s','<text:list-item><text:p text:style-name="PLIST"><text:span text:style-name="TLIST">$1</text:span></text:p></text:list-item>',$str);
+	$str = preg_replace('/<li>(.*?)<\/li>/s','<text:list-item><text:p text:style-name="PLIST"><text:span text:style-name="TLIST">$1</text:span></text:p></text:list-item>',$str);
+
+	/* Alle UL ersetzen die innerhalb eines andern UL vorkommen und versetzen
+	   damit die ULs innerhalb des darueberliegenden LI sind
+	/*
+	<ul>
+		<li></li>
+		<ul>
+			<li></li>
+		</ul>
+	</ul>
+	=>
+	<ul>
+		<li>
+			<ul>
+				<li></li>
+			</ul>
+		</li>
+	</ul>
+	*/
+	$str = preg_replace('/<\/text:list-item>(\s*)<ul>(.*?)<\/ul>/s','$1<text:list text:style-name="LIST_UNORDERED">$2</text:list></text:list-item>',$str);
+	// Ein 2. Mal ausfuehren weil es sonst bei Mehrfach verschachtelten eintraegen beim 1. Mal uebersprungen wird
+	$str = preg_replace('/<\/text:list-item>(\s*)<ul>(.*?)<\/ul>/s','$1<text:list text:style-name="LIST_UNORDERED">$2</text:list></text:list-item>',$str);
+	$str = preg_replace('/<\/text:list-item>(\s*)<ul>(.*?)<\/ul>/s','$1<text:list text:style-name="LIST_UNORDERED">$2</text:list></text:list-item>',$str);
+
+	/*
+	<LI>
+		<UL> <--
+			<LI>
+		</UL> <--
+	</LI>*/
+	$str = preg_replace('/<ul>(.*?)<text:list-item>(.*?)<ul>(.*?)<\/ul>/s','<ul>$1<text:list-item>$2<text:list text:style-name="LIST_UNORDERED">$3</text:list>',$str);
+	$str = preg_replace('/<text:list-item>(.*?)<ul>(.*?)<\/ul>/s','<text:list-item>$1<text:list text:style-name="LIST_UNORDERED">$2</text:list>',$str);
+
+	// Alle UL aussen herum ersetzen
+	$str = preg_replace('/<ul>(.*?)<\/ul>/s','</text:p><text:list text:style-name="LIST_UNORDERED">$1</text:list><text:p text:style-name="PNORMAL">',$str);
+
+	// Aufzaehlung <ol>
+	//$str = preg_replace('/<ol>(.*?)<\/ol>/s','<text:list text:style-name="LIST_ORDERED">$1</text:list>',$str);
+	$str = preg_replace('/<\/text:list-item>(\s*)<ol>(.*?)<\/ol>/s','$1<text:list text:style-name="LIST_ORDERED">$2</text:list></text:list-item>',$str);
+
+	// Alle OL aussen herum ersetzen
+	$str = preg_replace('/<ol>(.*?)<\/ol>/s','</text:p><text:list text:style-name="LIST_ORDERED">$1</text:list><text:p text:style-name="PNORMAL">',$str);
+
+	// Font size Ersetzen TODO unterschiedliche groessen
+	$str = str_replace('<font size="5">','<text:span text:style-name="GROESSER">',$str);
 	$str = str_replace('<font size="4">','<text:span text:style-name="GROESSER">',$str);
+	$str = str_replace('<font size="3">','<text:span text:style-name="GROESSER">',$str);
+	$str = str_replace('<font size="2">','<text:span text:style-name="PNORMAL">',$str);
+	$str = str_replace('<font size="1">','<text:span text:style-name="PNORMAL">',$str);
 	$str = str_replace('</font>','</text:span>',$str);
 
+	// Uebrige Font tags etnfernen
+	$str = preg_replace('/<font .*?>/','<text:span text:style-name="PNORMAL">',$str);
+
+	// Blockquote Tags ersetzen
 	$str = str_replace('<blockquote>','</text:p><text:p text:style-name="PEINGERUECKT">',$str);
 	$str = str_replace('</blockquote>','</text:p><text:p text:style-name="PNORMAL"> ',$str);
 
 	// Sonstiges
+	// P Tags innerhalb von List-Items unterbrechen den globalen P tag nicht desalb werden diese separat ersetzt
+	$str = preg_replace('/<text:list-item>(.*?)<p>(.*?)<\/p>(.*?)<\/text:list-item>/s','<text:list-item>$1<text:p text:style-name="PNORMAL">$2</text:p>$3</text:list-item>',$str);
+	// P Tags ersetzten - dazu wird der global P geschlossen und dann wieder geoeffnet
 	$str = str_replace('<p>','</text:p><text:p text:style-name="PNORMAL"> ',$str);
 	$str = str_replace('</p>','</text:p><text:p text:style-name="PNORMAL"> ',$str);
 
+	// LISTEN Innerhalb von P Tags funktionieren nicht und muessen ausserhalb sein
+	// dann funktionieren aber die doppelt eingerueckten nicht mehr?
+	//$str = preg_replace('/<text:p text:style-name="PNORMAL">(\s*)<text:list text:style-name="LIST_UNORDERED">(.*?)<\/text:list>/s','<text:p text:style-name="PNORMAL"> </text:p><text:list text:style-name="LIST_UNORDERED">$2</text:list><text:p text:style-name="PNORMAL"> ',$str);
+	//$str = preg_replace('/<text:p text:style-name="PEINGERUECKT">(\s*)<text:list text:style-name="LIST_UNORDERED">(.*?)<\/text:list>/s','<text:p text:style-name="EINGERUECKT"> </text:p><text:list text:style-name="LIST_UNORDERED">$2</text:list><text:p text:style-name="PNORMAL"> ',$str);
 
 	return $str;
 }
@@ -532,15 +599,22 @@ function MSClean($str)
 	$str = preg_replace('/<li .*?>(.*?)<\/li>/s','<li>$1</li>',$str);
 	$str = preg_replace('/<o:p>(.*?)<\/o:p>/s','$1',$str);
 
-
 	// <p class="MsoNormal"> ... </p> -> <p>...</p>
 	$str = preg_replace('/<p class="MsoNormal">(.*?)<\/p>/s','<p>$1</p>',$str);
 
 	// <p class="MsoNormal" style="...">
 	$str = preg_replace('/<p class="MsoNormal" .*?>(.*?)<\/p>/s','<p>$1</p>',$str);
+	$str = preg_replace('/<p class=".*?" style=".*?">(.*?)<\/p>/s','<p>$1</p>',$str);
+
+	$str = preg_replace('/<blockquote style=".*?">(.*?)<\/blockquote>/s','<blockquote>$1</blockquote>',$str);
+	$str = preg_replace('/<blockquote style=".*?">(.*?)<\/blockquote>/s','<blockquote>$1</blockquote>',$str);
+	$str = preg_replace('/<blockquote style=".*?">(.*?)<\/blockquote>/s','<blockquote>$1</blockquote>',$str);
 
 	// <span style="font-family:&quot;Arial Unicode MS&quot;,sans-serif;mso-ascii-font-family:Arial" lang="DE"> -> ...
 	$str = preg_replace('/<span .*?>(.*?)<\/span>/s','$1',$str);
+	$str = preg_replace('/<span style=".*?">(.*?)<\/span>/s','$1',$str);
+
+	$str = preg_replace('/<span style=".*?">(.*?)<\/span>/s','$1',$str);
 
 	// <span lang="DE"> .. </span> -> ...
 	$str = preg_replace('/<span lang="DE">(.*?)<\/span>/s','$1',$str);
