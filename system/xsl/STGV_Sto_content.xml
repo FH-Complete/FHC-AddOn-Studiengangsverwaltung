@@ -1330,6 +1330,19 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       </text:list-level-style-number>
     </text:list-style>
 
+	 <style:style style:name="PHEAD1" style:family="paragraph" style:parent-style-name="Heading_20_1">
+	      <style:paragraph-properties fo:margin-left="0cm" fo:margin-right="0cm" fo:text-indent="-0.762cm" style:auto-text-indent="false" fo:break-before="page">
+	        <style:tab-stops>
+	          <style:tab-stop style:position="0.318cm"/>
+	          <style:tab-stop style:position="0.635cm"/>
+	        </style:tab-stops>
+	      </style:paragraph-properties>
+	    </style:style>
+
+	<style:style style:name="PHEAD2" style:family="paragraph" style:parent-style-name="Heading_20_2">
+      <style:text-properties fo:language="de" fo:country="AT" style:language-asian="en" style:country-asian="US" style:language-complex="en" style:country-complex="US"/>
+    </style:style>
+
   </office:automatic-styles>
   <office:body>
     <office:text text:use-soft-page-breaks="true">
@@ -1579,21 +1592,22 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       </text:table-of-content>
       <text:p text:style-name="P17"/>
       <text:p text:style-name="P18"/>
-      <text:list xml:id="list1922260572595372515" text:style-name="WWNum5">
-        <text:list-item>
-          <text:h text:style-name="P56" text:outline-level="1">Studienordnung</text:h>
-        </text:list-item>
-      </text:list>
+      <!--<text:list xml:id="list1922260572595372515" text:style-name="WWNum5">
+        <text:list-item>-->
+          <text:h text:style-name="PHEAD1" text:outline-level="1">Studienordnung</text:h>
+        <!--</text:list-item>
+	</text:list>-->
 
+	<!--
       <text:list xml:id="list64427228017889994" text:style-name="WWNum1">
         <text:list-item>
           <text:list>
-            <text:list-item>
-              <text:h text:style-name="P60" text:outline-level="2">Metadaten</text:h>
-            </text:list-item>
+            <text:list-item>-->
+              <text:h text:style-name="PHEAD2" text:outline-level="2">Metadaten</text:h>
+            <!--</text:list-item>
           </text:list>
         </text:list-item>
-      </text:list>
+	</text:list>-->
       <table:table table:name="Tabelle1" table:style-name="Tabelle1">
         <table:table-column table:style-name="Tabelle1.A"/>
         <table:table-column table:style-name="Tabelle1.B"/>
@@ -1672,15 +1686,16 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
     		<xsl:value-of select="begruendung"  disable-output-escaping="yes"/>
 
       </text:p>
+	  <!--
       <text:list xml:id="list120527871223613" text:continue-numbering="true" text:style-name="WWNum1">
         <text:list-item>
           <text:list>
-            <text:list-item>
-              <text:h text:style-name="P60" text:outline-level="2">Eckdaten</text:h>
-            </text:list-item>
+            <text:list-item>-->
+              <text:h text:style-name="PHEAD2" text:outline-level="2">Eckdaten</text:h>
+            <!--</text:list-item>
           </text:list>
         </text:list-item>
-      </text:list>
+	</text:list>-->
       <table:table table:name="Tabelle2" table:style-name="Tabelle2">
         <table:table-column table:style-name="Tabelle2.A"/>
         <table:table-column table:style-name="Tabelle2.B"/>
@@ -1742,28 +1757,30 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
       </table:table>
       <text:p text:style-name="P30"/>
+	  <!--
       <text:list xml:id="list120529025368941" text:continue-numbering="true" text:style-name="WWNum1">
         <text:list-item>
           <text:list>
-            <text:list-item>
-              <text:h text:style-name="P60" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2398_554519492"/><text:bookmark-start text:name="_Toc451354157"/>Zugangsvoraussetzungen<text:bookmark-end text:name="__RefHeading__2398_554519492"/><text:bookmark-end text:name="_Toc451354157"/></text:h>
-            </text:list-item>
+            <text:list-item>-->
+              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2398_554519492"/><text:bookmark-start text:name="_Toc451354157"/>Zugangsvoraussetzungen<text:bookmark-end text:name="__RefHeading__2398_554519492"/><text:bookmark-end text:name="_Toc451354157"/></text:h>
+            <!--</text:list-item>
           </text:list>
         </text:list-item>
-      </text:list>
+	</text:list>-->
       <text:p text:style-name="P8">
         <xsl:value-of select="zugangsvoraussetzung"  disable-output-escaping="yes"/>
       </text:p>
       <text:p text:style-name="P5"/>
+	  <!--
       <text:list xml:id="list120529111442916" text:continue-numbering="true" text:style-name="WWNum1">
         <text:list-item>
           <text:list>
-            <text:list-item>
-              <text:h text:style-name="P60" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2400_554519492"/><text:bookmark-start text:name="_Toc451354158"/>Aufnahmeverfahren<text:bookmark-end text:name="__RefHeading__2400_554519492"/><text:bookmark-end text:name="_Toc451354158"/></text:h>
-            </text:list-item>
+            <text:list-item>-->
+              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2400_554519492"/><text:bookmark-start text:name="_Toc451354158"/>Aufnahmeverfahren<text:bookmark-end text:name="__RefHeading__2400_554519492"/><text:bookmark-end text:name="_Toc451354158"/></text:h>
+            <!--</text:list-item>
           </text:list>
         </text:list-item>
-      </text:list>
+	</text:list>-->
       <text:p text:style-name="P8">
         <text:bookmark-start text:name="_Toc114210882"/>
         <text:bookmark-start text:name="_Toc264537160"/>
@@ -1774,15 +1791,18 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         <text:bookmark-end text:name="_Toc264537886"/>
       </text:p>
       <text:p text:style-name="P9"/>
+	  <!--
       <text:list xml:id="list120527256834076" text:continue-numbering="true" text:style-name="WWNum1">
         <text:list-item>
           <text:list>
-            <text:list-item>
-              <text:h text:style-name="P61" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2402_554519492"/><text:bookmark-start text:name="_Toc451354159"/>Berufliche Tätigkeitsfelder<text:bookmark-end text:name="__RefHeading__2402_554519492"/><text:bookmark-end text:name="_Toc451354159"/></text:h>
-            </text:list-item>
+            <text:list-item>-->
+              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2402_554519492"/><text:bookmark-start text:name="_Toc451354159"/>Berufliche Tätigkeitsfelder<text:bookmark-end text:name="__RefHeading__2402_554519492"/><text:bookmark-end text:name="_Toc451354159"/></text:h>
+            <!--
+				</text:list-item>
           </text:list>
         </text:list-item>
-      </text:list>
+	</text:list>
+	-->
       <text:p text:style-name="P52">Überblick</text:p>
       <text:p text:style-name="P12">
 			<xsl:value-of select="taetigkeitsfeld_ueberblick" disable-output-escaping="yes"/>
@@ -1813,15 +1833,16 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 
       <text:p text:style-name="P20"/>
       <text:p text:style-name="P10"/>
-      <text:list xml:id="list120528120972311" text:continue-list="list120527256834076" text:style-name="WWNum1">
+      <!--
+	  <text:list xml:id="list120528120972311" text:continue-list="list120527256834076" text:style-name="WWNum1">
         <text:list-item>
           <text:list>
-            <text:list-item>
-              <text:h text:style-name="P61" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2404_554519492"/><text:bookmark-start text:name="_Toc451354160"/>Qualifikationsziele<text:bookmark-end text:name="__RefHeading__2404_554519492"/><text:bookmark-end text:name="_Toc451354160"/></text:h>
-            </text:list-item>
+            <text:list-item>-->
+              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2404_554519492"/><text:bookmark-start text:name="_Toc451354160"/>Qualifikationsziele<text:bookmark-end text:name="__RefHeading__2404_554519492"/><text:bookmark-end text:name="_Toc451354160"/></text:h>
+            <!--</text:list-item>
           </text:list>
         </text:list-item>
-      </text:list>
+	</text:list>-->
       <text:p text:style-name="P52">Bildungsauftrag FH-Studiengänge</text:p>
       <text:p text:style-name="P12">
         <text:span text:style-name="T14"><xsl:value-of select="qualifikation_bildungsauftrag" /></text:span>
@@ -1883,17 +1904,17 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 </xsl:template>
 
 <xsl:template match="studienplan">
-
+<!--
       <text:list xml:id="list120527420716167" text:continue-list="list120528120972311" text:style-name="WWNum1">
-        <text:list-item>
-          <text:h text:style-name="P57" text:outline-level="1"><text:bookmark-start text:name="__RefHeading__2406_554519492"/><text:bookmark-start text:name="_Toc451354161"/>Studienplan - <xsl:value-of select="organisationsform"/><text:bookmark-end text:name="_Toc451354161"/><text:bookmark-end text:name="__RefHeading__2406_554519492"/></text:h>
-          <text:list>
-            <text:list-item>
-              <text:h text:style-name="P60" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2408_554519492"/><text:bookmark-start text:name="_Toc451354162"/>Metadaten, Eckdaten, Gültigkeit<text:bookmark-end text:name="__RefHeading__2408_554519492"/><text:bookmark-end text:name="_Toc451354162"/></text:h>
-            </text:list-item>
+        <text:list-item>-->
+          <text:h text:style-name="PHEAD1" text:outline-level="1"><text:bookmark-start text:name="__RefHeading__2406_554519492"/><text:bookmark-start text:name="_Toc451354161"/>Studienplan - <xsl:value-of select="organisationsform"/><text:bookmark-end text:name="_Toc451354161"/><text:bookmark-end text:name="__RefHeading__2406_554519492"/></text:h>
+          <!--<text:list>
+            <text:list-item>-->
+              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2408_554519492"/><text:bookmark-start text:name="_Toc451354162"/>Metadaten, Eckdaten, Gültigkeit<text:bookmark-end text:name="__RefHeading__2408_554519492"/><text:bookmark-end text:name="_Toc451354162"/></text:h>
+            <!--</text:list-item>
           </text:list>
         </text:list-item>
-      </text:list>
+	</text:list>-->
       <table:table table:name="Tabelle3" table:style-name="Tabelle3">
         <table:table-column table:style-name="Tabelle3.A"/>
         <table:table-column table:style-name="Tabelle3.B"/>
@@ -1975,15 +1996,15 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
       </table:table>
       <text:p text:style-name="P30"/>
-      <text:list xml:id="list120529083004513" text:continue-numbering="true" text:style-name="WWNum1">
+      <!--<text:list xml:id="list120529083004513" text:continue-numbering="true" text:style-name="WWNum1">
         <text:list-item>
           <text:list>
-            <text:list-item>
-              <text:h text:style-name="P60" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2410_554519492"/><text:bookmark-start text:name="_Toc451354163"/>Erläuterungen zum Studienplan<text:bookmark-end text:name="__RefHeading__2410_554519492"/><text:bookmark-end text:name="_Toc451354163"/></text:h>
-            </text:list-item>
+            <text:list-item>-->
+              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2410_554519492"/><text:bookmark-start text:name="_Toc451354163"/>Erläuterungen zum Studienplan<text:bookmark-end text:name="__RefHeading__2410_554519492"/><text:bookmark-end text:name="_Toc451354163"/></text:h>
+            <!--</text:list-item>
           </text:list>
         </text:list-item>
-      </text:list>
+	</text:list>-->
       <text:p text:style-name="PNORMAL">
         <text:span text:style-name="T14">
 			<xsl:call-template name="replace_linebreak">
@@ -1993,15 +2014,16 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       </text:p>
 
 	  <xsl:if test="auslandssemester/semester">
+		  <!--
 	      <text:list xml:id="list120528168328504" text:continue-numbering="true" text:style-name="WWNum1">
 	        <text:list-item>
 	          <text:list>
-	            <text:list-item>
-	              <text:h text:style-name="P60" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2412_554519492"/><text:bookmark-start text:name="_Toc451354164"/>Auslandssemester<text:bookmark-end text:name="__RefHeading__2412_554519492"/><text:bookmark-end text:name="_Toc451354164"/></text:h>
-	            </text:list-item>
+	            <text:list-item>-->
+	              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2412_554519492"/><text:bookmark-start text:name="_Toc451354164"/>Auslandssemester<text:bookmark-end text:name="__RefHeading__2412_554519492"/><text:bookmark-end text:name="_Toc451354164"/></text:h>
+	            <!--</text:list-item>
 	          </text:list>
 	        </text:list-item>
-	      </text:list>
+		</text:list>-->
 	      <text:p text:style-name="Standard">
 	        <text:span text:style-name="T14">Ein Auslandssemester ist</text:span>
 	        <text:span text:style-name="T19"> </text:span>
@@ -2036,21 +2058,23 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 	  </xsl:if>
 
 	  <xsl:if test="berufspraktikum/semester">
+		  <!--
 	      <text:list xml:id="list120528306467999" text:continue-numbering="true" text:style-name="WWNum1">
 	        <text:list-item>
 	          <text:list>
-	            <text:list-item>
-	              <text:h text:style-name="P59" text:outline-level="2">
+	            <text:list-item>-->
+	              <text:h text:style-name="PHEAD2" text:outline-level="2">
 	                <text:bookmark-start text:name="__RefHeading__2414_554519492"/>
 	                <text:bookmark-start text:name="_Toc451354165"/>
 	                <text:span text:style-name="T2">Berufspraktikum</text:span>
 	                <text:bookmark-end text:name="__RefHeading__2414_554519492"/>
 	                <text:bookmark-end text:name="_Toc451354165"/>
 	              </text:h>
+				  <!--
 	            </text:list-item>
 	          </text:list>
 	        </text:list-item>
-	      </text:list>
+		</text:list>-->
 
 		  <xsl:apply-templates select="berufspraktikum"/>
 
@@ -2066,16 +2090,17 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 		  </xsl:if>
 	</xsl:if>
       <text:p text:style-name="P6"/>
+	  <!--
       <text:list xml:id="list120527799921646" text:continue-list="list120528306467999" text:style-name="WWNum1">
         <text:list-item>
           <text:list>
-            <text:list-item>
-              <text:h text:style-name="P61" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2416_554519492"/><text:bookmark-start text:name="_Toc451354166"/>Studienplanmatrix<text:bookmark-end text:name="__RefHeading__2416_554519492"/><text:bookmark-end text:name="_Toc451354166"/></text:h>
-            </text:list-item>
+            <text:list-item>-->
+              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2416_554519492"/><text:bookmark-start text:name="_Toc451354166"/>Studienplanmatrix<text:bookmark-end text:name="__RefHeading__2416_554519492"/><text:bookmark-end text:name="_Toc451354166"/></text:h>
+            <!--</text:list-item>
           </text:list>
         </text:list-item>
       </text:list>
-
+-->
 		<xsl:apply-templates select="semester"/>
 
       <text:p text:style-name="P6"/>
@@ -2138,26 +2163,28 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </text:list-item>
       </text:list>
       <text:p text:style-name="P5"/>
+	  <!--
       <text:list xml:id="list120528996211657" text:continue-list="list120527799921646" text:style-name="WWNum1">
         <text:list-item>
           <text:list>
-            <text:list-item>
-              <text:h text:style-name="P61" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2418_554519492"/><text:bookmark-start text:name="_Toc451354167"/>Modulgrafik<text:bookmark-end text:name="__RefHeading__2418_554519492"/><text:bookmark-end text:name="_Toc451354167"/></text:h>
-            </text:list-item>
+            <text:list-item>-->
+              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2418_554519492"/><text:bookmark-start text:name="_Toc451354167"/>Modulgrafik<text:bookmark-end text:name="__RefHeading__2418_554519492"/><text:bookmark-end text:name="_Toc451354167"/></text:h>
+            <!--</text:list-item>
           </text:list>
         </text:list-item>
-      </text:list>
+	</text:list>-->
       <text:p text:style-name="P37">Noch nicht vorhanden</text:p>
       <text:p text:style-name="P6"/>
+	  <!--
       <text:list xml:id="list120527926051947" text:continue-numbering="true" text:style-name="WWNum1">
         <text:list-item>
           <text:list>
-            <text:list-item>
-              <text:h text:style-name="P61" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2420_554519492"/><text:bookmark-start text:name="_Toc451354168"/>Modulbeschreibungen<text:bookmark-end text:name="__RefHeading__2420_554519492"/><text:bookmark-end text:name="_Toc451354168"/></text:h>
-            </text:list-item>
+            <text:list-item>-->
+              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2420_554519492"/><text:bookmark-start text:name="_Toc451354168"/>Modulbeschreibungen<text:bookmark-end text:name="__RefHeading__2420_554519492"/><text:bookmark-end text:name="_Toc451354168"/></text:h>
+            <!--</text:list-item>
           </text:list>
         </text:list-item>
-      </text:list>
+	</text:list>-->
       <text:p text:style-name="P4">Nachfolgend findet sich eine semesterweise Beschreibung der Module und der entsprechenden Lehrveranstaltungen. Zu beachten ist, dass sich die Attribute “Kurzbeschreibung”, “Lernergebnisse”, “Lehrinhalte”, “Literatur”, “Leistungsbeurteilung”, “Anwesenheit”, “Anmerkungen” von Studienjahr zu Studienjahr ändern können. <text:s text:c="2"/></text:p>
       <text:p text:style-name="P5"/>
 

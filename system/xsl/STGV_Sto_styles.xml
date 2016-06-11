@@ -66,15 +66,15 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       <style:paragraph-properties text:number-lines="false" text:line-number="0"/>
       <style:text-properties style:font-size-asian="12pt" style:font-name-complex="DejaVu Sans1" style:font-family-complex="'DejaVu Sans'" style:font-family-generic-complex="swiss"/>
     </style:style>
-    <style:style style:name="Heading_20_1" style:display-name="Heading 1" style:family="paragraph" style:parent-style-name="Standard" style:next-style-name="Standard" style:auto-update="true" style:default-outline-level="1" style:list-style-name="" style:class="text">
+    <style:style style:name="Heading_20_1" style:display-name="Heading 1" style:family="paragraph" style:parent-style-name="Standard" style:next-style-name="Standard" style:auto-update="true" style:default-outline-level="1" style:class="text">
       <style:paragraph-properties fo:margin-top="0cm" fo:margin-bottom="0.106cm" loext:contextual-spacing="false" fo:keep-with-next="always"/>
       <style:text-properties fo:color="#00659c" fo:font-size="18pt" style:letter-kerning="true" style:font-size-asian="18pt" style:font-name-complex="Arial2" style:font-family-complex="Arial" style:font-family-generic-complex="system" style:font-pitch-complex="variable" style:font-size-complex="18pt" style:font-weight-complex="bold"/>
     </style:style>
-    <style:style style:name="Heading_20_2" style:display-name="Heading 2" style:family="paragraph" style:parent-style-name="Standard" style:next-style-name="Standard" style:auto-update="true" style:default-outline-level="2" style:list-style-name="" style:class="text">
+    <style:style style:name="Heading_20_2" style:display-name="Heading 2" style:family="paragraph" style:parent-style-name="Standard" style:next-style-name="Standard" style:auto-update="true" style:default-outline-level="2" style:class="text">
       <style:paragraph-properties fo:margin-top="0.423cm" fo:margin-bottom="0.423cm" loext:contextual-spacing="false" fo:keep-with-next="always"/>
       <style:text-properties fo:color="#00659c" fo:font-size="16pt" style:font-size-asian="16pt" style:font-name-complex="Arial2" style:font-family-complex="Arial" style:font-family-generic-complex="system" style:font-pitch-complex="variable" style:font-size-complex="14pt" style:font-style-complex="italic" style:font-weight-complex="bold"/>
     </style:style>
-    <style:style style:name="Heading_20_3" style:display-name="Heading 3" style:family="paragraph" style:parent-style-name="Standard" style:next-style-name="Standard" style:auto-update="true" style:default-outline-level="3" style:list-style-name="" style:class="text">
+    <style:style style:name="Heading_20_3" style:display-name="Heading 3" style:family="paragraph" style:parent-style-name="Standard" style:next-style-name="Standard" style:auto-update="true" style:default-outline-level="3" style:class="text">
       <style:paragraph-properties fo:margin-top="0.423cm" fo:margin-bottom="0.106cm" loext:contextual-spacing="false" fo:keep-with-next="always"/>
       <style:text-properties fo:color="#00659c" fo:font-size="14pt" style:font-size-asian="14pt" style:font-name-complex="Arial2" style:font-family-complex="Arial" style:font-family-generic-complex="system" style:font-pitch-complex="variable" style:font-size-complex="13pt" style:font-weight-complex="bold"/>
     </style:style>
@@ -313,17 +313,17 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       <style:graphic-properties text:anchor-type="paragraph" svg:x="0cm" svg:y="0cm" fo:margin-left="0.201cm" fo:margin-right="0.201cm" fo:margin-top="0.201cm" fo:margin-bottom="0.201cm" style:wrap="parallel" style:number-wrapped-paragraphs="no-limit" style:wrap-contour="false" style:vertical-pos="top" style:vertical-rel="paragraph-content" style:horizontal-pos="center" style:horizontal-rel="paragraph-content" fo:padding="0.15cm" fo:border="0.06pt solid #000000"/>
     </style:style>
     <text:outline-style style:name="Outline">
-      <text:outline-level-style text:level="1" style:num-format="">
+      <text:outline-level-style text:level="1" style:num-format="1">
         <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
           <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="0.762cm" fo:text-indent="-0.762cm" fo:margin-left="0.762cm"/>
         </style:list-level-properties>
       </text:outline-level-style>
-      <text:outline-level-style text:level="2" style:num-format="">
+      <text:outline-level-style text:level="2" style:num-format="1" text:display-levels="2">
         <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
           <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="1.016cm" fo:text-indent="-1.016cm" fo:margin-left="1.016cm"/>
         </style:list-level-properties>
       </text:outline-level-style>
-      <text:outline-level-style text:level="3" style:num-format="">
+      <text:outline-level-style text:level="3" style:num-format="1" text:display-levels="3">
         <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
           <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="1.27cm" fo:text-indent="-1.27cm" fo:margin-left="1.27cm"/>
         </style:list-level-properties>
