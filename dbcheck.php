@@ -149,6 +149,7 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienordnung LIMIT
 			
 		ALTER TABLE addon.tbl_stgv_studienordnung ADD CONSTRAINT pk_stgv_studienordnung PRIMARY KEY (studienordnung_id);
 		ALTER TABLE addon.tbl_stgv_studienordnung ADD CONSTRAINT studienordnung_id FOREIGN KEY (studienordnung_id) REFERENCES lehre.tbl_studienordnung (studienordnung_id) ON DELETE RESTRICT ON UPDATE CASCADE;
+		ALTER TABLE addon.tbl_stgv_studienordnung ADD CONSTRAINT aenderungsvariante_kurzbz FOREIGN KEY (aenderungsvariante_kurzbz) REFERENCES addon.tbl_stgv_aenderungsvariante (aenderungsvariante_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 		INSERT INTO addon.tbl_stgv_studienordnung (studienordnung_id) SELECT studienordnung_id FROM lehre.tbl_studienordnung;
 
@@ -160,18 +161,6 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienordnung LIMIT
 	echo '<strong>addon.tbl_stgv_studienordnung: ' . $db->db_last_error() . '</strong><br>';
     else
 	echo ' addon.tbl_stgv_studienordnung: Tabelle hinzugefuegt<br>';
-}
-else
-{
-    //add missing contraint
-    $qry = "
-	ALTER TABLE addon.tbl_stgv_studienordnung DROP CONSTRAINT IF EXISTS pk_stgv_studienordnung;
-	ALTER TABLE addon.tbl_stgv_studienordnung ADD CONSTRAINT pk_stgv_studienordnung PRIMARY KEY (studienordnung_id);";
-    
-    if (!$db->db_query($qry))
-	echo '<strong>addon.tbl_stgv_studienordnung: ' . $db->db_last_error() . '</strong><br>';
-    else
-	echo ' addon.tbl_stgv_studienordnung: Primary Key hinzugefügt<br>';
 }
 
 //Tabelle addon.tbl_stgv_studienplan
