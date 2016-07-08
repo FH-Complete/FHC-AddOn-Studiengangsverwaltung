@@ -186,18 +186,6 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienplan LIMIT 1;
     else
 	echo ' addon.tbl_stgv_studienplan: Tabelle hinzugefuegt<br>';
 }
-else
-{
-    //add missing contraint
-    $qry = "
-	ALTER TABLE addon.tbl_stgv_studienplan DROP CONSTRAINT IF EXISTS pk_stgv_studienplan;
-	ALTER TABLE addon.tbl_stgv_studienplan ADD CONSTRAINT pk_stgv_studienplan PRIMARY KEY (studienplan_id);";
-    
-    if (!$db->db_query($qry))
-	echo '<strong>addon.tbl_stgv_studienplan: ' . $db->db_last_error() . '</strong><br>';
-    else
-	echo ' addon.tbl_stgv_studienplan: Primary Key hinzugefügt<br>';
-}
 
 //Rolle für Addon
 if($result = @$db->db_query("SELECT 1 FROM system.tbl_rolle WHERE rolle_kurzbz='addonStgv' LIMIT 1"))
@@ -641,6 +629,8 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_lehrtyp_lehrform LIM
 
 		ALTER TABLE addon.tbl_stgv_lehrtyp_lehrform ADD CONSTRAINT pk_lehrtyp_lehrform PRIMARY KEY (lehrtyp_lehrform_id);
 		ALTER TABLE addon.tbl_stgv_lehrtyp_lehrform ALTER COLUMN lehrtyp_lehrform_id SET DEFAULT nextval('addon.tbl_stgv_lehrtyp_lehrform_id_seq');
+		ALTER TABLE addon.tbl_stgv_lehrtyp_lehrform ADD CONSTRAINT fk_lehrtyp_lehrform_lehrtyp FOREIGN KEY (lehrtyp_kurzbz) REFERENCES lehre.tbl_lehrtyp (lehrtyp_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
+		ALTER TABLE addon.tbl_stgv_lehrtyp_lehrform ADD CONSTRAINT fk_lehrtyp_lehrform_lehrform FOREIGN KEY (lehrform_kurzbz) REFERENCES lehre.tbl_lehrform (lehrform_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
 		
 		GRANT SELECT ON addon.tbl_stgv_lehrtyp_lehrform TO web;
 		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_lehrtyp_lehrform TO vilesci;
