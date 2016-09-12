@@ -32,7 +32,38 @@ angular.module('stgv2')
 				}
 			};
 
+			var getStudienplanList = function (studiengang_kz)
+			{
+
+				var def = $q.defer();
+				var studienplan = StoreService.get(storeId);
+				if ((studienplan !== null) && (studienplan.studiengang_kz === studiengang_kz))
+				{
+					def.resolve(studienplan);
+					return def.promise;
+				}
+				else
+				{
+					return $http({
+						method: "GET",
+						url: "./api/studienplan/studienplan.php?studiengang_kz=" + studiengang_kz
+					}).then(function success(response) {
+						if (response.data.erfolg)
+						{
+							def.resolve(response.data.info);
+							return def.promise;
+						}
+						else
+						{
+							def.reject(response);
+							return def.promise;
+						}
+					});
+				}
+			};
+
 			return {
-				getStudienplan: getStudienplan
+				getStudienplan: getStudienplan,
+				getStudienplanList: getStudienplanList
 			};
 		});
