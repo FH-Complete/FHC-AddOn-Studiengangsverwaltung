@@ -207,9 +207,12 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 		    <div ng-click='menuCtrl.diff()'>Diff</div>
 		</div>
 		<div id="mm5" style="width:100px;">
-			<div ng-click="menuCtrl.export('pdf')">PDF</div>
-			<div ng-click="menuCtrl.export('odt')">ODT</div>
-			<div ng-click="menuCtrl.export('doc')">DOC</div>
+			<div ng-click="menuCtrl.export('pdf',false)">PDF</div>
+			<div ng-click="menuCtrl.export('odt',false)">ODT</div>
+			<div ng-click="menuCtrl.export('doc',false)">DOC</div>
+			<div ng-click="menuCtrl.export('pdf',true)">PDF mit LVInfo</div>
+			<div ng-click="menuCtrl.export('odt',true)">ODT mit LVInfo</div>
+			<div ng-click="menuCtrl.export('doc',true)">DOC mit LVInfo</div>
 		</div>
 		<div id="mm6"  >
             <div>

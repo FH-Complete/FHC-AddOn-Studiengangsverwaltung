@@ -46,10 +46,9 @@ $uid = get_uid();
 
 $datum_obj = new datum();
 
-// TODO Berechtigungen
 $rechte = new benutzerberechtigung();
 $rechte->getBerechtigungen($uid);
-if(!$rechte->isBerechtigt('admin'))
+if(!$rechte->isBerechtigt('stgv/changeStudienplan'))
 	die($rechte->errormsg);
 
 $output='pdf';
@@ -368,6 +367,20 @@ $data = array(
 );
 
 $files=array();
+if($output=='zgv') // TODO REMOVE
+{
+	echo '<pre>'.htmlentities(OutputFormat($data['zugangsvoraussetzung'])).'</pre>';
+	echo '<hr>';
+	echo '<pre>'.htmlentities(OutputFormat(MSClean($zugangsvoraussetzung->result[0]->data))).'</pre>';
+	exit;
+}
+if($output=='auf') // TODO REMOVE
+{
+	echo '<pre>'.htmlentities(OutputFormat($data['aufnahmeverfahren'])).'</pre>';
+	echo '<hr>';
+	echo '<pre>'.htmlentities(OutputFormat(MSClean($aufnahmeverfahren->result[0]->data))).'</pre>';
+	exit;
+}
 
 $doc->addDataArray($data,'studienordnung');
 if($output=='xml')
@@ -382,7 +395,6 @@ else
 	$doc->output();
 	$doc->close();
 }
-
 
 function printLVTree($tree)
 {
@@ -449,8 +461,9 @@ function printLVTree($tree)
 					{
 						$lvinfo_data[$row_set->lvinfo_set_kurzbz]['einleitungstext']=$row_set->einleitungstext[$lv->sprache];
 
-						foreach($lvinfo_obj->data[$row_set->lvinfo_set_kurzbz] as $row_lvinfo_element)
-							$lvinfo_data[$row_set->lvinfo_set_kurzbz]['elements'][]=array('element'=>$row_lvinfo_element);
+						if(isset($lvinfo_obj->data[$row_set->lvinfo_set_kurzbz]))
+							foreach($lvinfo_obj->data[$row_set->lvinfo_set_kurzbz] as $row_lvinfo_element)
+								$lvinfo_data[$row_set->lvinfo_set_kurzbz]['elements'][]=array('element'=>$row_lvinfo_element);
 					}
 				}
 
@@ -495,24 +508,24 @@ function html2odt($str)
 	$str = preg_replace('/<div align="left">(.*?)<\/div>/s','<text:p text:style-name="LINKSBUENDIG">$1</text:p>',$str);
 	$str = preg_replace('/<div align="right">(.*?)<\/div>/s','<text:p text:style-name="RECHTSBUENDIG">$1</text:p>',$str);
 	$str = preg_replace('/<div align="justify">(.*?)<\/div>/s','<text:p text:style-name="LINKSBUENDIG">$1</text:p>',$str);
-
 	$str = preg_replace('/<div>(.*?)<\/div>/s','$1',$str);
 	$str = preg_replace('/<div>(.*?)<\/div>/s','$1',$str);
 
 
 	// List item <li>
 
-	// 3. Ebene
+	// 3. Ebene <ul> <ul> <li>
 	$str = preg_replace('/<ul>(.*?)<ul>(.*?)<li>(.*?)<\/li>(.*?)<\/ul>(.*?)<\/ul>/s','<ul>$1<ul>$2<text:list-item><text:p text:style-name="PLIST"><text:span text:style-name="TLIST">$3</text:span></text:p></text:list-item>$4</ul>$5</ul>',$str);
-	// 2. Ebene
-	$str = preg_replace('/<ul>(.*?)<li>(.*?)<\/li>(.*?)<\/ul>/s','<ul>$1<text:list-item><text:p text:style-name="PLIST"><text:span text:style-name="TLIST">$2</text:span></text:p></text:list-item>$3</ul>',$str);
+	// 2. Ebene <ul> <li>
+	$str = preg_replace('/<ul>(((?!<\/ul>).)+?)<li>(.*?)<\/li>(.*?)<\/ul>/s','<ul>$1<text:list-item><text:p text:style-name="PLIST"><text:span text:style-name="TLIST">$3</text:span></text:p></text:list-item>$4</ul>',$str);
+
 	// 1. Ebene
 	$str = preg_replace('/<li>(.*?)<\/li>/s','<text:list-item><text:p text:style-name="PLIST"><text:span text:style-name="TLIST">$1</text:span></text:p></text:list-item>',$str);
 	$str = preg_replace('/<li>(.*?)<\/li>/s','<text:list-item><text:p text:style-name="PLIST"><text:span text:style-name="TLIST">$1</text:span></text:p></text:list-item>',$str);
 
 	/* Alle UL ersetzen die innerhalb eines andern UL vorkommen und versetzen
 	   damit die ULs innerhalb des darueberliegenden LI sind
-	/*
+
 	<ul>
 		<li></li>
 		<ul>
@@ -541,6 +554,67 @@ function html2odt($str)
 	</LI>*/
 	$str = preg_replace('/<ul>(.*?)<text:list-item>(.*?)<ul>(.*?)<\/ul>/s','<ul>$1<text:list-item>$2<text:list text:style-name="LIST_UNORDERED">$3</text:list>',$str);
 	$str = preg_replace('/<text:list-item>(.*?)<ul>(.*?)<\/ul>/s','<text:list-item>$1<text:list text:style-name="LIST_UNORDERED">$2</text:list>',$str);
+
+
+	/* Bei UL innerhalb von LI muss der span und p tag geschlossen werden
+	<ol> $1
+		<li> $2
+			<ul> $3
+				<li> $4
+					<ul> $5
+						<li> $6
+							<ul>
+								....$7
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+	*/
+
+//	$str = preg_replace('/<ol>(.*?)<text:list-item>(.*?)<ul>(.*?)<text:list-item>(.*?)<ul>(.*?)<text:list-item>(.*?)<ul>(.*?)<\/ul>/s','<ol>$1<text:list-item>$2<ul>$3<text:list-item>$4<ul>$5<text:list-item>$6</text:span></text:p><text:list text:style-name="LIST_UNORDERED">$7</text:list><text:p text:style-name="PLIST"><text:span text:style-name="TLIST">',$str);
+
+	/* Bei UL innerhalb von LI muss der span und p tag geschlossen werden
+	<ol>
+		<li>...
+			<ul>
+				<li>
+					<ul>
+						...
+					</ul>
+				</li>
+			</ul>
+			...
+		</li>
+	*/
+//	$str = preg_replace('/<ol>(.*?)<text:list-item>(.*?)<ul>(.*?)<text:list-item>(.*?)<ul>(.*?)<\/ul>/s','<ol>$1<text:list-item>$2<ul>$3<text:list-item>$4</text:span></text:p><text:list text:style-name="LIST_UNORDERED">$5</text:list><text:p text:style-name="PLIST"><text:span text:style-name="TLIST">',$str);
+
+	/*
+	<ul>
+		<ul>
+			<li>
+			</li>
+		</ul>
+	</ul>
+	*/
+//	$str = preg_replace('/<ul>(\s*)<ul>(.*?)<text:list-item>(.*?)<\/ul>/s','<ul>$1<text:list-item>$2<text:list text:style-name="LIST_UNORDERED"><text:list-item>$3</text:list></text:list-item>',$str);
+
+	/* Bei UL innerhalb von LI muss der span und p tag geschlossen werden
+	<ol>
+		<li>...
+			<ul>
+				...
+			</ul>
+			...
+		</li>
+	*/
+	/*
+	 (((?!<\/ol>).)+)
+	 sorgt dafuer dass ol nicht geschlossen wird
+
+	 */
+//	$str = preg_replace('/<ol>(.*?)<text:list-item>(.*?)<ul>(.*?)<\/ul>/s','<ol>$1<text:list-item>$2</text:span></text:p><text:list text:style-name="LIST_UNORDERED">$3</text:list><text:p text:style-name="PLIST"><text:span text:style-name="TLIST">',$str);
 
 	// Alle UL aussen herum ersetzen
 	$str = preg_replace('/<ul>(.*?)<\/ul>/s','</text:p><text:list text:style-name="LIST_UNORDERED">$1</text:list><text:p text:style-name="PNORMAL">',$str);
@@ -574,11 +648,19 @@ function html2odt($str)
 	$str = str_replace('<p>','</text:p><text:p text:style-name="PNORMAL"> ',$str);
 	$str = str_replace('</p>','</text:p><text:p text:style-name="PNORMAL"> ',$str);
 
-	// LISTEN Innerhalb von P Tags funktionieren nicht und muessen ausserhalb sein
-	// dann funktionieren aber die doppelt eingerueckten nicht mehr?
-	//$str = preg_replace('/<text:p text:style-name="PNORMAL">(\s*)<text:list text:style-name="LIST_UNORDERED">(.*?)<\/text:list>/s','<text:p text:style-name="PNORMAL"> </text:p><text:list text:style-name="LIST_UNORDERED">$2</text:list><text:p text:style-name="PNORMAL"> ',$str);
-	//$str = preg_replace('/<text:p text:style-name="PEINGERUECKT">(\s*)<text:list text:style-name="LIST_UNORDERED">(.*?)<\/text:list>/s','<text:p text:style-name="EINGERUECKT"> </text:p><text:list text:style-name="LIST_UNORDERED">$2</text:list><text:p text:style-name="PNORMAL"> ',$str);
 
+	// Aufzaehlungslisten korrigieren die nicht korrekt verschachtelt wurden
+	// <list></p><list>
+	$str = str_replace('<text:list text:style-name="LIST_UNORDERED"></text:p><text:list text:style-name="LIST_UNORDERED">','<text:list text:style-name="LIST_UNORDERED"><text:list text:style-name="LIST_UNORDERED">', $str);
+	//<p><span></List>
+	$str = str_replace('<text:p text:style-name="PLIST"><text:span text:style-name="TLIST"></text:list>','<text:p text:style-name="PLIST"><text:span text:style-name="TLIST"> </text:span></text:p></text:list>', $str);
+
+	$str = str_replace('<text:p text:style-name="PLIST"><text:span text:style-name="TLIST"></text:p>','<text:p text:style-name="PLIST"><text:span text:style-name="TLIST"> </text:span></text:p>', $str);
+
+	// <p>..</span></p>
+	$str = preg_replace('/<text:p text:style-name="PNORMAL">(((?!<text:span).)+?)<\/text:span><\/text:p>/s','<text:p text:style-name="PNORMAL">$1</text:p>',$str);
+	// <p></span></p>
+	$str = str_replace('<text:p text:style-name="PNORMAL"></text:span></text:p>','<text:p text:style-name="PNORMAL"></text:p>', $str);
 	return $str;
 }
 
@@ -605,6 +687,9 @@ function MSClean($str)
 	// <p class="MsoNormal" style="...">
 	$str = preg_replace('/<p class="MsoNormal" .*?>(.*?)<\/p>/s','<p>$1</p>',$str);
 	$str = preg_replace('/<p class=".*?" style=".*?">(.*?)<\/p>/s','<p>$1</p>',$str);
+	$str = preg_replace('/<p style=".*?">(.*?)<\/p>/s','<p>$1</p>',$str);
+	$str = preg_replace('/<p align=".*?" class=".*?">(.*?)<\/p>/s','<p>$1</p>',$str);
+	$str = preg_replace('/<p class=".*?" align=".*?">(.*?)<\/p>/s','<p>$1</p>',$str);
 
 	$str = preg_replace('/<blockquote style=".*?">(.*?)<\/blockquote>/s','<blockquote>$1</blockquote>',$str);
 	$str = preg_replace('/<blockquote style=".*?">(.*?)<\/blockquote>/s','<blockquote>$1</blockquote>',$str);
@@ -619,11 +704,27 @@ function MSClean($str)
 	// <span lang="DE"> .. </span> -> ...
 	$str = preg_replace('/<span lang="DE">(.*?)<\/span>/s','$1',$str);
 
+	$str = str_replace('<br style="line-height: 1.4;">','<br>', $str);
+	$str = preg_replace('/<div style=".*?">(.*?)<\/div>/s','<div>$1</div>',$str);
+
 	// &nbsp; entfernen
 	$str = str_replace('&nbsp;',' ', $str);
 
 	// Tabelle entfernen - kann derzeit nicht dargestellt werden
 	$str = preg_replace('/<table .*?>(.*?)<\/table>/s','!! TABELLE WURDE ENTFERNT - Diese kann nicht dargestellt werden !!',$str);
+	return $str;
+}
+
+function OutputFormat($str)
+{
+	$str = str_replace('<text:list ',"\n<text:list ",$str);
+	$str = str_replace('</text:list>',"\n</text:list>",$str);
+	$str = str_replace('<text:list-item>',"\n\t<text:list-item>",$str);
+	$str = str_replace('<ul>',"\n<ul>",$str);
+	$str = str_replace('</ul>',"\n</ul>",$str);
+	$str = str_replace('<ol>',"\n<ol>",$str);
+	$str = str_replace('</ol>',"\n</ol>",$str);
+	$str = str_replace('<li>',"\n\t<li>", $str);
 	return $str;
 }
 ?>
