@@ -2908,6 +2908,12 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 	</text:list>
 </xsl:template>
 
+<xsl:template match="lvinfo/leistungsb">
+	<text:p text:style-name="P91"><xsl:value-of select="einleitungstext" /></text:p>
+	<text:list xml:id="listlvinfoleistungsb" text:style-name="WWNum18">
+		<xsl:apply-templates select="elements/element" mode="lvinfo"/>
+	</text:list>
+</xsl:template>
 
 <xsl:template match="element" mode="lvinfo">
 	<text:list-item>
