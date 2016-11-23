@@ -393,6 +393,8 @@ angular.module("stgv2")
 				{
 					if(lvinfo)
 						lvinfo='&lvinfo=true';
+					else
+						lvinfo='';
 					window.location.href="export.php?studienordnung_id="+sto.studienordnung_id+"&output="+format+lvinfo;
 				}
 				else
