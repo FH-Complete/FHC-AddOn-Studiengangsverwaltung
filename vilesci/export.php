@@ -270,6 +270,16 @@ $taetigkeitsfeld->getAll($studienordnung_id);
 $aufgaben_elements=array();
 $positionen_elements=array();
 $branchen_elements=array();
+$branchen_fixed = '';
+$positionen_fixed = '';
+$aufgaben_fixed = '';
+$qualifikation_bildungsauftrag = '';
+$qualifikation_beschreibung = '';
+$qualifikation_kompetenz1 = '';
+$qualifikation_kompetenz2 = '';
+$qualifikation_kompetenz1_elements = array();
+$qualifikation_kompetenz2_elements = array();
+
 if(isset($taetigkeitsfeld->result[0]))
 {
 	$taetigkeitsfeld_ueberblick = $taetigkeitsfeld->result[0]->ueberblick;
@@ -326,6 +336,16 @@ if(isset($qualifikationsziel->result[0]))
 		$qualifikation_kompetenz2_elements[$key] = array('element'=>$row_kompetenz);
 	}
 }
+if(isset($zugangsvoraussetzung->result[0]))
+	$zugangsvoraussetzung_data = $zugangsvoraussetzung->result[0]->data;
+else
+	$zugangsvoraussetzung_data = '';
+
+if(isset($aufnahmeverfahren->result[0]))
+	$aufnahmeverfahren_data = $aufnahmeverfahren->result[0]->data;
+else
+	$aufnahmeverfahren_data = '';
+
 $data = array(
 	'studienordnung_id'=>$studienordnung->studienordnung_id,
 	'version'=>$studienordnung->version,
@@ -348,8 +368,8 @@ $data = array(
 	'beschluss_kollegium'=>$beschluesse['Kollegium'],
 	'beschluss_aq'=>$beschluesse['AQ Austria'],
 	'begruendung'=>html2odt(json_decode($studienordnung->begruendung)),
-	'zugangsvoraussetzung'=>html2odt($zugangsvoraussetzung->result[0]->data),
-	'aufnahmeverfahren'=>html2odt($aufnahmeverfahren->result[0]->data),
+	'zugangsvoraussetzung'=>html2odt($zugangsvoraussetzung_data),
+	'aufnahmeverfahren'=>html2odt($aufnahmeverfahren_data),
 	'studienplaene'=>$stpl_arr,
 	'taetigkeitsfeld_ueberblick'=>html2odt($taetigkeitsfeld_ueberblick),
 	'branchen_fixed'=>html2odt($branchen_fixed),
