@@ -386,12 +386,16 @@ angular.module("stgv2")
 				}
 			};
 
-			ctrl.export = function (format)
+			ctrl.export = function (format, lvinfo)
 			{
 				var sto = $("#treeGrid").treegrid('getSelected');
 				if ((sto != null) && (sto.attributes[0].value == "studienordnung"))
 				{
-					window.location.href="export.php?studienordnung_id="+sto.studienordnung_id+"&output="+format;
+					if(lvinfo)
+						lvinfo='&lvinfo=true';
+					else
+						lvinfo='';
+					window.location.href="export.php?studienordnung_id="+sto.studienordnung_id+"&output="+format+lvinfo;
 				}
 				else
 				{

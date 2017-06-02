@@ -41,6 +41,7 @@ function mapDataToBewerbungstermin($data)
     $bt->insertvon = get_uid();
     $bt->nachfrist_ende = $data->nachfrist_ende;
     $bt->nachfrist = parseBoolean($data->nachfrist);
+	$bt->studienplan_id = $data->studienplan_id;
     return $bt;
 }
 

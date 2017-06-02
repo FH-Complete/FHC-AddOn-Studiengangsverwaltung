@@ -16,7 +16,7 @@
 	</br>
 	</br>
 	<table id="dataGridBewerbungstermin" class="easyui-datagrid" style='height: 200px;'>
-		
+
 	</table>
 	</br>
 	<form id="bewerbungsterminDetails" name="form" onsubmit="return false;" style="display: none;" novalidate>
@@ -45,10 +45,10 @@
 				</div>
 			</div>
 			<div class="col-sm-4">
-				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.studiengang.$error.required)}">
-					<label for="studiengang">Studiengang</label>
-					<select class="form-control input-sm" name="studiengang" ng-model="ctrl.bewerbungstermin.studiengang_kz" required>
-						<option ng-repeat="stg in ctrl.studiengangList" value="{{stg.studiengang_kz}}">{{stg.kurzbzlang}} - {{stg.bezeichnung}}</option>
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.studienplan.$error.required)}">
+					<label for="studienplan">Studienplan</label>
+					<select class="form-control input-sm" name="studienplan" ng-model="ctrl.bewerbungstermin.studienplan_id" required>
+						<option ng-repeat="stpl in ctrl.studienplanList" value="{{stpl.studienplan_id}}">{{stpl.bezeichnung}}</option>
 					</select>
 				</div>
 			</div>
@@ -81,7 +81,7 @@
 			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.nachfrist_ende.$error.required || form.nachfrist_ende.$error.date))}">
 					<label for="nachfrist_ende">Nachfrist Ende</label>
-					<input id="nachfrist_ende" type="date" class="form-control input-sm datepicker" name="nachfrist_ende" ng-model="ctrl.bewerbungstermin.nachfrist_ende" ng-disabled="!ctrl.bewerbungstermin.nachfrist" ng-required="ctrl.bewerbungstermin.nachfrist"/>
+					<input id="nachfrist_ende" type="date" class="form-control input-sm datepicker" name="nachfrist_ende" ng-model="ctrl.bewerbungstermin.nachfrist_ende"/>
 					<span ng-show="form.nachfrist_ende.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>

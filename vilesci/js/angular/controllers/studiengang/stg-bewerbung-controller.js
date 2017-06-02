@@ -1,5 +1,5 @@
 angular.module('stgv2')
-		.controller('StgBewerbungCtrl', function ($scope, $http, $stateParams, errorService, successService, StudiengangService, StudiensemesterService) {
+		.controller('StgBewerbungCtrl', function ($scope, $http, $stateParams, errorService, successService, StudienplanService, StudiensemesterService) {
 			$scope.stgkz = $stateParams.stgkz;
 			var ctrl = this;
 			ctrl.data = "";
@@ -19,8 +19,16 @@ angular.module('stgv2')
 			});
 
 			//loading Studiengang list
+			/*
 			StudiengangService.getStudiengangList().then(function (result) {
 				ctrl.studiengangList = result;
+			}, function (error) {
+				errorService.setError(getErrorMsg(error));
+			});
+			*/
+			// loading Studienplan List
+			StudienplanService.getStudienplanList($stateParams.stgkz).then(function (result) {
+				ctrl.studienplanList = result;
 			}, function (error) {
 				errorService.setError(getErrorMsg(error));
 			});
@@ -68,7 +76,8 @@ angular.module('stgv2')
 						{field: 'ende', align:'left',  sortable: true, formatter: dateTimeStringToDateString, title:'Ende'},
 						{field: 'nachfrist', align:'left', title:'Nachfrist', sortable: true},
 						{field: 'nachfrist_ende', align:'left', formatter: dateTimeStringToDateString, title:'Ende Nachfrist', sortable: true},
-						{field: 'anmerkung', align:'left', title:'Anmerkung'}
+						{field: 'anmerkung', align:'left', title:'Anmerkung'},
+						{field: 'studienplan_id', align:'left', title:'Studienplan'}
 					]]
 				});
 				$("#dataGridBewerbungstermin").datagrid('sort', {
@@ -83,12 +92,12 @@ angular.module('stgv2')
 				dateFormat: "yy-mm-dd",
 				firstDay: 1
 			});
-			
+
 			$("#datepicker_ende").datepicker({
 				dateFormat: "yy-mm-dd",
 				firstDay: 1
 			});
-			
+
 			$("#nachfrist_ende").datepicker({
 				dateFormat: "yy-mm-dd",
 				firstDay: 1
@@ -130,7 +139,8 @@ angular.module('stgv2')
 					saveData.data = angular.copy(ctrl.bewerbungstermin);
 					saveData.data.beginn = formatDateToString(ctrl.bewerbungstermin.beginn);
 					saveData.data.ende = formatDateToString(ctrl.bewerbungstermin.ende);
-					saveData.data.nachfrist_ende = formatDateToString(ctrl.bewerbungstermin.nachfrist_ende);
+					if(ctrl.bewerbungstermin.nachfrist_ende!='')
+						saveData.data.nachfrist_ende = formatDateToString(ctrl.bewerbungstermin.nachfrist_ende);
 					$http({
 						method: 'POST',
 						url: './api/studiengang/bewerbungstermin/save_bewerbungstermin.php',
@@ -159,9 +169,10 @@ angular.module('stgv2')
 			ctrl.loadBewerbungsterminDetails = function (row)
 			{
 				ctrl.bewerbungstermin = angular.copy(row);
-				ctrl.bewerbungstermin.beginn = formatStringToDate(ctrl.bewerbungstermin.beginn);	
+				ctrl.bewerbungstermin.beginn = formatStringToDate(ctrl.bewerbungstermin.beginn);
 				ctrl.bewerbungstermin.ende = formatStringToDate(ctrl.bewerbungstermin.ende);
-				ctrl.bewerbungstermin.nachfrist_ende = formatStringToDate(ctrl.bewerbungstermin.nachfrist_ende);	
+				if(ctrl.bewerbungstermin.nachfrist_ende!='')
+					ctrl.bewerbungstermin.nachfrist_ende = formatStringToDate(ctrl.bewerbungstermin.nachfrist_ende);
 				$scope.$apply();
 				$("#bewerbungsterminDetails").show();
 			};
@@ -174,7 +185,8 @@ angular.module('stgv2')
 					updateData.data = angular.copy(ctrl.bewerbungstermin);
 					updateData.data.beginn = formatDateToString(ctrl.bewerbungstermin.beginn);
 					updateData.data.ende = formatDateToString(ctrl.bewerbungstermin.ende);
-					updateData.data.nachfrist_ende = formatDateToString(ctrl.bewerbungstermin.nachfrist_ende);
+					if(ctrl.bewerbungstermin.nachfrist_ende!='')
+						updateData.data.nachfrist_ende = formatDateToString(ctrl.bewerbungstermin.nachfrist_ende);
 					$http({
 						method: 'POST',
 						url: './api/studiengang/bewerbungstermin/update_bewerbungstermin.php',
@@ -258,4 +270,5 @@ function Bewerbungstermin()
 	this.insertamum = "";
 	this.updateamum = "";
 	this.updatevon = "";
+	this.studienplan_id = "";
 }

@@ -46,8 +46,9 @@ $uid = get_uid();
 $rechte = new benutzerberechtigung();
 $rechte->getBerechtigungen($uid);
 
-if (!$rechte->isBerechtigt('basis/addon')) {
-    exit('Sie haben keine Berechtigung für die Verwaltung von Addons');
+if (!$rechte->isBerechtigt('basis/addon', null, 'suid'))
+{
+	exit('Sie haben keine Berechtigung für die Verwaltung von Addons');
 }
 
 echo '<h2>Aktualisierung der Datenbank</h2>';
@@ -126,7 +127,7 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_aenderungsvariante L
 
 		GRANT SELECT ON addon.tbl_stgv_aenderungsvariante TO web;
 		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_aenderungsvariante TO vilesci;
-		
+
 		INSERT INTO addon.tbl_stgv_aenderungsvariante (aenderungsvariante_kurzbz, bezeichnung) VALUES ('nichtGering','nicht geringfügig');
 		INSERT INTO addon.tbl_stgv_aenderungsvariante (aenderungsvariante_kurzbz, bezeichnung) VALUES ('akkreditierungspflichtig','akkreditierungspflichtig');
 		INSERT INTO addon.tbl_stgv_aenderungsvariante (aenderungsvariante_kurzbz, bezeichnung) VALUES ('gering','geringfügig');
@@ -146,7 +147,7 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienordnung LIMIT
 				aenderungsvariante_kurzbz varchar(32),
 				begruendung jsonb
 			);
-			
+
 		ALTER TABLE addon.tbl_stgv_studienordnung ADD CONSTRAINT pk_stgv_studienordnung PRIMARY KEY (studienordnung_id);
 		ALTER TABLE addon.tbl_stgv_studienordnung ADD CONSTRAINT studienordnung_id FOREIGN KEY (studienordnung_id) REFERENCES lehre.tbl_studienordnung (studienordnung_id) ON DELETE RESTRICT ON UPDATE CASCADE;
 		ALTER TABLE addon.tbl_stgv_studienordnung ADD CONSTRAINT aenderungsvariante_kurzbz FOREIGN KEY (aenderungsvariante_kurzbz) REFERENCES addon.tbl_stgv_aenderungsvariante (aenderungsvariante_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -171,7 +172,7 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studienplan LIMIT 1;
 				erlaeuterungen text,
 				sprache_kommentar text
 			);
-			
+
 		ALTER TABLE addon.tbl_stgv_studienplan ADD CONSTRAINT pk_stgv_studienplan PRIMARY KEY (studienplan_id);
 		ALTER TABLE addon.tbl_stgv_studienplan ADD CONSTRAINT studienplan_id FOREIGN KEY (studienplan_id) REFERENCES lehre.tbl_studienplan (studienplan_id) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -594,22 +595,22 @@ if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berecht
 if (!$result = @$db->db_query("SELECT benotung FROM lehre.tbl_lehrveranstaltung LIMIT 1;"))
 {
     $qry = "ALTER TABLE lehre.tbl_lehrveranstaltung ADD COLUMN benotung boolean NOT NULL DEFAULT FALSE;";
-    
+
     if (!$db->db_query($qry))
 	echo '<strong>lehre.tbl_lehrveranstaltung: ' . $db->db_last_error() . '</strong><br>';
     else
-	echo ' lehre.tbl_lehrveranstaltung: Spalte benotung hinzugefügt.<br>'; 
+	echo ' lehre.tbl_lehrveranstaltung: Spalte benotung hinzugefügt.<br>';
 }
 
 //Spalte lvinfo in lehre.tbl_lehrveranstaltung
 if (!$result = @$db->db_query("SELECT lvinfo FROM lehre.tbl_lehrveranstaltung LIMIT 1;"))
 {
     $qry = "ALTER TABLE lehre.tbl_lehrveranstaltung ADD COLUMN lvinfo boolean NOT NULL DEFAULT FALSE;";
-    
+
     if (!$db->db_query($qry))
 	echo '<strong>lehre.tbl_lehrveranstaltung: ' . $db->db_last_error() . '</strong><br>';
     else
-	echo ' lehre.tbl_lehrveranstaltung: Spalte lvinfo hinzugefügt.<br>'; 
+	echo ' lehre.tbl_lehrveranstaltung: Spalte lvinfo hinzugefügt.<br>';
 }
 
 //Tabelle addon.tbl_stgv_lehrtyp_lehrform
@@ -620,7 +621,7 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_lehrtyp_lehrform LIM
 				lehrtyp_kurzbz varchar(32) NOT NULL,
 				lehrform_kurzbz varchar(8) NOT NULL
 			);
-			
+
 		CREATE SEQUENCE addon.tbl_stgv_lehrtyp_lehrform_id_seq
 			INCREMENT BY 1
 			NO MAXVALUE
@@ -631,13 +632,13 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_lehrtyp_lehrform LIM
 		ALTER TABLE addon.tbl_stgv_lehrtyp_lehrform ALTER COLUMN lehrtyp_lehrform_id SET DEFAULT nextval('addon.tbl_stgv_lehrtyp_lehrform_id_seq');
 		ALTER TABLE addon.tbl_stgv_lehrtyp_lehrform ADD CONSTRAINT fk_lehrtyp_lehrform_lehrtyp FOREIGN KEY (lehrtyp_kurzbz) REFERENCES lehre.tbl_lehrtyp (lehrtyp_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
 		ALTER TABLE addon.tbl_stgv_lehrtyp_lehrform ADD CONSTRAINT fk_lehrtyp_lehrform_lehrform FOREIGN KEY (lehrform_kurzbz) REFERENCES lehre.tbl_lehrform (lehrform_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
-		
+
 		GRANT SELECT ON addon.tbl_stgv_lehrtyp_lehrform TO web;
 		GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_stgv_lehrtyp_lehrform TO vilesci;
 		GRANT SELECT, UPDATE ON addon.tbl_stgv_lehrtyp_lehrform_id_seq TO vilesci;
-		
+
 		INSERT INTO addon.tbl_stgv_lehrtyp_lehrform(lehrtyp_kurzbz, lehrform_kurzbz)
-		SELECT 'lv', lehrform_kurzbz FROM lehre.tbl_lehrform; 
+		SELECT 'lv', lehrform_kurzbz FROM lehre.tbl_lehrform;
 	";
 
     if (!$db->db_query($qry))
@@ -837,7 +838,7 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studiengangsgruppe_s
 
 		ALTER TABLE addon.tbl_stgv_studiengangsgruppe_studiengang ADD CONSTRAINT pk_studiengangsgruppe_studiengang PRIMARY KEY (studiengangsgruppe_studiengang_id);
 		ALTER TABLE addon.tbl_stgv_studiengangsgruppe_studiengang ALTER COLUMN studiengangsgruppe_studiengang_id SET DEFAULT nextval('addon.tbl_stgv_studiengangsgruppe_studiengang_studiengangsgruppe_studiengang_id_seq');
-		
+
 		ALTER TABLE addon.tbl_stgv_studiengangsgruppe_studiengang ADD CONSTRAINT fk_studiengangsgruppe_studiengang FOREIGN KEY (studiengang_kz) REFERENCES public.tbl_studiengang (studiengang_kz) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 		GRANT SELECT ON addon.tbl_stgv_studiengangsgruppe_studiengang TO web;
@@ -1297,8 +1298,8 @@ $tabellen = array(
     "addon.tbl_stgv_foerdervertrag" => array("foerdervertrag_id", "studiengang_kz", "foerdergeber", "foerdersatz", "foerdergruppe", "gueltigvon", "gueltigbis", "erlaeuterungen", "insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_aenderungsvariante" => array("aenderungsvariante_kurzbz","bezeichnung"),
     "addon.tbl_stgv_doktorat" => array("doktorat_id", "studiengang_kz", "bezeichnung", "datum_erlass", "gueltigvon", "gueltigbis", "erlaeuterungen", "insertamum", "insertvon", "updateamum", "updatevon"),
-    "addon.tbl_stgv_taetigkeitsfelder" => array("taetigkeitsfeld_id", "studienordnung_id", "ueberblick", "data","insertamum", "insertvon", "updateamum", "updatevon"), 
-    "addon.tbl_stgv_studiengangsgruppen" => array("studiengangsgruppe_id", "data","insertamum", "insertvon", "updateamum", "updatevon"), 
+    "addon.tbl_stgv_taetigkeitsfelder" => array("taetigkeitsfeld_id", "studienordnung_id", "ueberblick", "data","insertamum", "insertvon", "updateamum", "updatevon"),
+    "addon.tbl_stgv_studiengangsgruppen" => array("studiengangsgruppe_id", "data","insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_studiengangsgruppe_studiengang" => array("studiengangsgruppe_studiengang_id", "studiengang_kz", "data","insertamum", "insertvon", "updateamum", "updatevon"),
     "addon.tbl_stgv_studienordnung_dokument" => array("studienordnung_id","dms_id"),
     "addon.tbl_stgv_qualifikationsziele" => array("qualifikationsziel_id", "studienordnung_id", "data","insertamum", "insertvon", "updateamum", "updatevon"),
