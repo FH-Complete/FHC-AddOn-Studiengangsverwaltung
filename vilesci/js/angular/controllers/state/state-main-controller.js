@@ -50,7 +50,8 @@ angular.module('stgv2')
 						},
 						{field: 'regelstudiendauer', align:'left', title:'RStD'},
 						{field: 'sprache', align:'left', title:'Sprache'},
-						{field: 'aktiv', align:'left', title:'aktiv'}
+						{field: 'aktiv', align:'left', title:'aktiv'},
+						{field: 'onlinebewerbung_studienplan', align:'left', title:'onlinebewerbung'}
 					]],
 					loadFilter: function (data)
 					{

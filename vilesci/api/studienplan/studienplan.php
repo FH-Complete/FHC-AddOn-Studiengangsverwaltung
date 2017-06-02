@@ -40,6 +40,7 @@ $data = array(
     "ects_stpl" => $studienplan->ects_stpl,
     "pflicht_lvs" => $studienplan->pflicht_lvs,
     "pflicht_sws" => $studienplan->pflicht_sws,
+    "onlinebewerbung_studienplan" => $studienplan->onlinebewerbung_studienplan,
     "erlaeuterungen" => $studienplan->erlaeuterungen,
     'sprache_kommentar' => $studienplan->sprache_kommentar,
     "updateamum" => $studienplan->updateamum,

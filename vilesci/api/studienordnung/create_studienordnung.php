@@ -127,6 +127,7 @@ if ($studienordnung->save())
 		$stpl->ects_stpl = $value->ects_stpl;
 		$stpl->pflicht_sws = $value->pflicht_sws;
 		$stpl->pflicht_lvs = $value->pflicht_lvs;
+		$stpl->onlinebewerbung_studienplan = $value->onlinebewerbung_studienplan;
 		$stpl->erlaeuterungen = $value->erlaeuterungen;
 		$stpl->insertvon = get_uid();
 

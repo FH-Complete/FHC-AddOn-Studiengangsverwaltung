@@ -109,6 +109,8 @@ foreach($studienordnung->result as $key=>$sto)
 	$temp_stpl->version = $stpl->version;
 	$temp_stpl->orgform_kurzbz = $stpl->orgform_kurzbz;
 	$temp_stpl->regelstudiendauer = $stpl->regelstudiendauer;
+	$temp_stpl->aktiv = $stpl->aktiv;
+	$temp_stpl->onlinebewerbung_studienplan = $stpl->onlinebewerbung_studienplan;
 	$temp_stpl->sprache = $sprache->getBezeichnung($stpl->sprache, "German");
 	$gueltigkeit = $stpl->loadStudiensemesterFromStudienplan($stpl->studienplan_id);
 	if(!empty($gueltigkeit))

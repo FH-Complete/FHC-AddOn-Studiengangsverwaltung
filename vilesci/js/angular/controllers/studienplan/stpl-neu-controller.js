@@ -108,4 +108,5 @@ function Studienplan()
 	this.pflicht_lvs = "";
 	this.erlaeuterungen = "";
 	this.testtool_sprachwahl = true;
+	this.onlinebewerbung_studienplan = true;
 }

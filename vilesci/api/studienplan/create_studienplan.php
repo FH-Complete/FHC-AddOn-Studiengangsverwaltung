@@ -39,6 +39,7 @@ function mapDataToStudienplan($data)
     $stpl->bezeichnung = $data->version;
     $stpl->aktiv = parseBoolean($data->aktiv);
     $stpl->testtool_sprachwahl = parseBoolean($data->testtool_sprachwahl);
+    $stpl->onlinebewerbung_studienplan = parseBoolean($data->onlinebewerbung_studienplan);
     $stpl->insertvon = get_uid();
     return $stpl;
 }

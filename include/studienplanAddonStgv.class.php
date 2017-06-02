@@ -30,6 +30,7 @@ class StudienplanAddonStgv extends studienplan
 	public $ects_stpl;
 	public $pflicht_sws;
 	public $pflicht_lvs;
+	public $onlinebewerbung_studienplan;
 	public $erlaeuterungen;
 	public $sprache_kommentar;
 
@@ -56,7 +57,7 @@ class StudienplanAddonStgv extends studienplan
 			//Neuen Datensatz einfuegen
 			$qry = 'BEGIN;INSERT INTO lehre.tbl_studienplan (studienordnung_id, orgform_kurzbz,version,
 					bezeichnung, regelstudiendauer, sprache, aktiv, semesterwochen, testtool_sprachwahl,
-					pflicht_sws, pflicht_lvs, ects_stpl,
+					pflicht_sws, pflicht_lvs, ects_stpl, onlinebewerbung_studienplan,
 					insertamum, insertvon) VALUES (' .
 				$this->db_add_param($this->studienordnung_id, FHC_INTEGER) . ', ' .
 				$this->db_add_param($this->orgform_kurzbz) . ', ' .
@@ -70,6 +71,7 @@ class StudienplanAddonStgv extends studienplan
 				$this->db_add_param($this->pflicht_sws) . ', ' .
 				$this->db_add_param($this->pflicht_lvs) . ', ' .
 				$this->db_add_param($this->ects_stpl) . ', ' .
+				$this->db_add_param($this->onlinebewerbung_studienplan, FHC_BOOLEAN) . ', ' .
 				'now(), ' .
 				$this->db_add_param($this->insertvon) . ');';
 		}
@@ -94,6 +96,7 @@ class StudienplanAddonStgv extends studienplan
 				' ects_stpl=' . $this->db_add_param($this->ects_stpl) . ',' .
 				' pflicht_sws=' . $this->db_add_param($this->pflicht_sws, FHC_INTEGER) . ',' .
 				' pflicht_lvs=' . $this->db_add_param($this->pflicht_lvs, FHC_INTEGER) . ',' .
+				' onlinebewerbung_studienplan=' . $this->db_add_param($this->onlinebewerbung_studienplan, FHC_BOOLEAN) . ',' .
 				' updateamum= now(), ' .
 				' updatevon=' . $this->db_add_param($this->updatevon) . ' ' .
 				' WHERE studienplan_id=' . $this->db_add_param($this->studienplan_id, FHC_INTEGER, false) . ';';
@@ -243,6 +246,7 @@ class StudienplanAddonStgv extends studienplan
 			$this->ects_stpl = $row->ects_stpl;
 			$this->pflicht_lvs = $row->pflicht_lvs;
 			$this->pflicht_sws = $row->pflicht_sws;
+			$this->onlinebewerbung_studienplan = $this->db_parse_bool($row->onlinebewerbung_studienplan);
 			$this->erlaeuterungen = $row->erlaeuterungen;
 			$this->sprache_kommentar = $row->sprache_kommentar;
 			$this->updateamum = $row->updateamum;
@@ -303,6 +307,7 @@ class StudienplanAddonStgv extends studienplan
 				$obj->ects_stpl = $row->ects_stpl;
 				$obj->pflicht_lvs = $row->pflicht_lvs;
 				$obj->pflicht_sws = $row->pflicht_sws;
+				$obj->onlinebewerbung_studienplan = $this->db_parse_bool($row->onlinebewerbung_studienplan);
 				$obj->erlaeuterungen = $row->erlaeuterungen;
 				$obj->sprache_kommentar = $row->sprache_kommentar;
 				$obj->updateamum = $row->updateamum;
@@ -351,6 +356,7 @@ class StudienplanAddonStgv extends studienplan
 				$obj->ects_stpl = $row->ects_stpl;
 				$obj->pflicht_lvs = $row->pflicht_lvs;
 				$obj->pflicht_sws = $row->pflicht_sws;
+				$obj->onlinebewerbung_studienplan = $this->db_parse_bool($row->onlinebewerbung_studienplan);
 				$obj->erlaeuterungen = $row->erlaeuterungen;
 				$obj->sprache_kommentar = $row->sprache_kommentar;
 				$obj->updateamum = $row->updateamum;
@@ -446,6 +452,10 @@ class StudienplanAddonStgv extends studienplan
 				$obj->aktiv = $this->db_parse_bool($row->aktiv);
 				$obj->semesterwochen = $row->semesterwochen;
 				$obj->testtool_sprachwahl = $this->db_parse_bool($row->testtool_sprachwahl);
+				$obj->ects_stpl = $row->ects_stpl;
+				$obj->pflicht_lvs = $row->pflicht_lvs;
+				$obj->pflicht_sws = $row->pflicht_sws;
+				$obj->onlinebewerbung_studienplan = $this->db_parse_bool($row->onlinebewerbung_studienplan);
 				$obj->updateamum = $row->updateamum;
 				$obj->updatevon = $row->updatevon;
 				$obj->insertamum = $row->insertamum;
