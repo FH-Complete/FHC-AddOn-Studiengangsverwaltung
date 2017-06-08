@@ -23,7 +23,7 @@ elseif(($method == false))
 $studiensemester = new studiensemester();
 if (method_exists($studiensemester, $method))
 {
-	$studiensemester->$method(); 
+	$studiensemester->$method('desc'); 
 	$data = $studiensemester->studiensemester;
 }
 else
