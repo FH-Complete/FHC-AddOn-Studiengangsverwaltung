@@ -56,16 +56,16 @@
 		<!-- Zeile 2 -->
 		<div class="row">
 			<div class="col-sm-2">
-				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.beginn.$error.required || form.beginn.$error.date))}">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.beginn.$error.date))}">
 					<label for="beginn">Beginn Bewerbungsfrist</label>
-					<input id="datepicker_beginn" type="date" class="form-control input-sm" name="beginn" ng-model="ctrl.bewerbungstermin.beginn" required/>
+					<input id="datepicker_beginn" type="date" class="form-control input-sm" name="beginn" ng-model="ctrl.bewerbungstermin.beginn"/>
 					<span ng-show="form.beginn.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
 			<div class="col-sm-2">
-				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.ende.$error.required || form.ende.$error.date))}">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.ende.$error.date))}">
 					<label for="ende">Ende Bewerbungsfrist</label>
-					<input id="datepicker_ende" type="date" class="form-control input-sm" name="ende" ng-model="ctrl.bewerbungstermin.ende" required/>
+					<input id="datepicker_ende" type="date" class="form-control input-sm" name="ende" ng-model="ctrl.bewerbungstermin.ende"/>
 					<span ng-show="form.ende.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
