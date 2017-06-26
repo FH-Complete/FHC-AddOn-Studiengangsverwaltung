@@ -269,8 +269,9 @@ angular.module('stgv2')
 				}
 			};
 
-			$scope.$watch('ctrl.bewerbungstermin.nachfrist', function (newValue, oldValue) {
-				if (newValue)
+			$scope.UpdateNachfristBool = function()
+			{
+				if (ctrl.bewerbungstermin.nachfrist)
 				{
 					var date = new Date(ctrl.bewerbungstermin.ende);
 					date.setDate(date.getDate() + 30);
@@ -282,7 +283,7 @@ angular.module('stgv2')
 					ctrl.bewerbungstermin.nachfrist_ende = "";
 					ctrl.bewerbungstermin.nachfrist_ende_time = "";
 				}
-			});
+			};
 		});
 
 function Bewerbungstermin()
