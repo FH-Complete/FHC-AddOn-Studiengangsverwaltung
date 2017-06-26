@@ -61,9 +61,9 @@ class StudienordnungAddonStgv extends studienordnung
 
 	public function loadStudienordnungWithStatus($studiengang_kz, $status_kurzbz)
 	{
-		$qry = "SELECT sto.*, s.bezeichnung as status_bezeichnung, ae.bezeichnung as aenderungsvariante_bezeichnung, addonSto.* "
+		$qry = "SELECT s.bezeichnung as status_bezeichnung, ae.bezeichnung as aenderungsvariante_bezeichnung, addonSto.*, sto.* "
 			. "FROM lehre.tbl_studienordnung sto "
-			. "JOIN addon.tbl_stgv_studienordnung addonSto USING(studienordnung_id) "
+			. "LEFT JOIN addon.tbl_stgv_studienordnung addonSto USING(studienordnung_id) "
 			. "JOIN lehre.tbl_studienordnungstatus s USING(status_kurzbz) "
 			. "LEFT JOIN addon.tbl_stgv_aenderungsvariante ae USING(aenderungsvariante_kurzbz) "
 			. "WHERE status_kurzbz=" . $this->db_add_param($status_kurzbz, FHC_STRING) . ""
@@ -226,7 +226,12 @@ class StudienordnungAddonStgv extends studienordnung
 		}
 
 		//Daten aus der Datenbank lesen
-		$qry = "SELECT * FROM lehre.tbl_studienordnung JOIN addon.tbl_stgv_studienordnung USING(studienordnung_id) WHERE studienordnung_id=" . $this->db_add_param($studienordnung_id, FHC_INTEGER, false);
+		$qry = "SELECT
+				addon.tbl_stgv_studienordnung.* , tbl_studienordnung.*
+			FROM
+				lehre.tbl_studienordnung
+				LEFT JOIN addon.tbl_stgv_studienordnung USING(studienordnung_id)
+			WHERE studienordnung_id=" . $this->db_add_param($studienordnung_id, FHC_INTEGER, false);
 
 		if (!$this->db_query($qry))
 		{
@@ -283,18 +288,19 @@ class StudienordnungAddonStgv extends studienordnung
 
 		if (is_null($studiensemester_kurzbz))
 		{
-			$qry = 'SELECT sto.*, s.bezeichnung as status_bezeichnung, ae.bezeichnung as aenderungsvariante_bezeichnung, addonSto.*
+			$qry = 'SELECT s.bezeichnung as status_bezeichnung, ae.bezeichnung as aenderungsvariante_bezeichnung, addonSto.*,sto.*
 				FROM lehre.tbl_studienordnung sto
-					JOIN addon.tbl_stgv_studienordnung addonSto USING(studienordnung_id)
 					JOIN lehre.tbl_studienordnungstatus s USING(status_kurzbz)
+					LEFT JOIN addon.tbl_stgv_studienordnung addonSto USING(studienordnung_id)
 					LEFT JOIN addon.tbl_stgv_aenderungsvariante ae USING(aenderungsvariante_kurzbz)
 					WHERE  studiengang_kz=' . $this->db_add_param($studiengang_kz, FHC_INTEGER, false);
-		} else
+		}
+		else
 		{
-			$qry = 'SELECT sto.*, s.bezeichnung as status_bezeichnung, ae.bezeichnung as aenderungsvariante_bezeichnung, addonSto.*
+			$qry = 'SELECT s.bezeichnung as status_bezeichnung, ae.bezeichnung as aenderungsvariante_bezeichnung, addonSto.*,sto.*
 				FROM lehre.tbl_studienordnung sto
-					JOIN addon.tbl_stgv_studienordnung addonSto USING(studienordnung_id)
 					JOIN lehre.tbl_studienordnungstatus s USING(status_kurzbz)
+					LEFT JOIN addon.tbl_stgv_studienordnung addonSto USING(studienordnung_id)
 					LEFT JOIN addon.tbl_stgv_aenderungsvariante ae USING(aenderungsvariante_kurzbz)
 					LEFT JOIN lehre.tbl_studienordnung_semester USING (studienordnung_id)
 					WHERE studiengang_kz=' . $this->db_add_param($studiengang_kz, FHC_INTEGER, false);

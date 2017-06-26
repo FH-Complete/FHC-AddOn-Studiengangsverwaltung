@@ -63,7 +63,6 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 	<script type="text/javascript" src="./js/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
 
 	<!-- Easy UI JS -->
-	<!--<script type="text/javascript" src="./js/jquery-easyui-1.4.4/jquery.min.js"></script>-->
 	<script type="text/javascript" src="./js/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 	<!-- TreeGrid DnD Extension -->
 	<script type="text/javascript" src="./js/treegrid-dnd/treegrid-dnd.js"></script>
@@ -158,8 +157,8 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 	<script type="text/javascript" src="../../../include/js/colorpicker.js"></script>
 
 	<!-- Timepicker -->
-	<link rel="stylesheet" href="../../../skin/jquery.ui.timepicker.css" type="text/css"/>
-	<script type="text/javascript" src="../../../include/js/jquery.ui.timepicker.js"></script>
+	<link rel="stylesheet" href="./css/jquery.ui.timepicker.css" type="text/css"/>
+	<script type="text/javascript" src="./js/jquery.ui.timepicker.js"></script>
 
 	<!-- Angular File Upload -->
 	<script src="js/angular/angular-file-upload/dist/angular-file-upload.js" type="text/javascript"></script>

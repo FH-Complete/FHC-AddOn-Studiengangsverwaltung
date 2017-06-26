@@ -81,7 +81,7 @@ h2
 	cursor: pointer !important;
 }
 
-/*#treeGridWrapper 
+/*#treeGridWrapper
 {
 	width: 100%;
 	height: 100%;
@@ -115,7 +115,7 @@ h2
 	/*overflow: hidden;*/
 }
 
-#centerCenter 
+#centerCenter
 {
 	padding: 0px;
 }
@@ -156,7 +156,7 @@ h1
 	display: none;
 }
 
-#alrt_box 
+#alrt_box
 {
 	min-width: 200px;
 }
@@ -307,7 +307,7 @@ label {
 	font-weight: bold;
 }
 
-.icon-module 
+.icon-module
 {
 	background: url('./modul.png') no-repeat center center;
 }
@@ -327,17 +327,17 @@ label {
 	cursor: pointer;
 }
 
-.drop-zone 
-{ 
+.drop-zone
+{
 	border: dotted 3px lightgray;
 }
 .nv-file-over
-{ 
-	border: dotted 3px red;
-} 
-.another-file-over-class 
 {
-	border: dotted 3px green; 
+	border: dotted 3px red;
+}
+.another-file-over-class
+{
+	border: dotted 3px green;
 }
 
 .doctable
@@ -349,11 +349,11 @@ input::-webkit-calendar-picker-indicator{
     display: none;
 }
 
-input[type="date"]::-webkit-input-placeholder{ 
+input[type="date"]::-webkit-input-placeholder{
     visibility: hidden !important;
 }
 
-.bold 
+.bold
 {
 	font-weight: bold;
 }
@@ -363,7 +363,7 @@ h5
 	font-weight: bold;
 }
 
-#editor 
+#editor
 {
 	overflow:scroll;
 	max-height:300px

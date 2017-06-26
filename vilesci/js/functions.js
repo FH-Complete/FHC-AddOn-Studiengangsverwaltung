@@ -75,10 +75,19 @@ function formatStringToDate(val){
 
 function formatStringToTime(val, separator)
 {
-	var time = val.split(separator);
-	if(time.length >= 2)
-		return new Date(0,0,0,time[0],time[1]);
-	return new Date();
+	if((val !== null) && (val !== undefined))
+	{
+		var time = val.split(separator);
+		if(time.length >= 2)
+		{
+			return new Date(0,0,0,time[0],time[1]);
+		}
+		return new Date();
+	}
+	else
+	{
+			return null;
+	}
 }
 
 function formatTimeToString(val)
@@ -100,6 +109,30 @@ function dateTimeStringToDateString(dateTimeString)
 {
 	if((dateTimeString !== null) && (dateTimeString !== undefined))
 		return dateTimeString.split(" ")[0];
+	else
+		return null;
+}
+
+function dateTimeStringToGermanDateString(dateTimeString)
+{
+	if((dateTimeString !== null) && (dateTimeString !== undefined))
+	{
+		var datum = dateTimeString.split(" ")[0];
+		var zeit = dateTimeString.split(" ")[1];
+
+		return datum.split("-")[2]+'.'+datum.split("-")[1]+'.'+datum.split("-")[0]+' '+zeit.split(":")[0]+':'+zeit.split(":")[1];
+	}
+	else
+		return null;
+}
+
+function dateTimeStringToTimeString(dateTimeString)
+{
+	if((dateTimeString !== null) && (dateTimeString !== undefined))
+	{
+		var timestring = dateTimeString.split(" ")[1];
+		return timestring.split(':')[0] + ':' + timestring.split(':')[1];
+	}
 	else
 		return null;
 }

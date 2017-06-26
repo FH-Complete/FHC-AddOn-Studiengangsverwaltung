@@ -56,16 +56,18 @@
 		<!-- Zeile 2 -->
 		<div class="row">
 			<div class="col-sm-2">
-				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.beginn.$error.date))}">
+				<div class="form-group form-inline" ng-class="{'has-error': (form.$submitted && (form.beginn.$error.date))}">
 					<label for="beginn">Beginn Bewerbungsfrist</label>
-					<input id="datepicker_beginn" type="date" class="form-control input-sm" name="beginn" ng-model="ctrl.bewerbungstermin.beginn"/>
+					<input id="datepicker_beginn" type="date" class="form-control input-sm" name="beginn" ng-model="ctrl.bewerbungstermin.beginn" size="9"/>
+					<input id="timepicker_beginn" type="text" class="form-control input-sm" name="beginn_time" ng-model="ctrl.bewerbungstermin.beginn_time" size="4"/>
 					<span ng-show="form.beginn.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
 			<div class="col-sm-2">
-				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.ende.$error.date))}">
+				<div class="form-group form-inline" ng-class="{'has-error': (form.$submitted && (form.ende.$error.date))}">
 					<label for="ende">Ende Bewerbungsfrist</label>
-					<input id="datepicker_ende" type="date" class="form-control input-sm" name="ende" ng-model="ctrl.bewerbungstermin.ende"/>
+					<input id="datepicker_ende" type="date" class="form-control input-sm" name="ende" ng-model="ctrl.bewerbungstermin.ende" size="9"/>
+					<input id="timepicker_ende" type="text" class="form-control input-sm" name="ende_time" ng-model="ctrl.bewerbungstermin.ende_time" size="4"/>
 					<span ng-show="form.ende.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
@@ -79,9 +81,10 @@
 				  </div>
 			</div>
 			<div class="col-sm-2">
-				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.nachfrist_ende.$error.required || form.nachfrist_ende.$error.date))}">
+				<div class="form-group form-inline" ng-class="{'has-error': (form.$submitted && (form.nachfrist_ende.$error.date))}">
 					<label for="nachfrist_ende">Nachfrist Ende</label>
-					<input id="nachfrist_ende" type="date" class="form-control input-sm datepicker" name="nachfrist_ende" ng-model="ctrl.bewerbungstermin.nachfrist_ende"/>
+					<input id="nachfrist_ende" type="date" class="form-control input-sm datepicker" name="nachfrist_ende" ng-model="ctrl.bewerbungstermin.nachfrist_ende" size="9"/>
+					<input id="timepicker_nachfrist_ende" type="text" class="form-control input-sm" name="nachfrist_ende_time" ng-model="ctrl.bewerbungstermin.nachfrist_ende_time" size="4"/>
 					<span ng-show="form.nachfrist_ende.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>

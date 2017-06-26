@@ -12,7 +12,7 @@ angular.module('stgv2')
 					beschreibung: "alle"
 				}];
 			ctrl.ortList = "";
-			
+
 			//enable tooltips
 			$(document).ready(function(){
 				$('[data-toggle="tooltip"]').tooltip();
@@ -39,7 +39,7 @@ angular.module('stgv2')
 					method: 'GET',
 					multiSort: true,
 					singleSelect: true,
-					
+
 					onLoadSuccess: function (data)
 					{
 						//Error Handling happens in loadFilter
@@ -80,7 +80,7 @@ angular.module('stgv2')
 								formatter: function(val)
 								{
 									return val;
-									return val.substring(0,5);
+									//return val.substring(0,5);
 								}
 							},
 							{field: 'ort_kurzbz',align:'right', sortable: true,title:'Ort'},
@@ -90,7 +90,7 @@ angular.module('stgv2')
 							{field: 'anmerkung',align:'left', title: 'Anmerkung'}
 						]]
 				});
-				
+
 				$("#dataGridReihungstest").datagrid('sort', {
 					sortName: 'datum,uhrzeit',
 					sortOrder: 'desc,desc'
@@ -109,7 +109,7 @@ angular.module('stgv2')
 				ctrl.reihungstest = angular.copy(row);
 				ctrl.reihungstest.datum = formatStringToDate(row.datum);
 				ctrl.reihungstest.uhrzeit = formatStringToTime(row.uhrzeit, ":");
-				
+
 				$scope.$apply();
 				$("#reihungstestDetails").show();
 			};

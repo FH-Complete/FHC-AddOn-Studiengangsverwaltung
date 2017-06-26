@@ -18,14 +18,6 @@ angular.module('stgv2')
 				errorService.setError(getErrorMsg(error));
 			});
 
-			//loading Studiengang list
-			/*
-			StudiengangService.getStudiengangList().then(function (result) {
-				ctrl.studiengangList = result;
-			}, function (error) {
-				errorService.setError(getErrorMsg(error));
-			});
-			*/
 			// loading Studienplan List
 			StudienplanService.getStudienplanList($stateParams.stgkz).then(function (result) {
 				ctrl.studienplanList = result;
@@ -44,10 +36,12 @@ angular.module('stgv2')
 					{
 						//Error Handling happens in loadFilter
 					},
-					onLoadError: function () {
+					onLoadError: function ()
+					{
 						//TODO Error Handling
 					},
-					loadFilter: function (data) {
+					loadFilter: function (data)
+					{
 						var result = {};
 						if (data.erfolg)
 						{
@@ -72,12 +66,12 @@ angular.module('stgv2')
 						{field: 'bewerbungstermin_id', align: 'right', title:'ID'},
 						{field: 'studiengang_kz', align:'right', sortable: true, title:'STG KZ'},
 						{field: 'studiensemester_kurzbz', align:'right', sortable: true, title:'Studiensemester'},
-						{field: 'beginn', align:'left', sortable: true, formatter: dateTimeStringToDateString, title:'Beginn'},
-						{field: 'ende', align:'left',  sortable: true, formatter: dateTimeStringToDateString, title:'Ende'},
+						{field: 'beginn', align:'left', sortable: true, formatter: dateTimeStringToGermanDateString, title:'Beginn'},
+						{field: 'ende', align:'left',  sortable: true, formatter: dateTimeStringToGermanDateString, title:'Ende'},
 						{field: 'nachfrist', align:'left', title:'Nachfrist', sortable: true},
-						{field: 'nachfrist_ende', align:'left', formatter: dateTimeStringToDateString, title:'Ende Nachfrist', sortable: true},
+						{field: 'nachfrist_ende', align:'left', formatter: dateTimeStringToGermanDateString, title:'Ende Nachfrist', sortable: true},
 						{field: 'anmerkung', align:'left', title:'Anmerkung'},
-						{field: 'studienplan_id', align:'left', title:'Studienplan'}
+						{field: 'stpl_bezeichnung', align:'left', title:'Studienplan'}
 					]]
 				});
 				$("#dataGridBewerbungstermin").datagrid('sort', {
@@ -91,6 +85,19 @@ angular.module('stgv2')
 			$("#datepicker_beginn").datepicker({
 				dateFormat: "yy-mm-dd",
 				firstDay: 1
+			});
+
+			$("#timepicker_beginn").timepicker({
+				showPeriodLabels: false,
+				rows: 4
+			});
+			$("#timepicker_ende").timepicker({
+				showPeriodLabels: false,
+				rows: 4
+			});
+			$("#timepicker_nachfrist_ende").timepicker({
+				showPeriodLabels: false,
+				rows: 4
 			});
 
 			$("#datepicker_ende").datepicker({
@@ -137,10 +144,13 @@ angular.module('stgv2')
 				{
 					var saveData = {data: ""};
 					saveData.data = angular.copy(ctrl.bewerbungstermin);
-					saveData.data.beginn = formatDateToString(ctrl.bewerbungstermin.beginn);
-					saveData.data.ende = formatDateToString(ctrl.bewerbungstermin.ende);
-					if(ctrl.bewerbungstermin.nachfrist_ende!='')
-						saveData.data.nachfrist_ende = formatDateToString(ctrl.bewerbungstermin.nachfrist_ende);
+					if(ctrl.bewerbungstermin.beginn != null && ctrl.bewerbungstermin.beginn != '')
+						saveData.data.beginn = formatDateToString(ctrl.bewerbungstermin.beginn) + ' '+ctrl.bewerbungstermin.beginn_time;
+					if(ctrl.bewerbungstermin.ende != null && ctrl.bewerbungstermin.ende != '')
+						saveData.data.ende = formatDateToString(ctrl.bewerbungstermin.ende) +' '+ctrl.bewerbungstermin.ende_time;
+					if(ctrl.bewerbungstermin.nachfrist_ende != null && ctrl.bewerbungstermin.nachfrist_ende != '')
+						saveData.data.nachfrist_ende = formatDateToString(ctrl.bewerbungstermin.nachfrist_ende)+' '+ctrl.bewerbungstermin.nachfrist_ende_time;
+
 					$http({
 						method: 'POST',
 						url: './api/studiengang/bewerbungstermin/save_bewerbungstermin.php',
@@ -169,10 +179,16 @@ angular.module('stgv2')
 			ctrl.loadBewerbungsterminDetails = function (row)
 			{
 				ctrl.bewerbungstermin = angular.copy(row);
+				ctrl.bewerbungstermin.beginn_time = dateTimeStringToTimeString(ctrl.bewerbungstermin.beginn,':');
 				ctrl.bewerbungstermin.beginn = formatStringToDate(ctrl.bewerbungstermin.beginn);
+				ctrl.bewerbungstermin.ende_time = dateTimeStringToTimeString(ctrl.bewerbungstermin.ende);
 				ctrl.bewerbungstermin.ende = formatStringToDate(ctrl.bewerbungstermin.ende);
+
 				if(ctrl.bewerbungstermin.nachfrist_ende!='')
+				{
+					ctrl.bewerbungstermin.nachfrist_ende_time = dateTimeStringToTimeString(ctrl.bewerbungstermin.nachfrist_ende);
 					ctrl.bewerbungstermin.nachfrist_ende = formatStringToDate(ctrl.bewerbungstermin.nachfrist_ende);
+				}
 				$scope.$apply();
 				$("#bewerbungsterminDetails").show();
 			};
@@ -183,10 +199,21 @@ angular.module('stgv2')
 				{
 					var updateData = {data: ""};
 					updateData.data = angular.copy(ctrl.bewerbungstermin);
-					updateData.data.beginn = formatDateToString(ctrl.bewerbungstermin.beginn);
-					updateData.data.ende = formatDateToString(ctrl.bewerbungstermin.ende);
-					if(ctrl.bewerbungstermin.nachfrist_ende!='')
-						updateData.data.nachfrist_ende = formatDateToString(ctrl.bewerbungstermin.nachfrist_ende);
+					if(ctrl.bewerbungstermin.beginn != null && ctrl.bewerbungstermin.beginn != '')
+						updateData.data.beginn = formatDateToString(ctrl.bewerbungstermin.beginn)+' '+ctrl.bewerbungstermin.beginn_time;
+					else
+						updateData.data.beginn = '';
+
+					if(ctrl.bewerbungstermin.ende != null && ctrl.bewerbungstermin.ende != '')
+						updateData.data.ende = formatDateToString(ctrl.bewerbungstermin.ende)+' '+ctrl.bewerbungstermin.ende_time;
+					else
+						updateData.data.ende = '';
+
+					if(ctrl.bewerbungstermin.nachfrist_ende != null && ctrl.bewerbungstermin.nachfrist_ende != '')
+						updateData.data.nachfrist_ende = formatDateToString(ctrl.bewerbungstermin.nachfrist_ende)+' '+ctrl.bewerbungstermin.nachfrist_ende_time;
+					else
+						updateData.data.nachfrist_ende = '';
+
 					$http({
 						method: 'POST',
 						url: './api/studiengang/bewerbungstermin/update_bewerbungstermin.php',
@@ -248,10 +275,12 @@ angular.module('stgv2')
 					var date = new Date(ctrl.bewerbungstermin.ende);
 					date.setDate(date.getDate() + 30);
 					ctrl.bewerbungstermin.nachfrist_ende = date;
+					ctrl.bewerbungstermin.nachfrist_ende_time = '23:55';
 				}
 				else
 				{
 					ctrl.bewerbungstermin.nachfrist_ende = "";
+					ctrl.bewerbungstermin.nachfrist_ende_time = "";
 				}
 			});
 		});
@@ -262,9 +291,12 @@ function Bewerbungstermin()
 	this.studiengang_kz = "";
 	this.studiensemester_kurzbz = "";
 	this.beginn = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+	this.beginn_time = "00:00";
 	this.ende = new Date(new Date().getFullYear(), new Date().getMonth(), (new Date().getDate() + 30));
+	this.ende_time = "23:55";
 	this.nachfrist = false;
 	this.nachfrist_ende = "";
+	this.nachfrist_ende_time = "";
 	this.anmerkung = "";
 	this.insertvon = "";
 	this.insertamum = "";
