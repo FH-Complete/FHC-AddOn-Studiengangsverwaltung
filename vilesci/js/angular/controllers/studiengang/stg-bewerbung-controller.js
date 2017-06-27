@@ -129,12 +129,14 @@ angular.module('stgv2')
 					$("#save").hide();
 					$("#update").show();
 					$("#delete").show();
+					$("#savenew").show();
 				}
 				else
 				{
 					$("#save").show();
 					$("#update").hide();
 					$("#delete").hide();
+					$("#savenew").hide();
 				}
 			};
 
