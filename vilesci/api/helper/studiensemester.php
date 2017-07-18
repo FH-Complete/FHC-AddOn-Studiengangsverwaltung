@@ -11,19 +11,23 @@ $method = filter_input(INPUT_GET, "method");
 
 if(is_null($method))
 {
-    $method = "getAll";   
+	$method = "getAll";
 }
 elseif(($method == false))
 {
-    returnAJAX(false, "Fehler beim lesen der GET Variablen");    
+	returnAJAX(false, "Fehler beim lesen der GET Variablen");
 }
 
-
+if (!in_array($method, array('getAll','getAkt', 'getAktorNext')))
+	returnAJAX(false, "Method not allowed");
 
 $studiensemester = new studiensemester();
 if (method_exists($studiensemester, $method))
 {
-	$studiensemester->$method('desc'); 
+	if($method=='getAll')
+		$studiensemester->$method('desc');
+	else
+		$studiensemester->$method();
 	$data = $studiensemester->studiensemester;
 }
 else

@@ -15,7 +15,7 @@ angular.module('stgv2')
 				return getStudiensemesterList().then(function (result) {
 					var filtered = $filter('filter')(result,('studiensemester_kurzbz', studiensemester_kurzbz));
 					var filteredResult = [];
-					for(var i = (result.indexOf(filtered[0])); i<result.length; i++)
+					for(var i = 0; i<=(result.indexOf(filtered[0])); i++)
 					{
 						filteredResult.push(result[i]);
 					}
