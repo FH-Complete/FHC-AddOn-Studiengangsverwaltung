@@ -39,6 +39,9 @@
 						<span class="input-group-btn">
 							<button class="btn btn-primary btn-sm" type="button" ng-click="ctrl.addListItem('zielList_1', 'input_1')">Aufzählung hinzufügen</button>
 						</span>
+						<span class="input-group-btn editButton">
+							<button class="btn btn-success btn-sm" type="button" ng-click="ctrl.saveEditedListItem('input_1')">Änderungen speichern</button>
+						</span>
 					</div>
 					<ul id="zielList_1" class="list-group">
 						
@@ -53,13 +56,15 @@
 						<span class="input-group-btn">
 							<button class="btn btn-primary btn-sm" type="button" ng-click="ctrl.addListItem('zielList_2', 'input_2')">Aufzählung hinzufügen</button>
 						</span>
+						<span class="input-group-btn editButton">
+							<button class="btn btn-success btn-sm" type="button" ng-click="ctrl.saveEditedListItem('input_2')">Änderungen speichern</button>
+						</span>
 					</div>
 					<ul id="zielList_2" class="list-group">
 						
 					</ul>
 				</div>
 			</div>
-		</div>
 		<div class="row">
 			<div class="col-sm-10">
 				<div class="form-group">
