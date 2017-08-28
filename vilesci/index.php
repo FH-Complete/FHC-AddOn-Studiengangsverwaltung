@@ -177,7 +177,7 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm1'">Neu</a>
 		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm2'">Bearbeiten</a>
 		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm3'">Status</a>
-		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm4'">Diff</a>
+		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm4'">Prüfungen</a>
 			<a href="#" class="easyui-menubutton" data-options="menu:'#mm5'">Export</a>
 		    <a href="#" class="easyui-menubutton" data-options="menu:'#mm6',iconCls:'icon-help'">About</a>
 		</div>
@@ -204,6 +204,7 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 		</div>
 		<div id="mm4" style="width:100px;">
 		    <div ng-click='menuCtrl.diff()'>Diff</div>
+		    <div ng-click='menuCtrl.plausicheck()'>Plausicheck</div>
 		</div>
 		<div id="mm5" style="width:100px;">
 			<div ng-click="menuCtrl.export('pdf',false)">PDF</div>
