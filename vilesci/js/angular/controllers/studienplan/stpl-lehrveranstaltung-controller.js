@@ -466,7 +466,8 @@ angular.module('stgv2')
 						var node = $("#stplTreeGrid").treegrid("find",source._parentId);
 						if(node != null)
 						{
-							node.ects -= parseFloat(source.ects);
+							if(source.ects != null && node.ects != null)
+								node.ects -= parseFloat(source.ects);
 							$("#stplTreeGrid").treegrid("refresh",node.id);
 						}
 
@@ -532,7 +533,8 @@ angular.module('stgv2')
 						{
 							data.studienplan_lehrveranstaltung_id_parent = "";
 						}
-						data.pflicht = true;
+						//data.pflicht = true;
+						data.pflicht = source.stpllv_pflicht;
 						data.export = source.export;
 						data.curriculum = source.curriculum;
 						data.genehmigung = source.genehmigung;
@@ -558,7 +560,8 @@ angular.module('stgv2')
 									//$("#stplTreeGrid").treegrid("reload",{nodeId: target.id});
 									//TODO recalculate ects sums
 									var parentId = source._parentId;
-									target.ects = parseFloat(target.ects) + parseFloat(source.ects);
+									if(target.ects != null && source.ects != null)
+										target.ects = parseFloat(target.ects) + parseFloat(source.ects);
 									$("#stplTreeGrid").treegrid("refresh",target.id);
 
 									// Reload Subtree to ensure all Entrys are visible
@@ -842,9 +845,9 @@ angular.module('stgv2')
 				if(confirm("Wollen Sie dieses Element wirklich durch eine Kopie ersetzen?"))
 				{
 					var node = $('#stplTreeGrid').treegrid('getSelected');
-					var saveData = {data: ""}
+					var saveData = {data: ""};
 					saveData.data = angular.copy(node);
-					saveData.data.bezeichnung=saveData.data.bezeichnung+' Kopie';
+					saveData.data.bezeichnung='Kopie '+saveData.data.bezeichnung;
 
 					$http({
 						method: 'POST',
@@ -945,10 +948,12 @@ angular.module('stgv2')
 							{
 								var lvnewtemplate = new LehrveranstaltungService.getLVTemplate();
 								lvnewtemplate.studiengang_kz=ctrl.studiengang_kz;
+								//lvnewtemplate.oe_kurzbz= ctrl.oe_kurzbz;
 								lvnewtemplate.lehrtyp_kurzbz='lv';
 								lvnewtemplate.sprache=ctrl.studienplan.sprache;
 								lvnewtemplate.orgform_kurzbz=ctrl.studienplan.orgform_kurzbz;
 								lvnewtemplate.gesperrt=false;
+								lvnewtemplate.aktivGesperrt=true;
 
 								$scope.$broadcast("editLehrveranstaltung", lvnewtemplate);
 							}
