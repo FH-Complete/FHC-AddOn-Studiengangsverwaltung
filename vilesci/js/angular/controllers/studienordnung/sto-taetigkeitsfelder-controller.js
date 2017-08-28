@@ -10,7 +10,8 @@ angular.module('stgv2')
 				positionen: "",
 				aufgaben: ""
 			};
-			
+			ctrl.inputids = ["branchen", "positionen", "aufgaben"];
+
 			function initDnD()
 			{
 				$(".sortable").sortable({
@@ -30,7 +31,10 @@ angular.module('stgv2')
 			
 			//enable tooltips and editor
 			$(document).ready(function(){
-				
+
+				//hide edit button by default
+				$(".editButton").hide();
+
 				initDnD();
 				
 				$('[data-toggle="tooltip"]').tooltip();
@@ -63,7 +67,7 @@ angular.module('stgv2')
 							{
 								ctrl.drawList("branchen_lists",value.title);
 								$(value.elements).each(function(k, v){
-									ctrl.drawListItem('branchen_lists', v);
+									ctrl.drawListItem('branchen_lists', v, 'branchen');
 								});
 							});
 							
@@ -71,7 +75,7 @@ angular.module('stgv2')
 							{
 								ctrl.drawList("positionen_lists",value.title);
 								$(value.elements).each(function(k, v){
-									ctrl.drawListItem('positionen_lists', v);
+									ctrl.drawListItem('positionen_lists', v, 'positionen');
 								});
 							});
 							
@@ -79,7 +83,7 @@ angular.module('stgv2')
 							{
 								ctrl.drawList("aufgaben_lists",value.title);
 								$(value.elements).each(function(k, v){
-									ctrl.drawListItem('aufgaben_lists', v);
+									ctrl.drawListItem('aufgaben_lists', v, 'aufgaben');
 								});
 							});
 							
@@ -96,7 +100,7 @@ angular.module('stgv2')
 			});
 
 			ctrl.save = function () {
-				var saveData = {data: ""}
+				var saveData = {data: ""};
 				ctrl.parseJson();
 				saveData.data = angular.copy(ctrl.data);
 				saveData.data.data = JSON.stringify(saveData.data.data);
@@ -131,7 +135,7 @@ angular.module('stgv2')
 				}
 			};
 			
-			ctrl.drawListItem = function (div_id, text)
+			ctrl.drawListItem = function (div_id, text, input_id)
 			{
 				if(text!="")
 				{
@@ -141,11 +145,11 @@ angular.module('stgv2')
 						list = $("#"+div_id).append('<ul class="list-group dropzone"><li class="list-group-item"><span class="list_title">&nbsp;</span><span class="badge" ng-click="ctrl.removeList($event)"><span class="glyphicon glyphicon-trash"></span></span><ul class="list-group sortable sortable-list"></ul></li></ul>');
 						list = $(list).find("ul li ul").last();
 					}
-					var html = $(list).append('<li class="list-group-item draggable">'+text+'<span class="badge" ng-click="ctrl.removeListItem($event)"><span class="glyphicon glyphicon-trash"></span></span></li>');
+					var html = $(list).append('<li class="list-group-item draggable">'+text+'<span class="badge" ng-click="ctrl.removeListItem($event)"><span class="glyphicon glyphicon-trash"></span></span><span class="badge" ng-click="ctrl.editListItem($event, \''+input_id+'\')"><span class="glyphicon glyphicon-edit"></span></span></li>');
 					$compile(html)(scope);
 				}
 			};
-			
+
 
 			ctrl.addList = function(div_id, input_id)
 			{
@@ -164,10 +168,48 @@ angular.module('stgv2')
 				var value = $("#"+input_id).val();
 				if(value!="")
 				{
-					ctrl.drawListItem(div_id, value);
+					ctrl.drawListItem(div_id, value, input_id);
 					$("#"+input_id).val("");
 					initDnD();
 					ctrl.save();
+				}
+			};
+
+			ctrl.editListItem = function (event, input_id)
+			{
+				//hide all over inputfields in edit mode
+				ctrl.inputids.forEach(
+					function(entry){
+						ctrl.toggleEditVisibility($("#"+entry), false);
+					}
+				);
+				ctrl.toggleEditVisibility($("#"+input_id), true);
+				var editedItem = $(event.currentTarget).parent();
+				$("#"+input_id).val(editedItem.text());
+				ctrl.editedItem = editedItem;
+			};
+
+			ctrl.saveEditedListItem = function (input_id) {
+				ctrl.editedItem.contents().each(
+					function () {
+						if (this.nodeType === 3) {//3 = textnode
+							this.nodeValue = $("#" + input_id).val();
+							return false;
+						}
+					}
+				);
+				ctrl.toggleEditVisibility($("#"+input_id), false);
+				ctrl.save();
+			};
+
+			ctrl.toggleEditVisibility = function (input_element, editVisibility){
+				if(editVisibility) {
+					input_element.parent().find('span').hide();//hide buttons for adding
+					input_element.parent().find('.editButton').show();
+				}else{
+					input_element.parent().find('span').show();//show buttons for adding
+					input_element.parent().find('.editButton').hide();
+					input_element.val("");
 				}
 			};
 
@@ -176,7 +218,7 @@ angular.module('stgv2')
 				$(event.target).parent().parent().remove();
 				ctrl.save();
 			};
-			
+
 			ctrl.removeList = function(event)
 			{
 				if(confirm("Wollen Sie die Liste wirklich löschen?"))
@@ -249,11 +291,11 @@ function Taetigkeitsfeld()
 				"elements": []
 			},
 			"positionen": {
-				"fixed": "Aufgrund der Qualifikationsziele des Studienganges können die AbsolventInnen beispielhaft die folgenden Positionen und Funktionen wahrnehmen:",
+				"fixed": "Aufgrund der Qualifikationsziele des Studienganges können die AbsolventInnen beispielhaft die folgenden Positionen und Funktionen durchführen:",//wahrnehmen
 				"elements": []
 			},
 			"aufgaben": {
-				"fixed": "Aufgrund der Qualifikationsziele des Studienganges können die AbsolventInnen beispielhaft die folgenden Positionen und Funktionen wahrnehmen:",
+				"fixed": "Aufgrund der Qualifikationsziele des Studienganges können die AbsolventInnen beispielhaft die folgenden Positionen und Funktionen durchführen:",//wahrnehmen
 				"elements": []
 			}
 		}
