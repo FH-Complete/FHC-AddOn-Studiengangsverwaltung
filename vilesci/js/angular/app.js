@@ -259,7 +259,7 @@ angular.module("stgv2")
 				}
 				else if ($stateParams.studienordnung_id != null)
 				{
-					ctrl.studienordnung_id = $stateParams.studienordnung_id
+					ctrl.studienordnung_id = $stateParams.studienordnung_id;
 					$state.go('studienplanNeu', {"studienordnung_id": ctrl.studienordnung_id});
 				}
 				else
@@ -385,6 +385,18 @@ angular.module("stgv2")
 					$state.go('studienordnungDiff', {"stgkz": $stateParams.stgkz});
 				}
 			};
+
+			ctrl.plausicheck = function () {
+				var node = $('#treeGrid').treegrid('getSelected');
+				if (node != null && node.studienplan_id !== undefined) {
+					window.open("./checkstudienplan.php?studienplan_id=" + node.studienplan_id, '_blank');
+				}
+				else
+				{
+					window.open("./checkstudienplan.php", '_blank');
+				}
+			};
+
 
 			ctrl.export = function (format, lvinfo)
 			{
