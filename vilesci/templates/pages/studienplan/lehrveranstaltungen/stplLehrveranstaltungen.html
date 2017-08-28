@@ -1,19 +1,18 @@
 <div class="contentWrapper" ng-controller="StplLehrveranstaltungCtrl as stplCtrl">
 	<script type="text/javascript">
-		function format(value)
-		{
-			return '<img src="./css/modul.png" style="width:16px;height:18px;vertical-align:bottom"/>'+value;
+		function format(value) {
+			return '<img src="./css/modul.png" style="width:16px;height:18px;vertical-align:bottom"/>' + value;
 		}
 	</script>
 	<div id="stplTree">
 		<table id="stplTreeGrid" class="easyui-treegrid">
 		</table>
 		<div id="stplTreeGridContextMenu" class="easyui-menu" style="width:200px;">
-<!--
-			<div ng-click='stplCtrl.copyAndReplaceLehrveranstaltung()' data-options="iconCls:'icon-copy'">Durch Kopie ersetzen</div>
-			<div ng-click='stplCtrl.editLehrveranstaltung()' data-options="iconCls:'icon-edit'">Editieren</div>
-			<div ng-click='stplCtrl.removeStudienplanLehrveranstaltung()' data-options="iconCls:'glyphicon glyphicon-remove red'">Aus Studienplan entfernen</div>
--->
+			<!--
+						<div ng-click='stplCtrl.copyAndReplaceLehrveranstaltung()' data-options="iconCls:'icon-copy'">Durch Kopie ersetzen</div>
+						<div ng-click='stplCtrl.editLehrveranstaltung()' data-options="iconCls:'icon-edit'">Editieren</div>
+						<div ng-click='stplCtrl.removeStudienplanLehrveranstaltung()' data-options="iconCls:'glyphicon glyphicon-remove red'">Aus Studienplan entfernen</div>
+			-->
 		</div>
 	</div>
 	<div id="lvTree">
@@ -22,7 +21,9 @@
 				<div class="form-group form-group-sm">
 					<label for="oe">Studiengang</label>
 					<select id="studiengang" class="form-control input-sm" name="oe" ng-model="stplCtrl.studiengang_kz">
-						<option ng-repeat="stg in stplCtrl.studiengangList" value="{{stg.studiengang_kz}}">{{stg.typ | uppercase}} - {{stg.bezeichnung}}</option>
+						<option ng-repeat="stg in stplCtrl.studiengangList" value="{{stg.studiengang_kz}}">{{stg.typ |
+							uppercase}} - {{stg.bezeichnung}}
+						</option>
 					</select></br>
 				</div>
 			</div>
@@ -30,15 +31,22 @@
 				<div class="form-group form-group-sm">
 					<label for="oe">Organisationseinheit</label>
 					<select id="oe" class="form-control input-sm" name="oe" ng-model="stplCtrl.oe_kurzbz">
-						<option ng-repeat="oe in stplCtrl.oeList" value="{{oe.oe_kurzbz}}">{{oe.organisationseinheittyp_kurzbz}} - {{oe.bezeichnung}}</option>
+						<option ng-repeat="oe in stplCtrl.oeList" value="{{oe.oe_kurzbz}}"
+								ng-class="{greyedout: (!oe.aktiv && oe.aktiv != null)}">
+							{{oe.organisationseinheittyp_kurzbz}} - {{oe.bezeichnung}}{{(!oe.aktiv && oe.aktiv !=
+							null)?" - inaktiv!":""}}
+						</option>
 					</select></br>
 				</div>
 			</div>
 			<div class="col-sm-5">
 				<div class="form-group form-group-sm">
 					<label for="lehrtyp">Lehrtyp</label>
-					<select id="lehrtyp" class="form-control input-sm" name="lehrtyp" ng-model="stplCtrl.lehrtyp_kurzbz">
-						<option ng-repeat="lehrtyp in stplCtrl.lehrtypList" value="{{lehrtyp.lehrtyp_kurzbz}}">{{lehrtyp.bezeichnung}}</option>
+					<select id="lehrtyp" class="form-control input-sm" name="lehrtyp"
+							ng-model="stplCtrl.lehrtyp_kurzbz">
+						<option ng-repeat="lehrtyp in stplCtrl.lehrtypList" value="{{lehrtyp.lehrtyp_kurzbz}}">
+							{{lehrtyp.bezeichnung}}
+						</option>
 					</select>
 				</div>
 			</div>
@@ -54,7 +62,9 @@
 				<div class="form-group form-group-sm">
 					<label>&nbsp;</label>
 					<div>
-						<button type="submit" class="btn btn-default btn-sm" ng-click="stplCtrl.loadLehrveranstaltungen()">Filtern</button>
+						<button type="submit" class="btn btn-default btn-sm"
+								ng-click="stplCtrl.loadLehrveranstaltungen()">Filtern
+						</button>
 					</div>
 				</div>
 			</div>
@@ -73,7 +83,8 @@
 		</div>
 	</div>
 	<ul class="nav nav-tabs">
-		<li ng-repeat="tab in tabs" tab="tab" ng-class="getTabClass(tab)"><a ng-click="setSelectedTab(tab)">{{tab.label}}</a></li>
+		<li ng-repeat="tab in tabs" tab="tab" ng-class="getTabClass(tab)"><a ng-click="setSelectedTab(tab)">{{tab.label}}</a>
+		</li>
 	</ul>
 	<div id="lvMetadata" class="tabContainer" ng-show="getSelectedTabName()=='Details'">
 		<div class="row">
@@ -91,8 +102,8 @@
 			<!--<div class="col-sm-1">
 				<span>Semesterstd: </span><span>{{stplCtrl.meta.semesterstunden}}</span>
 			</div>-->
-			<div class="col-sm-2">
-				<span>LAS (Semesterstunden): </span><span>{{stplCtrl.meta.semesterstunden}}</span>
+			<div class="col-sm-1">
+				<span>LAS: </span><span>{{stplCtrl.meta.las}}</span>
 			</div>
 			<div class="col-sm-1">
 				<span>LVNR: </span><span>{{stplCtrl.meta.lvnr}}</span>
@@ -135,19 +146,22 @@
 				<span>{{stplCtrl.meta.sws}}</span>
 			</div>
 			<div class="col-sm-1">
-				<a href="#" data-toggle="tooltip" data-placement="right" title="Lehrveranstaltungsstunden (LVS) Die Summe an Stunden welche Studierende konsumieren. Im Gegensatz zu den ALVS handelt es sich hier um die Sicht eines einzelnen Studierenden. (Nicht eingerechnet werden zusätzlich zu leistende Stunden um die entsprechenden ECTS-Punkte zu erhalten, also unbetreute Stunden.)">
+				<a href="#" data-toggle="tooltip" data-placement="right"
+				   title="Lehrveranstaltungsstunden (LVS) Die Summe an Stunden welche Studierende konsumieren. Im Gegensatz zu den ALVS handelt es sich hier um die Sicht eines einzelnen Studierenden. (Nicht eingerechnet werden zusätzlich zu leistende Stunden um die entsprechenden ECTS-Punkte zu erhalten, also unbetreute Stunden.)">
 					<span>LVS: </span>
 				</a>
 				<span>{{stplCtrl.meta.lvs}}</span>
 			</div>
 			<div class="col-sm-1">
-				<a href="#" data-toggle="tooltip" data-placement="right" title="Angebotene Lehrveranstaltungsstunden (ALVS) Die Summe der Stunden einer Lehrveranstaltung, welche aus Sicht des Studiengangs geleistet bzw. angeboten werden. Durch Gruppenteilung erhöhen sich die ALVS gegenüber der LVS.">
+				<a href="#" data-toggle="tooltip" data-placement="right"
+				   title="Angebotene Lehrveranstaltungsstunden (ALVS) Die Summe der Stunden einer Lehrveranstaltung, welche aus Sicht des Studiengangs geleistet bzw. angeboten werden. Durch Gruppenteilung erhöhen sich die ALVS gegenüber der LVS.">
 					<span>ALVS: </span>
 				</a>
 				<span>{{stplCtrl.meta.alvs}}</span>
 			</div>
 			<div class="col-sm-2">
-				<a href="#" data-toggle="tooltip" data-placement="right" title="LV-Plan Stunden (LVPLS) Summe der Stunden welche tatsächlich im LV-Plan eingetragen werden. Studierende sind in diesen Stunden an Zeit und Ort gebunden.">
+				<a href="#" data-toggle="tooltip" data-placement="right"
+				   title="LV-Plan Stunden (LVPLS) Summe der Stunden welche tatsächlich im LV-Plan eingetragen werden. Studierende sind in diesen Stunden an Zeit und Ort gebunden.">
 					<span>LVPLS (Planstunden): </span>
 				</a>
 				<span>{{stplCtrl.meta.lvps}}</span>
@@ -155,38 +169,44 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-5">
-			<span>Verwendet in folgenden Studienplänen:</span><span>{{stplCtrl.meta.zugewieseneStudienplaene}}</span>
-		</div>
-	</div>
-	<div id="lvRegeln" class="tabContainer" ng-show="getSelectedTabName()=='LV Regeln'">
-		<div class="row">
-			<div id="tab-regel" class="col-sm-10">
-				LV Regeln
+				<span>Verwendet in folgenden Studienplänen:</span><span>{{stplCtrl.meta.zugewieseneStudienplaene}}</span>
 			</div>
 		</div>
-	</div>
-	<div id="lvInfo" class="tabContainer" ng-show="getSelectedTabName()=='LV Info'">
-		<div class="row">
-			<div class="col-sm-2">
-				<div class="form-group">
-					<label for="studiensemester">Studiensemester</label>
-					<div class="input-group">
-						<select class="form-control input-sm" name="studiensemester" ng-model="stplCtrl.meta.studiensemester">
-							<option ng-repeat="sem in stplCtrl.studiensemesterList">{{sem.beschreibung != NULL ? sem.beschreibung : sem.studiensemester_kurzbz}}</option>
-						</select>
+		<div id="lvRegeln" class="tabContainer" ng-show="getSelectedTabName()=='LV Regeln'">
+			<div class="row">
+				<div id="tab-regel" class="col-sm-10">
+					LV Regeln
+				</div>
+			</div>
+		</div>
+		<div id="lvInfo" class="tabContainer" ng-show="getSelectedTabName()=='LV Info'">
+			<div class="row">
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="studiensemester">Studiensemester</label>
+						<div class="input-group">
+							<select class="form-control input-sm" name="studiensemester"
+									ng-model="stplCtrl.meta.studiensemester">
+								<option ng-repeat="sem in stplCtrl.studiensemesterList">{{sem.beschreibung != NULL ?
+									sem.beschreibung : sem.studiensemester_kurzbz}}
+								</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4">
+					<div id="tab-lvinfo" class="col-sm-10">
+						<a ng-if="stplCtrl.meta.lehrveranstaltung_id && stplCtrl.meta.studiensemester"
+						   ng-href="../../lvinfo/cis/view.php?lv_id={{stplCtrl.meta.lehrveranstaltung_id}}&studiensemester_kurzbz={{stplCtrl.meta.studiensemester}}"
+						   target="_blank">LV Infos anzeigen</a>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-sm-4">
-				<div id="tab-lvinfo" class="col-sm-10">
-					<a ng-if="stplCtrl.meta.lehrveranstaltung_id && stplCtrl.meta.studiensemester" ng-href="../../lvinfo/cis/view.php?lv_id={{stplCtrl.meta.lehrveranstaltung_id}}&studiensemester_kurzbz={{stplCtrl.meta.studiensemester}}" target="_blank">LV Infos anzeigen</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div id="dialog" title="Lehrveranstaltung">
+		<div id="dialog" title="Lehrveranstaltung">
 
+		</div>
 	</div>
 </div>
