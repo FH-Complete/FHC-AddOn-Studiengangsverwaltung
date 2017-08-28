@@ -27,13 +27,13 @@ $studienplan_id_new = filter_input(INPUT_GET, "studienplan_id_new");
 
 if (is_null($studienordnung_id_old))
 {
-    returnAJAX(false, "Variable studienordnung_id_old nicht gesetzt");
+	returnAJAX(false, "Variable studienordnung_id_old nicht gesetzt");
 } elseif (is_null($studienordnung_id_new))
 {
-    returnAJAX(false, "Variable studienordnung_id_new nicht gesetzt");
+	returnAJAX(false, "Variable studienordnung_id_new nicht gesetzt");
 } elseif (($studienordnung_id_old == false) || ($studienordnung_id_new == false))
 {
-    returnAJAX(false, "Fehler beim lesen der GET Variablen");
+	returnAJAX(false, "Fehler beim lesen der GET Variablen");
 }
 
 $sto_old = new StudienordnungAddonStgv();
@@ -102,23 +102,23 @@ $taetigkeitsfeld_old->getAll($studienordnung_id_old);
 $taetigkeitsfeld_new = new taetigkeitsfeld();
 $taetigkeitsfeld_new->getAll($studienordnung_id_new);
 
-if((!empty($taetigkeitsfeld_old->result)) &&(!empty($taetigkeitsfeld_new->result)))
+if ((!empty($taetigkeitsfeld_old->result)) && (!empty($taetigkeitsfeld_new->result)))
 {
-    $diff_array["Tätigkeitsfelder"]["Überblick"]["old"] = $taetigkeitsfeld_old->result[0]->ueberblick;
-    $diff_array["Tätigkeitsfelder"]["Überblick"]["new"] = $taetigkeitsfeld_new->result[0]->ueberblick;
-    $diff_array["Tätigkeitsfelder"]["Überblick"]["diff"] = $diff->render($taetigkeitsfeld_old->result[0]->ueberblick, $taetigkeitsfeld_new->result[0]->ueberblick);
+	$diff_array["Tätigkeitsfelder"]["Überblick"]["old"] = $taetigkeitsfeld_old->result[0]->ueberblick;
+	$diff_array["Tätigkeitsfelder"]["Überblick"]["new"] = $taetigkeitsfeld_new->result[0]->ueberblick;
+	$diff_array["Tätigkeitsfelder"]["Überblick"]["diff"] = $diff->render($taetigkeitsfeld_old->result[0]->ueberblick, $taetigkeitsfeld_new->result[0]->ueberblick);
 
-    $diff_array["Tätigkeitsfelder"]["Aufgaben"]["old"] = $taetigkeitsfeld_old->result[0]->data->aufgaben->fixed;
-    $diff_array["Tätigkeitsfelder"]["Aufgaben"]["new"] = $taetigkeitsfeld_new->result[0]->data->aufgaben->fixed;
-    $diff_array["Tätigkeitsfelder"]["Aufgaben"]["diff"] = $diff->render($taetigkeitsfeld_old->result[0]->data->aufgaben->fixed, $taetigkeitsfeld_new->result[0]->data->aufgaben->fixed);
+	$diff_array["Tätigkeitsfelder"]["Aufgaben"]["old"] = $taetigkeitsfeld_old->result[0]->data->aufgaben->fixed;
+	$diff_array["Tätigkeitsfelder"]["Aufgaben"]["new"] = $taetigkeitsfeld_new->result[0]->data->aufgaben->fixed;
+	$diff_array["Tätigkeitsfelder"]["Aufgaben"]["diff"] = $diff->render($taetigkeitsfeld_old->result[0]->data->aufgaben->fixed, $taetigkeitsfeld_new->result[0]->data->aufgaben->fixed);
 
-    $diff_array["Tätigkeitsfelder"]["Aufgaben Text"]["old"] = "";
-    $diff_array["Tätigkeitsfelder"]["Aufgaben Text"]["new"] = "";
-    $diff_array["Tätigkeitsfelder"]["Aufgaben Text"]["diff"] = "";
-    
+	$diff_array["Tätigkeitsfelder"]["Aufgaben Text"]["old"] = "";
+	$diff_array["Tätigkeitsfelder"]["Aufgaben Text"]["new"] = "";
+	$diff_array["Tätigkeitsfelder"]["Aufgaben Text"]["diff"] = "";
 
-    if (count($taetigkeitsfeld_old->result[0]->data->aufgaben->elements) < count($taetigkeitsfeld_new->result[0]->data->aufgaben->elements))
-    {
+
+	if (count($taetigkeitsfeld_old->result[0]->data->aufgaben->elements) < count($taetigkeitsfeld_new->result[0]->data->aufgaben->elements))
+	{
 //	foreach ($taetigkeitsfeld_new->result[0]->data->aufgaben->elements as $key => $ele_new)
 //	{
 //	    $ele_old = "";
@@ -130,8 +130,9 @@ if((!empty($taetigkeitsfeld_old->result)) &&(!empty($taetigkeitsfeld_new->result
 //	    $diff_array["Tätigkeitsfelder"]["Aufgaben Text"]["old"] .= "<br>" . $ele_old;
 //	    $diff_array["Tätigkeitsfelder"]["Aufgaben Text"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
 //	}
-    } else
-    {
+	}
+	else
+	{
 //	foreach ($taetigkeitsfeld_old->result[0]->data->aufgaben->elements as $key => $ele_old)
 //	{
 //	    $ele_new = "";
@@ -143,20 +144,20 @@ if((!empty($taetigkeitsfeld_old->result)) &&(!empty($taetigkeitsfeld_new->result
 //	    $diff_array["Tätigkeitsfelder"]["Aufgaben Text"]["new"] .= "<br>" . $ele_new;
 //	    $diff_array["Tätigkeitsfelder"]["Aufgaben Text"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
 //	}
-    }
+	}
 
-    $diff_array["Tätigkeitsfelder"]["Branchen"]["old"] = $taetigkeitsfeld_old->result[0]->data->branchen->fixed;
-    $diff_array["Tätigkeitsfelder"]["Branchen"]["new"] = $taetigkeitsfeld_new->result[0]->data->branchen->fixed;
-    $diff_array["Tätigkeitsfelder"]["Branchen"]["diff"] = $diff->render($taetigkeitsfeld_old->result[0]->data->branchen->fixed, $taetigkeitsfeld_new->result[0]->data->branchen->fixed);
+	$diff_array["Tätigkeitsfelder"]["Branchen"]["old"] = $taetigkeitsfeld_old->result[0]->data->branchen->fixed;
+	$diff_array["Tätigkeitsfelder"]["Branchen"]["new"] = $taetigkeitsfeld_new->result[0]->data->branchen->fixed;
+	$diff_array["Tätigkeitsfelder"]["Branchen"]["diff"] = $diff->render($taetigkeitsfeld_old->result[0]->data->branchen->fixed, $taetigkeitsfeld_new->result[0]->data->branchen->fixed);
 
-    $diff_array["Tätigkeitsfelder"]["Branchen Text"]["old"] = "";
-    $diff_array["Tätigkeitsfelder"]["Branchen Text"]["new"] = "";
-    $diff_array["Tätigkeitsfelder"]["Branchen Text"]["diff"] = "";
+	$diff_array["Tätigkeitsfelder"]["Branchen Text"]["old"] = "";
+	$diff_array["Tätigkeitsfelder"]["Branchen Text"]["new"] = "";
+	$diff_array["Tätigkeitsfelder"]["Branchen Text"]["diff"] = "";
 
-    if (count($taetigkeitsfeld_old->result[0]->data->branchen->elements) < count($taetigkeitsfeld_new->result[0]->data->branchen->elements))
-    {
-	foreach ($taetigkeitsfeld_new->result[0]->data->branchen->elements as $key => $ele_new)
+	if (count($taetigkeitsfeld_old->result[0]->data->branchen->elements) < count($taetigkeitsfeld_new->result[0]->data->branchen->elements))
 	{
+		foreach ($taetigkeitsfeld_new->result[0]->data->branchen->elements as $key => $ele_new)
+		{
 //	    $ele_old = "";
 //	    $diff_array["Tätigkeitsfelder"]["Branchen Text"]["new"] .= "<br>" . $ele_new;
 //	    if (array_key_exists($key, $taetigkeitsfeld_old->result[0]->data->branchen->elements))
@@ -165,11 +166,12 @@ if((!empty($taetigkeitsfeld_old->result)) &&(!empty($taetigkeitsfeld_new->result
 //	    }
 //	    $diff_array["Tätigkeitsfelder"]["Branchen Text"]["old"] .= "<br>" . $ele_old;
 //	    $diff_array["Tätigkeitsfelder"]["Branchen Text"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
+		}
 	}
-    } else
-    {
-	foreach ($taetigkeitsfeld_old->result[0]->data->branchen->elements as $key => $ele_old)
+	else
 	{
+		foreach ($taetigkeitsfeld_old->result[0]->data->branchen->elements as $key => $ele_old)
+		{
 //	    $ele_new = "";
 //	    $diff_array["Tätigkeitsfelder"]["Branchen Text"]["old"] .= "<br>" . $ele_old;
 //	    if (array_key_exists($key, $taetigkeitsfeld_new->result[0]->data->branchen->elements))
@@ -178,21 +180,21 @@ if((!empty($taetigkeitsfeld_old->result)) &&(!empty($taetigkeitsfeld_new->result
 //	    }
 //	    $diff_array["Tätigkeitsfelder"]["Branchen Text"]["new"] .= "<br>" . $ele_new;
 //	    $diff_array["Tätigkeitsfelder"]["Branchen Text"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
+		}
 	}
-    }
 
-    $diff_array["Tätigkeitsfelder"]["Positionen"]["old"] = $taetigkeitsfeld_old->result[0]->data->positionen->fixed;
-    $diff_array["Tätigkeitsfelder"]["Positionen"]["new"] = $taetigkeitsfeld_new->result[0]->data->positionen->fixed;
-    $diff_array["Tätigkeitsfelder"]["Positionen"]["diff"] = $diff->render($taetigkeitsfeld_old->result[0]->data->positionen->fixed, $taetigkeitsfeld_new->result[0]->data->positionen->fixed);
+	$diff_array["Tätigkeitsfelder"]["Positionen"]["old"] = $taetigkeitsfeld_old->result[0]->data->positionen->fixed;
+	$diff_array["Tätigkeitsfelder"]["Positionen"]["new"] = $taetigkeitsfeld_new->result[0]->data->positionen->fixed;
+	$diff_array["Tätigkeitsfelder"]["Positionen"]["diff"] = $diff->render($taetigkeitsfeld_old->result[0]->data->positionen->fixed, $taetigkeitsfeld_new->result[0]->data->positionen->fixed);
 
-    $diff_array["Tätigkeitsfelder"]["Positionen Text"]["old"] = "";
-    $diff_array["Tätigkeitsfelder"]["Positionen Text"]["new"] = "";
-    $diff_array["Tätigkeitsfelder"]["Positionen Text"]["diff"] = "";
+	$diff_array["Tätigkeitsfelder"]["Positionen Text"]["old"] = "";
+	$diff_array["Tätigkeitsfelder"]["Positionen Text"]["new"] = "";
+	$diff_array["Tätigkeitsfelder"]["Positionen Text"]["diff"] = "";
 
-    if (count($taetigkeitsfeld_old->result[0]->data->positionen->elements) < count($taetigkeitsfeld_new->result[0]->data->positionen->elements))
-    {
-	foreach ($taetigkeitsfeld_new->result[0]->data->positionen->elements as $key => $ele_new)
+	if (count($taetigkeitsfeld_old->result[0]->data->positionen->elements) < count($taetigkeitsfeld_new->result[0]->data->positionen->elements))
 	{
+		foreach ($taetigkeitsfeld_new->result[0]->data->positionen->elements as $key => $ele_new)
+		{
 //	    $ele_old = "";
 //	    $diff_array["Tätigkeitsfelder"]["Positionen Text"]["new"] .= "<br>" . $ele_new;
 //	    if (array_key_exists($key, $taetigkeitsfeld_old->result[0]->data->positionen->elements))
@@ -201,11 +203,12 @@ if((!empty($taetigkeitsfeld_old->result)) &&(!empty($taetigkeitsfeld_new->result
 //	    }
 //	    $diff_array["Tätigkeitsfelder"]["Positionen Text"]["old"] .= "<br>" . $ele_old;
 //	    $diff_array["Tätigkeitsfelder"]["Positionen Text"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
+		}
 	}
-    } else
-    {
-	foreach ($taetigkeitsfeld_old->result[0]->data->positionen->elements as $key => $ele_old)
+	else
 	{
+		foreach ($taetigkeitsfeld_old->result[0]->data->positionen->elements as $key => $ele_old)
+		{
 //	    $ele_new = "";
 //	    $diff_array["Tätigkeitsfelder"]["Positionen Text"]["old"] .= "<br>" . $ele_old;
 //	    if (array_key_exists($key, $taetigkeitsfeld_new->result[0]->data->positionen->elements))
@@ -214,8 +217,8 @@ if((!empty($taetigkeitsfeld_old->result)) &&(!empty($taetigkeitsfeld_new->result
 //	    }
 //	    $diff_array["Tätigkeitsfelder"]["Positionen Text"]["new"] .= "<br>" . $ele_new;
 //	    $diff_array["Tätigkeitsfelder"]["Positionen Text"]["diff"] .= "<br>" . $diff->render($ele_old, $ele_new);
+		}
 	}
-    }
 }
 //Abschnitt für Qualifikationsziele
 $qualifikationsziel_old = new qualifikationsziel();
@@ -224,64 +227,75 @@ $qualifikationsziel_old->getAll($studienordnung_id_old);
 $qualifikationsziel_new = new qualifikationsziel();
 $qualifikationsziel_new->getAll($studienordnung_id_new);
 
-if((!empty($qualifikationsziel_old->result)) &&(!empty($qualifikationsziel_new->result)))
+if ((!empty($qualifikationsziel_old->result)) && (!empty($qualifikationsziel_new->result)))
 {
-    foreach ($qualifikationsziel_old->result[0]->data as $key => $ele)
-    {
-
-	if (!isset($diff_array["Qualifikationsziele"][$ele->header]))
+	foreach ($qualifikationsziel_old->result[0]->data as $key => $ele)
 	{
-	    $diff_array["Qualifikationsziele"][$ele->header]["old"] = "";
-	    $diff_array["Qualifikationsziele"][$ele->header]["new"] = "";
-	    $diff_array["Qualifikationsziele"][$ele->header]["diff"] = "";
-	}
-	foreach ($ele->fixed as $k => $fixed)
-	{
-	    $old = $fixed;
-	    $new = $qualifikationsziel_new->result[0]->data[$key]->fixed[$k];
-	    $diff_array["Qualifikationsziele"][$ele->header]["old"] .= $old . "<br>" . "<br>";
-	    $diff_array["Qualifikationsziele"][$ele->header]["new"] .= $new . "<br>" . "<br>";
-	    $diff_array["Qualifikationsziele"][$ele->header]["diff"] .= $diff->render($old, $new) . "<br>" . "<br>";
-
-	    if (isset($ele->elements))
-	    {
-    //	    if (count($taetigkeitsfeld_old->result[0]->data->positionen->elements) < count($taetigkeitsfeld_new->result[0]->data->positionen->elements))
-		$old = $ele->elements[$k];
-		$new = $qualifikationsziel_new->result[0]->data[$key]->elements[$k];
-
-		if ($new !== null && $old != null)
+		if (!isset($diff_array["Qualifikationsziele"][$ele->header]))
 		{
-		    if (count($old) > count($new))
-		    {
-			foreach ($old as $i => $o)
-			{
-			    $diff_array["Qualifikationsziele"][$ele->header]["old"] .= $o . "<br>" . "<br>";
-			    $n = "";
-			    if (array_key_exists($i, $new))
-			    {
-				$n = $diff_array["Qualifikationsziele"][$ele->header]["new"] .= $new[$i];
-			    }
-			    $diff_array["Qualifikationsziele"][$ele->header]["new"] .= $n . "<br>" . "<br>";
-			    $diff_array["Qualifikationsziele"][$ele->header]["diff"] .= $diff->render($o, $new[$i]) . "<br>" . "<br>";
-			}
-		    } else
-		    {
-			foreach ($new as $i => $n)
-			{
-			    $o = "";
-			    if (array_key_exists($i, $old))
-			    {
-				$o = $old[$i];
-			    }
-			    $diff_array["Qualifikationsziele"][$ele->header]["old"] .= $o . "<br>" . "<br>";
-			    $diff_array["Qualifikationsziele"][$ele->header]["new"] .= $n . "<br>" . "<br>";
-			    $diff_array["Qualifikationsziele"][$ele->header]["diff"] .= $diff->render($o, $new[$i]) . "<br>" . "<br>";
-			}
-		    }
+			$diff_array["Qualifikationsziele"][$ele->header]["old"] = "";
+			$diff_array["Qualifikationsziele"][$ele->header]["new"] = "";
+			$diff_array["Qualifikationsziele"][$ele->header]["diff"] = "";
 		}
-	    }
+		foreach ($ele->fixed as $k => $fixed)
+		{
+			$old = $fixed;
+			$new = $qualifikationsziel_new->result[0]->data[$key]->fixed[$k];
+			$diff_array["Qualifikationsziele"][$ele->header]["old"] .= $old."<br>"."<br>";
+			$diff_array["Qualifikationsziele"][$ele->header]["new"] .= $new."<br>"."<br>";
+			$diff_array["Qualifikationsziele"][$ele->header]["diff"] .= $diff->render($old, $new)."<br>"."<br>";
+
+			if (isset($ele->elements))
+			{
+				//	    if (count($taetigkeitsfeld_old->result[0]->data->positionen->elements) < count($taetigkeitsfeld_new->result[0]->data->positionen->elements))
+				$old = $ele->elements[$k];
+				$new = $qualifikationsziel_new->result[0]->data[$key]->elements[$k];
+
+				if ($new !== null && $old != null)
+				{
+					if (count($old) > count($new))
+					{
+						foreach ($old as $i => $o)
+						{
+							$diff_array["Qualifikationsziele"][$ele->header]["old"] .= $o."<br>"."<br>";
+							$n = "";
+							if (array_key_exists($i, $new))
+							{
+								$n = $diff_array["Qualifikationsziele"][$ele->header]["new"] .= $new[$i];
+							}
+							$diff_array["Qualifikationsziele"][$ele->header]["new"] .= $n."<br>"."<br>";
+							$diff_array["Qualifikationsziele"][$ele->header]["diff"] .= $diff->render($o, $new[$i])."<br>"."<br>";
+						}
+					}
+					else
+					{
+						//if there is an Array with lernergebnisse
+						if (is_array($new))
+						{
+							foreach ($new as $i => $n)
+							{
+								$o = "";
+								if (array_key_exists($i, $old))
+								{
+									$o = $old[$i];
+								}
+								$diff_array["Qualifikationsziele"][$ele->header]["old"] .= $o."<br>"."<br>";
+								$diff_array["Qualifikationsziele"][$ele->header]["new"] .= $n."<br>"."<br>";
+								$diff_array["Qualifikationsziele"][$ele->header]["diff"] .= $diff->render($o, $new[$i])."<br>"."<br>";
+							}
+						}
+						else //otherwise it is a string with the general Qualifikationsziel
+						{
+							$diff_array["Qualifikationsziele"][$ele->header]["old"] .= $old."<br>"."<br>";
+							$diff_array["Qualifikationsziele"][$ele->header]["new"] .= $new."<br>"."<br>";
+							$diff_array["Qualifikationsziele"][$ele->header]["diff"] .= $diff->render($old, $new)."<br>"."<br>";
+						}
+					}
+				}
+
+			}
+		}
 	}
-    }
 }
 
 //Abschnitt für Zugangsvoraussetzungen
@@ -291,11 +305,11 @@ $zugangsvoraussetzung_old->getAll($studienordnung_id_old);
 $zugangsvoraussetzung_new = new zugangsvoraussetzung();
 $zugangsvoraussetzung_new->getAll($studienordnung_id_new);
 
-if((!empty($zugangsvoraussetzung_old->result)) &&(!empty($zugangsvoraussetzung_new->result)))
+if ((!empty($zugangsvoraussetzung_old->result)) && (!empty($zugangsvoraussetzung_new->result)))
 {
-    $diff_array["Zugangsvoraussetzungen"]["Text"]["old"] = $zugangsvoraussetzung_old->result[0]->data;
-    $diff_array["Zugangsvoraussetzungen"]["Text"]["new"] = $zugangsvoraussetzung_new->result[0]->data;
-    $diff_array["Zugangsvoraussetzungen"]["Text"]["diff"] = $diff->render($zugangsvoraussetzung_old->result[0]->data, $zugangsvoraussetzung_new->result[0]->data);
+	$diff_array["Zugangsvoraussetzungen"]["Text"]["old"] = $zugangsvoraussetzung_old->result[0]->data;
+	$diff_array["Zugangsvoraussetzungen"]["Text"]["new"] = $zugangsvoraussetzung_new->result[0]->data;
+	$diff_array["Zugangsvoraussetzungen"]["Text"]["diff"] = $diff->render($zugangsvoraussetzung_old->result[0]->data, $zugangsvoraussetzung_new->result[0]->data);
 }
 
 //Abschnitt für Aufnahmeverfahren
@@ -305,137 +319,136 @@ $aufnahmeverfahren_old->getAll($studienordnung_id_old);
 $aufnahmeverfahren_new = new aufnahmeverfahren();
 $aufnahmeverfahren_new->getAll($studienordnung_id_new);
 
-if((!empty($aufnahmeverfahren_old->result)) &&(!empty($aufnahmeverfahren_new->result)))
+if ((!empty($aufnahmeverfahren_old->result)) && (!empty($aufnahmeverfahren_new->result)))
 {
-    $diff_array["Aufnahmeverfahren"]["Text"]["old"] = $aufnahmeverfahren_old->result[0]->data;
-    $diff_array["Aufnahmeverfahren"]["Text"]["new"] = $aufnahmeverfahren_new->result[0]->data;
-    $diff_array["Aufnahmeverfahren"]["Text"]["diff"] = $diff->render($aufnahmeverfahren_old->result[0]->data, $aufnahmeverfahren_new->result[0]->data);
+	$diff_array["Aufnahmeverfahren"]["Text"]["old"] = $aufnahmeverfahren_old->result[0]->data;
+	$diff_array["Aufnahmeverfahren"]["Text"]["new"] = $aufnahmeverfahren_new->result[0]->data;
+	$diff_array["Aufnahmeverfahren"]["Text"]["diff"] = $diff->render($aufnahmeverfahren_old->result[0]->data, $aufnahmeverfahren_new->result[0]->data);
 }
 
-if(($studienplan_id_old !== 'undefined') && ($studienplan_id_new !== 'undefined'))
+if (($studienplan_id_old !== 'undefined') && ($studienplan_id_new !== 'undefined'))
 {
-    $stpl_old = new StudienplanAddonStgv();
-    $stpl_old->loadStudienplan($studienplan_id_old);
-    $stpl_new = new StudienplanAddonStgv();
-    $stpl_new->loadStudienplan($studienplan_id_new);
-    
-    $diff_array["Studienpläne"]["Version"]["old"] = $stpl_old->version;
-    $diff_array["Studienpläne"]["Version"]["new"] = $stpl_new->version;
-    $diff_array["Studienpläne"]["Version"]["diff"] = $diff->render($stpl_old->version, $stpl_new->version);
-    
-    $diff_array["Studienpläne"]["Organisationsform"]["old"] = $stpl_old->orgform_kurzbz;
-    $diff_array["Studienpläne"]["Organisationsform"]["new"] = $stpl_new->orgform_kurzbz;
-    $diff_array["Studienpläne"]["Organisationsform"]["diff"] = $diff->render($stpl_old->orgform_kurzbz, $stpl_new->orgform_kurzbz);
-    
-    $diff_array["Studienpläne"]["Regelstudiendauer"]["old"] = $stpl_old->regelstudiendauer;
-    $diff_array["Studienpläne"]["Regelstudiendauer"]["new"] = $stpl_new->regelstudiendauer;
-    $diff_array["Studienpläne"]["Regelstudiendauer"]["diff"] = $diff->render($stpl_old->regelstudiendauer, $stpl_new->regelstudiendauer);
-    
-    $diff_array["Studienpläne"]["ECTS"]["old"] = $stpl_old->ects_stpl;
-    $diff_array["Studienpläne"]["ECTS"]["new"] = $stpl_new->ects_stpl;
-    $diff_array["Studienpläne"]["ECTS"]["diff"] = $diff->render($stpl_old->ects_stpl, $stpl_new->ects_stpl);
-    
-    $diff_array["Studienpläne"]["Pflicht SWS"]["old"] = $stpl_old->pflicht_sws;
-    $diff_array["Studienpläne"]["Pflicht SWS"]["new"] = $stpl_new->pflicht_sws;
-    $diff_array["Studienpläne"]["Pflicht SWS"]["diff"] = $diff->render($stpl_old->pflicht_sws, $stpl_new->pflicht_sws);
-    
-    $diff_array["Studienpläne"]["Pflicht LVS"]["old"] = $stpl_old->pflicht_lvs;
-    $diff_array["Studienpläne"]["Pflicht LVS"]["new"] = $stpl_new->pflicht_lvs;
-    $diff_array["Studienpläne"]["Pflicht LVS"]["diff"] = $diff->render($stpl_old->pflicht_lvs, $stpl_new->pflicht_lvs);
-    
-    $diff_array["Studienpläne"]["Sprache"]["old"] = $stpl_old->sprache;
-    $diff_array["Studienpläne"]["Sprache"]["new"] = $stpl_new->sprache;
-    $diff_array["Studienpläne"]["Sprache"]["diff"] = $diff->render($stpl_old->sprache, $stpl_new->sprache);
-    
-    $diff_array["Studienpläne"]["Erläuterungen"]["old"] = $stpl_old->erlaeuterungen;
-    $diff_array["Studienpläne"]["Erläuterungen"]["new"] = $stpl_new->erlaeuterungen;
-    $diff_array["Studienpläne"]["Erläuterungen"]["diff"] = $diff->render($stpl_old->erlaeuterungen, $stpl_new->erlaeuterungen);
-    
-    //Auslandssemester
-    $auslandssemester_old = new auslandssemester();
-    $auslandssemester_old->getAll($stpl_old->studienplan_id);
-    
-    $auslandssemester_new = new auslandssemester();
-    $auslandssemester_new->getAll($stpl_new->studienplan_id);
-    
-    $diff_array["Studienpläne"]["Auslandssemester"]["old"] = "";
-    $diff_array["Studienpläne"]["Auslandssemester"]["new"] = "";
-    $diff_array["Studienpläne"]["Auslandssemester"]["diff"] = "";
-    
-    if(count($auslandssemester_old->result) !== 0)
-    {
-	foreach($auslandssemester_old->result as $a)
+	$stpl_old = new StudienplanAddonStgv();
+	$stpl_old->loadStudienplan($studienplan_id_old);
+	$stpl_new = new StudienplanAddonStgv();
+	$stpl_new->loadStudienplan($studienplan_id_new);
+
+	$diff_array["Studienpläne"]["Version"]["old"] = $stpl_old->version;
+	$diff_array["Studienpläne"]["Version"]["new"] = $stpl_new->version;
+	$diff_array["Studienpläne"]["Version"]["diff"] = $diff->render($stpl_old->version, $stpl_new->version);
+
+	$diff_array["Studienpläne"]["Organisationsform"]["old"] = $stpl_old->orgform_kurzbz;
+	$diff_array["Studienpläne"]["Organisationsform"]["new"] = $stpl_new->orgform_kurzbz;
+	$diff_array["Studienpläne"]["Organisationsform"]["diff"] = $diff->render($stpl_old->orgform_kurzbz, $stpl_new->orgform_kurzbz);
+
+	$diff_array["Studienpläne"]["Regelstudiendauer"]["old"] = $stpl_old->regelstudiendauer;
+	$diff_array["Studienpläne"]["Regelstudiendauer"]["new"] = $stpl_new->regelstudiendauer;
+	$diff_array["Studienpläne"]["Regelstudiendauer"]["diff"] = $diff->render($stpl_old->regelstudiendauer, $stpl_new->regelstudiendauer);
+
+	$diff_array["Studienpläne"]["ECTS"]["old"] = $stpl_old->ects_stpl;
+	$diff_array["Studienpläne"]["ECTS"]["new"] = $stpl_new->ects_stpl;
+	$diff_array["Studienpläne"]["ECTS"]["diff"] = $diff->render($stpl_old->ects_stpl, $stpl_new->ects_stpl);
+
+	$diff_array["Studienpläne"]["Pflicht SWS"]["old"] = $stpl_old->pflicht_sws;
+	$diff_array["Studienpläne"]["Pflicht SWS"]["new"] = $stpl_new->pflicht_sws;
+	$diff_array["Studienpläne"]["Pflicht SWS"]["diff"] = $diff->render($stpl_old->pflicht_sws, $stpl_new->pflicht_sws);
+
+	$diff_array["Studienpläne"]["Pflicht LVS"]["old"] = $stpl_old->pflicht_lvs;
+	$diff_array["Studienpläne"]["Pflicht LVS"]["new"] = $stpl_new->pflicht_lvs;
+	$diff_array["Studienpläne"]["Pflicht LVS"]["diff"] = $diff->render($stpl_old->pflicht_lvs, $stpl_new->pflicht_lvs);
+
+	$diff_array["Studienpläne"]["Sprache"]["old"] = $stpl_old->sprache;
+	$diff_array["Studienpläne"]["Sprache"]["new"] = $stpl_new->sprache;
+	$diff_array["Studienpläne"]["Sprache"]["diff"] = $diff->render($stpl_old->sprache, $stpl_new->sprache);
+
+	$diff_array["Studienpläne"]["Erläuterungen"]["old"] = $stpl_old->erlaeuterungen;
+	$diff_array["Studienpläne"]["Erläuterungen"]["new"] = $stpl_new->erlaeuterungen;
+	$diff_array["Studienpläne"]["Erläuterungen"]["diff"] = $diff->render($stpl_old->erlaeuterungen, $stpl_new->erlaeuterungen);
+
+	//Auslandssemester
+	$auslandssemester_old = new auslandssemester();
+	$auslandssemester_old->getAll($stpl_old->studienplan_id);
+
+	$auslandssemester_new = new auslandssemester();
+	$auslandssemester_new->getAll($stpl_new->studienplan_id);
+
+	$diff_array["Studienpläne"]["Auslandssemester"]["old"] = "";
+	$diff_array["Studienpläne"]["Auslandssemester"]["new"] = "";
+	$diff_array["Studienpläne"]["Auslandssemester"]["diff"] = "";
+
+	if (count($auslandssemester_old->result) !== 0)
 	{
-	    foreach($a->data as $sem => $value)
-	    {
-		if($value->optional || $value->verpflichtend)
+		foreach ($auslandssemester_old->result as $a)
 		{
-		    $diff_array["Studienpläne"]["Auslandssemester"]["old"] .= ($sem+1).". Semester ".($value->optional? "optional" : "verpflichtend")."</br>";
+			foreach ($a->data as $sem => $value)
+			{
+				if ($value->optional || $value->verpflichtend)
+				{
+					$diff_array["Studienpläne"]["Auslandssemester"]["old"] .= ($sem + 1).". Semester ".($value->optional ? "optional" : "verpflichtend")."</br>";
+				}
+			}
 		}
-	    }
 	}
-    }
-    
-    if(count($auslandssemester_new->result) !== 0)
-    {
-	foreach($auslandssemester_new->result as $a)
+
+	if (count($auslandssemester_new->result) !== 0)
 	{
-	    foreach($a->data as $sem => $value)
-	    {
-		if($value->optional || $value->verpflichtend)
+		foreach ($auslandssemester_new->result as $a)
 		{
-		    $diff_array["Studienpläne"]["Auslandssemester"]["diff"] .= ($sem+1).". Semester ".($value->optional? "optional" : "verpflichtend")."</br>";
+			foreach ($a->data as $sem => $value)
+			{
+				if ($value->optional || $value->verpflichtend)
+				{
+					$diff_array["Studienpläne"]["Auslandssemester"]["diff"] .= ($sem + 1).". Semester ".($value->optional ? "optional" : "verpflichtend")."</br>";
+				}
+			}
 		}
-	    }
 	}
-    }
-    
-    //Berufspraktikum
-    $berufspraktikum_old = new berufspraktikum();
-    $berufspraktikum_old->getAll($stpl_old->studienplan_id);
-    
-    $berufspraktikum_new = new berufspraktikum();
-    $berufspraktikum_new->getAll($stpl_new->studienplan_id);
-    
-    $diff_array["Studienpläne"]["Berufspraktikum"]["old"] = "";
-    $diff_array["Studienpläne"]["Berufspraktikum"]["new"] = "";
-    $diff_array["Studienpläne"]["Berufspraktikum"]["diff"] = "";
-    
-    if(count($berufspraktikum_old->result) !== 0)
-    {
-	foreach($berufspraktikum_old->result as $a)
+
+	//Berufspraktikum
+	$berufspraktikum_old = new berufspraktikum();
+	$berufspraktikum_old->getAll($stpl_old->studienplan_id);
+
+	$berufspraktikum_new = new berufspraktikum();
+	$berufspraktikum_new->getAll($stpl_new->studienplan_id);
+
+	$diff_array["Studienpläne"]["Berufspraktikum"]["old"] = "";
+	$diff_array["Studienpläne"]["Berufspraktikum"]["new"] = "";
+	$diff_array["Studienpläne"]["Berufspraktikum"]["diff"] = "";
+
+	if (count($berufspraktikum_old->result) !== 0)
 	{
-	    foreach($a->data as $sem => $value)
-	    {
-		if($value->semester)
+		foreach ($berufspraktikum_old->result as $a)
 		{
-		     $diff_array["Studienpläne"]["Berufspraktikum"]["old"] .= "<b>".($sem+1).". Semester</b></br>";
-		     $diff_array["Studienpläne"]["Berufspraktikum"]["old"] .= "ECTS: ".$value->ects."</br>";
-		     $diff_array["Studienpläne"]["Berufspraktikum"]["old"] .= "Dauer: ".$value->dauer."</br>";
-		     $diff_array["Studienpläne"]["Berufspraktikum"]["old"] .= "Stunden: ".$value->stunden."</br>";
+			foreach ($a->data as $sem => $value)
+			{
+				if ($value->semester)
+				{
+					$diff_array["Studienpläne"]["Berufspraktikum"]["old"] .= "<b>".($sem + 1).". Semester</b></br>";
+					$diff_array["Studienpläne"]["Berufspraktikum"]["old"] .= "ECTS: ".$value->ects."</br>";
+					$diff_array["Studienpläne"]["Berufspraktikum"]["old"] .= "Dauer: ".$value->dauer."</br>";
+					$diff_array["Studienpläne"]["Berufspraktikum"]["old"] .= "Stunden: ".$value->stunden."</br>";
+				}
+			}
 		}
-	    }
 	}
-    }
-    
-    if(count($berufspraktikum_new->result) !== 0)
-    {
-	foreach($berufspraktikum_new->result as $a)
+
+	if (count($berufspraktikum_new->result) !== 0)
 	{
-	    foreach($a->data as $sem => $value)
-	    {
-		if($value->semester)
+		foreach ($berufspraktikum_new->result as $a)
 		{
-		     $diff_array["Studienpläne"]["Berufspraktikum"]["diff"] .= "<b>".($sem+1).". Semester</b></br>";
-		     $diff_array["Studienpläne"]["Berufspraktikum"]["diff"] .= "ECTS: ".$value->ects."</br>";
-		     $diff_array["Studienpläne"]["Berufspraktikum"]["diff"] .= "Dauer: ".$value->dauer."</br>";
-		     $diff_array["Studienpläne"]["Berufspraktikum"]["diff"] .= "Stunden: ".$value->stunden."</br>";
+			foreach ($a->data as $sem => $value)
+			{
+				if ($value->semester)
+				{
+					$diff_array["Studienpläne"]["Berufspraktikum"]["diff"] .= "<b>".($sem + 1).". Semester</b></br>";
+					$diff_array["Studienpläne"]["Berufspraktikum"]["diff"] .= "ECTS: ".$value->ects."</br>";
+					$diff_array["Studienpläne"]["Berufspraktikum"]["diff"] .= "Dauer: ".$value->dauer."</br>";
+					$diff_array["Studienpläne"]["Berufspraktikum"]["diff"] .= "Stunden: ".$value->stunden."</br>";
+				}
+			}
 		}
-	    }
 	}
-    }
-    
+
 }
 
 returnAJAX(true, $diff_array);
-
