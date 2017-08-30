@@ -322,7 +322,7 @@ label {
 	z-index: 10000;
 }
 
-.glyphicon-trash
+.glyphicon-trash, .glyphicon-edit
 {
 	cursor: pointer;
 }
@@ -429,4 +429,9 @@ h5
 blockquote
 {
 	font-size: inherit !important;
+}
+
+.greyedout
+{
+	color: lightslategrey;
 }
