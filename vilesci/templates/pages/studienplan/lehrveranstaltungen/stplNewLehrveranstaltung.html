@@ -5,7 +5,7 @@
 				<div class="col-sm-3">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.lehrtyp.$error.required)}">
 						<label for="lehrtyp">Lehrtyp*</label>
-						<select class="form-control input-sm" name="lehrtyp" ng-model="newLvCtrl.data.lehrtyp_kurzbz" ng-change="newLvCtrl.loadLehrform()" required ng-disabled="newLvCtrl.data.gesperrt">
+						<select class="form-control input-sm" name="lehrtyp" ng-model="newLvCtrl.data.lehrtyp_kurzbz" ng-change="newLvCtrl.onLehrtypChange()" required ng-disabled="newLvCtrl.data.gesperrt">
 							<option ng-repeat="lehrtyp in newLvCtrl.lehrtypList" value="{{lehrtyp.lehrtyp_kurzbz}}">{{lehrtyp.bezeichnung}}</option>
 						</select>
 					</div>
@@ -21,7 +21,7 @@
 				<div class="col-sm-2">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
 						<label for="kurzbz">Kurzbz*</label>
-						<input strip-html type="text" class="form-control input-sm" name="kurzbz" ng-model="newLvCtrl.data.kurzbz" required ng-disabled="newLvCtrl.data.gesperrt"/>
+						<input characters-only="" strip-html type="text" class="form-control input-sm" name="kurzbz" ng-model="newLvCtrl.data.kurzbz" required ng-disabled="newLvCtrl.data.gesperrt"/>
 					</div>
 				</div>
 				<!--<div class="col-sm-2">
@@ -50,7 +50,7 @@
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.oe.$error.required)}">
 						<label for="oe">Organistaionseinheit*</label>
 						<select class="form-control input-sm" name="oe" ng-model="newLvCtrl.data.oe_kurzbz" required ng-disabled="newLvCtrl.data.gesperrt">
-							<option ng-repeat="oe in newLvCtrl.oeList" value="{{oe.oe_kurzbz}}">{{oe.organisationseinheittyp_kurzbz}} - {{oe.bezeichnung}}</option>
+							<option ng-repeat="oe in newLvCtrl.oeList" value="{{oe.oe_kurzbz}}" ng-class="{greyedout: (!oe.aktiv && oe.aktiv != null)}">{{oe.organisationseinheittyp_kurzbz}} - {{oe.bezeichnung}}{{(!oe.aktiv && oe.aktiv != null)?" - inaktiv!":""}}</option>
 						</select>
 					</div>
 				</div>
@@ -174,7 +174,8 @@
 					<div class="checkbox">
 						</br>
 						<label>
-							<input type="checkbox" name="aktiv" ng-model="newLvCtrl.data.aktiv" ng-disabled="newLvCtrl.data.gesperrt"/>
+							<!--<input type="checkbox" name="aktiv" ng-model="newLvCtrl.data.aktiv" ng-disabled="newLvCtrl.data.gesperrt"/>-->
+							<input type="checkbox" name="aktiv" ng-model="newLvCtrl.data.aktiv" ng-disabled="newLvCtrl.data.aktivGesperrt"/>
 							Aktiv
 						</label>
 					</div>

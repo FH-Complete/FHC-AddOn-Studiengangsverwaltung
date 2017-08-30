@@ -29,6 +29,23 @@ angular.module('stgv2')
 				ctrl.loadLehrform();
 			});
 
+			//set fields dependent on Studiengang
+			ctrl.setStudiengangDependencies = function()
+			{
+				//set oe_kurzbz which corresponds to studiengang if module
+				if(ctrl.data.lehrtyp_kurzbz == "modul" && ctrl.data.oe_kurzbz == null && !ctrl.data.lehrveranstaltung_id) {
+					angular.forEach(ctrl.studiengangList, function (item) {
+						if (item.studiengang_kz == ctrl.data.studiengang_kz) {
+							angular.forEach(ctrl.oeList, function(oe){
+								if(item.oe_kurzbz == oe.oe_kurzbz) {
+									ctrl.data.oe_kurzbz = item.oe_kurzbz;
+								}
+							});
+						}
+					});
+				}
+			};
+
 			ctrl.setLehrformDependencies = function()
 			{
 				switch(ctrl.data.lehrform_kurzbz)
@@ -76,7 +93,7 @@ angular.module('stgv2')
                     }
 					ctrl.loadOrganisationseinheitenList("Institut");
 				}
-			}
+			};
 
 			//loading Studiengang list
 			StudiengangService.getStudiengangList().then(function(result){
@@ -122,6 +139,7 @@ angular.module('stgv2')
 					if (response.data.erfolg)
 					{
 						ctrl.oeList = response.data.info;
+						ctrl.setStudiengangDependencies();
 					}
 					else
 					{
@@ -130,7 +148,7 @@ angular.module('stgv2')
 				}, function error(response) {
 					errorService.setError(getErrorMsg(response));
 				});
-			}
+			};
 
 			//loading spracheList
 			SpracheService.getSpracheList().then(function(result){
@@ -182,7 +200,7 @@ angular.module('stgv2')
 			{
 				var val = $("#farbe").val();
 				$("#farbevorschau").attr("style","background-color: #"+val+"; border: 1px solid #999999; cursor: default");
-			}
+			};
 
 			ctrl.updateLehreverzeichnis = function()
 			{
@@ -235,6 +253,16 @@ angular.module('stgv2')
 				});
 			};
 
+			ctrl.onLehrtypChange = function(){
+				//when new lv - reset kurzbz and lehrform kurzbz when lehrtyp changes -
+				// otherwise value from other lehrtyp stays!
+				if(!ctrl.data.lehrveranstaltung_id) {
+					ctrl.data.oe_kurzbz = null;
+					ctrl.data.lehrform_kurzbz = null;
+				}
+				ctrl.loadLehrform();
+			};
+
 			ctrl.loadLehrform = function()
 			{
 				//loading lehrformList
@@ -262,12 +290,12 @@ angular.module('stgv2')
 			ctrl.data.lehrtyp_kurzbz = $("#lehrtyp").val();
 			ctrl.loadLehrform();
 
-
 			ctrl.saveLehrveranstaltung = function()
 			{
+				ctrl.updateLehreverzeichnis();
 				if($scope.form.$valid)
 				{
-					var saveData = {data: ""}
+					var saveData = {data: ""};
 					saveData.data = ctrl.data;
 					$http({
 						method: 'POST',
@@ -283,7 +311,7 @@ angular.module('stgv2')
 							args.lv_id = response.data.info[0];
 							args.oe_kurzbz = ctrl.data.oe_kurzbz;
 							args.lehrtyp_kurzbz = ctrl.data.lehrtyp_kurzbz;
-							args.semester = ctrl.data.semester;
+							args.semester = ""+ctrl.data.semester;
 							$scope.$emit("setFilter", args);
 						}
 						else
@@ -304,7 +332,7 @@ angular.module('stgv2')
 			{
 				if($scope.form.$valid)
 				{
-					var saveData = {data: ""}
+					var saveData = {data: ""};
 					saveData.data = ctrl.data;
 					$http({
 						method: 'POST',
@@ -323,6 +351,9 @@ angular.module('stgv2')
 							args.semester = ctrl.data.semester;
 							$scope.$emit("setFilter", args);
 							$("#stplTreeGrid").treegrid("update",{id: ctrl.data.id, row: ctrl.data});
+							//reload to sort again in case sort changed
+							var parentNode = $('#stplTreeGrid').treegrid('getParent', ctrl.data.id);
+							$("#stplTreeGrid").treegrid("reload", parentNode);
 						}
 						else
 						{
