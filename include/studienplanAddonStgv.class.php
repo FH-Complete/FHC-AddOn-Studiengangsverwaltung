@@ -22,7 +22,7 @@
  * Authors: Stefan Puraner <stefan.puraner@technikum-wien.at>
  */
 
-require_once(dirname(__FILE__) . '/../../../include/studienplan.class.php');
+require_once(dirname(__FILE__).'/../../../include/studienplan.class.php');
 
 class StudienplanAddonStgv extends studienplan
 {
@@ -58,22 +58,22 @@ class StudienplanAddonStgv extends studienplan
 			$qry = 'BEGIN;INSERT INTO lehre.tbl_studienplan (studienordnung_id, orgform_kurzbz,version,
 					bezeichnung, regelstudiendauer, sprache, aktiv, semesterwochen, testtool_sprachwahl,
 					pflicht_sws, pflicht_lvs, ects_stpl, onlinebewerbung_studienplan,
-					insertamum, insertvon) VALUES (' .
-				$this->db_add_param($this->studienordnung_id, FHC_INTEGER) . ', ' .
-				$this->db_add_param($this->orgform_kurzbz) . ', ' .
-				$this->db_add_param($this->version) . ', ' .
-				$this->db_add_param($this->bezeichnung) . ', ' .
-				$this->db_add_param($this->regelstudiendauer, FHC_INTEGER) . ', ' .
-				$this->db_add_param($this->sprache) . ', ' .
-				$this->db_add_param($this->aktiv, FHC_BOOLEAN) . ', ' .
-				$this->db_add_param($this->semesterwochen, FHC_INTEGER) . ', ' .
-				$this->db_add_param($this->testtool_sprachwahl, FHC_BOOLEAN) . ', ' .
-				$this->db_add_param($this->pflicht_sws) . ', ' .
-				$this->db_add_param($this->pflicht_lvs) . ', ' .
-				$this->db_add_param($this->ects_stpl) . ', ' .
-				$this->db_add_param($this->onlinebewerbung_studienplan, FHC_BOOLEAN) . ', ' .
-				'now(), ' .
-				$this->db_add_param($this->insertvon) . ');';
+					insertamum, insertvon) VALUES ('.
+				$this->db_add_param($this->studienordnung_id, FHC_INTEGER).', '.
+				$this->db_add_param($this->orgform_kurzbz).', '.
+				$this->db_add_param($this->version).', '.
+				$this->db_add_param($this->bezeichnung).', '.
+				$this->db_add_param($this->regelstudiendauer, FHC_INTEGER).', '.
+				$this->db_add_param($this->sprache).', '.
+				$this->db_add_param($this->aktiv, FHC_BOOLEAN).', '.
+				$this->db_add_param($this->semesterwochen, FHC_INTEGER).', '.
+				$this->db_add_param($this->testtool_sprachwahl, FHC_BOOLEAN).', '.
+				$this->db_add_param($this->pflicht_sws).', '.
+				$this->db_add_param($this->pflicht_lvs).', '.
+				$this->db_add_param($this->ects_stpl).', '.
+				$this->db_add_param($this->onlinebewerbung_studienplan, FHC_BOOLEAN).', '.
+				'now(), '.
+				$this->db_add_param($this->insertvon).');';
 		}
 		else
 		{
@@ -83,28 +83,55 @@ class StudienplanAddonStgv extends studienplan
 				$this->errormsg = 'studienplan_id muss eine gueltige Zahl sein';
 				return false;
 			}
-			$qry = 'UPDATE lehre.tbl_studienplan SET' .
-				' studienordnung_id=' . $this->db_add_param($this->studienordnung_id, FHC_INTEGER) . ', ' .
-				' orgform_kurzbz=' . $this->db_add_param($this->orgform_kurzbz) . ', ' .
-				' version=' . $this->db_add_param($this->version) . ', ' .
-				' bezeichnung=' . $this->db_add_param($this->bezeichnung) . ', ' .
-				' regelstudiendauer=' . $this->db_add_param($this->regelstudiendauer, FHC_INTEGER) . ', ' .
-				' sprache=' . $this->db_add_param($this->sprache) . ', ' .
-				' aktiv=' . $this->db_add_param($this->aktiv, FHC_BOOLEAN) . ', ' .
-				' semesterwochen=' . $this->db_add_param($this->semesterwochen, FHC_INTEGER) . ', ' .
-				' testtool_sprachwahl=' . $this->db_add_param($this->testtool_sprachwahl, FHC_BOOLEAN) . ',' .
-				' ects_stpl=' . $this->db_add_param($this->ects_stpl) . ',' .
-				' pflicht_sws=' . $this->db_add_param($this->pflicht_sws, FHC_INTEGER) . ',' .
-				' pflicht_lvs=' . $this->db_add_param($this->pflicht_lvs, FHC_INTEGER) . ',' .
-				' onlinebewerbung_studienplan=' . $this->db_add_param($this->onlinebewerbung_studienplan, FHC_BOOLEAN) . ',' .
-				' updateamum= now(), ' .
-				' updatevon=' . $this->db_add_param($this->updatevon) . ' ' .
-				' WHERE studienplan_id=' . $this->db_add_param($this->studienplan_id, FHC_INTEGER, false) . ';';
+			$qry = 'UPDATE lehre.tbl_studienplan SET'.
+				' studienordnung_id='.$this->db_add_param($this->studienordnung_id, FHC_INTEGER).', '.
+				' orgform_kurzbz='.$this->db_add_param($this->orgform_kurzbz).', '.
+				' version='.$this->db_add_param($this->version).', '.
+				' bezeichnung='.$this->db_add_param($this->bezeichnung).', '.
+				' regelstudiendauer='.$this->db_add_param($this->regelstudiendauer, FHC_INTEGER).', '.
+				' sprache='.$this->db_add_param($this->sprache).', '.
+				' aktiv='.$this->db_add_param($this->aktiv, FHC_BOOLEAN).', '.
+				' semesterwochen='.$this->db_add_param($this->semesterwochen, FHC_INTEGER).', '.
+				' testtool_sprachwahl='.$this->db_add_param($this->testtool_sprachwahl, FHC_BOOLEAN).','.
+				' ects_stpl='.$this->db_add_param($this->ects_stpl).','.
+				' pflicht_sws='.$this->db_add_param($this->pflicht_sws, FHC_INTEGER).','.
+				' pflicht_lvs='.$this->db_add_param($this->pflicht_lvs, FHC_INTEGER).','.
+				' onlinebewerbung_studienplan='.$this->db_add_param($this->onlinebewerbung_studienplan, FHC_BOOLEAN).','.
+				' updateamum='.$this->db_add_param(date("Y-m-d H:i:s")).','.
+				' updatevon='.$this->db_add_param($this->updatevon).' '.
+				' WHERE studienplan_id='.$this->db_add_param($this->studienplan_id, FHC_INTEGER, false).';';
 
-			$qry.= 'UPDATE addon.tbl_stgv_studienplan SET' .
-				' erlaeuterungen=' . $this->db_add_param($this->erlaeuterungen, FHC_STRING) . ',' .
-				' sprache_kommentar=' . $this->db_add_param($this->sprache_kommentar, FHC_STRING) . ' ' .
-				' WHERE studienplan_id=' . $this->db_add_param($this->studienplan_id, FHC_INTEGER, false) . ';';
+			//if id is not in the addon table, insert it, otherwise update
+			$qrycheckid = 'SELECT studienplan_id FROM addon.tbl_stgv_studienplan WHERE studienplan_id='.$this->db_add_param($this->studienplan_id, FHC_INTEGER, false).';';
+			if ($this->db_query($qrycheckid))
+			{
+				$numids = $this->db_num_rows($this->db_query($qrycheckid));
+				if ($numids < 1)
+				{
+					$qryinsaddondata = 'BEGIN;INSERT INTO addon.tbl_stgv_studienplan (studienplan_id, erlaeuterungen, sprache_kommentar) VALUES ('.
+						$this->db_add_param($this->studienplan_id, FHC_INTEGER).', '.
+						$this->db_add_param($this->erlaeuterungen, FHC_STRING).', '.
+						$this->db_add_param($this->sprache_kommentar, FHC_STRING).');';
+
+					if ($this->db_query($qryinsaddondata))
+					{
+						$this->db_query('COMMIT');
+					}
+					else
+					{
+						$this->db_query('ROLLBACK');
+						$this->errormsg = "Fehler beim Speichern der Daten";
+						return false;
+					}
+				}
+				else
+				{
+					$qry .= 'UPDATE addon.tbl_stgv_studienplan SET'.
+						' erlaeuterungen='.$this->db_add_param($this->erlaeuterungen, FHC_STRING).','.
+						' sprache_kommentar='.$this->db_add_param($this->sprache_kommentar, FHC_STRING).' '.
+						' WHERE studienplan_id='.$this->db_add_param($this->studienplan_id, FHC_INTEGER, false).';';
+				}
+			}
 		}
 
 		if ($this->db_query($qry))
@@ -118,12 +145,12 @@ class StudienplanAddonStgv extends studienplan
 					if ($row = $this->db_fetch_object())
 					{
 						$this->studienplan_id = $row->id;
-						$qry = 'BEGIN;INSERT INTO addon.tbl_stgv_studienplan (studienplan_id, erlaeuterungen, sprache_kommentar) VALUES (' .
-							$this->db_add_param($this->studienplan_id, FHC_INTEGER) . ', ' .
-							$this->db_add_param($this->erlaeuterungen, FHC_STRING) . ', ' .
-							$this->db_add_param($this->sprache_kommentar, FHC_STRING) . ');';
+						$qry = 'BEGIN;INSERT INTO addon.tbl_stgv_studienplan (studienplan_id, erlaeuterungen, sprache_kommentar) VALUES ('.
+							$this->db_add_param($this->studienplan_id, FHC_INTEGER).', '.
+							$this->db_add_param($this->erlaeuterungen, FHC_STRING).', '.
+							$this->db_add_param($this->sprache_kommentar, FHC_STRING).');';
 
-						if($this->db_query($qry))
+						if ($this->db_query($qry))
 						{
 							$this->db_query('COMMIT');
 						}
@@ -222,8 +249,8 @@ class StudienplanAddonStgv extends studienplan
 
 		//Daten aus der Datenbank lesen
 		$qry = "SELECT * FROM lehre.tbl_studienplan "
-			. "LEFT JOIN addon.tbl_stgv_studienplan USING(studienplan_id) "
-			. "WHERE studienplan_id=" . $this->db_add_param($studienplan_id, FHC_INTEGER, false);
+			."LEFT JOIN addon.tbl_stgv_studienplan USING(studienplan_id) "
+			."WHERE studienplan_id=".$this->db_add_param($studienplan_id, FHC_INTEGER, false);
 
 		if (!$this->db_query($qry))
 		{
@@ -282,11 +309,11 @@ class StudienplanAddonStgv extends studienplan
 
 		//Daten aus der Datenbank lesen
 		$qry = "SELECT * FROM lehre.tbl_studienplan "
-			. "LEFT JOIN addon.tbl_stgv_studienplan USING(studienplan_id) "
-			. "WHERE studienordnung_id=" . $this->db_add_param($studienordnung_id, FHC_INTEGER, false);
+			."LEFT JOIN addon.tbl_stgv_studienplan USING(studienplan_id) "
+			."WHERE studienordnung_id=".$this->db_add_param($studienordnung_id, FHC_INTEGER, false);
 
 		if (!is_null($orgform_kurzbz))
-			$qry.=" AND orgform_kurzbz=" . $this->db_add_param($orgform_kurzbz);
+			$qry .= " AND orgform_kurzbz=".$this->db_add_param($orgform_kurzbz);
 
 		if ($this->db_query($qry))
 		{
@@ -380,18 +407,18 @@ class StudienplanAddonStgv extends studienplan
 	public function delete($studienplan_id)
 	{
 		//Pruefen ob studienplan_id eine gueltige Zahl ist
-		if(!is_numeric($studienplan_id) || $studienplan_id === '')
+		if (!is_numeric($studienplan_id) || $studienplan_id === '')
 		{
 			$this->errormsg = 'studienplan_id muss eine gültige Zahl sein'."\n";
 			return false;
 		}
 
 		//loeschen des Datensatzes
-		$qry="BEGIN;DELETE FROM addon.tbl_stgv_studienplan WHERE studienplan_id=".$this->db_add_param($studienplan_id, FHC_INTEGER, false).";";
+		$qry = "BEGIN;DELETE FROM addon.tbl_stgv_studienplan WHERE studienplan_id=".$this->db_add_param($studienplan_id, FHC_INTEGER, false).";";
 
-		if($this->db_query($qry))
+		if ($this->db_query($qry))
 		{
-			if(parent::delete($studienplan_id))
+			if (parent::delete($studienplan_id))
 			{
 				$this->db_query("COMMIT");
 				return true;
@@ -415,9 +442,9 @@ class StudienplanAddonStgv extends studienplan
 	/**
 	 * Laedt die Studienplaene zu denen eine Lehrveranstaltung zugeordnet ist
 	 */
-	public function getStudienplanLehrveranstaltung($lehrveranstaltung_id, $studiensemester_kurzbz=null)
+	public function getStudienplanLehrveranstaltung($lehrveranstaltung_id, $studiensemester_kurzbz = null)
 	{
-		$qry= "
+		$qry = "
 			SELECT
 				distinct tbl_studienplan.*
 			FROM
@@ -430,16 +457,16 @@ class StudienplanAddonStgv extends studienplan
 					WHERE studienordnung_id=tbl_studienplan.studienordnung_id
 					AND semester = tbl_studienplan_lehrveranstaltung.semester)";
 
-		if($studiensemester_kurzbz != null)
+		if ($studiensemester_kurzbz != null)
 		{
 			$qry .= " AND studiensemester_kurzbz=".$this->db_add_param($studiensemester_kurzbz);
 		}
 
-		$qry.= " ORDER BY bezeichnung;";
+		$qry .= " ORDER BY bezeichnung;";
 
-		if($result = $this->db_query($qry))
+		if ($result = $this->db_query($qry))
 		{
-			while($row = $this->db_fetch_object($result))
+			while ($row = $this->db_fetch_object($result))
 			{
 				$obj = new studienplan();
 				$obj->studienplan_id = $row->studienplan_id;
@@ -460,7 +487,7 @@ class StudienplanAddonStgv extends studienplan
 				$obj->updatevon = $row->updatevon;
 				$obj->insertamum = $row->insertamum;
 				$obj->insertvon = $row->insertvon;
-				$obj->new=false;
+				$obj->new = false;
 
 				$this->result[] = $obj;
 			}
