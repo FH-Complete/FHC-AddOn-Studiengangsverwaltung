@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'cogpowered\\FineDiff' => array($vendorDir . '/cogpowered/finediff/src'),
+    'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
 );
