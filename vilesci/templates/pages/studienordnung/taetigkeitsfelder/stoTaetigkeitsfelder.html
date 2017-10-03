@@ -60,14 +60,17 @@
 				<textarea strip-html type="text" class="form-control input-sm" placeholder="" ng-model="ctrl.data.data.branchen.fixed"></textarea>
 				<div class="input-group">
 					<input id="branchen" strip-html type="text" class="form-control input-sm" placeholder="" ng-model="ctrl.temp.branchen"/>
-					<span class="input-group-btn">
+					<span class="input-group-btn addButton">
 						<button class="btn btn-primary btn-sm" type="button" ng-click="ctrl.addListItem('branchen_lists', 'branchen')">Aufzählung hinzufügen</button>
 					</span>
-					<span class="input-group-btn">
+					<span class="input-group-btn addButton">
 						<button class="btn btn-success btn-sm" type="button" ng-click="ctrl.addList('branchen_lists', 'branchen')">Liste hinzufügen</button>
 					</span>
 					<span class="input-group-btn editButton">
 						<button class="btn btn-success btn-sm" type="button" ng-click="ctrl.saveEditedListItem('branchen')">Änderungen speichern</button>
+					</span>
+					<span class="input-group-btn editButtonList">
+						<button class="btn btn-success btn-sm" type="button" ng-click="ctrl.saveEditedList('branchen')">Änderungen speichern</button>
 					</span>
 				</div>
 				<div id="branchen_lists">
@@ -83,14 +86,17 @@
 				<textarea strip-html type="text" class="form-control input-sm" placeholder="" ng-model="ctrl.data.data.positionen.fixed"></textarea>
 				<div class="input-group">
 					<input id="positionen" strip-html type="text" class="form-control input-sm" placeholder="" ng-model="ctrl.temp.positionen"/>
-					<span class="input-group-btn">
+					<span class="input-group-btn addButton">
 						<button class="btn btn-primary btn-sm" type="button" ng-click="ctrl.addListItem('positionen_lists', 'positionen')">Aufzählung hinzufügen</button>
 					</span>
-					<span class="input-group-btn">
+					<span class="input-group-btn addButton">
 						<button class="btn btn-success btn-sm" type="button" ng-click="ctrl.addList('positionen_lists', 'positionen')">Liste hinzufügen</button>
 					</span>
 					<span class="input-group-btn editButton">
 						<button class="btn btn-success btn-sm" type="button" ng-click="ctrl.saveEditedListItem('positionen')">Änderungen speichern</button>
+					</span>
+					<span class="input-group-btn editButtonList">
+						<button class="btn btn-success btn-sm" type="button" ng-click="ctrl.saveEditedList('positionen')">Änderungen speichern</button>
 					</span>
 				</div>
 				<div id="positionen_lists">
@@ -106,14 +112,17 @@
 				<textarea strip-html type="text" class="form-control input-sm" placeholder="" ng-model="ctrl.data.data.aufgaben.fixed"></textarea>
 				<div class="input-group">
 					<input id="aufgaben" strip-html type="text" class="form-control input-sm" placeholder="" ng-model="ctrl.temp.aufgaben"/>
-					<span class="input-group-btn">
+					<span class="input-group-btn addButton">
 						<button class="btn btn-primary btn-sm" type="button" ng-click="ctrl.addListItem('aufgaben_lists', 'aufgaben')">Aufzählung hinzufügen</button>
 					</span>
-					<span class="input-group-btn">
+					<span class="input-group-btn addButton">
 						<button class="btn btn-success btn-sm" type="button" ng-click="ctrl.addList('aufgaben_lists', 'aufgaben')">Liste hinzufügen</button>
 					</span>
 					<span class="input-group-btn editButton">
 						<button class="btn btn-success btn-sm" type="button" ng-click="ctrl.saveEditedListItem('aufgaben')">Änderungen speichern</button>
+					</span>
+					<span class="input-group-btn editButtonList">
+						<button class="btn btn-success btn-sm" type="button" ng-click="ctrl.saveEditedList('aufgaben')">Änderungen speichern</button>
 					</span>
 				</div>
 				<div id="aufgaben_lists">
