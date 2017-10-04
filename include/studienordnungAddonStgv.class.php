@@ -139,27 +139,55 @@ class StudienordnungAddonStgv extends studienordnung
 				$this->errormsg = 'studienordnung_id muss eine gueltige Zahl sein';
 				return false;
 			}
-			$qry = 'UPDATE lehre.tbl_studienordnung SET' .
-				' studiengang_kz=' . $this->db_add_param($this->studiengang_kz, FHC_INTEGER) . ', ' .
-				' version=' . $this->db_add_param($this->version) . ', ' .
-				' bezeichnung=' . $this->db_add_param($this->bezeichnung) . ', ' .
-				' ects=' . $this->db_add_param($this->ects) . ', ' .
-				' gueltigvon=' . $this->db_add_param($this->gueltigvon) . ', ' .
-				' gueltigbis=' . $this->db_add_param($this->gueltigbis) . ', ' .
-				' studiengangbezeichnung=' . $this->db_add_param($this->studiengangbezeichnung) . ', ' .
-				' studiengangbezeichnung_englisch=' . $this->db_add_param($this->studiengangbezeichnung_englisch) . ', ' .
-				' studiengangkurzbzlang=' . $this->db_add_param($this->studiengangkurzbzlang) . ',' .
-				' akadgrad_id=' . $this->db_add_param($this->akadgrad_id, FHC_INTEGER) . ', ' .
-				' status_kurzbz=' . $this->db_add_param($this->status_kurzbz) . ', ' .
-				' standort_id=' . $this->db_add_param($this->standort_id) . ', ' .
-				' updateamum= now(), ' .
-				' updatevon=' . $this->db_add_param($this->updatevon) . ' ' .
-				' WHERE studienordnung_id=' . $this->db_add_param($this->studienordnung_id, FHC_INTEGER, false) . ';';
+			$qry = 'UPDATE lehre.tbl_studienordnung SET'.
+				' studiengang_kz='.$this->db_add_param($this->studiengang_kz, FHC_INTEGER).', '.
+				' version='.$this->db_add_param($this->version).', '.
+				' bezeichnung='.$this->db_add_param($this->bezeichnung).', '.
+				' ects='.$this->db_add_param($this->ects).', '.
+				' gueltigvon='.$this->db_add_param($this->gueltigvon).', '.
+				' gueltigbis='.$this->db_add_param($this->gueltigbis).', '.
+				' studiengangbezeichnung='.$this->db_add_param($this->studiengangbezeichnung).', '.
+				' studiengangbezeichnung_englisch='.$this->db_add_param($this->studiengangbezeichnung_englisch).', '.
+				' studiengangkurzbzlang='.$this->db_add_param($this->studiengangkurzbzlang).','.
+				' akadgrad_id='.$this->db_add_param($this->akadgrad_id, FHC_INTEGER).', '.
+				' status_kurzbz='.$this->db_add_param($this->status_kurzbz).', '.
+				' standort_id='.$this->db_add_param($this->standort_id).', '.
+				' updateamum= now(), '.
+				' updatevon='.$this->db_add_param($this->updatevon).' '.
+				' WHERE studienordnung_id='.$this->db_add_param($this->studienordnung_id, FHC_INTEGER, false).';';
 
-			$qry .= 'UPDATE addon.tbl_stgv_studienordnung SET' .
-				' aenderungsvariante_kurzbz=' . $this->db_add_param($this->aenderungsvariante_kurzbz) . ', ' .
-				' begruendung=' . $this->db_add_param($this->begruendung) . ' ' .
-				' WHERE studienordnung_id=' . $this->db_add_param($this->studienordnung_id, FHC_INTEGER, false) . ';';
+			//if id is not in the addon table, insert it, otherwise update
+			$qrycheckid = 'SELECT studienordnung_id FROM addon.tbl_stgv_studienordnung WHERE studienordnung_id='.$this->db_add_param($this->studienordnung_id, FHC_INTEGER, false).';';
+
+			if ($this->db_query($qrycheckid))
+			{
+				$numids = $this->db_num_rows($this->db_query($qrycheckid));
+				if ($numids < 1)
+				{
+					$qryinsaddondata = 'BEGIN;INSERT INTO addon.tbl_stgv_studienordnung (studienordnung_id, aenderungsvariante_kurzbz, begruendung) VALUES ('.
+						$this->db_add_param($this->studienordnung_id, FHC_INTEGER).', '.
+						$this->db_add_param($this->aenderungsvariante_kurzbz, FHC_STRING).', '.
+						$this->db_add_param($this->begruendung, FHC_STRING).');';
+
+					if ($this->db_query($qryinsaddondata))
+					{
+						$this->db_query('COMMIT');
+					}
+					else
+					{
+						$this->db_query('ROLLBACK');
+						$this->errormsg = "Fehler beim Speichern der Daten";
+						return false;
+					}
+				}
+				else
+				{
+					$qry .= 'UPDATE addon.tbl_stgv_studienordnung SET'.
+						' aenderungsvariante_kurzbz='.$this->db_add_param($this->aenderungsvariante_kurzbz).', '.
+						' begruendung='.$this->db_add_param($this->begruendung).' '.
+						' WHERE studienordnung_id='.$this->db_add_param($this->studienordnung_id, FHC_INTEGER, false).';';
+				}
+			}
 		}
 
 		if ($this->db_query($qry))
