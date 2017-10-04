@@ -11,10 +11,10 @@
 				</div>
 			</div>
 			<div class="col-sm-3">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.aenderungsvariante.$error.required)}">
 					<label for="aenderungsvariante">Änderungsvariante</label>
 					<div class="input-group">
-						<select class="form-control input-sm" name="aenderungsvariante" ng-model="ctrl.data.aenderungsvariante_kurzbz" required ng-disabled="ctrl.data.beschluesse[0].datum != ''">
+						<select class="form-control input-sm" name="aenderungsvariante" ng-model="ctrl.data.aenderungsvariante_kurzbz" required ng-disabled="ctrl.checkIfBeschlossen(ctrl.data.aenderungsvariante_kurzbz) || ctrl.data.status_kurzbz == 'approved'">
 							<option ng-repeat="av in ctrl.aenderungsvarianteList" value="{{av.aenderungsvariante_kurzbz}}">{{av.bezeichnung}}</option>
 						</select>
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Die Varianten zur Änderung der Studienordnung sind in Signavio detailliert beschrieben."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
@@ -33,7 +33,7 @@
 				</div>
 			</div>
 			<div class="col-sm-2">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.gueltigvon.$error.required)}">
 					<label for="gueltigvon">Gültig von</label>
 					<div class="input-group">
 						<select class="form-control input-sm" name="gueltigvon" ng-model="ctrl.data.gueltigvon" required>

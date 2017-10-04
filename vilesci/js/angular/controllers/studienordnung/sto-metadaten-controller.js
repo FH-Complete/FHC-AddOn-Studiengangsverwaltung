@@ -170,6 +170,22 @@ angular.module('stgv2')
 						errorService.setError(getErrorMsg(response));
 					});
 				}
+				else
+				{
+					$scope.form.$setPristine();
+				}
+			};
+
+			//check if there is already a beschlussdatum - if yes, Änderungsvariante is disabled.
+			ctrl.checkIfBeschlossen = function (aenderungsvariante)
+			{
+				var beschlossen = false;
+				angular.forEach(ctrl.data.beschluesse, function(value){
+					if(value.datum != null && value.datum != ""){
+						beschlossen = true;
+					}
+				});
+				return beschlossen;
 			};
 
 			ctrl.loadData();
