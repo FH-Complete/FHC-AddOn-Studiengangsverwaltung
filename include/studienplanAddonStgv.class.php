@@ -30,7 +30,7 @@ class StudienplanAddonStgv extends studienplan
 	public $ects_stpl;
 	public $pflicht_sws;
 	public $pflicht_lvs;
-	public $onlinebewerbung_studienplan;
+	public $onlinebewerbung_studienplan=true;
 	public $erlaeuterungen;
 	public $sprache_kommentar;
 
