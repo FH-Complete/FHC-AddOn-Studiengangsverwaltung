@@ -1,6 +1,7 @@
 {
     "require": {
         "cogpowered/finediff": "0.3.*",
-		"fortawesome/font-awesome": "*"
+		"fortawesome/font-awesome": "*",
+        "ezyang/htmlpurifier": "v4.9.3"
     }
 }

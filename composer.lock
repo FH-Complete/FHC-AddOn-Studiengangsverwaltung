@@ -4,7 +4,6 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c2f6458a15f0ac9b365f2c10d43a32b6",
     "content-hash": "ee4550315df53d8d9463b9fa5f90a83c",
     "packages": [
         {
@@ -56,7 +55,7 @@
                 "string",
                 "text"
             ],
-            "time": "2014-05-19 10:25:02"
+            "time": "2014-05-19T10:25:02+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -103,7 +102,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2017-06-03 02:28:16"
+            "time": "2017-06-03T02:28:16+00:00"
         },
         {
             "name": "fortawesome/font-awesome",
@@ -151,7 +150,7 @@
                 "font",
                 "icon"
             ],
-            "time": "2015-11-30 17:28:02"
+            "time": "2015-11-30T17:28:02+00:00"
         }
     ],
     "packages-dev": [],
