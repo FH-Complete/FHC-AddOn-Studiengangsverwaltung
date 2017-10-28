@@ -853,6 +853,20 @@ if (!$result = @$db->db_query("SELECT 1 FROM addon.tbl_stgv_studiengangsgruppe_s
 }
 
 //DMS Kategorie studiengangsverwaltung hinzufügen
+if($result = @$db->db_query("SELECT 1 FROM campus.tbl_dms_kategorie WHERE kategorie_kurzbz='dokumente' LIMIT 1"))
+{
+    if($db->db_num_rows($result)==0)
+    {
+	$qry = "INSERT INTO campus.tbl_dms_kategorie(kategorie_kurzbz, bezeichnung, beschreibung, parent_kategorie_kurzbz) VALUES ('dokumente','Dokumente', 'Dokumente',null);";
+
+	if (!$db->db_query($qry))
+	    echo '<strong>campus.tbl_dms_kategorie: ' . $db->db_last_error() . '</strong><br>';
+	else
+	    echo ' campus.tbl_dms_kategorie: DMS Dokumentkategorie "dokumente" hinzugefügt.<br>';
+    }
+}
+
+//DMS Kategorie studiengangsverwaltung hinzufügen
 if($result = @$db->db_query("SELECT 1 FROM campus.tbl_dms_kategorie WHERE kategorie_kurzbz='studiengangsverwaltung' LIMIT 1"))
 {
     if($db->db_num_rows($result)==0)
