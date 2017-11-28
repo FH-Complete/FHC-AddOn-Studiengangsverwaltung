@@ -40,7 +40,7 @@ angular.module('stgv2')
 				window.getSelection().deleteFromDocument();
 			};
 
-			$scope.$watch("ctrl.data.aenderungsvariante_kurzbz", function (newValue, oldValue) {
+			/*$scope.$watch("ctrl.data.aenderungsvariante_kurzbz", function (newValue, oldValue) {
 				var length = 0;
 				switch (newValue)
 				{
@@ -61,7 +61,7 @@ angular.module('stgv2')
 
 				for (var i = 0; i < length; i++)
 				{
-					ctrl.beschluesse.push({datum: "", typ: ctrl.beschlussList[ctrl.beschluesse.length]});
+					ctrl.beschluesse.push({datum: "", typ: ctrl.beschlussList[length-1]});
 				}
 
 				if (length < 0)
@@ -72,7 +72,7 @@ angular.module('stgv2')
 					}
 				}
 
-			});
+			});*/
 
 			//loading Studiensemester list
 			StudiensemesterService.getStudiensemesterList()
@@ -124,11 +124,18 @@ angular.module('stgv2')
 					{
 						ctrl.data = response.data.info;
 						$("#editor").html(response.data.info.begruendung);
-						angular.forEach(ctrl.data.beschluesse, function(value, index){
-							if(value.datum != null)
-								ctrl.data.beschluesse[index].datum = formatDateAsString(formatStringToDate(value.datum));
+						ctrl.beschluesse = [null, null, null];
+						//fill beschluesse array depending on typ (studiengang, Kollegium AQ Austria)
+						angular.forEach(ctrl.data.beschluesse, function(value, index)
+						{
+							var position = $.inArray(value.typ, ctrl.beschlussList);
+							var valuecopy = value;
+							if (value.datum != null)
+								valuecopy.datum = formatDateAsString(formatStringToDate(value.datum));
+							ctrl.beschluesse.splice(position, 1, valuecopy);
 						});
-						ctrl.beschluesse = ctrl.data.beschluesse;
+
+						//ctrl.beschluesse = ctrl.data.beschluesse;
 					}
 					else
 					{
@@ -140,6 +147,10 @@ angular.module('stgv2')
 			};
 
 			ctrl.save = function () {
+				angular.forEach(ctrl.beschluesse, function(value, index){
+					if(ctrl.beschluesse[index] != null)
+						ctrl.beschluesse[index].typ = ctrl.beschlussList[index];
+				});
 				ctrl.data.beschluesse = angular.copy(ctrl.beschluesse);
 				ctrl.data.begruendung = JSON.stringify($("#editor").html());
 				if ($scope.form.$valid)
@@ -177,15 +188,33 @@ angular.module('stgv2')
 			};
 
 			//check if there is already a beschlussdatum - if yes, Änderungsvariante is disabled.
-			ctrl.checkIfBeschlossen = function (aenderungsvariante)
+			ctrl.checkIfBeschlossen = function ()
 			{
 				var beschlossen = false;
 				angular.forEach(ctrl.data.beschluesse, function(value){
-					if(value.datum != null && value.datum != ""){
+					if(value !== null && value.datum !== null /*&& value.datum !== ""*/){
 						beschlossen = true;
 					}
 				});
 				return beschlossen;
+			};
+
+			ctrl.showBeschlussdatum = function (beschldatum)
+			{
+				switch (beschldatum)
+				{
+					case 0:
+						return ctrl.data.aenderungsvariante_kurzbz === 'gering' || ctrl.data.aenderungsvariante_kurzbz === 'nichtGering' || ctrl.data.aenderungsvariante_kurzbz === 'akkreditierungspflichtig';
+						break;
+					case 1:
+						return ctrl.data.aenderungsvariante_kurzbz === 'nichtGering' || ctrl.data.aenderungsvariante_kurzbz === 'akkreditierungspflichtig';
+						break;
+					case 2:
+						return ctrl.data.aenderungsvariante_kurzbz === 'akkreditierungspflichtig';
+						break;
+					default:
+						return false;
+				}
 			};
 
 			ctrl.loadData();

@@ -97,10 +97,10 @@ class beschluss extends basis_db
 	 */
 	public function getAll($studienordnung_id=null)
 	{
-		$qry = "SELECT * FROM addon.tbl_stgv_beschluesse ";
+		$qry = "SELECT * FROM addon.tbl_stgv_beschluesse";
 		if($studienordnung_id != null)
 			$qry .= " WHERE studienordnung_id=".$this->db_add_param($studienordnung_id);
-		$qry .= ";";
+		$qry .= "ORDER BY (datum IS NOT NULL), datum;";
 
 		if($this->db_query($qry))
 		{

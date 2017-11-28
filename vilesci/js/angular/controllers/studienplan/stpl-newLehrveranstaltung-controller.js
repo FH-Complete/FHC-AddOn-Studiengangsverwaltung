@@ -204,17 +204,18 @@ angular.module('stgv2')
 
 			ctrl.updateLehreverzeichnis = function()
 			{
-				var kurzbz = $('input[name="kurzbz"]').val();
-				kurzbz = kurzbz.replace(/\ä/g, "ae")
-					.replace(/\ö/g, "oe")
-					.replace(/\ü/g, "ue")
-					.replace(/\ß/g, "sz")
-					.replace(/\Ä/g, "ae")
-					.replace(/\Ö/g, "oe")
-					.replace(/\Ü/g, "ue")
+				//var kurzbz = $('input[name="kurzbz"]').val();
+				var kurzbz = (ctrl.data.kurzbz == null)?"":ctrl.data.kurzbz;
+				kurzbz = kurzbz.replace(/\u00e4/g, "ae")
+					.replace(/\u00f6/g, "oe")
+					.replace(/\u00fc/g, "ue")
+					.replace(/\u00df/g, "sz")
+					.replace(/\u00c4/g, "ae")
+					.replace(/\u00d6/g, "oe")
+					.replace(/\u00dc/g, "ue")
 					.replace(/[^a-z_\s]/gi, "");
-				var orgform = ($('select[name="orgform"]').val() === "? undefined:undefined ?") ? "" : "_"+$('select[name="orgform"]').val();
-				var string = (kurzbz+orgform).toLowerCase();;
+				var orgform = (typeof ctrl.data.orgform_kurzbz === "undefined") ? "" : "_"+ctrl.data.orgform_kurzbz;
+				var string = (kurzbz+orgform).toLowerCase();
 				$("input[name=\'lehreverzeichnis\']").val(string);
 				ctrl.data.lehreverzeichnis = string;
 			};
@@ -312,6 +313,7 @@ angular.module('stgv2')
 							args.oe_kurzbz = ctrl.data.oe_kurzbz;
 							args.lehrtyp_kurzbz = ctrl.data.lehrtyp_kurzbz;
 							args.semester = ""+ctrl.data.semester;
+							//$("#dialog").dialog("close");
 							$scope.$emit("setFilter", args);
 						}
 						else

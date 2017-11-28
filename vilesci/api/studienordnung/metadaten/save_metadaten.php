@@ -30,46 +30,45 @@ if($studienordnung->status_kurzbz != "development" && !($berechtigung->isBerecht
     returnAJAX(FALSE, $error);
 }
 
-if($studienordnung->save())
+if ($studienordnung->save())
 {
-    if(!empty($data->beschluesse))
-    {
-	foreach($data->beschluesse as $b)
+	if (!empty($data->beschluesse))
 	{
-//	    var_dump($b);
-	    $beschluss = new beschluss();
-	    if(isset($b["beschluss_id"]))
-	    {
-		$beschluss->new = false;
-		$beschluss->beschluss_id = $b["beschluss_id"];
-	    }
-	    else
-	    {
-		$beschluss->new = true;
-	    }
-	    $beschluss->studienordnung_id = $studienordnung->studienordnung_id;
-	    $beschluss->datum = $b['datum'];
-	    $beschluss->typ = $b['typ'];
-//	    var_dump($beschluss);
-	    if(!$beschluss->save())
-	    {
-		$error = array("message"=>"Fehler beim Speichern des Beschlusses.", "detail"=>$beschluss->errormsg);
-		returnAJAX(false, $error);
-	    }
+		foreach ($data->beschluesse as $b)
+		{
+			if (empty($b))
+				continue;
+
+			$beschluss = new beschluss();
+			if (isset($b["beschluss_id"]))
+			{
+				$beschluss->new = false;
+				$beschluss->beschluss_id = $b["beschluss_id"];
+				$beschluss->updatevon = $uid;
+			}
+			else
+			{
+				$beschluss->new = true;
+				$beschluss->insertvon= $uid;
+			}
+			$beschluss->studienordnung_id = $studienordnung->studienordnung_id;
+			$beschluss->datum = $b['datum'];
+			$beschluss->typ = $b['typ'];
+
+			if (!$beschluss->save())
+			{
+				$error = array("message" => "Fehler beim Speichern des Beschlusses.", "detail" => $beschluss->errormsg);
+				returnAJAX(false, $error);
+			}
+		}
 	}
-    }
-
-    returnAJAX(true, "Studienordnung erfolgreich aktualisiert");
-
+	returnAJAX(true, "Studienordnung erfolgreich aktualisiert");
 }
 else
 {
     $error = array("message"=>"Fehler beim Speichern der Studienordnung.", "detail"=>$studienordnung->errormsg);
     returnAJAX(false, $error);
 }
-
-
-
 
 function mapDataToStudienordnung($data)
 {
