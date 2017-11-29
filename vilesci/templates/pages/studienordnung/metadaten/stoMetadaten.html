@@ -61,7 +61,7 @@
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.datum_1.$error.required || form.datum_1.$error.date))}">
 					<label for="datum_1">Beschluss Datum</label>
 					<div class="input-group">
-						<input type="text" class="form-control input-sm datepicker" name="datum_1" ng-model="ctrl.beschluesse[0].datum"/>
+						<input type="text" class="form-control input-sm datepicker" name="datum_1" ng-model="ctrl.beschluesse[0].datum" ng-disabled="ctrl.data.status_kurzbz == 'approved'"/>
 						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Das Datum, an dem die Studienordnung vom jeweils zuständigen 'Organ' beschlossen wurde. Siehe dazu auch Signavio."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
 					</div>
 					<span ng-show="form.datum.$error.date">Kein gültiges Datum!</span>
@@ -85,7 +85,7 @@
 			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.datum_2.$error.required || form.datum_2.$error.date))}">
 					<label for="datum_2">Beschluss Datum</label>
-					<input type="text" class="form-control input-sm datepicker" name="datum_2" ng-model="ctrl.beschluesse[1].datum"/>
+					<input type="text" class="form-control input-sm datepicker" name="datum_2" ng-model="ctrl.beschluesse[1].datum" ng-disabled="ctrl.data.status_kurzbz == 'approved'"/>
 					<span ng-show="form.datum.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
@@ -104,7 +104,7 @@
 			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.datum_3.$error.required || form.datum_3.$error.date))}">
 					<label for="datum_3">Beschluss Datum</label>
-					<input type="text" class="form-control input-sm datepicker" name="datum_3" ng-model="ctrl.beschluesse[2].datum"/>
+					<input type="text" class="form-control input-sm datepicker" name="datum_3" ng-model="ctrl.beschluesse[2].datum" ng-disabled="ctrl.data.status_kurzbz == 'approved'"/>
 					<span ng-show="form.datum.$error.date">Kein gültiges Datum!</span>
 				</div>
 			</div>
