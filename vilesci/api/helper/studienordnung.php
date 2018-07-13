@@ -20,7 +20,7 @@ elseif(is_null($status))
 {
     returnAJAX(false, "Variable state nicht gesetzt");
 }
-elseif(($studiengang_kz == false) || ($status == false))
+elseif(($studiengang_kz === false) || ($status == false))
 {
     returnAJAX(false, "Fehler beim lesen der GET Variablen");    
 }

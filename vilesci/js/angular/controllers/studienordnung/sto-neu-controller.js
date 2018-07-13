@@ -132,8 +132,10 @@ angular.module('stgv2')
 
 			ctrl.updateVersion = function()
 			{
-				var stg = $filter('filter')(ctrl.studiengangList, {studiengang_kz: ctrl.sto.stg_kz})[0];
+				var stg = $filter('filter')(ctrl.studiengangList, {studiengang_kz: ctrl.sto.stg_kz},true)[0];
 				var version_stg_kz = ctrl.sto.stg_kz;
+				if(version_stg_kz.length==1)
+					version_stg_kz="000"+version_stg_kz;
 				if(version_stg_kz.length==2)
 					version_stg_kz="00"+version_stg_kz;
 				if(version_stg_kz.length==3)
