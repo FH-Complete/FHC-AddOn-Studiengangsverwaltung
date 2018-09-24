@@ -21,7 +21,7 @@
 				<div class="col-sm-2">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
 						<label for="kurzbz">Kurzbz*</label>
-						<input ng-pattern="/^[a-zA-Z0-9\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc\u00df]*$/" strip-html type="text" class="form-control input-sm" name="kurzbz" ng-model="newLvCtrl.data.kurzbz" required ng-disabled="newLvCtrl.data.gesperrt"/>
+						<input strip-html type="text" class="form-control input-sm" name="kurzbz" ng-model="newLvCtrl.data.kurzbz" required ng-disabled="newLvCtrl.data.gesperrt"/>
 					</div>
 				</div>
 				<!--<div class="col-sm-2">

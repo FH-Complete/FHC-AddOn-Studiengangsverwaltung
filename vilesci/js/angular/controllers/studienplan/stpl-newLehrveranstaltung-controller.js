@@ -296,6 +296,9 @@ angular.module('stgv2')
 				ctrl.updateLehreverzeichnis();
 				if($scope.form.$valid)
 				{
+					if (!ctrl.checkkurzbz())
+						return;
+
 					var saveData = {data: ""};
 					saveData.data = ctrl.data;
 					$http({
@@ -334,6 +337,9 @@ angular.module('stgv2')
 			{
 				if($scope.form.$valid)
 				{
+					if (!ctrl.checkkurzbz() && !ctrl.data.gesperrt)
+						return;
+
 					var saveData = {data: ""};
 					saveData.data = ctrl.data;
 					$http({
@@ -369,5 +375,16 @@ angular.module('stgv2')
 				{
 					$scope.form.$setPristine();
 				}
+			};
+
+			ctrl.checkkurzbz = function()
+			{
+				var regex = '^[a-zA-Z0-9\-\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc]*$';
+				if (!ctrl.data.kurzbz.match(regex))
+				{
+					alert("kurzbz darf keine Leerzeichen und keine Sonderzeichen ausser \"-\" enthalten");
+					return false;
+				}
+				return true;
 			}
 		});

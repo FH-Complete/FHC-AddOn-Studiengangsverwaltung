@@ -987,7 +987,7 @@ angular.module('stgv2')
 			$scope.tabs = [
 				{label: 'Details', link: 'details'},
 				{label: 'LV Regeln', link: 'lvRegeln'},
-				{label: 'LV Info', link: 'lvInfo'},
+				{label: 'LV Info', link: 'lvInfo'}
 			];
 
 			$scope.selectedTab = $scope.tabs[0];
@@ -999,7 +999,7 @@ angular.module('stgv2')
 			$scope.getSelectedTabName = function()
 			{
 				return $scope.selectedTab.label;
-			}
+			};
 
 			$scope.getTabClass = function (tab)
 			{
