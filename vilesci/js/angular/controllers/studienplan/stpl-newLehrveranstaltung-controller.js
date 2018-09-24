@@ -383,6 +383,15 @@ angular.module('stgv2')
 				if (!ctrl.data.kurzbz.match(regex))
 				{
 					alert("kurzbz darf keine Leerzeichen und keine Sonderzeichen ausser \"-\" enthalten");
+					var kurzbzinput = $("input[name=kurzbz]");
+					kurzbzinput.parent().addClass('has-error');
+					kurzbzinput.keyup(
+						function()
+						{
+							if (ctrl.data.kurzbz.match(regex))
+								$(this).parent().removeClass('has-error');
+						}
+					);
 					return false;
 				}
 				return true;
