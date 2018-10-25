@@ -24,7 +24,7 @@ angular.module('stgv2')
 				}
 				else
 				{
-					ctrl.loadOrganisationseinheitenList("Institut");
+					ctrl.loadOrganisationseinheitenList();
 				}
 				ctrl.loadLehrform();
 			});
@@ -91,7 +91,7 @@ angular.module('stgv2')
     					ctrl.data.lehrauftrag = true;
     					ctrl.data.lehre = true;
                     }
-					ctrl.loadOrganisationseinheitenList("Institut");
+					ctrl.loadOrganisationseinheitenList();
 				}
 			};
 
@@ -130,11 +130,13 @@ angular.module('stgv2')
 			ctrl.loadOrganisationseinheitenList = function(oetyp_kurzbz)
 			{
 				if(oetyp_kurzbz === undefined)
-					oetyp_kurzbz = "Institut";
+					url='./api/helper/organisationseinheit.php';
+				else
+					url='./api/helper/organisationseinheitByTyp.php?oetyp_kurzbz='+oetyp_kurzbz;
 
 				$http({
 					method: 'GET',
-					url: './api/helper/organisationseinheitByTyp.php?oetyp_kurzbz='+oetyp_kurzbz
+					url: url,
 				}).then(function success(response) {
 					if (response.data.erfolg)
 					{

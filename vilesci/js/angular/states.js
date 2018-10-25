@@ -1,10 +1,11 @@
 angular.module('stgv2').config(function ($stateProvider) {
 	$stateProvider
+	/*
 			.state('studiengang', {
 				name: 'studiengang',
 				url: '/studiengang/:stgkz',
 				templateUrl: './templates/pages/studiengang/stammdaten/stammdaten.html'
-			})
+			})*/
 			.state('betriebsdaten', {
 				name: 'betriebsdaten',
 				url: 'studiengang/:stgkz/betriebsdaten',
@@ -12,11 +13,6 @@ angular.module('stgv2').config(function ($stateProvider) {
 				controller: function ($state) {
 					$state.go('betriebsdaten.bewerbung');
 				}
-			})
-			.state('betriebsdaten.studiengangsgruppen', {
-				name: 'betriebsdaten.studiengangsgruppen',
-				url: '/studiengangsgruppen',
-				templateUrl: './templates/pages/studiengang/stammdaten/stammdaten.html'
 			})
 			.state('betriebsdaten.bewerbung', {
 				name: 'betriebsdaten.bewerbung',
@@ -50,7 +46,7 @@ angular.module('stgv2').config(function ($stateProvider) {
 				controller: function ($scope, $state, $stateParams) {
 					if($state.current.name === "studienordnung")
 						$state.go('studienordnung.metadaten');
-					
+
 				}
 			})
 			.state('studienordnungNeu', {

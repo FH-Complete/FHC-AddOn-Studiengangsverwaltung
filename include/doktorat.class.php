@@ -194,7 +194,7 @@ class doktorat extends basis_db
 				'updatevon='.$this->db_add_param($this->updatevon).' '.
 				'WHERE doktorat_id='.$this->db_add_param($this->doktorat_id, FHC_INTEGER, false).';';
 		}
-		
+
 		if($this->db_query($qry))
 		{
 			if($this->new)
@@ -230,20 +230,20 @@ class doktorat extends basis_db
 			return false;
 		}
 	}
-	
+
 	public function delete($doktorat_id)
 	{
 	    $qry = "DELETE from addon.tbl_stgv_doktorat WHERE doktorat_id=".$this->db_add_param($doktorat_id);
-	    
+
 	    if(!$this->db_query($qry))
 	    {
 		$this->errormsg = 'Fehler beim Löschen der Daten';
 		return false;
 	    }
-	    
+
 	    return true;
 	}
-	
+
 	/**
      * Speichert ein Dokument zum Doktorat
      * @param int $dms_id
@@ -301,7 +301,7 @@ class doktorat extends basis_db
 	    $this->errormsg = 'doktorat_id ist ungueltig';
 	    return false;
 	}
-	
+
 	if (!is_numeric($dms_id))
 	{
 	    $this->errormsg = 'dms_id ist ungueltig';
@@ -329,6 +329,37 @@ class doktorat extends basis_db
 	    return false;
 	}
 
-	
+
     }
+
+	/**
+	 * Prueft ob eine Zuordnung des Dokuments zu einem Doktoratseintrag existiert
+	 * @param $doktorat_id integer ID des Doktoratseintrags
+	 * @param $dms_id integer ID des Dokuments
+	 * @return boolean true wenn vorhanden, false wenn nicht oder Fehler
+	 */
+	public function DokumentExists($doktorat_id, $dms_id)
+	{
+		$qry = "SELECT * FROM addon.tbl_stgv_doktorat_dokument
+				WHERE
+					doktorat_id=".$this->db_add_param($doktorat_id, FHC_INTEGER)."
+					AND dms_id=".$this->db_add_param($dms_id, FHC_INTEGER);
+
+		if($result = $this->db_query($qry))
+		{
+			if($this->db_num_rows($result) > 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			$this->errormsg = 'Fehler beim Laden der Daten';
+			return false;
+		}
+	}
 }

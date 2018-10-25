@@ -8,11 +8,10 @@ angular.module('stgv2')
 			{label: 'Kosten', link: '.kosten'},
 			{label: 'Förderungen', link: '.foerderungen'},
 			{label: 'Doktorat', link: '.doktorat'},
-			{label: 'Studiengangsgruppen', link: '.studiengangsgruppen'}
 		];
-		
+
 		$rootScope.$broadcast("loadTreeGrid",{"stgkz": $scope.stgkz, "state": "all"});
-			
+
 		$scope.selectedTab = $scope.tabs[0];
 		$scope.setSelectedTab = function (tab)
 		{

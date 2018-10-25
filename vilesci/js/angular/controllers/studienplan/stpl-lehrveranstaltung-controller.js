@@ -664,30 +664,13 @@ angular.module('stgv2')
 			//load organisationseinheiten
 			$http({
 				method: 'GET',
-				url: './api/helper/organisationseinheitByTyp.php?oetyp_kurzbz=Institut'
+				url: './api/helper/organisationseinheit.php'
 			}).then(function success(response) {
 				if (response.data.erfolg)
 				{
 					var institute = response.data.info;
-					$http({
-						method: 'GET',
-						url: './api/helper/organisationseinheitByTyp.php?oetyp_kurzbz=Studiengang'
-					}).then(function success(response) {
-						if (response.data.erfolg)
-						{
-							angular.forEach(institute, function(value, index){
-								ctrl.oeList.push(value);
-							});
-							angular.forEach(response.data.info, function(value, index){
-								ctrl.oeList.push(value);
-							});
-						}
-						else
-						{
-							errorService.setError(getErrorMsg(response));
-						}
-					}, function error(response) {
-						errorService.setError(getErrorMsg(response));
+					angular.forEach(institute, function(value, index){
+						ctrl.oeList.push(value);
 					});
 				}
 				else

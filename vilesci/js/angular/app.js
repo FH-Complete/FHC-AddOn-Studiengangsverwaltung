@@ -466,8 +466,7 @@ angular.module("stgv2")
 				{label: 'Studienplanmatrix', link: '.lehrveranstaltungen'},
 				{label: 'Auslandssemester', link: '.auslandssemester'},
 				{label: 'Berufspraktikum', link: '.berufspraktikum'},
-				{label: 'Studienjahr', link: '.studienjahr'},
-				{label: 'Gemeinsames Studienprogramm', link: '.studienprogramm'}
+				{label: 'Studienjahr', link: '.studienjahr'}
 			];
 
 			$scope.selectedTab = $scope.tabs[0];
