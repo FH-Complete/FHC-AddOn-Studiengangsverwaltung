@@ -115,7 +115,7 @@ if($studienplan->studienplan_id!='')
 
 	// Pflichtmodule bei denen die Attribute nicht passen
 	$output .= '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden <b><u>Pflichtmodulen</u></b> sind die Attribute "StudPlan", "Pflicht", "Gen" usw nicht korrekt kodiert.<br>';
-	$output .= 'Bitte die Änderungen gemäß dem <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">vorgesehenen Schema</a> vornehmen</h2>';
+	$output .= 'Bitte die Änderungen gemäß dem <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=addons:stgvt-sto_content" target="_blank">vorgesehenen Schema</a> vornehmen</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
 			FROM
@@ -152,7 +152,7 @@ if($studienplan->studienplan_id!='')
 
 	// Bei folgenden Wahlmodulen passt die Attributskodierung nicht
 	$output .= '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden <b><u>Wahlmodulen</u></b> sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
-	$output .= 'Bitte die Änderungen gemäß dem <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">vorgesehenen Schema</a> vornehmen</h2>';
+	$output .= 'Bitte die Änderungen gemäß dem <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=addons:stgvt-sto_content" target="_blank">vorgesehenen Schema</a> vornehmen</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
 			FROM
@@ -183,7 +183,7 @@ if($studienplan->studienplan_id!='')
 
 	// Bei folgenden sonstigen Modulen passt die Attributskodierung nicht
 	$output .= '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden <b><u>Sonstigen Modulen</u></b> sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
-	$output .= 'Bitte die Änderungen gemäß dem <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">vorgesehenen Schema</a> vornehmen</h2>';
+	$output .= 'Bitte die Änderungen gemäß dem <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=addons:stgvt-sto_content" target="_blank">vorgesehenen Schema</a> vornehmen</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
 			FROM
@@ -371,7 +371,7 @@ if($studienplan->studienplan_id!='')
 
 
 	// Pruefen ob ECTS>=SWS
-	$output .= '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs sind die ECTS &lt; SWS (Siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto-content-attr#berechnungsbeispiele" target="_blank">Berechnungsbeispiele</a>)<br>
+	$output .= '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs sind die ECTS &lt; SWS (Siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=addons:stgvt-sto-content-attr#berechnungsbeispiele" target="_blank">Berechnungsbeispiele</a>)<br>
 	Falls es sich dabei um einen Fehler handelt, bitte die entsprechenden Änderungen vornehmen.<br>
 	Falls keine Änderungen möglich sind, eine EMail an <a href="mailto: fhcomplete@'.DOMAIN.'">fhcomplete@'.DOMAIN.'</a> übermitteln</h2>';
 	$qry = "SELECT
@@ -401,7 +401,7 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Pruefen ob ALVS>=LVS
-	$output .= '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs sind die ALVS &lt; LVS (Siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto-content-attr#berechnungsbeispiele" target="_blank">Berechnungsbeispiele</a>)<br>
+	$output .= '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs sind die ALVS &lt; LVS (Siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=addons:stgvt-sto-content-attr#berechnungsbeispiele" target="_blank">Berechnungsbeispiele</a>)<br>
 	Falls keine Änderungen möglich sind, eine EMail an <a href="mailto: fhcomplete@'.DOMAIN.'">fhcomplete@'.DOMAIN.'</a> übermitteln</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester,
@@ -486,7 +486,7 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Pruefen ob LVPLS>ALVS
-	$output .= '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs sind die LVPLS &gt; ALVS (Siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto-content-attr#berechnungsbeispiele" target="_blank">Berechnungsbeispiele</a>)<br>
+	$output .= '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs sind die LVPLS &gt; ALVS (Siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=addons:stgvt-sto-content-attr#berechnungsbeispiele" target="_blank">Berechnungsbeispiele</a>)<br>
 	Dies ist nur selten der Fall bzw. korrekt. Bitte erforderlichenfalls die entsprechenden Änderungen vornehmen oder - falls keine Änderungen möglich sind - eine EMail an <a href="mailto: fhcomplete@'.DOMAIN.'">fhcomplete@'.DOMAIN.'</a> übermitteln</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester,
@@ -574,7 +574,7 @@ if($studienplan->studienplan_id!='')
 
 	// Bei folgenden PflichtLVs passt die Attributskodierung nicht
 	$output .= '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden Pflicht-LVs sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
-	$output .= 'Bitte die Änderungen gemäß dem <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">vorgesehenen Schema</a> vornehmen</h2>';
+	$output .= 'Bitte die Änderungen gemäß dem <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=addons:stgvt-sto_content" target="_blank">vorgesehenen Schema</a> vornehmen</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
 			FROM
@@ -605,7 +605,7 @@ if($studienplan->studienplan_id!='')
 
 	// Bei folgenden WahlLVs passt die Attributskodierung nicht
 	$output .= '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden Wahl-LVs sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
-	$output .= 'Bitte die Änderungen gemäß dem <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">vorgesehenen Schema</a> vornehmen</h2>';
+	$output .= 'Bitte die Änderungen gemäß dem <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=addons:stgvt-sto_content" target="_blank">vorgesehenen Schema</a> vornehmen</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
 			FROM
@@ -636,7 +636,7 @@ if($studienplan->studienplan_id!='')
 
 	// Bei folgenden Sonstigen LVs passt die Attributskodierung nicht
 	$output .= '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden Sonstigen LVs sind die Attribute "StudPlan","Pflicht","Gen" usw nicht korrekt kodiert.<br>';
-	$output .= 'Bitte die Änderungen gemäß dem <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto_content" target="_blank">vorgesehenen Schema</a> vornehmen</h2>';
+	$output .= 'Bitte die Änderungen gemäß dem <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=addons:stgvt-sto_content" target="_blank">vorgesehenen Schema</a> vornehmen</h2>';
 	$qry = "SELECT
 				tbl_lehrveranstaltung.bezeichnung, tbl_studienplan_lehrveranstaltung.semester
 			FROM
@@ -666,7 +666,7 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// ZUSATZPRUEFUNG: LAS > ALVS
-	$output .= '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs sind LAS &gt; ALVS. (Siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=vilesci:stgvt-sto-content-attr#berechnungsbeispiele" target="_blank">Berechnungsbeispiele</a>)<br>
+	$output .= '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs sind LAS &gt; ALVS. (Siehe <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=addons:stgvt-sto-content-attr#berechnungsbeispiele" target="_blank">Berechnungsbeispiele</a>)<br>
 	Dies ist nur selten der Fall bzw. korrekt.(z.B. wenn mehrere Lehrpersonen gleichzeitig Lehrstunden abhalten).<br>
 	Bitte ggf. die entsprechenden Änderungen vornehmen oder - falls keine Änderungen möglich sind - eine EMail an <a href="mailto: fhcomplete@'.DOMAIN.'">fhcomplete@'.DOMAIN.'</a> übermitteln.</h2>';
 	$qry = "SELECT
