@@ -4,7 +4,7 @@ angular.module('stgv2')
 		//TODO tabs from config
 		$scope.tabs = [
 			{label: 'Bewerbungsfristen', link: '.bewerbung'},
-			{label: 'Reihungstesttermine', link: '.reihungstest'},
+			//{label: 'Reihungstesttermine', link: '.reihungstest'}, Stimmt nicht mehr mit aktuellem Prozess überein
 			{label: 'Kosten', link: '.kosten'},
 			{label: 'Förderungen', link: '.foerderungen'},
 			{label: 'Doktorat', link: '.doktorat'},
