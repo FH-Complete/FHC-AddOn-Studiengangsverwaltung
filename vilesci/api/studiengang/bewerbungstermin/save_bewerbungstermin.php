@@ -58,6 +58,7 @@ function mapDataToBewerbungstermin($data)
     $bt->nachfrist_ende = $data->nachfrist_ende;
     $bt->nachfrist = parseBoolean($data->nachfrist);
 	$bt->studienplan_id = $data->studienplan_id;
+    $bt->nationengruppe_kurzbz = $data->nationengruppe_kurzbz;
     return $bt;
 }
 

@@ -10,6 +10,11 @@ angular.module('stgv2')
 					beschreibung: "alle"
 				}];
 			ctrl.selectedStudiensemester = null;
+			ctrl.selectedNationengruppe = null;
+			ctrl.nationengruppeList = [{
+				nationengruppe_kurzbz: null,
+				nationengruppe_bezeichnung: "Keine"
+			}];
 
 			//loading Studiensemester list
 			StudiensemesterService.getStudiensemesterList().then(function (result) {
@@ -23,6 +28,26 @@ angular.module('stgv2')
 				ctrl.studienplanList = result;
 			}, function (error) {
 				errorService.setError(getErrorMsg(error));
+			});
+
+			//loading Nationengruppe List
+			$http({
+				method: 'GET',
+				url: './api/helper/nationengruppe.php',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				}
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					$.merge(ctrl.nationengruppeList, response.data.info);
+				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
 			});
 
 			ctrl.loadDataGrid = function ()
@@ -71,7 +96,8 @@ angular.module('stgv2')
 						{field: 'nachfrist', align:'left', title:'Nachfrist', sortable: true},
 						{field: 'nachfrist_ende', align:'left', formatter: dateTimeStringToGermanDateString, title:'Ende Nachfrist', sortable: true},
 						{field: 'anmerkung', align:'left', title:'Anmerkung'},
-						{field: 'stpl_bezeichnung', align:'left', title:'Studienplan'}
+						{field: 'stpl_bezeichnung', align:'left', title:'Studienplan'},
+						{field: 'nationengruppe_kurzbz', align:'left', title:'Nationengruppe'}
 					]]
 				});
 				$("#dataGridBewerbungstermin").datagrid('sort', {
@@ -117,6 +143,7 @@ angular.module('stgv2')
 				ctrl.bewerbungstermin = new Bewerbungstermin();
 				ctrl.bewerbungstermin.studiengang_kz = $scope.stgkz;
 				ctrl.bewerbungstermin.studiensemester_kurzbz = ctrl.selectedStudiensemester;
+				ctrl.bewerbungstermin.nationengruppe_kurzbz = ctrl.selectedNationengruppe;
 				if (!$("#save").is(":visible"))
 					ctrl.changeButtons();
 				$("#bewerbungsterminDetails").show();
@@ -306,4 +333,5 @@ function Bewerbungstermin()
 	this.updateamum = "";
 	this.updatevon = "";
 	this.studienplan_id = "";
+	this.nationengruppe_kurzbz = "";
 }

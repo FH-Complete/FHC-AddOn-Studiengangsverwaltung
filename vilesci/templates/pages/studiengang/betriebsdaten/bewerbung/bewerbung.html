@@ -44,11 +44,19 @@
 					</select>
 				</div>
 			</div>
-			<div class="col-sm-4">
+			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.studienplan.$error.required)}">
 					<label for="studienplan">Studienplan</label>
 					<select class="form-control input-sm" name="studienplan" ng-model="ctrl.bewerbungstermin.studienplan_id" required>
 						<option ng-repeat="stpl in ctrl.studienplanList" value="{{stpl.studienplan_id}}">{{stpl.bezeichnung}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.nationengruppe.$error.required)}">
+					<label for="nationengruppe">Nationengruppe</label>
+					<select class="form-control input-sm" name="nationengruppe" ng-model="ctrl.bewerbungstermin.nationengruppe_kurzbz">
+						<option ng-repeat="nationengruppe in ctrl.nationengruppeList" value="{{nationengruppe.nationengruppe_kurzbz}}">{{nationengruppe.nationengruppe_bezeichnung}}</option>
 					</select>
 				</div>
 			</div>
