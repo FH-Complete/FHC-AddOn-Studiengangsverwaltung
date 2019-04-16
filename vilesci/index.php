@@ -229,13 +229,13 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 	    <div id="west" data-options="region:'west', split: true, maxWidth: 400" ng-controller="TreeCtrl">
 		<ul id="west_tree" class="easyui-tree"></ul>
 	    </div>
-	    <div id="footer" data-options="region:'south'" style="height: 5%;">
-		<!--TODO zusätzliche Daten anzeigen; z.B.: Username, DB, etc-->
-		<div id="user">User: {{appCtrl.user.name}} {{appCtrl.user.lastname}}</div>
-		<div id="success_data" ng-controller="SuccessCtrl">
-		    {{SuccessCtrl.message}}
-		</div>
-	    </div>
+<!--	    <div id="footer" data-options="region:'south'" style="height: 5%;">-->
+<!--		<!--TODO zusätzliche Daten anzeigen; z.B.: Username, DB, etc-->-->
+<!--		<div id="user">User: {{appCtrl.user.name}} {{appCtrl.user.lastname}}</div>-->
+<!--		<div id="success_data" ng-controller="SuccessCtrl">-->
+<!--		    {{SuccessCtrl.message}}-->
+<!--		</div>-->
+<!--	    </div>-->
 	    <div id="center" data-options="region:'center'">
 		<div id="centerLayout" class="easyui-layout" fit="true">
 		    <div id="centerNorth" data-options="region:'north', split:true, height: 200" border="false" ng-controller="TreeGridCtrl as gridCtrl" >
