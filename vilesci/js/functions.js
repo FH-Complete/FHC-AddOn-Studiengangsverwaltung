@@ -13,7 +13,8 @@ function getErrorMsg(error)
 	return message;
 }
 
-function formatDateToString(val,row){
+function formatDateToString(val,row)
+{
 	if(val instanceof Date)
 	{
 		var date = val;
@@ -32,6 +33,10 @@ function formatDateToString(val,row){
 	}
 }
 
+/**
+ * Adds a leading 0 if the number is only 1 digit
+ * zB: 4 -> 04
+ */
 function pad(number)
 {
  	if (number < 10)
@@ -41,6 +46,9 @@ function pad(number)
 	return number;
 }
 
+/**
+ * Formats Javscript Date Object as ISO Date -> 2019-12-31
+ */
 function formatDateAsString(val)
 {
 	return val.getFullYear() +
@@ -48,7 +56,18 @@ function formatDateAsString(val)
 	'-' + pad(val.getDate());
 }
 
-function formatStringToDate(val){
+/**
+ * Formats Javascript Date Object as German Date String: 31.12.2019
+ */
+function formatDateAsGermanString(dateobj)
+{
+	return pad(dateobj.getDate()) +
+	'.' + pad(dateobj.getMonth() + 1) +
+	'.' + dateobj.getFullYear();
+}
+
+function formatStringToDate(val)
+{
 
 	if((val !== null) && (val !== undefined))
 	{
@@ -105,6 +124,11 @@ function formatTimeToString(val)
 	}
 }
 
+/**
+ * Removes Time Information from Datetimestring
+ * 2019-01-01 15:00:00 -> 2019-01-01
+ * 01.01.2019 15:00 -> 01.01.2019
+ */
 function dateTimeStringToDateString(dateTimeString)
 {
 	if((dateTimeString !== null) && (dateTimeString !== undefined))
@@ -113,6 +137,10 @@ function dateTimeStringToDateString(dateTimeString)
 		return null;
 }
 
+/**
+ * Converts ISO Date or Date and Time to German Date and Time
+ * 2019-01-01 15:00:00 -> 01.01.2019 15:00
+ */
 function dateTimeStringToGermanDateString(dateTimeString)
 {
 	if((dateTimeString !== null) && (dateTimeString !== undefined))
@@ -121,6 +149,32 @@ function dateTimeStringToGermanDateString(dateTimeString)
 		var zeit = dateTimeString.split(" ")[1];
 
 		return datum.split("-")[2]+'.'+datum.split("-")[1]+'.'+datum.split("-")[0]+' '+zeit.split(":")[0]+':'+zeit.split(":")[1];
+	}
+	else
+		return null;
+}
+
+/**
+ * Converts German Date to ISO Date
+ * 31.12.2019 -> 2019-12-31
+ */
+function GermanDateToISODate(datum)
+{
+	return datum.split(".")[2]+'-'+datum.split(".")[1]+'-'+datum.split(".")[0];
+}
+
+/**
+ * Converts ISO Date or Date and Time to German Date Format
+ * 2019-01-01 15:00:00 -> 01.01.2019
+ */
+function dateTimeStringToGermanDate(dateTimeString)
+{
+	if((dateTimeString !== null) && (dateTimeString !== undefined))
+	{
+		var datum = dateTimeString.split(" ")[0];
+		var zeit = dateTimeString.split(" ")[1];
+
+		return datum.split("-")[2]+'.'+datum.split("-")[1]+'.'+datum.split("-")[0];
 	}
 	else
 		return null;

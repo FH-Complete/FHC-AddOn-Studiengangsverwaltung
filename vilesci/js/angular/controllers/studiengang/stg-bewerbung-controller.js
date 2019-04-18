@@ -109,7 +109,7 @@ angular.module('stgv2')
 			ctrl.loadDataGrid();
 
 			$("#datepicker_beginn").datepicker({
-				dateFormat: "yy-mm-dd",
+				dateFormat: "dd.mm.yy",
 				firstDay: 1
 			});
 
@@ -127,12 +127,12 @@ angular.module('stgv2')
 			});
 
 			$("#datepicker_ende").datepicker({
-				dateFormat: "yy-mm-dd",
+				dateFormat: "dd.mm.yy",
 				firstDay: 1
 			});
 
 			$("#nachfrist_ende").datepicker({
-				dateFormat: "yy-mm-dd",
+				dateFormat: "dd.mm.yy",
 				firstDay: 1
 			});
 
@@ -174,11 +174,11 @@ angular.module('stgv2')
 					var saveData = {data: ""};
 					saveData.data = angular.copy(ctrl.bewerbungstermin);
 					if(ctrl.bewerbungstermin.beginn != null && ctrl.bewerbungstermin.beginn != '')
-						saveData.data.beginn = formatDateToString(ctrl.bewerbungstermin.beginn) + ' '+ctrl.bewerbungstermin.beginn_time;
+						saveData.data.beginn = GermanDateToISODate(ctrl.bewerbungstermin.beginn) + ' '+ctrl.bewerbungstermin.beginn_time;
 					if(ctrl.bewerbungstermin.ende != null && ctrl.bewerbungstermin.ende != '')
-						saveData.data.ende = formatDateToString(ctrl.bewerbungstermin.ende) +' '+ctrl.bewerbungstermin.ende_time;
+						saveData.data.ende = GermanDateToISODate(ctrl.bewerbungstermin.ende) +' '+ctrl.bewerbungstermin.ende_time;
 					if(ctrl.bewerbungstermin.nachfrist_ende != null && ctrl.bewerbungstermin.nachfrist_ende != '')
-						saveData.data.nachfrist_ende = formatDateToString(ctrl.bewerbungstermin.nachfrist_ende)+' '+ctrl.bewerbungstermin.nachfrist_ende_time;
+						saveData.data.nachfrist_ende = GermanDateToISODate(ctrl.bewerbungstermin.nachfrist_ende)+' '+ctrl.bewerbungstermin.nachfrist_ende_time;
 
 					$http({
 						method: 'POST',
@@ -208,16 +208,18 @@ angular.module('stgv2')
 			ctrl.loadBewerbungsterminDetails = function (row)
 			{
 				ctrl.bewerbungstermin = angular.copy(row);
+
 				ctrl.bewerbungstermin.beginn_time = dateTimeStringToTimeString(ctrl.bewerbungstermin.beginn,':');
-				ctrl.bewerbungstermin.beginn = formatStringToDate(ctrl.bewerbungstermin.beginn);
+				ctrl.bewerbungstermin.beginn = dateTimeStringToGermanDate(ctrl.bewerbungstermin.beginn);
 				ctrl.bewerbungstermin.ende_time = dateTimeStringToTimeString(ctrl.bewerbungstermin.ende);
-				ctrl.bewerbungstermin.ende = formatStringToDate(ctrl.bewerbungstermin.ende);
+				ctrl.bewerbungstermin.ende = dateTimeStringToGermanDate(ctrl.bewerbungstermin.ende);
 
 				if(ctrl.bewerbungstermin.nachfrist_ende!='')
 				{
 					ctrl.bewerbungstermin.nachfrist_ende_time = dateTimeStringToTimeString(ctrl.bewerbungstermin.nachfrist_ende);
-					ctrl.bewerbungstermin.nachfrist_ende = formatStringToDate(ctrl.bewerbungstermin.nachfrist_ende);
+					ctrl.bewerbungstermin.nachfrist_ende = dateTimeStringToGermanDate(ctrl.bewerbungstermin.nachfrist_ende);
 				}
+
 				$scope.$apply();
 				$("#bewerbungsterminDetails").show();
 			};
@@ -229,17 +231,17 @@ angular.module('stgv2')
 					var updateData = {data: ""};
 					updateData.data = angular.copy(ctrl.bewerbungstermin);
 					if(ctrl.bewerbungstermin.beginn != null && ctrl.bewerbungstermin.beginn != '')
-						updateData.data.beginn = formatDateToString(ctrl.bewerbungstermin.beginn)+' '+ctrl.bewerbungstermin.beginn_time;
+						updateData.data.beginn = GermanDateToISODate(ctrl.bewerbungstermin.beginn)+' '+ctrl.bewerbungstermin.beginn_time;
 					else
 						updateData.data.beginn = '';
 
 					if(ctrl.bewerbungstermin.ende != null && ctrl.bewerbungstermin.ende != '')
-						updateData.data.ende = formatDateToString(ctrl.bewerbungstermin.ende)+' '+ctrl.bewerbungstermin.ende_time;
+						updateData.data.ende = GermanDateToISODate(ctrl.bewerbungstermin.ende)+' '+ctrl.bewerbungstermin.ende_time;
 					else
 						updateData.data.ende = '';
 
 					if(ctrl.bewerbungstermin.nachfrist_ende != null && ctrl.bewerbungstermin.nachfrist_ende != '')
-						updateData.data.nachfrist_ende = formatDateToString(ctrl.bewerbungstermin.nachfrist_ende)+' '+ctrl.bewerbungstermin.nachfrist_ende_time;
+						updateData.data.nachfrist_ende = GermanDateToISODate(ctrl.bewerbungstermin.nachfrist_ende)+' '+ctrl.bewerbungstermin.nachfrist_ende_time;
 					else
 						updateData.data.nachfrist_ende = '';
 
@@ -302,10 +304,11 @@ angular.module('stgv2')
 			{
 				if (ctrl.bewerbungstermin.nachfrist)
 				{
-					var date = new Date(ctrl.bewerbungstermin.ende);
+					var date = new Date(GermanDateToISODate(ctrl.bewerbungstermin.ende));
 					date.setDate(date.getDate() + 30);
-					ctrl.bewerbungstermin.nachfrist_ende = date;
+					ctrl.bewerbungstermin.nachfrist_ende = formatDateAsGermanString(date);
 					ctrl.bewerbungstermin.nachfrist_ende_time = '23:55';
+
 				}
 				else
 				{
@@ -320,9 +323,11 @@ function Bewerbungstermin()
 	this.bewerbungstermin_id = "";
 	this.studiengang_kz = "";
 	this.studiensemester_kurzbz = "";
-	this.beginn = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+	var datum = new Date();
+	this.beginn = formatDateAsGermanString(datum);
 	this.beginn_time = "00:00";
-	this.ende = new Date(new Date().getFullYear(), new Date().getMonth(), (new Date().getDate() + 30));
+	datum.setDate(datum.getDate() + 30);
+	this.ende = formatDateAsGermanString(datum)
 	this.ende_time = "23:55";
 	this.nachfrist = false;
 	this.nachfrist_ende = "";
