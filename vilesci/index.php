@@ -216,10 +216,10 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 		</div>
 		<div id="mm6"  >
             <div>
-                <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=addons:stgvt_allgemeines" target="_blank">Hilfe</a>
+                <a href="https://wiki.fhcomplete.org/doku.php?id=addons:stgvt_allgemeines" target="_blank">Hilfe</a>
             </div>
             <div>
-                <a href="https://signavio.technikum-wien.at/p/portal#/model/eceaf658462b4c4ca733d3987ebc8468" target="_blank">Signavio</a>
+                <a href="https://signavio.technikum-wien.at/p/portal#/model/2ca9ae9a554041968dffdef50368b1c3" target="_blank">Signavio</a>
             </div>
             <div>
 		        <a href="mailto:fhcomplete@technikum-wien.at" target="_blank">Support: fhcomplete@technikum-wien.at</a>
