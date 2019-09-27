@@ -111,7 +111,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       <style:table-column-properties style:column-width="1.619cm"/> <!-- 1.519cm -->
     </style:style>
     <style:style style:name="Tabelle4.D" style:family="table-column">
-      <style:table-column-properties style:column-width="0.970cm"/>
+      <style:table-column-properties style:column-width="0.990cm"/>
     </style:style>
     <style:style style:name="Tabelle4.E" style:family="table-column">
       <style:table-column-properties style:column-width="0.963cm"/>
