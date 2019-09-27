@@ -244,6 +244,7 @@ foreach ($stpl->result as $row_stpl)
 
 	$stpl_arr[] = array('studienplan' => array(
 		'version' => $row_stpl->version,
+		'bezeichnung' => $row_stpl->bezeichnung,
 		'organisationsform' => $stpl_orgform->bezeichnung,
 		'regelstudiendauer' => $row_stpl->regelstudiendauer,
 		'pflicht_sws' => $row_stpl->pflicht_sws,

@@ -111,7 +111,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       <style:table-column-properties style:column-width="1.619cm"/> <!-- 1.519cm -->
     </style:style>
     <style:style style:name="Tabelle4.D" style:family="table-column">
-      <style:table-column-properties style:column-width="0.961cm"/>
+      <style:table-column-properties style:column-width="0.970cm"/>
     </style:style>
     <style:style style:name="Tabelle4.E" style:family="table-column">
       <style:table-column-properties style:column-width="0.963cm"/>
@@ -1409,17 +1409,16 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         <text:span text:style-name="T3">Status:<text:tab/></text:span>
         <text:span text:style-name="T7"><xsl:value-of select="status_bezeichnung"/></text:span>
       </text:p>
-      <text:p text:style-name="P23"/>
-      <text:p text:style-name="P23"/>
-      <text:p text:style-name="P2">
-        <text:span text:style-name="page_20_number"/>
-      </text:p>
-      <text:p text:style-name="Deckblatt_20_Autor">
-        <text:soft-page-break/>
+	  <text:p text:style-name="Deckblatt_20_Autor">
         <text:span text:style-name="T3">Dokument erstellt am: </text:span>
         <text:span text:style-name="T3">
           <text:date style:data-style-name="N37" text:date-value="2016-05-30T12:04:53.718945351" text:fixed="false">30.05.2016</text:date>
         </text:span>
+      </text:p>
+	  <text:p text:style-name="P23"/>
+	  <text:p text:style-name="P23"/>
+      <text:p text:style-name="P2">
+        <text:span text:style-name="page_20_number"/>
       </text:p>
       <text:p text:style-name="P26">
         <text:bookmark-end text:name="_Toc208028689"/>
@@ -1884,7 +1883,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </text:list-item>
       </text:list>
 -->
-      <text:p text:style-name="P22">
+    <!--  <text:p text:style-name="P22">
         <text:bookmark-start text:name="_Toc451354171"/>
         <text:span text:style-name="T22">Glossar und Abkürzung</text:span>
         <text:bookmark-end text:name="_Toc114210891"/>
@@ -1892,8 +1891,8 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         <text:bookmark-end text:name="_Toc264537897"/>
         <text:span text:style-name="T22">en</text:span>
         <text:bookmark-end text:name="_Toc451354171"/>
-      </text:p>
-      <text:p text:style-name="Standard"/>
+	</text:p>
+      <text:p text:style-name="Standard"/>-->
     </office:text>
   </office:body>
 </office:document-content>
@@ -1923,7 +1922,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P27">Version</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
-            <text:p text:style-name="P13"><text:span text:style-name="T36"><xsl:value-of select="version"/></text:span></text:p>
+            <text:p text:style-name="P13"><text:span text:style-name="T36"><xsl:value-of select="bezeichnung"/></text:span></text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row table:style-name="Tabelle3.1">
@@ -2117,13 +2116,13 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P48">Summe über alle Semester</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle8.B1" office:value-type="string">
-            <text:p text:style-name="P48"> </text:p>
+            <text:p text:style-name="P48"> </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle8.B1" office:value-type="string">
-            <text:p text:style-name="P48"> </text:p>
+            <text:p text:style-name="P48"> </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle8.D1" office:value-type="string">
-            <text:p text:style-name="P48"> </text:p>
+            <text:p text:style-name="P48"> </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle8.D1" office:value-type="string">
             <text:p text:style-name="P47"><xsl:value-of select="summe_ects"/></text:p>
@@ -2216,13 +2215,13 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P48">Ausbildungssemester</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle4.B1" office:value-type="string">
-            <text:p text:style-name="P48"> </text:p>
+            <text:p text:style-name="P48"> </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle4.B1" office:value-type="string">
-            <text:p text:style-name="P48"> </text:p>
+            <text:p text:style-name="P48"> </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle4.E1" office:value-type="string">
-            <text:p text:style-name="P48"> </text:p>
+            <text:p text:style-name="P48"> </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle4.E1" office:value-type="string">
             <text:p text:style-name="P47"><xsl:value-of select="semester_summe_ects"/></text:p>
@@ -2888,28 +2887,36 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 
 <!-- **** LVINFO ** -->
 <xsl:template match="lvinfo/lernerg">
-	<text:p text:style-name="P91"><xsl:value-of select="einleitungstext" /></text:p>
+	<xsl:if test="string-length(einleitungstext)!=0">
+		<text:p text:style-name="P91"><xsl:value-of select="einleitungstext" /></text:p>
+	</xsl:if>
 	<text:list xml:id="listlvinfolernerg" text:style-name="WWNum18">
 		<xsl:apply-templates select="elements/element" mode="lvinfo"/>
 	</text:list>
 </xsl:template>
 
 <xsl:template match="lvinfo/lehrinhalte">
-	<text:p text:style-name="P91"><xsl:value-of select="einleitungstext" /></text:p>
+	<xsl:if test="string-length(einleitungstext)!=0">
+		<text:p text:style-name="P91"><xsl:value-of select="einleitungstext" /></text:p>
+	</xsl:if>
 	<text:list xml:id="listlvinfolehrinhalte" text:style-name="WWNum18">
 		<xsl:apply-templates select="elements/element" mode="lvinfo"/>
 	</text:list>
 </xsl:template>
 
 <xsl:template match="lvinfo/literatur">
-	<text:p text:style-name="P91"><xsl:value-of select="einleitungstext" /></text:p>
+	<xsl:if test="string-length(einleitungstext)!=0">
+		<text:p text:style-name="P91"><xsl:value-of select="einleitungstext" /></text:p>
+	</xsl:if>
 	<text:list xml:id="listlvinfoliteratur" text:style-name="WWNum18">
 		<xsl:apply-templates select="elements/element" mode="lvinfo"/>
 	</text:list>
 </xsl:template>
 
 <xsl:template match="lvinfo/leistungsb">
-	<text:p text:style-name="P91"><xsl:value-of select="einleitungstext" /></text:p>
+	<xsl:if test="string-length(einleitungstext)!=0">
+		<text:p text:style-name="P91"><xsl:value-of select="einleitungstext" /></text:p>
+	</xsl:if>
 	<text:list xml:id="listlvinfoleistungsb" text:style-name="WWNum18">
 		<xsl:apply-templates select="elements/element" mode="lvinfo"/>
 	</text:list>
