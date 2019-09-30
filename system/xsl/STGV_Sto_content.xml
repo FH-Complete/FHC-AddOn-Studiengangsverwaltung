@@ -1415,11 +1415,6 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
           <text:date style:data-style-name="N37" text:date-value="2016-05-30T12:04:53.718945351" text:fixed="false">30.05.2016</text:date>
         </text:span>
       </text:p>
-	  <text:p text:style-name="P23"/>
-	  <text:p text:style-name="P23"/>
-      <text:p text:style-name="P2">
-        <text:span text:style-name="page_20_number"/>
-      </text:p>
       <text:p text:style-name="P26">
         <text:bookmark-end text:name="_Toc208028689"/>
         <text:bookmark-end text:name="_Toc213573237"/>
