@@ -87,7 +87,14 @@ $sprache->getAll();
 foreach ($sprache->result as $row)
 	$sprache_arr[$row->sprache] = $row->bezeichnung_arr;
 
-$doc = new dokument_export('STGV_Sto');
+$ausgabesprache = null;
+if(isset($_GET['ausgabesprache']))
+	$ausgabesprache = $_GET['ausgabesprache'];
+
+$vorlage = 'STGV_Sto';
+if(isset($_GET['xsl']))
+	$vorlage = $_GET['xsl'];
+$doc = new dokument_export($vorlage);
 
 $studienordnung = new StudienordnungAddonStgv();
 $studienordnung->loadStudienordnung($studienordnung_id);
@@ -242,15 +249,24 @@ foreach ($stpl->result as $row_stpl)
 		}
 	}
 
+	$sprache_anzeige = '';
+	if (isset($sprache_arr[$row_stpl->sprache][$ausgabesprache]))
+		$sprache_anzeige = $sprache_arr[$row_stpl->sprache][$ausgabesprache];
+	elseif (isset($sprache_arr[$row_stpl->sprache][DEFAULT_LANGUAGE]))
+		$sprache_anzeige = $sprache_arr[$row_stpl->sprache][DEFAULT_LANGUAGE];
+	else
+	 	$sprache_anzeige = $row_stpl->sprache;
+
 	$stpl_arr[] = array('studienplan' => array(
 		'version' => $row_stpl->version,
 		'bezeichnung' => $row_stpl->bezeichnung,
 		'organisationsform' => $stpl_orgform->bezeichnung,
+		'organisationsform_englisch' => (isset($stpl_orgform->bezeichnung_mehrsprachig['English'])?$stpl_orgform->bezeichnung_mehrsprachig['English']:''),
 		'regelstudiendauer' => $row_stpl->regelstudiendauer,
 		'pflicht_sws' => $row_stpl->pflicht_sws,
 		'pflicht_lvs' => $row_stpl->pflicht_lvs,
 		'sprache' => $row_stpl->sprache,
-		'sprache_anzeige' => (isset($sprache_arr[$row_stpl->sprache][DEFAULT_LANGUAGE]) ? $sprache_arr[$row_stpl->sprache][DEFAULT_LANGUAGE] : $row_stpl->sprache),
+		'sprache_anzeige' => $sprache_anzeige,
 		'sprache_kommentar' => $row_stpl->sprache_kommentar,
 		'semester' => $semester_arr,
 		'summe_ects' => $summe_ects,
@@ -363,6 +379,7 @@ $data = array(
 	'studiengangkurzbzlang' => $studienordnung->studiengangkurzbzlang,
 	'akadgrad' => $akadgrad->titel,
 	'organisationsform' => $orgform->bezeichnung,
+	'organisationsform_englisch' => (isset($orgform->bezeichnung_mehrsprachig['English'])?$orgform->bezeichnung_mehrsprachig['English']:''),
 	'studiengangstyp' => $studiengang->typ,
 	'studiengangstyp_bezeichnung' => $studiengang->studiengang_typ_arr[$studiengang->typ],
 	'standort' => $standort->bezeichnung,
@@ -428,7 +445,7 @@ else
 function printLVTree($tree)
 {
 	global $semester_summe_sws, $semester_summe_lvs, $lehrform_arr;
-	global $output_lvinfo, $sprache_arr;
+	global $output_lvinfo, $sprache_arr, $ausgabesprache;
 
 	$data = array();
 	$i = 0;
@@ -440,6 +457,14 @@ function printLVTree($tree)
 
 		$semester_summe_sws += $lv->sws;
 		$semester_summe_lvs += $lv->lvs;
+
+		$sprache_anzeige = '';
+		if (isset($sprache_arr[$lv->sprache][$ausgabesprache]))
+			$sprache_anzeige = $sprache_arr[$lv->sprache][$ausgabesprache];
+		elseif (isset($sprache_arr[$lv->sprache][DEFAULT_LANGUAGE]))
+			$sprache_anzeige = $sprache_arr[$lv->sprache][DEFAULT_LANGUAGE];
+		else
+		 	$sprache_anzeige = $lv->sprache;
 
 		$data[$i]['lehrveranstaltung'] = array(
 			'lehrveranstaltung_id' => $lv->lehrveranstaltung_id,
@@ -455,7 +480,7 @@ function printLVTree($tree)
 			'genehmigung' => ($lv->genehmigung ? 'true' : 'false'),
 			'pflicht' => ($lv->stpllv_pflicht ? 'true' : 'false'),
 			'sprache' => $lv->sprache,
-			'sprache_anzeige' => (isset($sprache_arr[$lv->sprache][DEFAULT_LANGUAGE]) ? $sprache_arr[$lv->sprache][DEFAULT_LANGUAGE] : $lv->sprache),
+			'sprache_anzeige' => $sprache_anzeige,
 		);
 
 		if ($output_lvinfo)
@@ -464,9 +489,14 @@ function printLVTree($tree)
 			$lvinfo = new lvinfo();
 			$lvinfo->loadLastLvinfo($lv->lehrveranstaltung_id, true);
 
+			if(is_null($ausgabesprache))
+				$lvinfosprache_output = $lv->sprache;
+			else
+				$lvinfosprache_output = $ausgabesprache;
+
 			foreach ($lvinfo->result as $row_lvinfo)
 			{
-				if ($row_lvinfo->sprache == $lv->sprache)
+				if ($row_lvinfo->sprache == $lvinfosprache_output)
 				{
 					$lvinfo_obj = $row_lvinfo;
 					$lvinfo_found = true;
@@ -486,7 +516,7 @@ function printLVTree($tree)
 					}
 					elseif ($row_set->lvinfo_set_typ == 'array')
 					{
-						$lvinfo_data[$row_set->lvinfo_set_kurzbz]['einleitungstext'] = $row_set->einleitungstext[$lv->sprache];
+						$lvinfo_data[$row_set->lvinfo_set_kurzbz]['einleitungstext'] = $row_set->einleitungstext[$lvinfosprache_output];
 
 						if (isset($lvinfo_obj->data[$row_set->lvinfo_set_kurzbz]))
 							foreach ($lvinfo_obj->data[$row_set->lvinfo_set_kurzbz] as $row_lvinfo_element)

@@ -398,7 +398,7 @@ angular.module("stgv2")
 			};
 
 
-			ctrl.export = function (format, lvinfo)
+			ctrl.export = function (format, lvinfo, ausgabesprache = '')
 			{
 				var sto = $("#treeGrid").treegrid('getSelected');
 				if ((sto != null) && (sto.attributes[0].value == "studienordnung"))
@@ -407,7 +407,11 @@ angular.module("stgv2")
 						lvinfo='&lvinfo=true';
 					else
 						lvinfo='';
-					window.location.href="export.php?studienordnung_id="+sto.studienordnung_id+"&output="+format+lvinfo;
+					if (ausgabesprache == 'Englisch')
+						sprache = '&xsl=STGV_StoEN&ausgabesprache=English';
+					else
+						sprache = '';
+					window.location.href="export.php?studienordnung_id="+sto.studienordnung_id+"&output="+format+lvinfo+sprache;
 				}
 				else
 				{
