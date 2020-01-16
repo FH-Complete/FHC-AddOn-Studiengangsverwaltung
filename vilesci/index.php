@@ -219,7 +219,7 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 		</div>
 		<div id="mm6"  >
             <div>
-                <a href="https://wiki.fhcomplete.org/doku.php?id=addons:stgvt_allgemeines" target="_blank">Hilfe</a>
+                <a href="https://wiki.fhcomplete.org/doku.php?id=addons:stgvt:stgvt_allgemeines" target="_blank">Hilfe</a>
             </div>
             <div>
                 <a href="https://signavio.technikum-wien.at/p/portal#/model/2ca9ae9a554041968dffdef50368b1c3" target="_blank">Signavio</a>
