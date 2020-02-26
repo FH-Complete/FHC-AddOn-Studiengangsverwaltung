@@ -206,20 +206,23 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 		    <div ng-click='menuCtrl.diff()'>Diff</div>
 		    <div ng-click='menuCtrl.plausicheck()'>Plausicheck</div>
 		</div>
-		<div id="mm5" style="width:100px;">
+		<div id="mm5" style="width:200px;">
 			<div ng-click="menuCtrl.export('pdf',false)">PDF</div>
 			<div ng-click="menuCtrl.export('odt',false)">ODT</div>
 			<div ng-click="menuCtrl.export('doc',false)">DOC</div>
 			<div ng-click="menuCtrl.export('pdf',true)">PDF mit LVInfo</div>
 			<div ng-click="menuCtrl.export('odt',true)">ODT mit LVInfo</div>
 			<div ng-click="menuCtrl.export('doc',true)">DOC mit LVInfo</div>
+			<div ng-click="menuCtrl.export('doc',true, 'Englisch')">DOC Englisch mit LVInfo</div>
+			<div ng-click="menuCtrl.export('odt',true, 'Englisch')">ODT Englisch mit LVInfo</div>
+			<div ng-click="menuCtrl.export('pdf',true, 'Englisch')">PDF Englisch mit LVInfo</div>
 		</div>
 		<div id="mm6"  >
             <div>
-                <a href="http://fhcomplete.technikum-wien.at/dokuwiki/doku.php?id=addons:stgvt_allgemeines" target="_blank">Hilfe</a>
+                <a href="https://wiki.fhcomplete.org/doku.php?id=addons:stgvt:stgvt_allgemeines" target="_blank">Hilfe</a>
             </div>
             <div>
-                <a href="https://signavio.technikum-wien.at/p/portal#/model/eceaf658462b4c4ca733d3987ebc8468" target="_blank">Signavio</a>
+                <a href="https://signavio.technikum-wien.at/p/portal#/model/2ca9ae9a554041968dffdef50368b1c3" target="_blank">Signavio</a>
             </div>
             <div>
 		        <a href="mailto:fhcomplete@technikum-wien.at" target="_blank">Support: fhcomplete@technikum-wien.at</a>

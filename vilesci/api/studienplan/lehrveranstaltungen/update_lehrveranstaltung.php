@@ -125,6 +125,7 @@ function mapDataToLehrveranstaltung($data)
 		$lv->projektarbeit = parseBoolean($data->projektarbeit);
 		$lv->incoming = $data->incoming;
 		$lv->raumtyp_kurzbz = $data->raumtyp_kurzbz;
+		$lv->lvs = $data->lvs;
 		$lv->alvs = $data->alvs;
 		$lv->lvps = $data->lvps;
 		$lv->las = $data->las;

@@ -1359,7 +1359,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         <text:bookmark-start text:name="_Toc214080642"/>
       </text:p>
       <text:p text:style-name="P25"/>
-      <text:p text:style-name="P25">Studienordnung</text:p>
+      <text:p text:style-name="P25">Curriculum</text:p>
       <text:p text:style-name="P3"/>
       <text:p text:style-name="P3"/>
       <text:p text:style-name="P3"/>
@@ -1370,22 +1370,22 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         <text:span text:style-name="T10">
 			<xsl:choose>
 			  <xsl:when test="studiengangstyp='b'">
-				Bachelor-Studiengang
+				Bachelor degree program
 			  </xsl:when>
 			  <xsl:when test="studiengangstyp='m'">
-				Master-Studiengang
+				Master degree program
 			  </xsl:when>
 			  <xsl:when test="studiengangstyp='l'">
 				Lehrgang
 			  </xsl:when>
 			  <xsl:otherwise>
-				Studiengang
+				Degree Program
 			  </xsl:otherwise>
 			</xsl:choose>
 		</text:span>
       </text:p>
       <text:p text:style-name="P24">
-        <text:span text:style-name="T3"><xsl:value-of select="studiengangbezeichnung"/></text:span>
+        <text:span text:style-name="T3"><xsl:value-of select="studiengangbezeichnung_englisch"/></text:span>
       </text:p>
       <text:p text:style-name="Standard"/>
       <text:p text:style-name="Standard"/>
@@ -1406,11 +1406,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         <text:span text:style-name="T6"><xsl:value-of select="version"/></text:span>
       </text:p>
       <text:p text:style-name="Deckblatt_20_Autor">
-        <text:span text:style-name="T3">Status:<text:tab/></text:span>
-        <text:span text:style-name="T7"><xsl:value-of select="status_bezeichnung"/></text:span>
-      </text:p>
-	  <text:p text:style-name="Deckblatt_20_Autor">
-        <text:span text:style-name="T3">Dokument erstellt am: </text:span>
+        <text:span text:style-name="T3">Creation Date: </text:span>
         <text:span text:style-name="T3">
           <text:date style:data-style-name="N37" text:date-value="2016-05-30T12:04:53.718945351" text:fixed="false">30.05.2016</text:date>
         </text:span>
@@ -1421,7 +1417,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         <text:bookmark-end text:name="_Toc213573560"/>
         <text:bookmark-end text:name="_Toc214080642"/>
       </text:p>
-      <text:p text:style-name="Startüberschrift"><text:bookmark text:name="_GoBack"/>Inhaltsverzeichnis</text:p>
+      <text:p text:style-name="Startüberschrift"><text:bookmark text:name="_GoBack"/>Table of Contents</text:p>
       <text:p text:style-name="Standard"/>
       <text:table-of-content text:style-name="Sect1" text:protected="true" text:name="Inhaltsverzeichnis1">
         <text:table-of-content-source text:outline-level="3" text:use-index-marks="false" text:use-index-source-styles="true">
@@ -1532,55 +1528,28 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </text:table-of-content-source>
         <text:index-body>
           <text:p text:style-name="P64">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2392_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">1Studienordnung<text:tab/>4</text:a>
+            <text:a xlink:type="simple" xlink:href="#__RefHeading__2392_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">1 Studienordnung<text:tab/>4</text:a>
           </text:p>
           <text:p text:style-name="P62">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2394_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">1.1Metadaten<text:tab/>4</text:a>
-          </text:p>
-          <text:p text:style-name="P62">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2396_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">1.2Eckdaten<text:tab/>4</text:a>
-          </text:p>
-          <text:p text:style-name="P62">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2398_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">1.3Zugangsvoraussetzungen<text:tab/>4</text:a>
-          </text:p>
-          <text:p text:style-name="P62">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2400_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">1.4Aufnahmeverfahren<text:tab/>5</text:a>
-          </text:p>
-          <text:p text:style-name="P62">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2402_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">1.5Berufliche Tätigkeitsfelder<text:tab/>6</text:a>
-          </text:p>
-          <text:p text:style-name="P62">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2404_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">1.6Qualifikationsziele<text:tab/>8</text:a>
+            <text:a xlink:type="simple" xlink:href="#__RefHeading__2396_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">1.1 Eckdaten<text:tab/>4</text:a>
           </text:p>
           <text:p text:style-name="P64">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2406_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">2Studienplan - Vollzeit<text:tab/>9</text:a>
+            <text:a xlink:type="simple" xlink:href="#__RefHeading__2406_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">2 Studienplan - Vollzeit<text:tab/>9</text:a>
           </text:p>
           <text:p text:style-name="P62">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2408_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">2.1Metadaten, Eckdaten, Gültigkeit<text:tab/>9</text:a>
+            <text:a xlink:type="simple" xlink:href="#__RefHeading__2408_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">2.1 Metadaten, Eckdaten, Gültigkeit<text:tab/>9</text:a>
           </text:p>
           <text:p text:style-name="P62">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2410_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">2.2Erläuterungen zum Studienplan<text:tab/>9</text:a>
+            <text:a xlink:type="simple" xlink:href="#__RefHeading__2416_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">2.2 Studienplanmatrix<text:tab/>11</text:a>
           </text:p>
           <text:p text:style-name="P62">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2412_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">2.3Auslandssemester<text:tab/>9</text:a>
-          </text:p>
-          <text:p text:style-name="P62">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2414_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">2.4Berufspraktikum<text:tab/>9</text:a>
-          </text:p>
-          <text:p text:style-name="P62">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2416_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">2.5Studienplanmatrix<text:tab/>11</text:a>
-          </text:p>
-          <text:p text:style-name="P62">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2418_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">2.6Modulgrafik<text:tab/>12</text:a>
-          </text:p>
-          <text:p text:style-name="P62">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2420_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">2.7Modulbeschreibungen<text:tab/>13</text:a>
+            <text:a xlink:type="simple" xlink:href="#__RefHeading__2420_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">2.3 Modulbeschreibungen<text:tab/>13</text:a>
           </text:p>
           <text:p text:style-name="P64">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2422_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">3Studienplan - Berufsbegleitend<text:tab/>15</text:a>
+            <text:a xlink:type="simple" xlink:href="#__RefHeading__2422_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">3 Studienplan - Berufsbegleitend<text:tab/>15</text:a>
           </text:p>
           <text:p text:style-name="P64">
-            <text:a xlink:type="simple" xlink:href="#__RefHeading__2424_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">4Studienplan - Distance Learning<text:tab/>15</text:a>
+            <text:a xlink:type="simple" xlink:href="#__RefHeading__2424_554519492" text:style-name="Index_20_Link" text:visited-style-name="Index_20_Link">4 Studienplan - Distance Learning<text:tab/>15</text:a>
           </text:p>
         </text:index-body>
       </text:table-of-content>
@@ -1588,104 +1557,15 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       <text:p text:style-name="P18"/>
       <!--<text:list xml:id="list1922260572595372515" text:style-name="WWNum5">
         <text:list-item>-->
-          <text:h text:style-name="PHEAD1" text:outline-level="1">Studienordnung</text:h>
+          <text:h text:style-name="PHEAD1" text:outline-level="1">Curriculum</text:h>
         <!--</text:list-item>
 	</text:list>-->
-
-	<!--
-      <text:list xml:id="list64427228017889994" text:style-name="WWNum1">
-        <text:list-item>
-          <text:list>
-            <text:list-item>-->
-              <text:h text:style-name="PHEAD2" text:outline-level="2">Metadaten</text:h>
-            <!--</text:list-item>
-          </text:list>
-        </text:list-item>
-	</text:list>-->
-      <table:table table:name="Tabelle1" table:style-name="Tabelle1">
-        <table:table-column table:style-name="Tabelle1.A"/>
-        <table:table-column table:style-name="Tabelle1.B"/>
-        <table:table-row table:style-name="Tabelle1.1">
-          <table:table-cell table:style-name="Tabelle1.A1" office:value-type="string">
-            <text:p text:style-name="P27">Version</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Tabelle1.B1" office:value-type="string">
-            <text:p text:style-name="P28"><xsl:value-of select="version"/></text:p>
-          </table:table-cell>
-        </table:table-row>
-        <table:table-row table:style-name="Tabelle1.1">
-          <table:table-cell table:style-name="Tabelle1.A1" office:value-type="string">
-            <text:p text:style-name="P27">Status</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Tabelle1.B1" office:value-type="string">
-            <text:p text:style-name="P14"><xsl:value-of select="status_bezeichnung"/></text:p>
-          </table:table-cell>
-        </table:table-row>
-        <table:table-row table:style-name="Tabelle1.1">
-          <table:table-cell table:style-name="Tabelle1.A1" office:value-type="string">
-            <text:p text:style-name="P27">Gültig von</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Tabelle1.B1" office:value-type="string">
-            <text:p text:style-name="P14"><xsl:value-of select="gueltigvon"/></text:p>
-          </table:table-cell>
-        </table:table-row>
-        <table:table-row table:style-name="Tabelle1.1">
-          <table:table-cell table:style-name="Tabelle1.A1" office:value-type="string">
-            <text:p text:style-name="P27">Gültig bis</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Tabelle1.B1" office:value-type="string">
-            <text:p text:style-name="P14"><xsl:value-of select="gueltigbis"/></text:p>
-          </table:table-cell>
-        </table:table-row>
-        <table:table-row table:style-name="Tabelle1.1">
-          <table:table-cell table:style-name="Tabelle1.A1" office:value-type="string">
-            <text:p text:style-name="P27">Änderungsvariante</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Tabelle1.B1" office:value-type="string">
-            <text:p text:style-name="P14"><xsl:value-of select="aenderungsvariante_bezeichnung"/></text:p>
-          </table:table-cell>
-        </table:table-row>
-        <table:table-row table:style-name="Tabelle1.1">
-          <table:table-cell table:style-name="Tabelle1.A1" office:value-type="string">
-            <text:p text:style-name="P27">Beschlussdatum Studiengang</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Tabelle1.B1" office:value-type="string">
-            <text:p text:style-name="P14"><xsl:value-of select="beschluss_studiengang"/></text:p>
-          </table:table-cell>
-        </table:table-row>
-		<xsl:if test="aenderungsvariante_kurzbz!='gering'">
-		    <table:table-row table:style-name="Tabelle1.1">
-		      <table:table-cell table:style-name="Tabelle1.A1" office:value-type="string">
-		        <text:p text:style-name="P27">Beschlussdatum Kollegium</text:p>
-		      </table:table-cell>
-		      <table:table-cell table:style-name="Tabelle1.B1" office:value-type="string">
-		        <text:p text:style-name="P14"><xsl:value-of select="beschluss_kollegium"/></text:p>
-		      </table:table-cell>
-		    </table:table-row>
-		</xsl:if>
-		<xsl:if test="aenderungsvariante_kurzbz='akkreditierungspflichtig'">
-		    <table:table-row table:style-name="Tabelle1.1">
-		      <table:table-cell table:style-name="Tabelle1.A1" office:value-type="string">
-		        <text:p text:style-name="P27">Beschlussdatum AQ Austria</text:p>
-		      </table:table-cell>
-		      <table:table-cell table:style-name="Tabelle1.B1" office:value-type="string">
-		        <text:p text:style-name="P14"><xsl:value-of select="beschluss_aq"/></text:p>
-		      </table:table-cell>
-		    </table:table-row>
-		</xsl:if>
-      </table:table>
-      <text:p text:style-name="P30"/>
-      <text:p text:style-name="P52">Beschreibung der Änderungen</text:p>
-      <text:p text:style-name="P8">
-    		<xsl:value-of select="begruendung"  disable-output-escaping="yes"/>
-
-      </text:p>
 	  <!--
       <text:list xml:id="list120527871223613" text:continue-numbering="true" text:style-name="WWNum1">
         <text:list-item>
           <text:list>
             <text:list-item>-->
-              <text:h text:style-name="PHEAD2" text:outline-level="2">Eckdaten</text:h>
+              <text:h text:style-name="PHEAD2" text:outline-level="2">General Information</text:h>
             <!--</text:list-item>
           </text:list>
         </text:list-item>
@@ -1695,7 +1575,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         <table:table-column table:style-name="Tabelle2.B"/>
         <table:table-row table:style-name="Tabelle2.1">
           <table:table-cell table:style-name="Tabelle2.A1" office:value-type="string">
-            <text:p text:style-name="P27">StgKz</text:p>
+            <text:p text:style-name="P27">Program No.</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle2.B1" office:value-type="string">
             <text:p text:style-name="P14"><xsl:value-of select="studiengang_kz"/></text:p>
@@ -1703,15 +1583,15 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
         <table:table-row table:style-name="Tabelle2.1">
           <table:table-cell table:style-name="Tabelle2.A1" office:value-type="string">
-            <text:p text:style-name="P27">Studiengangsbezeichnung</text:p>
+            <text:p text:style-name="P27">Program Name</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle2.B1" office:value-type="string">
-            <text:p text:style-name="P14"><xsl:value-of select="studiengangbezeichnung"/></text:p>
+            <text:p text:style-name="P14"><xsl:value-of select="studiengangbezeichnung_englisch"/></text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row table:style-name="Tabelle2.1">
           <table:table-cell table:style-name="Tabelle2.A1" office:value-type="string">
-            <text:p text:style-name="P27">Studiengangskurzbezeichnung</text:p>
+            <text:p text:style-name="P27">Short Desc.</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle2.B1" office:value-type="string">
             <text:p text:style-name="P14"><xsl:value-of select="studiengangkurzbzlang"/></text:p>
@@ -1719,7 +1599,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
         <table:table-row table:style-name="Tabelle2.1">
           <table:table-cell table:style-name="Tabelle2.A1" office:value-type="string">
-            <text:p text:style-name="P27">Studiengangsart</text:p>
+            <text:p text:style-name="P27">Type</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle2.B1" office:value-type="string">
             <text:p text:style-name="P14"><xsl:value-of select="studiengangstyp_bezeichnung"/></text:p>
@@ -1727,7 +1607,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
         <table:table-row table:style-name="Tabelle2.1">
           <table:table-cell table:style-name="Tabelle2.A1" office:value-type="string">
-            <text:p text:style-name="P27">Akademischer Grad</text:p>
+            <text:p text:style-name="P27">Academic Degree</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle2.B1" office:value-type="string">
             <text:p text:style-name="P14"><xsl:value-of select="akadgrad"/></text:p>
@@ -1735,132 +1615,14 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
         <table:table-row table:style-name="Tabelle2.1">
           <table:table-cell table:style-name="Tabelle2.A1" office:value-type="string">
-            <text:p text:style-name="P27">Organisationsform</text:p>
+            <text:p text:style-name="P27">Organisational form</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle2.B1" office:value-type="string">
-            <text:p text:style-name="P14"><xsl:value-of select="organisationsform"/></text:p>
-          </table:table-cell>
-        </table:table-row>
-        <table:table-row table:style-name="Tabelle2.1">
-          <table:table-cell table:style-name="Tabelle2.A1" office:value-type="string">
-            <text:p text:style-name="P27">Standort</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Tabelle2.B1" office:value-type="string">
-            <text:p text:style-name="P14"><xsl:value-of select="standort"/></text:p>
+            <text:p text:style-name="P14"><xsl:value-of select="organisationsform_englisch"/></text:p>
           </table:table-cell>
         </table:table-row>
       </table:table>
       <text:p text:style-name="P30"/>
-	  <!--
-      <text:list xml:id="list120529025368941" text:continue-numbering="true" text:style-name="WWNum1">
-        <text:list-item>
-          <text:list>
-            <text:list-item>-->
-              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2398_554519492"/><text:bookmark-start text:name="_Toc451354157"/>Zugangsvoraussetzungen<text:bookmark-end text:name="__RefHeading__2398_554519492"/><text:bookmark-end text:name="_Toc451354157"/></text:h>
-            <!--</text:list-item>
-          </text:list>
-        </text:list-item>
-	</text:list>-->
-      <text:p text:style-name="P8">
-        <xsl:value-of select="zugangsvoraussetzung"  disable-output-escaping="yes"/>
-      </text:p>
-      <text:p text:style-name="P5"/>
-	  <!--
-      <text:list xml:id="list120529111442916" text:continue-numbering="true" text:style-name="WWNum1">
-        <text:list-item>
-          <text:list>
-            <text:list-item>-->
-              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2400_554519492"/><text:bookmark-start text:name="_Toc451354158"/>Aufnahmeverfahren<text:bookmark-end text:name="__RefHeading__2400_554519492"/><text:bookmark-end text:name="_Toc451354158"/></text:h>
-            <!--</text:list-item>
-          </text:list>
-        </text:list-item>
-	</text:list>-->
-      <text:p text:style-name="P8">
-        <text:bookmark-start text:name="_Toc114210882"/>
-        <text:bookmark-start text:name="_Toc264537160"/>
-        <text:bookmark-start text:name="_Toc264537886"/>
-        <xsl:value-of select="aufnahmeverfahren" disable-output-escaping="yes"/>
-        <text:bookmark-end text:name="_Toc114210882"/>
-        <text:bookmark-end text:name="_Toc264537160"/>
-        <text:bookmark-end text:name="_Toc264537886"/>
-      </text:p>
-      <text:p text:style-name="P9"/>
-	  <!--
-      <text:list xml:id="list120527256834076" text:continue-numbering="true" text:style-name="WWNum1">
-        <text:list-item>
-          <text:list>
-            <text:list-item>-->
-              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2402_554519492"/><text:bookmark-start text:name="_Toc451354159"/>Berufliche Tätigkeitsfelder<text:bookmark-end text:name="__RefHeading__2402_554519492"/><text:bookmark-end text:name="_Toc451354159"/></text:h>
-            <!--
-				</text:list-item>
-          </text:list>
-        </text:list-item>
-	</text:list>
-	-->
-      <text:p text:style-name="P52">Überblick</text:p>
-      <text:p text:style-name="P12">
-			<xsl:value-of select="taetigkeitsfeld_ueberblick" disable-output-escaping="yes"/>
-      </text:p>
-      <text:p text:style-name="P52">1. Branchen und Sektoren</text:p>
-      <text:p text:style-name="P16">
-        <text:span text:style-name="T14"><xsl:value-of select="branchen_fixed"/></text:span>
-      </text:p>
-
-
-		<xsl:apply-templates select="branchen_elements"/>
-
-
-      <text:p text:style-name="P52">2. Positionen und Funktionen</text:p>
-      <text:p text:style-name="P16">
-        <text:span text:style-name="T14"><xsl:value-of select="positionen_fixed" /></text:span>
-      </text:p>
-
-      <xsl:apply-templates select="positionen_elements"/>
-
-      <text:p text:style-name="P52">3. Aufgaben und Tätigkeiten</text:p>
-      <text:p text:style-name="P16">
-        <text:soft-page-break/>
-        <text:span text:style-name="T14"><xsl:value-of select="aufgaben_fixed" /></text:span>
-      </text:p>
-
-	  <xsl:apply-templates select="aufgaben_elements"/>
-
-      <text:p text:style-name="P20"/>
-      <text:p text:style-name="P10"/>
-      <!--
-	  <text:list xml:id="list120528120972311" text:continue-list="list120527256834076" text:style-name="WWNum1">
-        <text:list-item>
-          <text:list>
-            <text:list-item>-->
-              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2404_554519492"/><text:bookmark-start text:name="_Toc451354160"/>Qualifikationsziele<text:bookmark-end text:name="__RefHeading__2404_554519492"/><text:bookmark-end text:name="_Toc451354160"/></text:h>
-            <!--</text:list-item>
-          </text:list>
-        </text:list-item>
-	</text:list>-->
-      <text:p text:style-name="P52">Bildungsauftrag FH-Studiengänge</text:p>
-      <text:p text:style-name="P12">
-        <text:span text:style-name="T14"><xsl:value-of select="qualifikation_bildungsauftrag" /></text:span>
-      </text:p>
-      <text:p text:style-name="P52">Qualifikationsziele</text:p>
-      <text:p text:style-name="P12">
-        <text:span text:style-name="T14"><xsl:value-of select="qualifikation_beschreibung" /></text:span>
-      </text:p>
-      <text:p text:style-name="P4"/>
-      <text:p text:style-name="Standard">
-        <text:span text:style-name="T17"><xsl:value-of select="qualifikation_kompetenz1" /></text:span>
-      </text:p>
-      <text:p text:style-name="P54"/>
-
-	  <xsl:apply-templates select="qualifikation_kompetenz1_elements"/>
-
-      <text:p text:style-name="P20"/>
-      <text:p text:style-name="P19"/>
-      <text:p text:style-name="P21">
-        <text:span text:style-name="T17"><xsl:value-of select="qualifikation_kompetenz2" /></text:span>
-      </text:p>
-      <text:p text:style-name="P53"/>
-
-      <xsl:apply-templates select="qualifikation_kompetenz2_elements"/>
 
       <text:p text:style-name="P19"/>
       <text:p text:style-name="P10"/>
@@ -1868,26 +1630,6 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 	<xsl:apply-templates select="studienplaene"/>
 
       <text:p text:style-name="P40"/>
-<!--
-      <text:list xml:id="list120527767775743" text:continue-list="list120527926051947" text:style-name="WWNum1">
-        <text:list-item>
-          <text:h text:style-name="P58" text:outline-level="1"><text:bookmark-start text:name="__RefHeading__2422_554519492"/><text:bookmark-start text:name="_Toc451354169"/>Studienplan - Berufsbegleitend<text:bookmark-end text:name="__RefHeading__2422_554519492"/><text:bookmark-end text:name="_Toc451354169"/></text:h>
-        </text:list-item>
-        <text:list-item>
-          <text:h text:style-name="P55" text:outline-level="1"><text:bookmark-start text:name="__RefHeading__2424_554519492"/><text:bookmark-start text:name="_Toc451354170"/>Studienplan - Distance Learning<text:bookmark-end text:name="__RefHeading__2424_554519492"/><text:bookmark-end text:name="_Toc451354170"/><text:bookmark-start text:name="_Toc114210891"/><text:bookmark-start text:name="_Toc264537169"/><text:bookmark-start text:name="_Toc264537897"/></text:h>
-        </text:list-item>
-      </text:list>
--->
-    <!--  <text:p text:style-name="P22">
-        <text:bookmark-start text:name="_Toc451354171"/>
-        <text:span text:style-name="T22">Glossar und Abkürzung</text:span>
-        <text:bookmark-end text:name="_Toc114210891"/>
-        <text:bookmark-end text:name="_Toc264537169"/>
-        <text:bookmark-end text:name="_Toc264537897"/>
-        <text:span text:style-name="T22">en</text:span>
-        <text:bookmark-end text:name="_Toc451354171"/>
-	</text:p>
-      <text:p text:style-name="Standard"/>-->
     </office:text>
   </office:body>
 </office:document-content>
@@ -1901,10 +1643,10 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 <!--
       <text:list xml:id="list120527420716167" text:continue-list="list120528120972311" text:style-name="WWNum1">
         <text:list-item>-->
-          <text:h text:style-name="PHEAD1" text:outline-level="1"><text:bookmark-start text:name="__RefHeading__2406_554519492"/><text:bookmark-start text:name="_Toc451354161"/>Studienplan - <xsl:value-of select="organisationsform"/><text:bookmark-end text:name="_Toc451354161"/><text:bookmark-end text:name="__RefHeading__2406_554519492"/></text:h>
+          <text:h text:style-name="PHEAD1" text:outline-level="1"><text:bookmark-start text:name="__RefHeading__2406_554519492"/><text:bookmark-start text:name="_Toc451354161"/>Study Plan - <xsl:value-of select="organisationsform_englisch"/><text:bookmark-end text:name="_Toc451354161"/><text:bookmark-end text:name="__RefHeading__2406_554519492"/></text:h>
           <!--<text:list>
             <text:list-item>-->
-              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2408_554519492"/><text:bookmark-start text:name="_Toc451354162"/>Metadaten, Eckdaten, Gültigkeit<text:bookmark-end text:name="__RefHeading__2408_554519492"/><text:bookmark-end text:name="_Toc451354162"/></text:h>
+              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2408_554519492"/><text:bookmark-start text:name="_Toc451354162"/>Metadata<text:bookmark-end text:name="__RefHeading__2408_554519492"/><text:bookmark-end text:name="_Toc451354162"/></text:h>
             <!--</text:list-item>
           </text:list>
         </text:list-item>
@@ -1922,16 +1664,16 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
         <table:table-row table:style-name="Tabelle3.1">
           <table:table-cell table:style-name="Tabelle3.A1" office:value-type="string">
-            <text:p text:style-name="P27">Organisationsform</text:p>
+            <text:p text:style-name="P27">Organisational form</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
-            <text:p text:style-name="P13"><text:span text:style-name="T36"><xsl:value-of select="organisationsform"/></text:span></text:p>
+            <text:p text:style-name="P13"><text:span text:style-name="T36"><xsl:value-of select="organisationsform_englisch"/></text:span></text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row table:style-name="Tabelle3.3">
           <table:table-cell table:style-name="Tabelle3.A1" office:value-type="string">
-            <text:p text:style-name="P27">Gültig ab Studiensemester:</text:p>
-            <text:p text:style-name="P27">Für Ausbildungssemester:</text:p>
+            <text:p text:style-name="P27">Valid from:</text:p>
+            <text:p text:style-name="P27">For Semester:</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
             <text:p text:style-name="P13"><text:span text:style-name="T36"><xsl:value-of select="gueltig_ab_studiensemester"/></text:span></text:p>
@@ -1940,7 +1682,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
         <table:table-row table:style-name="Tabelle3.1">
           <table:table-cell table:style-name="Tabelle3.A1" office:value-type="string">
-            <text:p text:style-name="P27">Regelstudiendauer in Semestern</text:p>
+            <text:p text:style-name="P27">Study duration in semester</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
             <text:p text:style-name="P29"><xsl:value-of select="regelstudiendauer"/></text:p>
@@ -1956,7 +1698,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
         <table:table-row table:style-name="Tabelle3.1">
           <table:table-cell table:style-name="Tabelle3.A1" office:value-type="string">
-            <text:p text:style-name="P27">Pflicht-SWS</text:p>
+            <text:p text:style-name="P27">Required SWS</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
             <text:p text:style-name="P8">
@@ -1966,7 +1708,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
         <table:table-row table:style-name="Tabelle3.1">
           <table:table-cell table:style-name="Tabelle3.A1" office:value-type="string">
-            <text:p text:style-name="P27">Pflicht-LVS</text:p>
+            <text:p text:style-name="P27">Required LVS</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
             <text:p text:style-name="P15"><xsl:value-of select="pflicht_lvs"/></text:p>
@@ -1974,122 +1716,22 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
         <table:table-row table:style-name="Tabelle3.1">
           <table:table-cell table:style-name="Tabelle3.A1" office:value-type="string">
-            <text:p text:style-name="P27">Sprache</text:p>
+            <text:p text:style-name="P27">Language</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
             <text:p text:style-name="P15"><xsl:value-of select="sprache_anzeige"/></text:p>
           </table:table-cell>
         </table:table-row>
-        <table:table-row table:style-name="Tabelle3.1">
-          <table:table-cell table:style-name="Tabelle3.A1" office:value-type="string">
-            <text:p text:style-name="P27">Sprache Kommentar</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
-            <text:p text:style-name="P15"><xsl:value-of select="sprache_kommentar"/></text:p>
-          </table:table-cell>
-        </table:table-row>
       </table:table>
       <text:p text:style-name="P30"/>
-      <!--<text:list xml:id="list120529083004513" text:continue-numbering="true" text:style-name="WWNum1">
-        <text:list-item>
-          <text:list>
-            <text:list-item>-->
-              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2410_554519492"/><text:bookmark-start text:name="_Toc451354163"/>Erläuterungen zum Studienplan<text:bookmark-end text:name="__RefHeading__2410_554519492"/><text:bookmark-end text:name="_Toc451354163"/></text:h>
-            <!--</text:list-item>
-          </text:list>
-        </text:list-item>
-	</text:list>-->
-      <text:p text:style-name="PNORMAL">
-        <text:span text:style-name="T14">
-			<xsl:call-template name="replace_linebreak">
-				<xsl:with-param name="string" select="erlaeuterungen"/>
-			</xsl:call-template>
-		</text:span>
-      </text:p>
 
-	  <xsl:if test="auslandssemester/semester">
-		  <!--
-	      <text:list xml:id="list120528168328504" text:continue-numbering="true" text:style-name="WWNum1">
-	        <text:list-item>
-	          <text:list>
-	            <text:list-item>-->
-	              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2412_554519492"/><text:bookmark-start text:name="_Toc451354164"/>Auslandssemester<text:bookmark-end text:name="__RefHeading__2412_554519492"/><text:bookmark-end text:name="_Toc451354164"/></text:h>
-	            <!--</text:list-item>
-	          </text:list>
-	        </text:list-item>
-		</text:list>-->
-	      <text:p text:style-name="Standard">
-	        <text:span text:style-name="T14">Ein Auslandssemester ist</text:span>
-	        <text:span text:style-name="T19"> </text:span>
-
-	        <text:span text:style-name="T19">
-				<xsl:choose>
-					<xsl:when test="auslandssemester/semester/verpflichtend='true'">
-						verpflichtend
-					</xsl:when>
-					<xsl:otherwise>
-						optional
-					</xsl:otherwise>
-				</xsl:choose>
-			</text:span>
-	        <text:span text:style-name="T14"> vorgesehen.</text:span>
-	      </text:p>
-
-		  <xsl:apply-templates select="auslandssemester"/>
-
-	      <text:p text:style-name="P77"/>
-
-		  <xsl:if test="auslandssemester_erlaeuterungen!=''">
-		      <text:p text:style-name="P52">Erläuterungen zum Auslandssemester</text:p>
-		      <text:p text:style-name="PNORMAL">
-		        <text:span text:style-name="T14">
-					<xsl:call-template name="replace_linebreak">
-						<xsl:with-param name="string" select="auslandssemester_erlaeuterungen"/>
-					</xsl:call-template>
-				</text:span>
-		      </text:p>
-		</xsl:if>
-	  </xsl:if>
-
-	  <xsl:if test="berufspraktikum/semester">
-		  <!--
-	      <text:list xml:id="list120528306467999" text:continue-numbering="true" text:style-name="WWNum1">
-	        <text:list-item>
-	          <text:list>
-	            <text:list-item>-->
-	              <text:h text:style-name="PHEAD2" text:outline-level="2">
-	                <text:bookmark-start text:name="__RefHeading__2414_554519492"/>
-	                <text:bookmark-start text:name="_Toc451354165"/>
-	                <text:span text:style-name="T2">Berufspraktikum</text:span>
-	                <text:bookmark-end text:name="__RefHeading__2414_554519492"/>
-	                <text:bookmark-end text:name="_Toc451354165"/>
-	              </text:h>
-				  <!--
-	            </text:list-item>
-	          </text:list>
-	        </text:list-item>
-		</text:list>-->
-
-		  <xsl:apply-templates select="berufspraktikum"/>
-
-		  <xsl:if test="berufspraktikum_erlaeuterungen!=''">
-		      <text:p text:style-name="P52"><text:soft-page-break/>Erläuterungen zum Berufspraktikum</text:p>
-		      <text:p text:style-name="PNORMAL">
-		        <text:span text:style-name="T14">
-					<xsl:call-template name="replace_linebreak">
-						<xsl:with-param name="string" select="berufspraktikum_erlaeuterungen"/>
-					</xsl:call-template>
-				</text:span>
-		      </text:p>
-		  </xsl:if>
-	</xsl:if>
       <text:p text:style-name="P6"/>
 	  <!--
       <text:list xml:id="list120527799921646" text:continue-list="list120528306467999" text:style-name="WWNum1">
         <text:list-item>
           <text:list>
             <text:list-item>-->
-              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2416_554519492"/><text:bookmark-start text:name="_Toc451354166"/>Studienplanmatrix<text:bookmark-end text:name="__RefHeading__2416_554519492"/><text:bookmark-end text:name="_Toc451354166"/></text:h>
+              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2416_554519492"/><text:bookmark-start text:name="_Toc451354166"/>Study Plan Matrix<text:bookmark-end text:name="__RefHeading__2416_554519492"/><text:bookmark-end text:name="_Toc451354166"/></text:h>
             <!--</text:list-item>
           </text:list>
         </text:list-item>
@@ -2108,7 +1750,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         <table:table-column table:style-name="Tabelle8.G"/>
         <table:table-row table:style-name="Tabelle8.1">
           <table:table-cell table:style-name="Tabelle8.A1" office:value-type="string">
-            <text:p text:style-name="P48">Summe über alle Semester</text:p>
+            <text:p text:style-name="P48">Overall Sum</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle8.B1" office:value-type="string">
             <text:p text:style-name="P48"> </text:p>
@@ -2133,53 +1775,18 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       <text:p text:style-name="P36">
         <text:s/>
       </text:p>
-      <text:p text:style-name="P52">Abkürzungen</text:p>
-      <text:p text:style-name="P51">“Lehrform” [ist noch zu ergänzen]</text:p>
-      <text:p text:style-name="P51">“Typ”</text:p>
-      <text:list xml:id="list120528840599003" text:continue-list="list120528134157548" text:style-name="WWNum7">
-        <text:list-item>
-          <text:p text:style-name="P73">
-            <text:span text:style-name="T26">„Pfl.“: „Pflicht“: Es handelt sich um </text:span>
-            <text:span text:style-name="T25">Pflichtmodule bzw. Pflichtlehrveranstaltungen. Diese sind ein expliziter Teil des genehmigungspflichtigen Studienplans und von allen Studierenden verpflichtend zu absolvieren.</text:span>
-          </text:p>
-        </text:list-item>
-        <text:list-item>
-          <text:p text:style-name="P74">“Wahl”: Es handelt sich um Wahlmodule bzw. Wahllehrveranstaltungen. Von diesen sind eine/s oder mehrere zu wählen. Sie sind ein Teil des Studienplans.</text:p>
-        </text:list-item>
-      </text:list>
-      <text:p text:style-name="P51"><text:s/>“Gen” = “Genehmigung”</text:p>
-      <text:list xml:id="list120529028729330" text:continue-numbering="true" text:style-name="WWNum7">
-        <text:list-item>
-          <text:p text:style-name="P75">= ja: Das Modul bzw. die LV ist ein genehmigungspflichtiger Teil des Studienplans. Eine Änderung ist nur durch eine neue Studienordnungsversion möglich.</text:p>
-        </text:list-item>
-        <text:list-item>
-          <text:p text:style-name="P67">= nein: Das Modul bzw. die LV ist nicht-genehmigungspflichtig. Eine Änderung ist innerhalb derselben Studienplanversion möglich.</text:p>
-        </text:list-item>
-      </text:list>
-      <text:p text:style-name="P5"/>
-	  <!--
-      <text:list xml:id="list120528996211657" text:continue-list="list120527799921646" text:style-name="WWNum1">
-        <text:list-item>
-          <text:list>
-            <text:list-item>-->
-              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2418_554519492"/><text:bookmark-start text:name="_Toc451354167"/>Modulgrafik<text:bookmark-end text:name="__RefHeading__2418_554519492"/><text:bookmark-end text:name="_Toc451354167"/></text:h>
-            <!--</text:list-item>
-          </text:list>
-        </text:list-item>
-	</text:list>-->
-      <text:p text:style-name="P37">Noch nicht vorhanden</text:p>
       <text:p text:style-name="P6"/>
 	  <!--
       <text:list xml:id="list120527926051947" text:continue-numbering="true" text:style-name="WWNum1">
         <text:list-item>
           <text:list>
             <text:list-item>-->
-              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2420_554519492"/><text:bookmark-start text:name="_Toc451354168"/>Modulbeschreibungen<text:bookmark-end text:name="__RefHeading__2420_554519492"/><text:bookmark-end text:name="_Toc451354168"/></text:h>
+              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2420_554519492"/><text:bookmark-start text:name="_Toc451354168"/>Module Description<text:bookmark-end text:name="__RefHeading__2420_554519492"/><text:bookmark-end text:name="_Toc451354168"/></text:h>
             <!--</text:list-item>
           </text:list>
         </text:list-item>
 	</text:list>-->
-      <text:p text:style-name="P4">Nachfolgend findet sich eine semesterweise Beschreibung der Module und der entsprechenden Lehrveranstaltungen. Zu beachten ist, dass sich die Attribute “Kurzbeschreibung”, “Lernergebnisse”, “Lehrinhalte”, “Literatur”, “Leistungsbeurteilung”, “Anwesenheit”, “Anmerkungen” von Studienjahr zu Studienjahr ändern können. <text:s text:c="2"/></text:p>
+      <text:p text:style-name="P4">Below is a semester-wise description of the modules and the corresponding courses.<text:s text:c="2"/></text:p>
       <text:p text:style-name="P5"/>
 
 		<xsl:apply-templates select="semester" mode="modulbeschreibung"/>
@@ -2207,7 +1814,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P47"><xsl:value-of select="semester"/>.</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle4.B1" office:value-type="string">
-            <text:p text:style-name="P48">Ausbildungssemester</text:p>
+            <text:p text:style-name="P48">Semester</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle4.B1" office:value-type="string">
             <text:p text:style-name="P48"> </text:p>
@@ -2230,16 +1837,16 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
         <table:table-row table:style-name="Tabelle4.2">
           <table:table-cell table:style-name="Tabelle4.A2" office:value-type="string">
-            <text:p text:style-name="P49">Kürzel</text:p>
+            <text:p text:style-name="P49">Short</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle4.B2" office:value-type="string">
-            <text:p text:style-name="P50">Bezeichnung</text:p>
+            <text:p text:style-name="P50">Course</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle4.B2" office:value-type="string">
-            <text:p text:style-name="P49">Lehrform</text:p>
+            <text:p text:style-name="P49">Course Type</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle4.B2" office:value-type="string">
-            <text:p text:style-name="P49">Typ</text:p>
+            <text:p text:style-name="P49">Type</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle4.B2" office:value-type="string">
             <text:p text:style-name="P49">Gen</text:p>
@@ -2278,7 +1885,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 				  <table:table-cell table:style-name="Tabelle4.B3UNTEN" office:value-type="string">
 					<text:p text:style-name="P11">
 					  <text:span text:style-name="T23">
-						  <xsl:value-of select="bezeichnung"/>
+						  <xsl:value-of select="bezeichnung_englisch"/>
 					  </text:span>
 					</text:p>
 				  </table:table-cell>
@@ -2289,10 +1896,10 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 					<text:p text:style-name="P49">
 						<xsl:choose>
 							<xsl:when test="pflicht='true'">
-								Pfl.
+								Req.
 							</xsl:when>
 							<xsl:otherwise>
-								Wahl
+								Opt.
 							</xsl:otherwise>
 						</xsl:choose>
 					</text:p>
@@ -2301,10 +1908,10 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 					<text:p text:style-name="P49">
 						<xsl:choose>
 							<xsl:when test="genehmigung='true'">
-								ja
+								yes
 							</xsl:when>
 							<xsl:otherwise>
-								nein
+								no
 							</xsl:otherwise>
 						</xsl:choose>
 					</text:p>
@@ -2329,7 +1936,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 				  <table:table-cell table:style-name="Tabelle4.B3" office:value-type="string">
 					<text:p text:style-name="P11">
 					  <text:span text:style-name="T23">
-						  <xsl:value-of select="bezeichnung"/>
+						  <xsl:value-of select="bezeichnung_englisch"/>
 					  </text:span>
 					</text:p>
 				  </table:table-cell>
@@ -2340,10 +1947,10 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 					<text:p text:style-name="P49">
 						<xsl:choose>
 							<xsl:when test="pflicht='true'">
-								Pfl.
+								Req.
 							</xsl:when>
 							<xsl:otherwise>
-								Wahl
+								Opt.
 							</xsl:otherwise>
 						</xsl:choose>
 					</text:p>
@@ -2352,10 +1959,10 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 					<text:p text:style-name="P49">
 						<xsl:choose>
 							<xsl:when test="genehmigung='true'">
-								ja
+								yes
 							</xsl:when>
 							<xsl:otherwise>
-								nein
+								no
 							</xsl:otherwise>
 						</xsl:choose>
 					</text:p>
@@ -2380,7 +1987,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 		  </table:table-cell>
 		  <table:table-cell table:style-name="Tabelle4.B4" office:value-type="string">
 			<text:p text:style-name="P11">
-			  <text:span text:style-name="T23"><xsl:value-of select="bezeichnung"/></text:span>
+			  <text:span text:style-name="T23"><xsl:value-of select="bezeichnung_englisch"/></text:span>
 			</text:p>
 		  </table:table-cell>
 		  <table:table-cell table:style-name="Tabelle4.B4" office:value-type="string">
@@ -2390,10 +1997,10 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			<text:p text:style-name="P49">
 				<xsl:choose>
 					<xsl:when test="pflicht='true'">
-						Pfl.
+						Req.
 					</xsl:when>
 					<xsl:otherwise>
-						Wahl
+						Opt.
 					</xsl:otherwise>
 				</xsl:choose>
 			</text:p>
@@ -2402,10 +2009,10 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			<text:p text:style-name="P49">
 				<xsl:choose>
 					<xsl:when test="genehmigung='true'">
-						ja
+						yes
 					</xsl:when>
 					<xsl:otherwise>
-						nein
+						no
 					</xsl:otherwise>
 				</xsl:choose>
 			</text:p>
@@ -2578,7 +2185,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 		  <text:p text:style-name="P80"><text:s text:c="4"/><xsl:value-of select="semester" />.</text:p>
 		</table:table-cell>
 		<table:table-cell table:style-name="Tabelle9.A1" office:value-type="string">
-		  <text:p text:style-name="P80">Ausbildungssemester</text:p>
+		  <text:p text:style-name="P80">Semester</text:p>
 		</table:table-cell>
 	  </table:table-row>
 	</table:table>
@@ -2598,15 +2205,15 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			  <table:table-column table:style-name="TabelleModul.B"/>
 			  <table:table-row table:style-name="TabelleModul.1">
 				<table:table-cell table:style-name="TabelleModul.A1" office:value-type="string">
-				  <text:p text:style-name="P82">Modul</text:p>
+				  <text:p text:style-name="P82">Module</text:p>
 				</table:table-cell>
 				<table:table-cell table:style-name="TabelleModul.A1" office:value-type="string">
-				  <text:p text:style-name="P87"><xsl:value-of select="bezeichnung" /></text:p>
+				  <text:p text:style-name="P87"><xsl:value-of select="bezeichnung_englisch" /></text:p>
 				</table:table-cell>
 			  </table:table-row>
 			  <table:table-row table:style-name="TabelleModul.1">
 				<table:table-cell table:style-name="TabelleModul.A2" office:value-type="string">
-				  <text:p text:style-name="P81">Kürzel</text:p>
+				  <text:p text:style-name="P81">Short Desc.</text:p>
 				</table:table-cell>
 				<table:table-cell table:style-name="TabelleModul.A2" office:value-type="string">
 				  <text:p text:style-name="P88"><xsl:value-of select="kurzbz" /></text:p>
@@ -2614,17 +2221,17 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			  </table:table-row>
 			  <table:table-row table:style-name="TabelleModul.1">
 				<table:table-cell table:style-name="TabelleModul.A2" office:value-type="string">
-				  <text:p text:style-name="P81">Typ</text:p>
+				  <text:p text:style-name="P81">Type</text:p>
 				</table:table-cell>
 				<table:table-cell table:style-name="TabelleModul.A2" office:value-type="string">
 				  <text:p text:style-name="P84">
 					<text:span text:style-name="T27">
 					<xsl:choose>
 						<xsl:when test="pflicht='true'">
-							Pflichtmodul
+							Required Module
 						</xsl:when>
 						<xsl:otherwise>
-							Wahlmodul
+							Elective Module
 						  </xsl:otherwise>
 					  </xsl:choose>
 					</text:span>
@@ -2633,17 +2240,17 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			  </table:table-row>
 			  <table:table-row table:style-name="TabelleModul.1">
 				<table:table-cell table:style-name="TabelleModul.A2" office:value-type="string">
-				  <text:p text:style-name="P81">Lehrform</text:p>
+				  <text:p text:style-name="P81">Course Type</text:p>
 				</table:table-cell>
 				<table:table-cell table:style-name="TabelleModul.A2" office:value-type="string">
 				  <text:p text:style-name="P84">
 					<text:span text:style-name="T28">
 						<xsl:choose>
 							<xsl:when test="lehrform_kurzbz='kMod'">
-								Kumulatives Modul (kMod)
+								Cumulative Module (kMod)
 							</xsl:when>
 							<xsl:when test="lehrform_kurzbz='iMod'">
-								Integratives Modul (iMod)
+								Integrative Module (iMod)
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="lehrform_kurzbz" />
@@ -2655,7 +2262,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			  </table:table-row>
 			  <table:table-row table:style-name="TabelleModul.1">
 				<table:table-cell table:style-name="TabelleModul.A2" office:value-type="string">
-				  <text:p text:style-name="P81">ECTS Punkte</text:p>
+				  <text:p text:style-name="P81">ECTS Credits</text:p>
 				</table:table-cell>
 				<table:table-cell table:style-name="TabelleModul.A2" office:value-type="string">
 				  <text:p text:style-name="P85">
@@ -2665,7 +2272,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			  </table:table-row>
 			  <table:table-row table:style-name="TabelleModul.1">
 				<table:table-cell table:style-name="TabelleModul.A6" office:value-type="string">
-				  <text:p text:style-name="P81">Ausbildungssemester</text:p>
+				  <text:p text:style-name="P81">Semester</text:p>
 				</table:table-cell>
 				<table:table-cell table:style-name="TabelleModul.A2" office:value-type="string">
 				  <text:p text:style-name="P85">
@@ -2685,8 +2292,8 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			  <xsl:if test="lvinfo">
 				  <table:table-row table:style-name="TabelleModul.1">
 					<table:table-cell table:style-name="TabelleModul.A7" office:value-type="string">
-					  <text:p text:style-name="P81">Leistungsbeurteilung</text:p>
-					  <text:p text:style-name="P81">(falls Modulprüfung)</text:p>
+					  <text:p text:style-name="P81">Assessment Methods</text:p>
+					  <text:p text:style-name="P81">(if Module exam)</text:p>
 					</table:table-cell>
 					<table:table-cell table:style-name="TabelleModul.A7" office:value-type="string">
 					  <xsl:apply-templates select="lvinfo/leistungsb" />
@@ -2702,17 +2309,17 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			  <table:table-column table:style-name="TabelleLV.B"/>
 			  <table:table-row table:style-name="TabelleLV.1">
 				<table:table-cell table:style-name="TabelleLV.A1" office:value-type="string">
-				  <text:p text:style-name="P82">Lehrveranstaltung</text:p>
+				  <text:p text:style-name="P82">Course</text:p>
 				</table:table-cell>
 				<table:table-cell table:style-name="TabelleLV.A1" office:value-type="string">
 				  <text:p text:style-name="P86">
-					<text:span text:style-name="T37"><xsl:value-of select="bezeichnung" /></text:span>
+					<text:span text:style-name="T37"><xsl:value-of select="bezeichnung_englisch" /></text:span>
 				  </text:p>
 				</table:table-cell>
 			  </table:table-row>
 			  <table:table-row table:style-name="TabelleLV.1">
 				<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
-				  <text:p text:style-name="P81">Kürzel</text:p>
+				  <text:p text:style-name="P81">Short Desc.</text:p>
 				</table:table-cell>
 				<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
 				  <text:p text:style-name="P85">
@@ -2722,17 +2329,17 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			  </table:table-row>
 			  <table:table-row table:style-name="TabelleLV.1">
 				<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
-				  <text:p text:style-name="P81">Typ</text:p>
+				  <text:p text:style-name="P81">Type</text:p>
 				</table:table-cell>
 				<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
 				  <text:p text:style-name="P84">
 					<text:span text:style-name="T28">
 						<xsl:choose>
 							<xsl:when test="pflicht='true'">
-								Pflichtlehrveranstaltung
+								Required Course
 							</xsl:when>
 							<xsl:otherwise>
-								Wahllehrveranstaltung
+								Elective Course
 							  </xsl:otherwise>
 						  </xsl:choose>
 					  </text:span>
@@ -2741,7 +2348,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			  </table:table-row>
 			  <table:table-row table:style-name="TabelleLV.1">
 				<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
-				  <text:p text:style-name="P81">Lehrform</text:p>
+				  <text:p text:style-name="P81">Course Type</text:p>
 				</table:table-cell>
 				<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
 				  <text:p text:style-name="P85">
@@ -2751,7 +2358,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			  </table:table-row>
 			  <table:table-row table:style-name="TabelleLV.1">
 				<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
-				  <text:p text:style-name="P81">ECTS Punkte</text:p>
+				  <text:p text:style-name="P81">ECTS Credits</text:p>
 				</table:table-cell>
 				<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
 				  <text:p text:style-name="P85">
@@ -2771,7 +2378,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			  </table:table-row>
 			  <table:table-row table:style-name="TabelleLV.1">
 				<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
-				  <text:p text:style-name="P81">Ausbildungssemester</text:p>
+				  <text:p text:style-name="P81">Semester</text:p>
 				</table:table-cell>
 				<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
 				  <text:p text:style-name="P85">
@@ -2790,7 +2397,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			  </table:table-row>
 			  <table:table-row table:style-name="TabelleLV.1">
 				<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
-				  <text:p text:style-name="P81">Sprache</text:p>
+				  <text:p text:style-name="P81">Language</text:p>
 				</table:table-cell>
 				<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
 				  <text:p text:style-name="P85">
@@ -2801,7 +2408,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			<xsl:if test="lvinfo">
 				  <table:table-row table:style-name="TabelleLV.1">
 					<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
-					  <text:p text:style-name="P81">Vorkenntnisse</text:p>
+					  <text:p text:style-name="P81">Prerequisites</text:p>
 					</table:table-cell>
 					<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
 					  <text:p text:style-name="P88"><xsl:value-of select="lvinfo/vorkenntnisse" /></text:p>
@@ -2809,7 +2416,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 				  </table:table-row>
 				  <table:table-row table:style-name="TabelleLV.1">
 					<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
-					  <text:p text:style-name="P81">Kurzbeschreibung</text:p>
+					  <text:p text:style-name="P81">Course Description</text:p>
 					</table:table-cell>
 					<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
 					  <text:p text:style-name="P88"><xsl:value-of select="lvinfo/kurzbesch" /></text:p>
@@ -2817,7 +2424,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 				  </table:table-row>
 				  <table:table-row table:style-name="TabelleLV.1">
 					<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
-					  <text:p text:style-name="P81">Lernergebnisse</text:p>
+					  <text:p text:style-name="P81">Learning outcomes</text:p>
 					</table:table-cell>
 					<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
 
@@ -2827,7 +2434,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 				  </table:table-row>
 				  <table:table-row table:style-name="TabelleLV.1">
 					<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
-					  <text:p text:style-name="P81">Lehrinhalte</text:p>
+					  <text:p text:style-name="P81">Course Contents</text:p>
 					</table:table-cell>
 					<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
 					  <xsl:apply-templates select="lvinfo/lehrinhalte" />
@@ -2835,7 +2442,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 				  </table:table-row>
 				  <table:table-row table:style-name="TabelleLV.1">
 					<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
-					  <text:p text:style-name="P81">Literatur/Literature</text:p>
+					  <text:p text:style-name="P81">Recommended Reading and Material</text:p>
 					</table:table-cell>
 					<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
 					  <xsl:apply-templates select="lvinfo/literatur" />
@@ -2844,8 +2451,8 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 				  <text:soft-page-break/>
 				  <table:table-row table:style-name="TabelleLV.1">
 					<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
-					  <text:p text:style-name="P81">Leistungsbeurteilung</text:p>
-					  <text:p text:style-name="P81">(falls LV-Prüfung)</text:p>
+					  <text:p text:style-name="P81">Assessment Methods</text:p>
+					  <text:p text:style-name="P81">(if Course exam)</text:p>
 					</table:table-cell>
 					<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
 					  <xsl:apply-templates select="lvinfo/leistungsb" />
@@ -2853,7 +2460,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 				  </table:table-row>
 				  <table:table-row table:style-name="TabelleLV.1">
 					<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
-					  <text:p text:style-name="P81">Anwesenheit</text:p>
+					  <text:p text:style-name="P81">Attendance</text:p>
 					</table:table-cell>
 					<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
 					  <text:p text:style-name="P83"><xsl:value-of select="lvinfo/anwesenheit" /></text:p>
@@ -2861,7 +2468,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 				  </table:table-row>
 				  <table:table-row table:style-name="TabelleLV.1">
 					<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
-					  <text:p text:style-name="P81">Anmerkungen</text:p>
+					  <text:p text:style-name="P81">Comments</text:p>
 					</table:table-cell>
 					<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
 					  <text:p text:style-name="P83"><xsl:value-of select="lvinfo/anmerkungen" /></text:p>
