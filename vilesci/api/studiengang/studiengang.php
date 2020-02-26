@@ -36,7 +36,7 @@ if(!$berechtigung->isBerechtigt("addon/studiengangsverwaltung",null,"suid"))
 $stg_kz_array = $berechtigung->getStgKz("addon/studiengangsverwaltung");
 
 $studiengang = new studiengang();
-$studiengang->loadArray($stg_kz_array, "kurzbzlang", true);
+$studiengang->loadArray($stg_kz_array, "typ, CASE WHEN typ = 'l' THEN bezeichnung ELSE kurzbz END", true);
 
 $stg_array = array();
 
