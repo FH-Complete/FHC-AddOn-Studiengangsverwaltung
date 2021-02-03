@@ -695,6 +695,36 @@ if($studienplan->studienplan_id!='')
 			$output .= '<span class="ok">OK</span>';
 	}
 
+    //Prüft ob die Semester übereinstimmen
+    $output .= '<br><br><br><h2>' . ++$nummerierung . '. Folgende LVs sind dem falschen Semester zugeordnet.</h2>';
+    $qry = "SELECT 
+                lehre.tbl_lehrveranstaltung.bezeichnung as Bezeichnung,
+                lehre.tbl_lehrveranstaltung.semester as LV_Semester, 
+                lehre.tbl_studienplan_lehrveranstaltung.semester as STPLV_Semester  
+            FROM 
+                lehre.tbl_studienplan
+            JOIN lehre.tbl_studienplan_lehrveranstaltung using (studienplan_id) 
+            JOIN lehre.tbl_lehrveranstaltung using (lehrveranstaltung_id) 
+            WHERE 
+                tbl_studienplan.studienplan_id = " . $db->db_add_param($studienplan->studienplan_id) . "
+            AND 
+                tbl_lehrveranstaltung.semester != tbl_studienplan_lehrveranstaltung.semester";
+
+    if ($result = $db->db_query($qry))
+    {
+        if ($db->db_num_rows($result) > 0)
+        {
+            while ($row = $db->db_fetch_object($result))
+            {
+                $fehler++;
+                $output .= '<br> LV Semester ' . $row->lv_semester . ' | Studienplan Semester ' . $row->stplv_semester . ' | ' . $row->bezeichnung . '';
+            }
+        }
+        else
+        {
+            $output .= '<span class="ok">OK</span>';
+        }
+    }
 }
 $output .= '<br><br><br><br>';
 
