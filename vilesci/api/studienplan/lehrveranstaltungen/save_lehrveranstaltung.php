@@ -110,6 +110,7 @@ function mapDataToLehrveranstaltung($data)
     $lv->orgform_kurzbz = $data->orgform_kurzbz;
     $lv->incoming = $data->incoming;
     $lv->lehrtyp_kurzbz = $data->lehrtyp_kurzbz;
+	$lv->lehrmodus_kurzbz = $data->lehrmodus_kurzbz;
     $lv->oe_kurzbz = $data->oe_kurzbz;
     $lv->raumtyp_kurzbz = $data->raumtyp_kurzbz;
     $lv->anzahlsemester = $data->anzahlsemester;
