@@ -15,7 +15,7 @@ angular.module('stgv2')
 			ctrl.lehrtypList = "";
 			ctrl.lehrtyp_kurzbz = "lv";
 			ctrl.lehrmodusList = "";
-			ctrl.lehrmodus_kurzbz = "lm";
+			ctrl.lehrmodus_kurzbz = "";
 			ctrl.semester = "null";
 			ctrl.semesterList = [{
 					"key": "null",
@@ -954,7 +954,7 @@ angular.module('stgv2')
 								lvnewtemplate.studiengang_kz=ctrl.studiengang_kz;
 								//lvnewtemplate.oe_kurzbz= ctrl.oe_kurzbz;
 								lvnewtemplate.lehrtyp_kurzbz='lv';
-								lvnewtemplate.lehrmodus_kurzbz='lm';
+								lvnewtemplate.lehrmodus_kurzbz='';
 								lvnewtemplate.sprache=ctrl.studienplan.sprache;
 								lvnewtemplate.orgform_kurzbz=ctrl.studienplan.orgform_kurzbz;
 								lvnewtemplate.gesperrt=false;

@@ -7,7 +7,7 @@ angular.module('stgv2')
 					orgform_kurzbz: null,
 					bezeichnung: ""
 			}];
-			ctrl.lehrmodusList = [""];
+			ctrl.lehrmodusList = "";
 			ctrl.lehrtypList = "";
 			ctrl.oeList = "";
 			ctrl.lehrformList = "";
@@ -336,7 +336,6 @@ angular.module('stgv2')
 							args.lv_id = response.data.info[0];
 							args.oe_kurzbz = ctrl.data.oe_kurzbz;
 							args.lehrtyp_kurzbz = ctrl.data.lehrtyp_kurzbz;
-							args.lehrmodus_kurzbz = ctrl.data.lehrmodus_kurzbz;
 							args.semester = ""+ctrl.data.semester;
 							//$("#dialog").dialog("close");
 							$scope.$emit("setFilter", args);

@@ -63,10 +63,10 @@
 					</div>
 				</div>
 				<div class="col-sm-3">
-					<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.lehrmodus.$error.required))}">
-						<label for="lehrmodus">Lehrmodus*</label>
-						<select class="form-control input-sm" name="lehrmodus" ng-model="newLvCtrl.data.lehrmodus_kurzbz" required ng-disabled="newLvCtrl.data.gesperrt">
-							<option ng-repeat="lehrmodus in newLvCtrl.lehrmodusList" value = {{lehrmodus.lehrmodus_kurzbz}}>{{lehrmodus.lehrmodus_kurzbz}}</option>
+					<div class="form-group">
+						<label for="lehrmodus">Lehrmodus</label>
+						<select class="form-control input-sm" name="lehrmodus" ng-model="newLvCtrl.data.lehrmodus_kurzbz" ng-disabled="newLvCtrl.data.gesperrt">
+							<option ng-repeat="lehrmodus in newLvCtrl.lehrmodusList" value = {{lehrmodus.lehrmodus_kurzbz}}>{{sprache.sprache == 'English' ? lehrmodus.bezeichnung_mehrsprachig['English']: lehrmodus.bezeichnung_mehrsprachig['German']}}</option>
 						</select>
 					</div>
 				</div>
