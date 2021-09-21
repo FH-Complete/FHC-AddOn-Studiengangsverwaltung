@@ -14,6 +14,8 @@ angular.module('stgv2')
 			ctrl.oe_kurzbz = "alle";
 			ctrl.lehrtypList = "";
 			ctrl.lehrtyp_kurzbz = "lv";
+			ctrl.lehrmodusList = "";
+			ctrl.lehrmodus_kurzbz = "";
 			ctrl.semester = "null";
 			ctrl.semesterList = [{
 					"key": "null",
@@ -158,6 +160,7 @@ angular.module('stgv2')
 						{field: 'las', align: 'right', title:'LAS'},
 						{field: 'lvps', align: 'right', title:'LVPLS'},
 						{field: 'lehrform_kurzbz',width:'60', align: 'right', title:'Lehrform'},
+						{field: 'lehrmodus_kurzbz',width:'60', align: 'right', title:'Lehrmodus'},
 						{field: 'export',align: 'center', /*editor: {type: 'checkbox'},*/ title:'StudPlan', formatter: booleanToIconFormatter},
 						{field: 'stpllv_pflicht',align: 'center', title:'Pflicht', formatter: booleanToIconFormatter},
 						{field: 'genehmigung',align: 'center', title:'Gen', formatter: booleanToIconFormatter},
@@ -713,6 +716,23 @@ angular.module('stgv2')
 				errorService.setError(getErrorMsg(response));
 			});
 
+			//load lehrmodi
+			$http({
+				method: 'GET',
+				url: './api/helper/lehrmodus.php'
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					ctrl.lehrmodusList = response.data.info;
+				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
+			});
+
 			$("#lvTreeGrid").treegrid({
 				url: '',
 				method: 'get',
@@ -742,6 +762,7 @@ angular.module('stgv2')
 					return false;
 				}
 				var lehrtyp_kurzbz = $("#lehrtyp").val();
+				// var lehrmodus_kurzbz = $("#lehrmodus").val();
 				var semester = $("#semester").val();
 				if (semester === "? string: ?")
 				{
@@ -933,6 +954,7 @@ angular.module('stgv2')
 								lvnewtemplate.studiengang_kz=ctrl.studiengang_kz;
 								//lvnewtemplate.oe_kurzbz= ctrl.oe_kurzbz;
 								lvnewtemplate.lehrtyp_kurzbz='lv';
+								lvnewtemplate.lehrmodus_kurzbz='';
 								lvnewtemplate.sprache=ctrl.studienplan.sprache;
 								lvnewtemplate.orgform_kurzbz=ctrl.studienplan.orgform_kurzbz;
 								lvnewtemplate.gesperrt=false;
@@ -951,20 +973,22 @@ angular.module('stgv2')
 				});
 			};
 
-			ctrl.setFilter = function(lv_id, oe_kurzbz, lehrtyp_kurzbz, semester)
+			ctrl.setFilter = function(lv_id, oe_kurzbz, lehrtyp_kurzbz, lehrmodus_kurzbz, semester)
 			{
 				$("#oe").val(oe_kurzbz);
 				$("#lehrtyp").val(lehrtyp_kurzbz);
+				$("#lehrmodus").val(lehrmodus_kurzbz);
 				$("#semester").val(semester);
 				ctrl.oe_kurzbz = oe_kurzbz;
 				ctrl.lehrtyp_kurzbz = lehrtyp_kurzbz;
+				ctrl.lehrmodus_kurzbz = lehrmodus_kurzbz;
 				ctrl.semester = semester;
 				ctrl.loadLehrveranstaltungen(lv_id);
 				$("#dialog").dialog('close');
 			};
 
 			$scope.$on("setFilter", function(event, args){
-				ctrl.setFilter(args.lv_id, args.oe_kurzbz, args.lehrtyp_kurzbz, args.semester);
+				ctrl.setFilter(args.lv_id, args.oe_kurzbz, args.lehrtyp_kurzbz, args.lehrmodus_kurzbz, args.semester);
 			});
 
 			$scope.tabs = [
@@ -1379,6 +1403,7 @@ function generateChildren(item, sem)
 	node.ects = item.ects;
 	node.semesterstunden = item.semesterstunden;
 	node.lehrform_kurzbz = item.lehrform_kurzbz;
+	node.lehrmodus_kurzbz = item.lehrmodus_kurzbz;
 	node.lvnr = item.lvnr;
 	node.kurzbz = item.kurzbz;
 	node.semester = item.semester;

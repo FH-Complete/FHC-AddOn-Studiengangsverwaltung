@@ -7,6 +7,7 @@ angular.module('stgv2')
 					orgform_kurzbz: null,
 					bezeichnung: ""
 			}];
+			ctrl.lehrmodusList = "";
 			ctrl.lehrtypList = "";
 			ctrl.oeList = "";
 			ctrl.lehrformList = "";
@@ -117,6 +118,24 @@ angular.module('stgv2')
 				if (response.data.erfolg)
 				{
 					ctrl.lehrtypList = response.data.info;
+
+				}
+				else
+				{
+					errorService.setError(getErrorMsg(response));
+				}
+			}, function error(response) {
+				errorService.setError(getErrorMsg(response));
+			});
+
+			//load Lehrmodi
+			$http({
+				method: 'GET',
+				url: './api/helper/lehrmodus.php'
+			}).then(function success(response) {
+				if (response.data.erfolg)
+				{
+					ctrl.lehrmodusList = response.data.info;
 				}
 				else
 				{
@@ -358,6 +377,7 @@ angular.module('stgv2')
 							args.lv_id = response.data.info[0];
 							args.oe_kurzbz = ctrl.data.oe_kurzbz;
 							args.lehrtyp_kurzbz = ctrl.data.lehrtyp_kurzbz;
+							args.lehrmodus_kurzbz = ctrl.data.lehrmodus_kurzbz;
 							args.semester = ctrl.data.semester;
 							$scope.$emit("setFilter", args);
 							$("#stplTreeGrid").treegrid("update",{id: ctrl.data.id, row: ctrl.data});

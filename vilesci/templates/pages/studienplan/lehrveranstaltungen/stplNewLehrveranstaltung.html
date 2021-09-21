@@ -48,7 +48,7 @@
 			<div class="row">
 				<div class="col-sm-5">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.oe.$error.required)}">
-						<label for="oe">Organistaionseinheit*</label>
+						<label for="oe">Organisationseinheit*</label>
 						<select class="form-control input-sm" name="oe" ng-model="newLvCtrl.data.oe_kurzbz" required ng-disabled="newLvCtrl.data.gesperrt">
 							<option ng-repeat="oe in newLvCtrl.oeList" value="{{oe.oe_kurzbz}}" ng-class="{greyedout: (!oe.aktiv && oe.aktiv != null)}">{{oe.organisationseinheittyp_kurzbz}} - {{oe.bezeichnung}}{{(!oe.aktiv && oe.aktiv != null)?" - inaktiv!":""}}</option>
 						</select>
@@ -59,6 +59,15 @@
 						<label for="orgform">Organisationsform*</label>
 						<select class="form-control input-sm" name="orgform" ng-model="newLvCtrl.data.orgform_kurzbz" ng-required="!newLvCtrl.data.gesperrt" ng-disabled="newLvCtrl.data.gesperrt">
 							<option ng-repeat="orgform in newLvCtrl.orgformList" value="{{orgform.orgform_kurzbz}}">{{orgform.bezeichnung}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label for="lehrmodus">Lehrmodus</label>
+						<select class="form-control input-sm" name="lehrmodus" ng-model="newLvCtrl.data.lehrmodus_kurzbz" ng-disabled="newLvCtrl.data.gesperrt">
+							<option></option>
+							<option ng-repeat="lehrmodus in newLvCtrl.lehrmodusList" value = {{lehrmodus.lehrmodus_kurzbz}}>{{sprache.sprache == 'English' ? lehrmodus.bezeichnung_mehrsprachig['English']: lehrmodus.bezeichnung_mehrsprachig['German']}}</option>
 						</select>
 					</div>
 				</div>

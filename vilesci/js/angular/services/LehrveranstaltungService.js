@@ -25,6 +25,7 @@ angular.module('stgv2')
 				this.koordinator = null;
 				this.bezeichnung_english = null;
 				this.orgform_kurzbz = null;
+				this.lehrmodus_kurzbz = null;
 				this.incoming = null;
 				this.lehrtyp_kurzbz = null;
 				this.oe_kurzbz = null;
