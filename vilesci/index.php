@@ -116,6 +116,7 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 	<script type="text/javascript" src="./js/angular/controllers/studiengang/stg-kosten-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studiengang/stg-foerderungen-controller.js"></script>
 	<script type="text/javascript" src="./js/angular/controllers/studiengang/stg-doktorat-controller.js"></script>
+	<script type="text/javascript" src="./js/angular/controllers/studiengang/stg-entwicklungsteam-controller.js"></script>
 
 	<!-- Angular Studienordnung Controllers -->
 	<script type="text/javascript" src="./js/angular/controllers/studienordnung/sto-neu-controller.js"></script>

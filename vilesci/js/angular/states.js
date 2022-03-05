@@ -39,6 +39,11 @@ angular.module('stgv2').config(function ($stateProvider) {
 				url: '/doktorat',
 				templateUrl: './templates/pages/studiengang/betriebsdaten/doktorat/doktorat.html'
 			})
+			.state('betriebsdaten.entwicklungsteam', {
+				name: 'betriebsdaten.entwicklungsteam',
+				url: '/entwicklungsteam',
+				templateUrl: './templates/pages/studiengang/betriebsdaten/entwicklungsteam/entwicklungsteam.html'
+			})
 			.state('studienordnung', {
 				name: 'studienordnung',
 				url: '/studienordnung/:studienordnung_id',
