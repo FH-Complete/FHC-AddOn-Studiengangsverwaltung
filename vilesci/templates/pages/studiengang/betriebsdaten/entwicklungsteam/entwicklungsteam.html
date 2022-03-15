@@ -16,52 +16,20 @@
 	<div id="entwicklungsteamDetails" style="display: none;">
 		<form name="form_entwicklungsteam" onsubmit="return true;" novalidate>
 
-			<!-- <div><h2>old version</h2></div> -->
-			<div class="row">
-
-				<div class="col-sm-1">
-					<div class="form-group">
-						<label for="mitarbeiter_uid">Ma-UID</label>
-						<input class="form-control input-sm" name="mitarbeiter_uid" ng-model="ctrl.entwicklungsteam.mitarbeiter_uid" required/>
-					</div>
-				</div>
-			</div>
 	<br><br>
-			<!-- </div>-->
-
 			 <div class="row">
 
 				 <div class="col-sm-3">
 					 <div class="form-group easyui-combobox" ng-class="{'has-error': (form.$submitted && form.entwicklungsteam.$error.required)}">
 						 <label for="mitarbeiter">Personensuche Name (mitarbeiter_uid)</label>
-						 <input class="" id="masuche" name="mitarbeiter_uid" class="form-control input-md" value="" ng-model="ctrl.entwicklungsteam.mitarbeiter_uid" style="height:30px; width: 340px;">
-					</div>
-				</div>
-
-					<!-- <div class="form-group">
-						 <select class="form-control input-sm easyui-combobox" name="ma" ng-model="ctrl.entwicklungsteam.mitarbeiter_uid">
-							 <option ng-repeat="ma in ctrl.mitarbeiterList"  value ="{{ma.uid}}" > {{ma.sn}}  {{ma.gn}} / {{ma.uid}} </option>
-						 </select>
-					 </div> -->
-					 <!-- <div class="form-group" ng-class="{'has-error': (form.$submitted && form.entwicklungsteam.$error.required)}">
-						  <select class="form-control" name="ma" ng-model="ctrl.entwicklungsteam.mitarbeiter_uid">
-							  <option ng-repeat="ma in ctrl.mitarbeiterList"  value ="{{ma.uid}}" > {{ma.sn}}  {{ma.gn}} / {{ma.uid}} </option>
-						  </select>
-					  </div> -->
-
-				 <!-- </div> -->
-
-				<div class="col-sm-2">
-					<div class="form-group">
-						<label for="stgkz">Stg KZ</label>
-						<input class="form-control input-sm" name="stgkz" value="{{ctrl.entwicklungsteam.studiengang_kz}}" disabled/>
+						 <input type="text" id="masuche" name="mitarbeiter_uid" class="form-control input-md" ng-model="ctrl.entwicklungsteam.mitarbeiter_uid" style="height:30px; width: 340px;">
 					</div>
 				</div>
 
 				<div class="col-sm-2">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.beginn.$error.date))}">
 						<label for="beginn">Beginn</label>
-						<input id="datepicker_beginn" class="form-control input-sm" name="beginn" ng-model="ctrl.entwicklungsteam.beginn" required>
+						<input id="datepicker_beginn" class="form-control input-sm" name="beginn" ng-model="ctrl.entwicklungsteam.beginn">
 						</input>
 						<span ng-show="form.beginn.$error.date">Kein gültiges Datum!</span>
 					</div>
@@ -74,11 +42,11 @@
 						<span ng-show="form.ende.$error.date">Kein gültiges Datum!</span>
 					</div>
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-3">
 					<div class="form-group">
 						<label for="besqualcode">Besondere Qualifikation</label>
 						<select class="form-control input-sm" name="besqualcode" ng-model="ctrl.entwicklungsteam.besqualcode">
-							<option ng-repeat="b in ctrl.besqualcode" value="{{b}}">{{b}}</option>
+							<option ng-repeat="b in ctrl.besqualcodes" value="{{b.value}}">{{b.label}}</option>
 						</select>
 					</div>
 				</div>

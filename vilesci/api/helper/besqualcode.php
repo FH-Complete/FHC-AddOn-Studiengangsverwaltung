@@ -19,7 +19,7 @@
 require_once('../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../include/functions.inc.php');
 require_once('../../../../../include/benutzerberechtigung.class.php');
-require_once('../../../../../include/mitarbeiter.class.php');
+require_once('../../../../../include/besqualcode.class.php');
 require_once('../functions.php');
 
 $uid = get_uid();
@@ -29,29 +29,25 @@ $rechte->getBerechtigungen($uid);
 header('Content-Type: application/json');
 if (!$rechte->isBerechtigt('addon/studiengangsverwaltung'))
 {
-	returnAJAX(false, array("message" => "Sie haben keine Berechtigung.", "detail" => $rechte->errormsg));
+	returnAJAX(FALSE, array("message"=>"Sie haben keine Berechtigung.", "detail"=>$rechte->errormsg));
 }
 
-$mitarbeiter_uid = filter_input(INPUT_GET, "mitarbeiter_uid");
-
-$mitarbeiter = new mitarbeiter();
-if ($mitarbeiter->search($mitarbeiter_uid, null, true, true))
+$besqualcode = new besqualcode();
+if($besqualcode->getAll(true, true))
 {
-	$ma_array = array();
-
-	foreach ($mitarbeiter ->result as $key => $ma)
+	$data = array();
+	foreach($besqualcode->result as $bc)
 	{
-		$ma_array[] = array(
-		  "l" => $ma ->nachname. ' '. $ma ->vorname. ' ('. $ma->uid. ')',
-		  "v" => $ma ->uid
-	    );
+			$data[] = array(
+				'value' => $bc->besqualcode,
+				'label' => $bc->besqualbez
+			);
 	}
 }
 else
 {
-	returnAJAX(false, $mitarbeiter->errormsg);
+	returnAJAX(false, $besqualcode->errormsg);
 }
 
-returnAJAX(true, $ma_array);
-
+returnAJAX(true, $data);
 ?>

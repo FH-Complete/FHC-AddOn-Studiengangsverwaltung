@@ -9,36 +9,40 @@ require_once('../../functions.php');
 $uid = get_uid();
 $berechtigung = new benutzerberechtigung();
 $berechtigung->getBerechtigungen($uid);
-if(!$berechtigung->isBerechtigt("stgv/editEntwicklungsteam",null,"suid"))
+if (!$berechtigung->isBerechtigt("stgv/editEntwicklungsteam", null, "suid"))
 {
-    $error = array("message"=>"Sie haben nicht die Berechtigung um Entwicklungsteams anzulegen oder zu editieren.", "detail"=>"stgv/editEntwicklungsteam");
-    returnAJAX(FALSE, $error);
+    $error = array("message" => "Sie haben nicht die Berechtigung um Entwicklungsteams anzulegen oder zu editieren.", "detail" => "stgv/editEntwicklungsteam");
+    returnAJAX(false, $error);
 }
 
-$data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
-$data = (Object) $data["data"];
+$data = filter_input_array(INPUT_POST, array("data" => array('flags' => FILTER_REQUIRE_ARRAY)));
+$data = (object)$data["data"];
 $entwicklungsteam = mapDataToEntwicklungsteam($data);
-if($entwicklungsteam->save())
+if ($entwicklungsteam->save())
 {
     returnAJAX(true, "Entwicklungsteam erfolgreich aktualisiert");
 }
 else
 {
-    $error = array("message"=>"Fehler beim Speichern des Entwicklungsteams.", "detail"=>$entwicklungsteam->errormsg);
+    $error = array("message" => "Fehler beim Speichern des Entwicklungsteams.", "detail" => $entwicklungsteam->errormsg);
     returnAJAX(false, $error);
 }
 
-
-function mapDataToentwicklungsteam($data)
+/**
+ * @param array $data Datenarray, das gemappt wird.
+ * @return $ew Daten Entwicklungsteam
+ */
+function mapDataToEntwicklungsteam($data)
 {
     $ew = new entwicklungsteam($data->mitarbeiter_uid, $data->studiengang_kz);
-	$ew->mitarbeiter_uid;
-	$ew->studiengang_kz = $data->studiengang_kz;
-	$ew->besqualcode = $data->besqualcode;
+    $ew->new = false;
+  	$ew->mitarbeiter_uid = $data->mitarbeiter_uid;
+  	$ew->studiengang_kz = $data->studiengang_kz;
+  	$ew->besqualcode = $data->besqualcode;
     $ew->beginn = $data->beginn;
-    $ew->ende= $data->ende;
+    $ew->ende = $data->ende;
     $ew->updatevon = get_uid();
+    $ew->updateamum = $data->updateamum;
     return $ew;
 }
-
 ?>
