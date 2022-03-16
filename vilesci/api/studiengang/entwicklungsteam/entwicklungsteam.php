@@ -95,6 +95,7 @@ foreach ($entwicklungsteam->result as $ewt)
 			'beginn' => $ewt->beginn,
 			'ende' => $ewt->ende,
 			'studiengang_kz' => $ewt->studiengang_kz,
+			'entwicklungsteam_id' => $ewt->entwicklungsteam_id
 		);
 		$data[] = $tmp;
 }

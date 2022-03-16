@@ -5,6 +5,7 @@ require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../../include/entwicklungsteam.class.php');
 require_once('../../functions.php');
+header("Content-Type: application/json");
 
 $uid = get_uid();
 $berechtigung = new benutzerberechtigung();
@@ -34,7 +35,7 @@ else
  */
 function mapDataToEntwicklungsteam($data)
 {
-    $ew = new entwicklungsteam($data->mitarbeiter_uid, $data->studiengang_kz);
+    $ew = new entwicklungsteam($data->entwicklungsteam_id);
     $ew->new = false;
   	$ew->mitarbeiter_uid = $data->mitarbeiter_uid;
   	$ew->studiengang_kz = $data->studiengang_kz;

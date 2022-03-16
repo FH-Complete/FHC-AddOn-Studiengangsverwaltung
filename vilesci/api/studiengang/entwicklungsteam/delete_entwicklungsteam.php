@@ -18,11 +18,9 @@ if(!$berechtigung->isBerechtigt("stgv/deleteEntwicklungsteam",null,"suid"))
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
 $data = (Object) $data["data"];
 $entwicklungsteam = mapDataToEntwicklungsteam($data);
-$mitarbeiter_uid = $entwicklungsteam->mitarbeiter_uid;
-$studiengang_kz = $entwicklungsteam->studiengang_kz;
+$entwicklungsteam_id = $entwicklungsteam->entwicklungsteam_id;
 
-
-if($entwicklungsteam->delete($mitarbeiter_uid, $studiengang_kz))
+if($entwicklungsteam->delete($entwicklungsteam_id))
 {
     returnAJAX(true, "Eintrag Entwicklungsteam erfolgreich gelöscht.");
 }
@@ -36,8 +34,7 @@ else
 function mapDataToEntwicklungsteam($data)
 {
     $ew = new entwicklungsteam();
-    $ew->mitarbeiter_uid = $data->mitarbeiter_uid;
-	$ew->studiengang_kz = $data->studiengang_kz;
+    $ew->entwicklungsteam_id = $data->entwicklungsteam_id;
     return $ew;
 }
 

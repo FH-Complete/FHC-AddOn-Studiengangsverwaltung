@@ -35,7 +35,7 @@ else
  */
 function mapDataToEntwicklungsteam($data)
 {
-    $ew = new entwicklungsteam($data->mitarbeiter_uid, $data->studiengang_kz);
+    $ew = new entwicklungsteam();
     $ew->new = true;
 	  $ew->mitarbeiter_uid = $data->mitarbeiter_uid;
     $ew->studiengang_kz = $data->studiengang_kz;
@@ -46,5 +46,4 @@ function mapDataToEntwicklungsteam($data)
     $ew->insertamum = $data->insertamum;
     return $ew;
 }
-
 ?>

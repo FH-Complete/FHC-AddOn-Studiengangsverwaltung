@@ -1,13 +1,17 @@
 angular.module('stgv2')
 		.controller('StgEntwicklungsteamCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, $filter) {
-			$scope.stgkz = $stateParams.stgkz;
-			var ctrl = this;
-			ctrl.data = "";
-			ctrl.entwicklungsteam = new Entwicklungsteam();
-			ctrl.lastSelectedIndex = null;
-			ctrl.besqualcode = null;
-			ctrl.besqualcodes = null;
-			ctrl.mitarbeiter_name = null;
+
+			// $timeout(function(){
+			// 	$scope.stgkz = $stateParams.stgkz;
+			// 	})
+				$scope.stgkz = $stateParams.stgkz;
+				var ctrl = this;
+				ctrl.data = "";
+				ctrl.entwicklungsteam = new Entwicklungsteam();
+				ctrl.lastSelectedIndex = null;
+				ctrl.besqualcode = null;
+				ctrl.besqualcodes = null;
+				ctrl.mitarbeiter_name = null;
 
 			//loading besqualcodes
 			$http({
@@ -61,7 +65,10 @@ angular.module('stgv2')
 						$("#dataGridEntwicklungsteam").datagrid('selectRow', ctrl.lastSelectedIndex);
 						var row = $("#dataGridEntwicklungsteam").datagrid("getSelected");
 						ctrl.entwicklungsteam = row;
-						$scope.$apply();
+						// if ( ! $scope.$$phase) {
+						//   $scope.$apply();
+						// }
+					 $scope.$apply();
 					}
 					//Error Handling happens in loadFilter
 				},
@@ -91,6 +98,7 @@ angular.module('stgv2')
 						ctrl.changeButtons();
 				},
 					columns: [[
+						{field: 'entwicklungsteam_id', align:'right', title:'ID'},
 						{field: 'mitarbeiter_label', align: 'left',  sortable: 'true', title:'Mitarbeiter*in'},
 						{field: 'mitarbeiter_uid', align: 'left',  sortable: 'true',  title:'uid'},
 						{field: 'beginn', align:'left',  sortable: 'true', formatter: dateTimeStringToGermanDateString, title:'Beginn'},
@@ -103,6 +111,7 @@ angular.module('stgv2')
 				//hide studiengang_kz and besqualcode
 				$('#dataGridEntwicklungsteam').datagrid('hideColumn', 'studiengang_kz');
 				$('#dataGridEntwicklungsteam').datagrid('hideColumn', 'besqualcode');
+				$('#dataGridEntwicklungsteam').datagrid('hideColumn', 'entwicklungsteam_id');
 			};
 			ctrl.loadDataGrid();
 
@@ -128,6 +137,10 @@ angular.module('stgv2')
 				ctrl.entwicklungsteam.ende = dateTimeStringToGermanDate(ctrl.entwicklungsteam.ende);
 
 				$scope.$apply();
+				// if ( ! $scope.$$phase) {
+				//   $scope.$apply();
+				// }
+
 				$('#masuche').combobox('setValue', row.mitarbeiter_uid);
 				$("#entwicklungsteamDetails").show();
 			}
@@ -185,49 +198,58 @@ angular.module('stgv2')
 
 			ctrl.update = function()
 			{
-				var updateData = {data: ""}
-				updateData.data = ctrl.entwicklungsteam;
+				// $timeout(function(){
+					var updateData = {data: ""}
+					updateData.data = ctrl.entwicklungsteam;
 
-				//GermanDateToISODate
-				if(ctrl.entwicklungsteam.beginn != null && ctrl.entwicklungsteam.beginn != '')
-					updateData.data.beginn = GermanDateToISODate(ctrl.entwicklungsteam.beginn);
-				if(ctrl.entwicklungsteam.ende != null && ctrl.entwicklungsteam.ende != '')
-					updateData.data.ende = GermanDateToISODate(ctrl.entwicklungsteam.ende);
+					//GermanDateToISODate
+					if(ctrl.entwicklungsteam.beginn != null && ctrl.entwicklungsteam.beginn != '')
+						updateData.data.beginn = GermanDateToISODate(ctrl.entwicklungsteam.beginn);
+					if(ctrl.entwicklungsteam.ende != null && ctrl.entwicklungsteam.ende != '')
+						updateData.data.ende = GermanDateToISODate(ctrl.entwicklungsteam.ende);
 
-				updateData.data.updateamum = new Date().toISOString().slice(0, 19);
+					updateData.data.updateamum = new Date().toISOString().slice(0, 19);
 
-				if($scope.form_entwicklungsteam.$valid)
-				{
-					$http({
-						method: 'POST',
-						url: './api/studiengang/entwicklungsteam/update_entwicklungsteam.php',
-						data: $.param(updateData),
-						headers: {
-							'Content-Type': 'application/x-www-form-urlencoded'
-						}
-					}).then(function success(response) {
-						if(response.data.erfolg)
-						{
-							ctrl.newEntwicklungsteam();
-							$scope.form_entwicklungsteam.$setPristine();
-							$("#dataGridEntwicklungsteam").datagrid('reload');
-							successService.setMessage(response.data.info);
-							$('#masuche').combobox('clear');
-							alert(response.data.info);
-						}
-						else
-						{
+					if($scope.form_entwicklungsteam.$valid)
+					{
+						$http({
+							method: 'POST',
+							url: './api/studiengang/entwicklungsteam/update_entwicklungsteam.php',
+							data: $.param(updateData),
+							headers: {
+								'Content-Type': 'application/x-www-form-urlencoded'
+							}
+						}).then(function success(response) {
+							if(response.data.erfolg)
+							{
+								//ctrl.newEntwicklungsteam();
+								ctrl.entwicklungsteam = new Entwicklungsteam();
+								$scope.form_entwicklungsteam.$setPristine();
+								$("#dataGridEntwicklungsteam").datagrid('reload');
+								successService.setMessage(response.data.info);
+								$('#masuche').combobox('clear');
+								alert(response.data.info);
+							}
+
+							else
+							{
+								errorService.setError(getErrorMsg(response));
+							}
+
+						}, function error(response) {
 							errorService.setError(getErrorMsg(response));
-						}
+						});
+					}
+					else
+					{
+						$scope.form_entwicklungsteam.$setPristine();
+					}
 
-					}, function error(response) {
-						errorService.setError(getErrorMsg(response));
-					});
-				}
-				else
-				{
-					$scope.form_entwicklungsteam.$setPristine();
-				}
+				// })
+				// $timeout(function()
+				// {
+
+
 			};
 
 			ctrl.newEntwicklungsteam = function()
@@ -319,6 +341,7 @@ angular.module('stgv2')
 
 function Entwicklungsteam()
 {
+	this.entwicklungsteam_id = "";
 	this.mitarbeiter_uid = "";
 	this.studiengang_kz = "";
 	this.besqualcode = "";

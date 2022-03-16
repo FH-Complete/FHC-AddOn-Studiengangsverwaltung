@@ -16,6 +16,17 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung'))
 	returnAJAX(false, $error);
 }
 
+$entwicklungsteam_id = filter_input(INPUT_GET, "entwicklungsteam_id");
+
+if (is_null($entwicklungsteam_id))
+{
+    returnAJAX(false, "Variable entwicklungsteam_id nicht gesetzt");
+}
+elseif ($entwicklungsteam_id == false)
+{
+    returnAJAX(false, "Fehler beim lesen der GET Variablen");
+}
+
 $studiengang_kz = filter_input(INPUT_GET, "stgkz");
 
 if (is_null($studiengang_kz))
@@ -44,9 +55,10 @@ elseif ($mitarbeiter_uid == false)
 if ($mitarbeiter_uid == "null")
     $mitarbeiter_uid = null;
 
-$entwicklungsteam = new entwicklungsteam($mitarbeiter_uid, $studiengang_kz);
+$entwicklungsteam = new entwicklungsteam($entwicklungsteam_id);
 
 $data = array(
+		'entwicklungsteam_id' => $entwicklungsteam->entwicklungsteam_id,
     'mitarbeiter_uid' => $entwicklungsteam->mitarbeiter_uid,
     'studiengang_kz' => $entwicklungsteam->studiengang_kz,
     'besqualcode' => $entwicklungsteam->besqualcode,
