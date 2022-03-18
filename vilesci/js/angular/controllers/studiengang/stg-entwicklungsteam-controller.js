@@ -1,9 +1,6 @@
 angular.module('stgv2')
 		.controller('StgEntwicklungsteamCtrl', function ($scope, $http, $state, $stateParams, errorService, successService, $filter) {
 
-			// $timeout(function(){
-			// 	$scope.stgkz = $stateParams.stgkz;
-			// 	})
 				$scope.stgkz = $stateParams.stgkz;
 				var ctrl = this;
 				ctrl.data = "";
@@ -47,7 +44,7 @@ angular.module('stgv2')
 					return data.info;
 				},
 				onChange: function (newValue,oldValue) {
-					console.log(newValue + ':' + oldValue);
+					//console.log(newValue + ':' + oldValue);
 					ctrl.entwicklungsteam.mitarbeiter_uid = newValue;
 				}
 			});
@@ -65,10 +62,7 @@ angular.module('stgv2')
 						$("#dataGridEntwicklungsteam").datagrid('selectRow', ctrl.lastSelectedIndex);
 						var row = $("#dataGridEntwicklungsteam").datagrid("getSelected");
 						ctrl.entwicklungsteam = row;
-						// if ( ! $scope.$$phase) {
-						//   $scope.$apply();
-						// }
-					 $scope.$apply();
+					$scope.$apply();
 					}
 					//Error Handling happens in loadFilter
 				},
@@ -128,19 +122,13 @@ angular.module('stgv2')
 
 			ctrl.loadEntwicklungsteamDetails = function(row)
 			{
-				console.log("entwicklungsteam in Funktion loadEntwicklungsteamDetails");
 				$scope.besqualcode = row.besqualcode;
 				ctrl.entwicklungsteam = row;
 
 				//Iso Date to German String
 				ctrl.entwicklungsteam.beginn = dateTimeStringToGermanDate(ctrl.entwicklungsteam.beginn);
 				ctrl.entwicklungsteam.ende = dateTimeStringToGermanDate(ctrl.entwicklungsteam.ende);
-
 				$scope.$apply();
-				// if ( ! $scope.$$phase) {
-				//   $scope.$apply();
-				// }
-
 				$('#masuche').combobox('setValue', row.mitarbeiter_uid);
 				$("#entwicklungsteamDetails").show();
 			}
@@ -160,8 +148,6 @@ angular.module('stgv2')
 					saveData.data.studiengang_kz = $scope.stgkz;
 
 				saveData.data.insertamum = new Date().toISOString().slice(0, 19);
-				//alert(saveData.data.beginn + ' ' + saveData.data.ende + ' ' + saveData.data.mitarbeiter_uid + ' ' + saveData.data.insertamum  + ' ' + saveData.data.studiengang_kz);
-
 
 				if($scope.form_entwicklungsteam.$valid)
 				{
@@ -198,7 +184,6 @@ angular.module('stgv2')
 
 			ctrl.update = function()
 			{
-				// $timeout(function(){
 					var updateData = {data: ""}
 					updateData.data = ctrl.entwicklungsteam;
 
@@ -222,20 +207,22 @@ angular.module('stgv2')
 						}).then(function success(response) {
 							if(response.data.erfolg)
 							{
-								//ctrl.newEntwicklungsteam();
+								$("#dataGridEntwicklungsteam").datagrid("unselectAll");
+								ctrl.lastSelectedIndex = null;
 								ctrl.entwicklungsteam = new Entwicklungsteam();
 								$scope.form_entwicklungsteam.$setPristine();
+
+
 								$("#dataGridEntwicklungsteam").datagrid('reload');
 								successService.setMessage(response.data.info);
 								$('#masuche').combobox('clear');
+
 								alert(response.data.info);
 							}
-
 							else
 							{
 								errorService.setError(getErrorMsg(response));
 							}
-
 						}, function error(response) {
 							errorService.setError(getErrorMsg(response));
 						});
@@ -244,12 +231,6 @@ angular.module('stgv2')
 					{
 						$scope.form_entwicklungsteam.$setPristine();
 					}
-
-				// })
-				// $timeout(function()
-				// {
-
-
 			};
 
 			ctrl.newEntwicklungsteam = function()
@@ -257,7 +238,6 @@ angular.module('stgv2')
 				$("#dataGridEntwicklungsteam").datagrid("unselectAll");
 				ctrl.entwicklungsteam = new Entwicklungsteam();
 				ctrl.entwicklungsteam.studiengang_kz = $scope.stgkz;
-				// ctrl.entwicklungsteam.mitarbeiter_uid = response.data.info;
 				if(!$("#save").is(":visible"))
 					ctrl.changeButtons();
 				$("#entwicklungsteamDetails").show();
