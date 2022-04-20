@@ -87,6 +87,10 @@ angular.module('stgv2')
 				onClickRow: function (index, row)
 				{
 					ctrl.lastSelectedIndex = index;
+					if(ctrl.entwicklungsteam.beginn != null && ctrl.entwicklungsteam.beginn != '')
+						ctrl.entwicklungsteam.beginn = GermanDateToISODate(ctrl.entwicklungsteam.beginn);
+					if(ctrl.entwicklungsteam.ende != null && ctrl.entwicklungsteam.ende != '')
+						ctrl.entwicklungsteam.ende = GermanDateToISODate(ctrl.entwicklungsteam.ende);
 					ctrl.loadEntwicklungsteamDetails(row);
 					if ($("#save").is(":visible"))
 						ctrl.changeButtons();
@@ -126,8 +130,11 @@ angular.module('stgv2')
 				ctrl.entwicklungsteam = row;
 
 				//Iso Date to German String
-				ctrl.entwicklungsteam.beginn = dateTimeStringToGermanDate(ctrl.entwicklungsteam.beginn);
-				ctrl.entwicklungsteam.ende = dateTimeStringToGermanDate(ctrl.entwicklungsteam.ende);
+				if(ctrl.entwicklungsteam.beginn != null && ctrl.entwicklungsteam.beginn != '')
+					ctrl.entwicklungsteam.beginn = dateTimeStringToGermanDate(ctrl.entwicklungsteam.beginn);
+
+				if(ctrl.entwicklungsteam.ende != null && ctrl.entwicklungsteam.ende != '')
+					ctrl.entwicklungsteam.ende = dateTimeStringToGermanDate(ctrl.entwicklungsteam.ende);
 				$scope.$apply();
 				$('#masuche').combobox('setValue', row.mitarbeiter_uid);
 				$("#entwicklungsteamDetails").show();
