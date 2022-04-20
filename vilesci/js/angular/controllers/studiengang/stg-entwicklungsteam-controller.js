@@ -243,6 +243,7 @@ angular.module('stgv2')
 			ctrl.newEntwicklungsteam = function()
 			{
 				$("#dataGridEntwicklungsteam").datagrid("unselectAll");
+				$('#masuche').combobox('clear');
 				ctrl.entwicklungsteam = new Entwicklungsteam();
 				ctrl.entwicklungsteam.studiengang_kz = $scope.stgkz;
 				if(!$("#save").is(":visible"))
