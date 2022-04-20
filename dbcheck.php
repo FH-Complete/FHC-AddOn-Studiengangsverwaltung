@@ -1300,6 +1300,21 @@ if($result = @$db->db_query("SELECT 1 FROM system.tbl_webservicerecht WHERE bere
 	}
 }
 
+//Berechtigung zum Ändern von Entwicklungsteams
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/editEntwicklungsteam' LIMIT 1"))
+{
+	if($db->db_num_rows($result)==0)
+	{
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/editEntwicklungsteam','Recht zum Bearbeiten des Entwickungsteams');";
+
+	if (!$db->db_query($qry))
+		echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+		echo ' system.tbl_berechtigung: Recht zum Ändern von Entwickungsteams hinzugefügt.<br>';
+	}
+}
+
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 

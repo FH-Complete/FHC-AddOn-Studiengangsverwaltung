@@ -9,7 +9,7 @@ require_once('../../functions.php');
 $uid = get_uid();
 $berechtigung = new benutzerberechtigung();
 $berechtigung->getBerechtigungen($uid);
-if(!$berechtigung->isBerechtigt("stgv/deleteEntwicklungsteam",null,"suid"))
+if(!$berechtigung->isBerechtigt("stgv/editEntwicklungsteam",null,"suid"))
 {
     $error = array("message"=>"Sie haben nicht die Berechtigung um Mitglieder Entwicklungsteam zu löschen.", "detail"=>"stgv/deleteEntwicklungsteam");
     returnAJAX(FALSE, $error);
