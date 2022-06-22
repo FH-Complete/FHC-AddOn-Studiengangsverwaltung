@@ -174,6 +174,9 @@
 			<div class="col-sm-5">
 				<span>Verwendet in folgenden Studienplänen:</span><span>{{stplCtrl.meta.zugewieseneStudienplaene}}</span>
 			</div>
+			<div class="col-sm-3" ng-show="stplCtrl.meta.lehrveranstaltung_template_id">
+				<span>Template:</span> <span>{{stplCtrl.meta.lehrveranstaltung_template_id}}</span>
+			</div>
 		</div>
 		<div id="lvRegeln" class="tabContainer" ng-show="getSelectedTabName()=='LV Regeln'">
 			<div class="row">
