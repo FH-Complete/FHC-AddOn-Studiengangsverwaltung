@@ -16,6 +16,7 @@ angular.module('stgv2')
 			ctrl.lehrtyp_kurzbz = "lv";
 			ctrl.lehrmodusList = "";
 			ctrl.lehrmodus_kurzbz = "";
+			ctrl.anmerkung = "";
 			ctrl.semester = "null";
 			ctrl.semesterList = [{
 					"key": "null",
@@ -1404,6 +1405,7 @@ function generateChildren(item, sem)
 	node.semesterstunden = item.semesterstunden;
 	node.lehrform_kurzbz = item.lehrform_kurzbz;
 	node.lehrmodus_kurzbz = item.lehrmodus_kurzbz;
+	node.anmerkung = item.anmerkung;
 	node.lvnr = item.lvnr;
 	node.kurzbz = item.kurzbz;
 	node.semester = item.semester;
