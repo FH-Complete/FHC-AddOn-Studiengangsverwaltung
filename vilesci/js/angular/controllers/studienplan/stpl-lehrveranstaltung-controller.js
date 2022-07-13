@@ -763,7 +763,8 @@ angular.module('stgv2')
 					return false;
 				}
 				var lehrtyp_kurzbz = $("#lehrtyp").val();
-				// var lehrmodus_kurzbz = $("#lehrmodus").val();
+				var lehrmodus_kurzbz = $("#lehrmodus").val();
+				var anmerkung = $("#anmerkung").val();
 				var semester = $("#semester").val();
 				if (semester === "? string: ?")
 				{
@@ -974,22 +975,24 @@ angular.module('stgv2')
 				});
 			};
 
-			ctrl.setFilter = function(lv_id, oe_kurzbz, lehrtyp_kurzbz, lehrmodus_kurzbz, semester)
+			ctrl.setFilter = function(lv_id, oe_kurzbz, lehrtyp_kurzbz, lehrmodus_kurzbz, semester, anmerkung)
 			{
 				$("#oe").val(oe_kurzbz);
 				$("#lehrtyp").val(lehrtyp_kurzbz);
 				$("#lehrmodus").val(lehrmodus_kurzbz);
+				$("#anmerkung").val(anmerkung);
 				$("#semester").val(semester);
 				ctrl.oe_kurzbz = oe_kurzbz;
 				ctrl.lehrtyp_kurzbz = lehrtyp_kurzbz;
 				ctrl.lehrmodus_kurzbz = lehrmodus_kurzbz;
+				ctrl.anmerkung = anmerkung;
 				ctrl.semester = semester;
 				ctrl.loadLehrveranstaltungen(lv_id);
 				$("#dialog").dialog('close');
 			};
 
 			$scope.$on("setFilter", function(event, args){
-				ctrl.setFilter(args.lv_id, args.oe_kurzbz, args.lehrtyp_kurzbz, args.lehrmodus_kurzbz, args.semester);
+				ctrl.setFilter(args.lv_id, args.oe_kurzbz, args.lehrtyp_kurzbz, args.lehrmodus_kurzbz, args.semester, args.anmerkung);
 			});
 
 			$scope.tabs = [
