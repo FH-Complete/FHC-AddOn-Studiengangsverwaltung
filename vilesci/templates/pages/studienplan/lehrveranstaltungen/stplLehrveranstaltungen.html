@@ -112,7 +112,7 @@
 				<span>Lehrform: </span><span>{{stplCtrl.meta.lehrform_kurzbz}}</span>
 			</div>
 			<div class="col-sm-1">
-				<span>Kurzbz: </span><span>{{stplCtrl.meta.kurzbz}}</span>
+				<span>Lehrmodus: </span><span>{{stplCtrl.meta.lehrmodus_kurzbz}}</span>
 			</div>
 			<div class="col-sm-1">
 				<span>Semester: </span><span>{{stplCtrl.meta.semester}}</span>
@@ -122,6 +122,9 @@
 			</div>
 		</div>
 		<div class="row">
+			<div class="col-sm-1">
+				<span>Kurzbz: </span><span>{{stplCtrl.meta.kurzbz}}</span>
+			</div>
 			<div class="col-sm-4">
 				<span>Bezeichnung Englisch: </span><span>{{stplCtrl.meta.bezeichnung_english}}</span>
 			</div>
@@ -169,7 +172,15 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-5">
+				<span>Details:</span><span>{{stplCtrl.meta.anmerkung}}</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-5">
 				<span>Verwendet in folgenden Studienplänen:</span><span>{{stplCtrl.meta.zugewieseneStudienplaene}}</span>
+			</div>
+			<div class="col-sm-3" ng-show="stplCtrl.meta.lehrveranstaltung_template_id">
+				<span>Template:</span> <span>{{stplCtrl.meta.lehrveranstaltung_template_id}}</span>
 			</div>
 		</div>
 		<div id="lvRegeln" class="tabContainer" ng-show="getSelectedTabName()=='LV Regeln'">

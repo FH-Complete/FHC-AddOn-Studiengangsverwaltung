@@ -18,6 +18,15 @@
 						</select>
 					</div>
 				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label for="lehrmodus">Lehrmodus</label>
+						<select class="form-control input-sm" name="lehrmodus" ng-model="newLvCtrl.data.lehrmodus_kurzbz" ng-disabled="newLvCtrl.data.gesperrt">
+							<option></option>
+							<option ng-repeat="lehrmodus in newLvCtrl.lehrmodusList" value = {{lehrmodus.lehrmodus_kurzbz}}>{{sprache.sprache == 'English' ? lehrmodus.bezeichnung_mehrsprachig['English']: lehrmodus.bezeichnung_mehrsprachig['German']}}</option>
+						</select>
+					</div>
+				</div>
 				<div class="col-sm-2">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.kurzbz.$error.required)}">
 						<label for="kurzbz">Kurzbz*</label>
@@ -62,16 +71,6 @@
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-3">
-					<div class="form-group">
-						<label for="lehrmodus">Lehrmodus</label>
-						<select class="form-control input-sm" name="lehrmodus" ng-model="newLvCtrl.data.lehrmodus_kurzbz" ng-disabled="newLvCtrl.data.gesperrt">
-							<option></option>
-							<option ng-repeat="lehrmodus in newLvCtrl.lehrmodusList" value = {{lehrmodus.lehrmodus_kurzbz}}>{{sprache.sprache == 'English' ? lehrmodus.bezeichnung_mehrsprachig['English']: lehrmodus.bezeichnung_mehrsprachig['German']}}</option>
-						</select>
-					</div>
-				</div>
-			</div>
 			<div class="row">
 				<div class="col-sm-4">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.studiengang.$error.required)}">

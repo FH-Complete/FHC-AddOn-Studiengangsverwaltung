@@ -20,6 +20,7 @@ require_once('../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../include/functions.inc.php');
 require_once('../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../include/lehrveranstaltung.class.php');
+require_once('../../../../../include/studienplan.class.php');
 require_once('../functions.php');
 
 $uid = get_uid();
@@ -119,6 +120,7 @@ foreach($lehrveranstaltung->lehrveranstaltungen as $key=>$lv)
 	$temp->sprache = $lv->sprache;
 	$temp->semesterstunden = $lv->semesterstunden;
 	$temp->lehrform_kurzbz = $lv->lehrform_kurzbz;
+	$temp->lehrmodus_kurzbz = $lv->lehrmodus_kurzbz;
 	$temp->bezeichnung_english = $lv->bezeichnung_english;
 	$temp->orgform_kurzbz = $lv->orgform_kurzbz;
 	$temp->incoming = $lv->incoming;
@@ -135,6 +137,14 @@ foreach($lehrveranstaltung->lehrveranstaltungen as $key=>$lv)
 	$temp->zeugnis = $lv->zeugnis;
 	$temp->lehre = $lv->lehre;
 	$temp->lehrauftrag = $lv->lehrauftrag;
+	$temp->anmerkung = $lv->anmerkung;
+
+	$studienplan = new studienplan();
+	$studienplan->getStudienplanLehrveranstaltung($lv->lehrveranstaltung_id);
+	$temp->zugewieseneStudienplaene = '';
+	foreach ($studienplan->result as $row_stpl)
+		$temp->zugewieseneStudienplaene .= $row_stpl->bezeichnung.' ';
+	
 	array_push($lv_array, $temp);
 }
 
