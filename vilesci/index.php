@@ -166,7 +166,7 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung')) {
 	<script src="js/jquery.hotkeys.js" type="text/javascript"></script>
 	<script src="js/bootstrap-wysiwyg-2.0/src/bootstrap-wysiwyg.js" type="text/javascript"></script>
 	<link href="js/bootstrap-wysiwyg-2.0/css/style.css" rel="stylesheet" type="text/css"/>
-	<link href="../vendor/fortawesome/font-awesome4/css/font-awesome.css" rel="stylesheet" type="text/css"/>
+	<link href="../vendor/fortawesome/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
 
     </head>
     <body ng-controller="AppCtrl as appCtrl">
