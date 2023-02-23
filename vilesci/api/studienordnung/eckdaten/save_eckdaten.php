@@ -14,8 +14,8 @@ $berechtigung = new benutzerberechtigung();
 $berechtigung->getBerechtigungen($uid);
 if(!$berechtigung->isBerechtigt("stgv/editStudienordnung",null,"suid"))
 {
-    $error = array("message"=>"Sie haben nicht die Berechtigung um Studienordnungen zu editieren.", "detail"=>"stgv/editStudienordnung");
-    returnAJAX(FALSE, $error);
+	$error = array("message"=>"Sie haben nicht die Berechtigung um Studienordnungen zu editieren.", "detail"=>"stgv/editStudienordnung");
+	returnAJAX(FALSE, $error);
 }
 
 $data = filter_input_array(INPUT_POST, array("data"=> array('flags'=> FILTER_REQUIRE_ARRAY)));
@@ -24,32 +24,33 @@ $studienordnung = mapDataToStudienordnung($data);
 
 if($studienordnung->status_kurzbz != "development" && !($berechtigung->isBerechtigt("stgv/changeStoAdmin")))
 {
-    $error = array("message"=>"Sie haben nicht die Berechtigung um Studienordnungen in diesem Status zu ändern.", "detail"=>"stgv/changeStoAdmin");
-    returnAJAX(FALSE, $error);
+	$error = array("message"=>"Sie haben nicht die Berechtigung um Studienordnungen in diesem Status zu ändern.", "detail"=>"stgv/changeStoAdmin");
+	returnAJAX(FALSE, $error);
 }
 
 if($studienordnung->save())
 {
-    
-    returnAJAX(true, "Studienordnung erfolgreich aktualisiert");
+	
+	returnAJAX(true, "Studienordnung erfolgreich aktualisiert");
 }
 else
 {
-    $error = array("message"=>"Fehler beim Speichern der Studienordnung.", "detail"=>$studienordnung->errormsg);
-    returnAJAX(false, $error);
+	$error = array("message"=>"Fehler beim Speichern der Studienordnung.", "detail"=>$studienordnung->errormsg);
+	returnAJAX(false, $error);
 }
 
 function mapDataToStudienordnung($data)
 {
-    $sto = new StudienordnungAddonStgv();
-    $sto->loadStudienordnung($data->studienordnung_id);
-    $sto->studiengangbezeichnung = $data->studiengangbezeichnung;
-    $sto->studiengangkurzbzlang	= $data->studiengangkurzbzlang;
-    $sto->studiengangsart = $data->studiengangsart;
-    $sto->akadgrad_id = $data->akadgrad_id;
-    $sto->standort_id = $data->standort_id;
-    $sto->updatevon = get_uid();
-    return $sto;
+	$sto = new StudienordnungAddonStgv();
+	$sto->loadStudienordnung($data->studienordnung_id);
+	$sto->studiengangbezeichnung = $data->studiengangbezeichnung;
+	$sto->studiengangbezeichnung_englisch = $data->studiengangbezeichnung_englisch;
+	$sto->studiengangkurzbzlang	= $data->studiengangkurzbzlang;
+	$sto->studiengangsart = $data->studiengangsart;
+	$sto->akadgrad_id = $data->akadgrad_id;
+	$sto->standort_id = $data->standort_id;
+	$sto->updatevon = get_uid();
+	return $sto;
 }
 
 ?>

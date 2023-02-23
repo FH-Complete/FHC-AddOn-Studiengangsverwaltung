@@ -32,6 +32,18 @@
 			</div>
 		</div>
 		<div class="row">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="bezeichnungeng">Studiengangbezeichnung Englisch</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="bezeichnungeng" ng-model="ctrl.data.studiengangbezeichnung_englisch"/>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Die bestehende oder die aufgrund der Änderung neue Studiengangsbezeichnung eingeben."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
 			<div class="col-sm-2">
 				<div class="form-group" ng-class="{'has-error': (form.$submitted && form.art.$error.required)}">
 					<label for="art">Studiengangsart</label>
