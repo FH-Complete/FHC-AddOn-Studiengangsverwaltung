@@ -430,6 +430,7 @@ if($studienplan->studienplan_id!='')
 	}
 
 	// Pruefen ob unterschiedliche Wochenteiler vorhanden sind
+	/*
 	$output .= '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs ergeben sich unterschiedliche Werte für die Semesterwochen (Berechnung: LVS / SWS)<br>
 	Die Semesterwochen sollten jedoch überall gleich sein. Bitte die entsprechenden Änderungen durchführen oder - falls keine Änderungen möglich sind - eine EMail an <a href="mailto: fhcomplete@'.DOMAIN.'">fhcomplete@'.DOMAIN.'</a> übermitteln.</h2>';
 	$qry = "SELECT
@@ -484,6 +485,7 @@ if($studienplan->studienplan_id!='')
 		else
 			$output .= '<span class="ok">OK</span>';
 	}
+	*/
 
 	// Pruefen ob LVPLS>ALVS
 	$output .= '<br><br><br><h2>'.++$nummerierung.'. Bei folgenden LVs sind die LVPLS &gt; ALVS (Siehe <a href="https://wiki.fhcomplete.info/doku.php?id=addons:stgvt-sto-content-attr#berechnungsbeispiele" target="_blank">Berechnungsbeispiele</a>)<br>
