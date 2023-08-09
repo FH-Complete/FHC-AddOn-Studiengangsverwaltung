@@ -257,7 +257,7 @@ function saveStudienplanLehrveranstaltung($data, $studienplan_id, $parent_id)
 		$stpllv->export = $lv->export;
 		$stpllv->genehmigung = $lv->genehmigung;
 
-	    if (($stpllv->saveStudienplanLehrveranstaltung() != false) && (count($lv->children) > 0))
+	    if (($stpllv->saveStudienplanLehrveranstaltung() != false) && (numberOfElements($lv->children) > 0))
 	    {
 		saveStudienplanLehrveranstaltung($lv->children, $stpllv->studienplan_id, $stpllv->studienplan_lehrveranstaltung_id);
 	    }

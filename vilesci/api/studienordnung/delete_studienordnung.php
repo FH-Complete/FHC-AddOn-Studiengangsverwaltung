@@ -50,7 +50,7 @@ if($berechtigung->isBerechtigt("stgv/deleteStudienordnung", null, "suid"))
     if($studienordnung->status_kurzbz == "development")
     {
 	$studienplan->loadStudienplanSTO($studienordnung_id);
-	if(count($studienplan->result) > 0)
+	if(numberOfElements($studienplan->result) > 0)
 	{
 	    $error = array("message"=>"Studienordnung kann nicht gelöscht werden. Es sind noch Studienpläne verknüpft.", "detail"=>$studienplan->errormsg);
 	    returnAJAX(false, $error);

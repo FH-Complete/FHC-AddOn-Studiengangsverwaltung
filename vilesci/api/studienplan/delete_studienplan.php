@@ -72,7 +72,7 @@ if($berechtigung->isBerechtigt("stgv/deleteStudienplan", null, "suid"))
 	    }
 
 	}
-	elseif(count($studienplan->result) > 0)
+	elseif(numberOfElements($studienplan->result) > 0)
 	{
 	    $error = array("message"=>"Studienplan kann nicht gelöscht werden. Es sind noch Lehrveranstaltungen verknüpft.", "detail"=>$studienplan->errormsg);
 	    returnAJAX(false, $error);
