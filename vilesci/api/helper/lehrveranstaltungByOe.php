@@ -35,6 +35,7 @@ if (!$rechte->isBerechtigt('addon/studiengangsverwaltung'))
 $oe_kurzbz = filter_input(INPUT_GET, "oe_kurzbz");
 $lehrtyp_kurzbz = filter_input(INPUT_GET, "lehrtyp_kurzbz");
 $semester = filter_input(INPUT_GET, "semester");
+$lehrveranstaltung_id = filter_input(INPUT_GET, "lv_id");
 $studiengang_kz = filter_input(INPUT_GET, "studiengang_kz");
 $sort = filter_input(INPUT_GET, "sort");
 $order = filter_input(INPUT_GET, "order");
@@ -80,10 +81,22 @@ if($semester == "null")
 	$semester = null;
 }
 
+if($lehrveranstaltung_id == "undefined")
+{
+	$lehrveranstaltung_id = null;
+}
+
 $lehrveranstaltung = new lehrveranstaltung();
 $lv_array = array();
 
-if(($oe_kurzbz == "alle") && ($studiengang_kz != "alle"))
+if ($lehrveranstaltung_id != null)
+{
+	if(!$lehrveranstaltung->load_lv_from_id($lehrveranstaltung_id))
+	{
+		returnAJAX(false, $lehrveranstaltung->errormsg);
+	}
+}
+elseif(($oe_kurzbz == "alle") && ($studiengang_kz != "alle"))
 {
 	if(!$lehrveranstaltung->load_lva($studiengang_kz, $semester, null, null, true, $sortString, null, $lehrtyp_kurzbz))
 	{
@@ -147,6 +160,7 @@ foreach($lehrveranstaltung->lehrveranstaltungen as $key=>$lv)
 	
 	array_push($lv_array, $temp);
 }
+
 
 returnAJAX(true, $lv_array)
 
