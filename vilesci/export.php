@@ -341,7 +341,6 @@ $qualifikationsziel->getAll($studienordnung_id);
 if (isset($qualifikationsziel->result[0]))
 {
 	$qualifikation_bildungsauftrag = $qualifikationsziel->result[0]->data[0]->fixed[0];
-
 	$qualifikation_beschreibung = $qualifikationsziel->result[0]->data[1]->elements[0];
 	$qualifikation_kompetenz1 = $qualifikationsziel->result[0]->data[1]->fixed[1];
 	$qualifikation_kompetenz2 = $qualifikationsziel->result[0]->data[1]->fixed[2];
@@ -370,6 +369,7 @@ else
 //echo "\nAFTER 2odt:<br /><br />".htmlspecialchars(escapeGlobalP(html2odtNew($aufnahmeverfahren_data)));
 //echo html2odtNew($zugangsvoraussetzung_data);
 //die();
+
 
 $data = array(
 	'studienordnung_id' => $studienordnung->studienordnung_id,
@@ -405,7 +405,7 @@ $data = array(
 	'aufgaben_fixed' => $aufgaben_fixed,
 	'aufgaben_elements' => $aufgaben_elements,
 	'qualifikation_bildungsauftrag' => $qualifikation_bildungsauftrag,
-	'qualifikation_beschreibung' => $qualifikation_beschreibung,
+	'qualifikation_beschreibung' => json2odt($qualifikation_beschreibung),
 	'qualifikation_kompetenz1' => $qualifikation_kompetenz1,
 	'qualifikation_kompetenz2' => $qualifikation_kompetenz2,
 	'qualifikation_kompetenz1_elements' => $qualifikation_kompetenz1_elements,
@@ -538,6 +538,19 @@ function printLVTree($tree)
 		$i++;
 	}
 	return $data;
+}
+/**
+ * Formatiert json-output als String mit newline als String
+ * Vorbereitung für die Funktion replace() in der Vorlage STGV_STO_content
+ * @param $str der HTML String
+ * @return String mit
+ */
+function json2odt($str)
+{
+	//newline \n durch string '\n' ersetzen
+	$str = str_replace(array("\r\n", "\r", "\n"), '\n', $str);
+
+	return $str;
 }
 
 /**

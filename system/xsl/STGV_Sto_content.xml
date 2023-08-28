@@ -1841,10 +1841,16 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       <text:p text:style-name="P12">
         <text:span text:style-name="T14"><xsl:value-of select="qualifikation_bildungsauftrag" /></text:span>
       </text:p>
+
       <text:p text:style-name="P52">Qualifikationsziele</text:p>
-      <text:p text:style-name="P12">
-        <text:span text:style-name="T14"><xsl:value-of select="qualifikation_beschreibung" /></text:span>
+      <text:p text:style-name="PNORMAL">
+        <text:span text:style-name="T14">
+          <xsl:call-template name="replace">
+            <xsl:with-param name="string" select="qualifikation_beschreibung"/>
+          </xsl:call-template>
+        </text:span>
       </text:p>
+
       <text:p text:style-name="P4"/>
       <text:p text:style-name="Standard">
         <text:span text:style-name="T17"><xsl:value-of select="qualifikation_kompetenz1" /></text:span>
@@ -2444,6 +2450,22 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </xsl:otherwise>
     </xsl:choose>
 </xsl:template>
+
+  <xsl:template name="replace">
+    <xsl:param name="string"/>
+    <xsl:choose>
+      <xsl:when test="contains($string,'\n')">
+        <xsl:value-of select="substring-before($string,'\n')"/>
+        <text:line-break/>
+        <xsl:call-template name="replace">
+          <xsl:with-param name="string" select="substring-after($string,'\n')"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$string"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
 <!-- *************** Taetigkeitsfeld **************** -->
 <xsl:template match="branchen_elements">
