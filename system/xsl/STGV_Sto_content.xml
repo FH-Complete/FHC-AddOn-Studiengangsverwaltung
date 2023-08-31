@@ -1837,9 +1837,13 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
           </text:list>
         </text:list-item>
 	</text:list>-->
-      <text:p text:style-name="P52">Bildungsauftrag FH-Studiengänge</text:p>
-      <text:p text:style-name="P12">
-        <text:span text:style-name="T14"><xsl:value-of select="qualifikation_bildungsauftrag" /></text:span>
+     <text:p text:style-name="P52">Bildungsauftrag FH-Studiengänge</text:p>
+      <text:p text:style-name="PNORMAL">
+        <text:span text:style-name="T14">
+          <xsl:call-template name="replace">
+            <xsl:with-param name="string" select="qualifikation_bildungsauftrag"/>
+          </xsl:call-template>
+        </text:span>
       </text:p>
 
       <text:p text:style-name="P52">Qualifikationsziele</text:p>
@@ -2168,13 +2172,13 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         <text:list-item>
           <text:list>
             <text:list-item>-->
-              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2418_554519492"/><text:bookmark-start text:name="_Toc451354167"/>Modulgrafik<text:bookmark-end text:name="__RefHeading__2418_554519492"/><text:bookmark-end text:name="_Toc451354167"/></text:h>
+<!--              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2418_554519492"/><text:bookmark-start text:name="_Toc451354167"/>Modulgrafik<text:bookmark-end text:name="__RefHeading__2418_554519492"/><text:bookmark-end text:name="_Toc451354167"/></text:h>-->
             <!--</text:list-item>
           </text:list>
         </text:list-item>
 	</text:list>-->
-      <text:p text:style-name="P37">Noch nicht vorhanden</text:p>
-      <text:p text:style-name="P6"/>
+<!--      <text:p text:style-name="P37">Noch nicht vorhanden</text:p>
+      <text:p text:style-name="P6"/>-->
 	  <!--
       <text:list xml:id="list120527926051947" text:continue-numbering="true" text:style-name="WWNum1">
         <text:list-item>
