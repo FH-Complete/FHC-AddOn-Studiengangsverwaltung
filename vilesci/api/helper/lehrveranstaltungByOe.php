@@ -91,7 +91,8 @@ $lv_array = array();
 
 if ($lehrveranstaltung_id != null)
 {
-	if(!$lehrveranstaltung->load_lv_from_id($lehrveranstaltung_id))
+	//if(!$lehrveranstaltung->load_lv_from_id($lehrveranstaltung_id))
+	if(!$lehrveranstaltung->loadArray(array($lehrveranstaltung_id)))
 	{
 		returnAJAX(false, $lehrveranstaltung->errormsg);
 	}
@@ -157,7 +158,7 @@ foreach($lehrveranstaltung->lehrveranstaltungen as $key=>$lv)
 	$temp->zugewieseneStudienplaene = '';
 	foreach ($studienplan->result as $row_stpl)
 		$temp->zugewieseneStudienplaene .= $row_stpl->bezeichnung.' ';
-	
+
 	array_push($lv_array, $temp);
 }
 
