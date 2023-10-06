@@ -39,8 +39,15 @@ $studiengang_kz = filter_input(INPUT_GET, "studiengang_kz");
 $sort = filter_input(INPUT_GET, "sort");
 $order = filter_input(INPUT_GET, "order");
 
-$sort = explode(",",$sort);
-$order = explode(",",$order);
+if (!is_null($sort))
+	$sort = explode(",",$sort);
+else
+	$sort = array();
+
+if (!is_null($order))
+	$order = explode(",",$order);
+else
+	$order = array();
 
 $sortString = null;
 
@@ -49,7 +56,8 @@ foreach($sort as $key=>$s)
 	$sortString .= $s." ".$order[$key].", ";
 }
 
-$sortString = substr($sortString,0,-2);
+if (!is_null($sortString))
+	$sortString = substr($sortString,0,-2);
 
 if($sortString == " ")
 	$sortString = null;

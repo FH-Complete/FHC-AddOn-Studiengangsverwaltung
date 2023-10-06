@@ -94,7 +94,7 @@ class StudienordnungAddonStgv extends studienordnung
 			$obj->aenderungsvariante_bezeichnung = $row->aenderungsvariante_bezeichnung;
 			$obj->status_kurzbz = $row->status_kurzbz;
 			$obj->status_bezeichnung = $row->status_bezeichnung;
-			$obj->begruendung = json_decode($row->begruendung);
+			$obj->begruendung = json_decode($row->begruendung ?? '');
 			$obj->standort_id = $row->standort_id;
 			$obj->updateamum = $row->updateamum;
 			$obj->updatevon = $row->updatevon;
@@ -370,7 +370,7 @@ class StudienordnungAddonStgv extends studienordnung
 			$obj->aenderungsvariante_bezeichnung = $row->aenderungsvariante_bezeichnung;
 			$obj->status_kurzbz = $row->status_kurzbz;
 			$obj->status_bezeichnung = $row->status_bezeichnung;
-			$obj->begruendung = json_decode($row->begruendung);
+			$obj->begruendung = json_decode($row->begruendung ?? '');
 			$obj->standort_id = $row->standort_id;
 			$obj->updateamum = $row->updateamum;
 			$obj->updatevon = $row->updatevon;
@@ -429,7 +429,7 @@ class StudienordnungAddonStgv extends studienordnung
 			$this->akadgrad_id = $row->akadgrad_id;
 			$this->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
 			$this->status_kurzbz = $row->status_kurzbz;
-			$this->begruendung = json_decode($row->begruendung);
+			$this->begruendung = json_decode($row->begruendung ?? '');
 			$this->standort_id = $row->standort_id;
 			$this->updateamum = $row->updateamum;
 			$this->updatevon = $row->updatevon;
@@ -610,7 +610,7 @@ class StudienordnungAddonStgv extends studienordnung
 		$obj->akadgrad_id = $row->akadgrad_id;
 		$obj->aenderungsvariante_kurzbz = $row->aenderungsvariante_kurzbz;
 		$obj->status_kurzbz = $row->status_kurzbz;
-		$obj->begruendung = json_decode($row->begruendung);
+		$obj->begruendung = json_decode($row->begruendung ?? '');
 		$obj->standort_id = $row->standort_id;
 		$obj->updateamum = $row->updateamum;
 		$obj->updatevon = $row->updatevon;
