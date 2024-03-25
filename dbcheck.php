@@ -1300,6 +1300,35 @@ if($result = @$db->db_query("SELECT 1 FROM system.tbl_webservicerecht WHERE bere
 	}
 }
 
+//Berechtigung zum Ändern von Entwicklungsteams
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/editEntwicklungsteam' LIMIT 1"))
+{
+	if($db->db_num_rows($result)==0)
+	{
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/editEntwicklungsteam','Recht zum Bearbeiten des Entwickungsteams');";
+
+	if (!$db->db_query($qry))
+		echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+		echo ' system.tbl_berechtigung: Recht zum Ändern von Entwickungsteams hinzugefügt.<br>';
+	}
+}
+
+
+//Berechtigung 'stgv/editEntwicklungsteam' zu Rolle addonStgv hinzufuegen
+if($result = @$db->db_query("SELECT 1 from system.tbl_rolleberechtigung WHERE berechtigung_kurzbz = 'stgv/editEntwicklungsteam' AND rolle_kurzbz = 'addonStgv';"))
+{
+	if($db->db_num_rows($result) == 0)
+	{
+		$qry = "INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES ('stgv/editEntwicklungsteam', 'addonStgv', 'suid');";
+
+		if(!$db->db_query($qry))
+			echo '<strong>system.tbl_rolleberechtigung '.$db->db_last_error().'</strong><br>';
+		else
+			echo 'system.tbl_rolleberechtigung: Added stgv/editEntwicklungsteam to Rolle addonStgv<br>';
+	}
+}
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 

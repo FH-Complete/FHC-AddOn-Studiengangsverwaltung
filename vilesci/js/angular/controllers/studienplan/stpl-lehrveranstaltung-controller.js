@@ -14,6 +14,7 @@ angular.module('stgv2')
 			ctrl.oe_kurzbz = "alle";
 			ctrl.lehrtypList = "";
 			ctrl.lehrtyp_kurzbz = "lv";
+			ctrl.lv_id = "";
 			ctrl.lehrmodusList = "";
 			ctrl.lehrmodus_kurzbz = "";
 			ctrl.anmerkung = "";
@@ -765,14 +766,17 @@ angular.module('stgv2')
 				var lehrtyp_kurzbz = $("#lehrtyp").val();
 				var lehrmodus_kurzbz = $("#lehrmodus").val();
 				var anmerkung = $("#anmerkung").val();
+
 				var semester = $("#semester").val();
 				if (semester === "? string: ?")
 				{
 					semester = null;
 				}
+				var lv_id = $("#lvsuche").val();
+
 
 				$("#lvTreeGrid").treegrid({
-					url: "./api/helper/lehrveranstaltungByOe.php?oe_kurzbz=" + oe_kurzbz + "&lehrtyp_kurzbz=" + lehrtyp_kurzbz + "&semester=" + semester + "&studiengang_kz=" + ctrl.studiengang_kz,
+					url: "./api/helper/lehrveranstaltungByOe.php?oe_kurzbz=" + oe_kurzbz + "&lehrtyp_kurzbz=" + lehrtyp_kurzbz + "&semester=" + semester + "&studiengang_kz=" + ctrl.studiengang_kz + "&lv_id=" + lv_id,
 					method: 'GET',
 					idField: 'id',
 					treeField: 'bezeichnung',
@@ -1371,6 +1375,11 @@ angular.module('stgv2')
 				var row = $("#stplTreeGrid").treegrid('getSelected');
 				ctrl.dialog(row);
 			}
+
+			ctrl.resetLvId = function()
+			{
+				ctrl.lv_id = "";
+			}
 		});
 
 function generateChildren(item, sem)
@@ -1528,3 +1537,5 @@ function setLvBezeichnung(lvregel_id)
 {
 	$('#lvregel_lehrveranstaltung_span'+lvregel_id).text($("#lvregel_lehrveranstaltung_id_autocomplete"+lvregel_id+" option:selected").text());
 }
+
+

@@ -37,7 +37,7 @@ $data = (Object) $data["data"];
 $bewerbungstermin = mapDataToBewerbungstermin($data);
 if($bewerbungstermin->save())
 {
-    returnAJAX(true, "Bewerbungstermin erfolgreich gepspeichert.");
+    returnAJAX(true, "Bewerbungstermin erfolgreich gespeichert.");
 }
 else
 {

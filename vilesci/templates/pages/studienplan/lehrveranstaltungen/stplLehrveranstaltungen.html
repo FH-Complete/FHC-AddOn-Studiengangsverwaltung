@@ -58,6 +58,28 @@
 					</select>
 				</div>
 			</div>
+
+			<div ng-if="stplCtrl.lehrtyp_kurzbz == 'lv'">
+				<div class="col-sm-5">
+					<div class="form-group form-group-sm">
+						<div class="form-group easyui-combobox">
+							<label for="lvsuche">Lehrveranstaltungs-Id</label>
+							<input id="lvsuche" class="form-control input-sm"  name="lv_id" ng-model="stplCtrl.lv_id" style="height:30px; width: 234px;">
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group form-group-sm">
+						<label>&nbsp;</label>
+						<div>
+							<button class="btn btn-default btn-sm"
+									ng-click="stplCtrl.resetLvId()"><i class="fa fa-undo"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="col-sm-2">
 				<div class="form-group form-group-sm">
 					<label>&nbsp;</label>
@@ -77,9 +99,14 @@
 				</div>
 			</div>
 		</div>
-		<div id="lvTreeGridContainer">
-			<table id="lvTreeGrid" class="easyui-treegrid" style="height: 300px;">
-			</table>
+
+
+	<div class="col-sm-12">
+		<br>
+			<div id="lvTreeGridContainer">
+				<table id="lvTreeGrid" class="easyui-treegrid" style="height: 260px;">
+				</table>
+			</div>
 		</div>
 	</div>
 	<ul class="nav nav-tabs">

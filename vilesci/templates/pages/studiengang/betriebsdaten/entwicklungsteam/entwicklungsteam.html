@@ -1,0 +1,74 @@
+<div class="contentWrapper" ng-controller="StgEntwicklungsteamCtrl as ctrl" filters="queueLimit, extensionFilter">
+	<div class="col-sm-2">
+		<div>
+			<label>&nbsp;</label>
+			<button class='btn btn-default btn-sm' ng-click='ctrl.newEntwicklungsteam()'>neues Mitglied Entwicklungsteam</button>
+		</div>
+	</div>
+	<br>
+	</br>
+	<br>
+	</br>
+
+	<table id="dataGridEntwicklungsteam" class="easyui-datagrid" style='height: 200px;'>
+	</table>
+
+	<div id="entwicklungsteamDetails" style="display: none;">
+		<form name="form_entwicklungsteam" onsubmit="return true;" novalidate>
+
+	<br><br>
+			 <div class="row">
+
+				 <div class="col-sm-3">
+					 <div class="form-group easyui-combobox" ng-class="{'has-error': (form.$submitted && form.entwicklungsteam.$error.required)}">
+						 <label for="mitarbeiter">Personensuche Name (mitarbeiter_uid)</label>
+						 <input type="text" id="masuche" name="mitarbeiter_uid" class="form-control input-md" ng-model="ctrl.entwicklungsteam.mitarbeiter_uid" style="height:30px; width: 340px;">
+					</div>
+				</div>
+
+				<div class="col-sm-2">
+					<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.beginn.$error.date))}">
+						<label for="beginn">Beginn</label>
+						<input id="datepicker_beginn" class="form-control input-sm" name="beginn" ng-model="ctrl.entwicklungsteam.beginn">
+						</input>
+						<span ng-show="form.beginn.$error.date">Kein gültiges Datum!</span>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.ende.$error.date))}">
+						<label for="ende">Ende</label>
+						<input id="datepicker_ende"class="form-control input-sm" name="ende" ng-model="ctrl.entwicklungsteam.ende">
+						</input>
+						<span ng-show="form.ende.$error.date">Kein gültiges Datum!</span>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label for="besqualcode">Besondere Qualifikation</label>
+						<select class="form-control input-sm" name="besqualcode" ng-model="ctrl.entwicklungsteam.besqualcode">
+							<option ng-repeat="b in ctrl.besqualcodes" value="{{b.value}}">{{b.label}}</option>
+						</select>
+					</div>
+				</div>
+		</div>
+
+			<div class="row col-sm-6">
+
+				<div class="row">
+					<div class="row col-sm-12">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<div>
+									<button id="update" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.update()">Speichern</button>
+									<button id="save" type="submit" class="btn btn-success btn-sm" ng-click="ctrl.save()" style="display:none;">Speichern</button>
+									<button id="delete" type="submit" class="btn btn-danger btn-sm" ng-click="ctrl.delete()">Löschen</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+
+	</div>
+</div>

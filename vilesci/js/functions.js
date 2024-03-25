@@ -146,11 +146,19 @@ function dateTimeStringToGermanDateString(dateTimeString)
 	if((dateTimeString !== null) && (dateTimeString !== undefined))
 	{
 		var datum = dateTimeString.split(" ")[0];
+
 		var zeit = dateTimeString.split(" ")[1];
 
-		return datum.split("-")[2]+'.'+datum.split("-")[1]+'.'+datum.split("-")[0]+' '+zeit.split(":")[0]+':'+zeit.split(":")[1];
+		if ((zeit !== null ) && (zeit !== undefined))
+		{
+			return datum.split("-")[2] + '.' + datum.split("-")[1] + '.' + datum.split("-")[0] + ' ' + zeit.split(":")[0] + ':' + zeit.split(":")[1];
+		}
+		else
+
+			return datum.split("-")[2] + '.' + datum.split("-")[1] + '.' + datum.split("-")[0];
 	}
 	else
+
 		return null;
 }
 
