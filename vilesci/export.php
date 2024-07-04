@@ -344,6 +344,7 @@ if (isset($qualifikationsziel->result[0]))
 	$qualifikation_beschreibung = $qualifikationsziel->result[0]->data[1]->elements[0];
 	$qualifikation_kompetenz1 = $qualifikationsziel->result[0]->data[1]->fixed[1];
 	$qualifikation_kompetenz2 = $qualifikationsziel->result[0]->data[1]->fixed[2];
+	$qualifikation_lernergebnis = $qualifikationsziel->result[0]->data[2]->fixed[0];
 
 	foreach ($qualifikationsziel->result[0]->data[1]->elements[1] as $key => $row_kompetenz)
 	{
@@ -410,6 +411,7 @@ $data = array(
 	'qualifikation_kompetenz2' => $qualifikation_kompetenz2,
 	'qualifikation_kompetenz1_elements' => $qualifikation_kompetenz1_elements,
 	'qualifikation_kompetenz2_elements' => $qualifikation_kompetenz2_elements,
+	'qualifikation_lernergebnis' => $qualifikation_lernergebnis
 );
 
 $files = array();
