@@ -25,7 +25,7 @@ if ($entwicklungsteam->save())
 }
 else
 {
-    $error = array("message" => "Fehler beim Speichern des Entwicklungsteams.", "detail" => $entwicklungsteam->errormsg);
+    $error = array("message" => "Fehler beim Speichern des Entwicklungsteams:", "detail" => $entwicklungsteam->errormsg);
     returnAJAX(false, $error);
 }
 
@@ -37,9 +37,9 @@ function mapDataToEntwicklungsteam($data)
 {
     $ew = new entwicklungsteam();
     $ew->new = true;
-	  $ew->mitarbeiter_uid = $data->mitarbeiter_uid;
+    $ew->mitarbeiter_uid = $data->mitarbeiter_uid;
     $ew->studiengang_kz = $data->studiengang_kz;
-	  $ew->besqualcode = $data->besqualcode;
+    $ew->besqualcode = $data->besqualcode;
     $ew->beginn = $data->beginn;
     $ew->ende = $data->ende;
     $ew->insertvon = get_uid();

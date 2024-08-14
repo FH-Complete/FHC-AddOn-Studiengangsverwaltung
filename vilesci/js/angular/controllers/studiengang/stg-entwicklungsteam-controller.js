@@ -145,11 +145,24 @@ angular.module('stgv2')
 				var saveData = {data: ""};
 				saveData.data = ctrl.entwicklungsteam;
 
-				//GermanDateToISODate
-				if(ctrl.entwicklungsteam.beginn != null && ctrl.entwicklungsteam.beginn != '')
-					saveData.data.beginn = GermanDateToISODate(ctrl.entwicklungsteam.beginn);
-				if(ctrl.entwicklungsteam.ende != null && ctrl.entwicklungsteam.ende != '')
-					saveData.data.ende = GermanDateToISODate(ctrl.entwicklungsteam.ende);
+				//GermanDateToISODate wenn Date nicht bereits im ISOFormat vorliegt
+				var isoDatePattern = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}Z)?$/;
+				if (ctrl.entwicklungsteam.beginn != null && ctrl.entwicklungsteam.beginn != '')
+				{
+					if (!isoDatePattern.test(ctrl.entwicklungsteam.beginn)) {
+						saveData.data.beginn = GermanDateToISODate(ctrl.entwicklungsteam.beginn);
+					} else {
+						saveData.data.beginn = ctrl.entwicklungsteam.beginn;
+					}
+				}
+
+				if (ctrl.entwicklungsteam.ende != null && ctrl.entwicklungsteam.ende != '') {
+					if (!isoDatePattern.test(ctrl.entwicklungsteam.ende)) {
+						saveData.data.ende = GermanDateToISODate(ctrl.entwicklungsteam.ende);
+					} else {
+						saveData.data.ende = ctrl.entwicklungsteam.ende;
+					}
+				}
 
 				if(ctrl.entwicklungsteam.studiengang_kz == null || ctrl.entwicklungsteam.studiengang_kz == '')
 					saveData.data.studiengang_kz = $scope.stgkz;
@@ -177,10 +190,16 @@ angular.module('stgv2')
 						}
 						else
 						{
-							errorService.setError(getErrorMsg(response));
+							// Fehlermeldung als Alert anzeigen
+							var errorMsg = response.data.message.message + "\n" + response.data.message.detail;
+							errorService.setError(errorMsg);
+							alert(errorMsg);
 						}
 					}, function error(response) {
-						errorService.setError(getErrorMsg(response));
+						// Fehlermeldung bei HTTP-Fehler anzeigen
+						var errorMsg = getErrorMsg(response);
+						errorService.setError(errorMsg);
+						alert(errorMsg);
 					});
 				}
 				else
