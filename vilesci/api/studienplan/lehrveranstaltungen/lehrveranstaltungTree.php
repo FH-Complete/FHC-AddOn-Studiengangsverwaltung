@@ -22,6 +22,7 @@ require_once('../../../../../../config/vilesci.config.inc.php');
 require_once('../../../../../../include/functions.inc.php');
 require_once('../../../../../../include/benutzerberechtigung.class.php');
 require_once('../../../../../../include/lehrveranstaltung.class.php');
+require_once('../../../../../../include/studienordnung.class.php');
 require_once('../../../../include/studienplanAddonStgv.class.php');
 require_once('../../functions.php');
 
@@ -45,28 +46,69 @@ $studienplan->loadStudienplan($studienplan_id);
 $lehrveranstaltung = new lehrveranstaltung();
 $lehrveranstaltung->loadLehrveranstaltungStudienplan($studienplan_id);
 
+$studienordnung = new studienordnung();
+$studienordnung->getStudienordnungFromStudienplan($studienplan_id);
+
+
 if($parent_id == null)
 {
-    for($i=1; $i <= $studienplan->regelstudiendauer; $i++)
-    {
-        $node = new stdClass();
-        $node->id = $i.'_sem';
-        $node->bezeichnung = $i.'. Semester';
-        $node->type = "sem";
-        $node->sem = $i;
-        $node->iconCls = "tree-folder";
-        $node->state = "open";
-        $node->ects = 0;
-        foreach($lehrveranstaltung->lehrveranstaltungen as $lv)
-        {
-            if(($lv->stpllv_semester == $i) && ($lv->studienplan_lehrveranstaltung_id_parent==""))
-            {
-                $node->state = "closed";
-                $node->ects += $lv->ects;
-            }
-        }
-        array_push($data, $node);
-    }
+	//change for masterlehrgaenge
+	//if($studienordnung->studiengang_kz < 0)
+
+	//$studienordnung->ects: NULL, daher regelstudiendauer als Unterscheidungsmerkmal
+	if($studienordnung->studiengang_kz < 0 && $studienplan->regelstudiendauer >= 4)
+	{
+		for($i=0; $i <= $studienplan->regelstudiendauer; $i++)
+		{
+			$node = new stdClass();
+			$node->id = $i . '_sem';
+			$node->type = "sem";
+			$node->sem = $i;
+			$node->iconCls = "tree-folder";
+			$node->state = "open";
+			$node->ects = 0;
+
+			if($i==0) {
+				$node->bezeichnung = 'Validierung beruflicher Kompetenzen';
+			}
+			else {
+				$node->bezeichnung = $i . '. Semester';
+			}
+			foreach($lehrveranstaltung->lehrveranstaltungen as $lv)
+			{
+				if(($lv->stpllv_semester == $i) && ($lv->studienplan_lehrveranstaltung_id_parent==""))
+				{
+					$node->state = "closed";
+					$node->ects += $lv->ects;
+				}
+			}
+			array_push($data, $node);
+		}
+	}
+	else
+	{
+		//default version without semester==0
+		for($i=1; $i <= $studienplan->regelstudiendauer; $i++)
+		{
+			$node = new stdClass();
+			$node->id = $i.'_sem';
+			$node->bezeichnung = $i.'. Semester';
+			$node->type = "sem";
+			$node->sem = $i;
+			$node->iconCls = "tree-folder";
+			$node->state = "open";
+			$node->ects = 0;
+			foreach($lehrveranstaltung->lehrveranstaltungen as $lv)
+			{
+				if(($lv->stpllv_semester == $i) && ($lv->studienplan_lehrveranstaltung_id_parent==""))
+				{
+					$node->state = "closed";
+					$node->ects += $lv->ects;
+				}
+			}
+			array_push($data, $node);
+		}
+	}
 }
 else
 {
