@@ -53,12 +53,6 @@ $studienordnung->getStudienordnungFromStudienplan($studienplan_id);
 if($parent_id == null)
 {
 	//change for masterlehrgaenge
-	//if($studienordnung->studiengang_kz < 0)
-
-	//$studienordnung->ects: NULL, daher regelstudiendauer als Unterscheidungsmerkmal
-	//if($studienordnung->studiengang_kz < 0 && $studienplan->regelstudiendauer >= 4)
-
-	//nach feedback shiva: ects_stpl soll gewartet werden
 	if($studienordnung->studiengang_kz < 0 && $studienplan->ects_stpl >= 120)
 	{
 		for($i=0; $i <= $studienplan->regelstudiendauer; $i++)
