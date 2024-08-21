@@ -6,6 +6,7 @@
 		<thead>
 			<tr>
 				<th width="200">Studiensemester</th>
+				<th ng-if="ctrl.isMasterLehrgang" width="100">0</th>
 				<th width="100" ng-repeat="n in ctrl.range(ctrl.studienplan.regelstudiendauer)">{{n}}</th>
 				<th></th>
 			</tr>
@@ -13,20 +14,25 @@
 		<tbody>
 			<tr ng-repeat="sem in ctrl.zuordnungList">
 				<td>{{sem.studiensemester_kurzbz}}</td>
-				<td ng-repeat="n in ctrl.range(ctrl.studienplan.regelstudiendauer)"><span ng-show="{{sem.ausbildungssemester.indexOf(n.toString()) > -1}}" class='glyphicon glyphicon-ok green' aria-hidden='true'></span><span ng-show="sem.ausbildungssemester.indexOf(n.toString()) == -1" class='glyphicon glyphicon-remove red' aria-hidden='true'></span></td>
+				<td ng-repeat="n in ctrl.rangeWithSemesterNull(ctrl.studienplan.regelstudiendauer)">
+					<span ng-show="{{sem.ausbildungssemester.indexOf(n.toString()) > -1}}" class='glyphicon glyphicon-ok green' aria-hidden='true'></span>
+					<span ng-show="sem.ausbildungssemester.indexOf(n.toString()) == -1" class='glyphicon glyphicon-remove red' aria-hidden='true'></span>
+				</td>
 				<td>
 					<div class="btn-group btn-group-xs">
 						<button type="submit" class="btn btn-danger btn-sm" ng-click="ctrl.delete(sem.studiensemester_kurzbz)">Löschen</button>
 					</div>
 				</td>
 			</tr>
+
+
 			<tr id="newAssignment">
 				<td>
 					<select id="studiensemester">
 						<option ng-repeat="sem in ctrl.studiensemesterList" value="{{sem.studiensemester_kurzbz}}">{{sem.studiensemester_kurzbz}}</option>
 					</select>
 				</td>
-				<td class="newAssignment" ng-repeat="n in ctrl.range(ctrl.studienplan.regelstudiendauer)">
+				<td class="newAssignment" ng-repeat="n in ctrl.rangeWithSemesterNull(ctrl.studienplan.regelstudiendauer)">
 					<input type="checkbox" sem="{{n}}"/>
 				</td>
 				<td>
