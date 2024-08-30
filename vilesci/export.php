@@ -33,6 +33,7 @@ require_once('../../../include/organisationsform.class.php');
 require_once('../../../include/standort.class.php');
 require_once('../../../include/lehrform.class.php');
 require_once('../../../include/sprache.class.php');
+require_once('../../../include/studienplan.class.php');
 require_once('../include/studienordnungAddonStgv.class.php');
 require_once('../include/studienplanAddonStgv.class.php');
 require_once('../include/aenderungsvariante.class.php');
@@ -165,7 +166,13 @@ foreach ($stpl->result as $row_stpl)
 	$summe_lvs = 0;
 
 	$semester_arr = array();
-	for ($sem = 1; $sem <= $row_stpl->regelstudiendauer; $sem++)
+
+	if($row_stpl->ects_stpl >= 120 && $studiengang->typ == 'l')
+		$rangeStart = 0;
+	else
+		$rangeStart = 1;
+
+	for ($sem = $rangeStart; $sem <= $row_stpl->regelstudiendauer; $sem++)
 	{
 		$semester_summe_ects = 0;
 		$semester_summe_sws = 0;
