@@ -15,6 +15,7 @@ angular.module('stgv2')
 			ctrl.raumtypList = "";
 			ctrl.semesterList = [0,1,2,3,4,5,6,7,8,9];
 			ctrl.lvSuggestionList = "";
+			ctrl.lvTemplateList = "";
 
 			$scope.$on("editLehrveranstaltung", function(event, data)
 			{
@@ -28,6 +29,7 @@ angular.module('stgv2')
 					ctrl.loadOrganisationseinheitenList();
 				}
 				ctrl.loadLehrform();
+				ctrl.loadTemplates();
 			});
 
 			//set fields dependent on Studiengang
@@ -311,6 +313,28 @@ angular.module('stgv2')
 			ctrl.data.oe_kurzbz = $("#oe").val();
 			ctrl.data.lehrtyp_kurzbz = $("#lehrtyp").val();
 			ctrl.loadLehrform();
+
+			//load Templates
+			ctrl.loadTemplates = function()
+			{
+				//loading TemplatesList
+				$http({
+					method: 'GET',
+					url: './api/helper/lehrveranstaltungTemplates.php'
+				}).then(function success(response) {
+					if (response.data.erfolg)
+					{
+						ctrl.lvTemplateList = response.data.info;
+					}
+					else
+					{
+						errorService.setError(getErrorMsg(response));
+					}
+				}, function error(response) {
+					errorService.setError(getErrorMsg(response));
+				});
+
+			};
 
 			ctrl.saveLehrveranstaltung = function()
 			{

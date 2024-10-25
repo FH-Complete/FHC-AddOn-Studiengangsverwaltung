@@ -18,6 +18,7 @@ angular.module('stgv2')
 			ctrl.lehrmodusList = "";
 			ctrl.lehrmodus_kurzbz = "";
 			ctrl.anmerkung = "";
+			ctrl.lv_template_id = "";
 			ctrl.semester = "null";
 			ctrl.semesterList = [{
 					"key": "null",
@@ -773,6 +774,7 @@ angular.module('stgv2')
 					semester = null;
 				}
 				var lv_id = $("#lvsuche").val();
+				var lv_template_id = $("#lehrveranstaltung_template_id").val();
 
 
 				$("#lvTreeGrid").treegrid({
@@ -979,24 +981,26 @@ angular.module('stgv2')
 				});
 			};
 
-			ctrl.setFilter = function(lv_id, oe_kurzbz, lehrtyp_kurzbz, lehrmodus_kurzbz, semester, anmerkung)
+			ctrl.setFilter = function(lv_id, oe_kurzbz, lehrtyp_kurzbz, lehrmodus_kurzbz, semester, anmerkung, lehrveranstaltung_template_id)
 			{
 				$("#oe").val(oe_kurzbz);
 				$("#lehrtyp").val(lehrtyp_kurzbz);
 				$("#lehrmodus").val(lehrmodus_kurzbz);
 				$("#anmerkung").val(anmerkung);
 				$("#semester").val(semester);
+				$("#lehrveranstaltung_template_id").val(lehrveranstaltung_template_id);
 				ctrl.oe_kurzbz = oe_kurzbz;
 				ctrl.lehrtyp_kurzbz = lehrtyp_kurzbz;
 				ctrl.lehrmodus_kurzbz = lehrmodus_kurzbz;
 				ctrl.anmerkung = anmerkung;
 				ctrl.semester = semester;
+				ctrl.lehrveranstaltung_template_id = lehrveranstaltung_template_id;
 				ctrl.loadLehrveranstaltungen(lv_id);
 				$("#dialog").dialog('close');
 			};
 
 			$scope.$on("setFilter", function(event, args){
-				ctrl.setFilter(args.lv_id, args.oe_kurzbz, args.lehrtyp_kurzbz, args.lehrmodus_kurzbz, args.semester, args.anmerkung);
+				ctrl.setFilter(args.lv_id, args.oe_kurzbz, args.lehrtyp_kurzbz, args.lehrmodus_kurzbz, args.semester, args.anmerkung, args.lehrveranstaltung_template_id);
 			});
 
 			$scope.tabs = [
@@ -1418,6 +1422,7 @@ function generateChildren(item, sem)
 	node.lehrform_kurzbz = item.lehrform_kurzbz;
 	node.lehrmodus_kurzbz = item.lehrmodus_kurzbz;
 	node.anmerkung = item.anmerkung;
+	node.lehrveranstaltung_template_id = item.lehrveranstaltung_template_id;
 	node.lvnr = item.lvnr;
 	node.kurzbz = item.kurzbz;
 	node.semester = item.semester;

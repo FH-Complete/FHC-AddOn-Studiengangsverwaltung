@@ -199,15 +199,17 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-5">
-				<span>Details:</span><span>{{stplCtrl.meta.anmerkung}}</span>
+				<span>Details: </span><span>{{stplCtrl.meta.anmerkung}}</span>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-5">
-				<span>Verwendet in folgenden Studienplänen:</span><span>{{stplCtrl.meta.zugewieseneStudienplaene}}</span>
+				<span>Verwendet in folgenden Studienplänen: </span><span>{{stplCtrl.meta.zugewieseneStudienplaene}}</span>
 			</div>
-			<div class="col-sm-3" ng-show="stplCtrl.meta.lehrveranstaltung_template_id">
-				<span>Template:</span> <span>{{stplCtrl.meta.lehrveranstaltung_template_id}}</span>
+		</div>
+		<div class="row">
+			<div class="col-sm-5" ng-show="stplCtrl.meta.lehrveranstaltung_template_id">
+				<span>Template: </span> <span>{{stplCtrl.meta.lehrveranstaltung_template_id}}</span>
 			</div>
 		</div>
 		<div id="lvRegeln" class="tabContainer" ng-show="getSelectedTabName()=='LV Regeln'">

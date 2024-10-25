@@ -12,7 +12,7 @@
 				</div>
 				<div class="col-sm-3">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.lehrform.$error.required)}">
-						<label for="lehrvorm">Lehrform*</label>
+						<label for="lehrform">Lehrform*</label>
 						<select class="form-control input-sm" name="lehrform" ng-model="newLvCtrl.data.lehrform_kurzbz" ng-change="newLvCtrl.setLehrformDependencies()" required ng-disabled="newLvCtrl.data.gesperrt">
 							<option ng-repeat="lehrform in newLvCtrl.lehrformList" value="{{lehrform.lehrform_kurzbz}}">{{lehrform.bezeichnung}}</option>
 						</select>
@@ -55,7 +55,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-sm-5">
+				<div class="col-sm-6">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.oe.$error.required)}">
 						<label for="oe">Organisationseinheit*</label>
 						<select class="form-control input-sm" name="oe" ng-model="newLvCtrl.data.oe_kurzbz" required ng-disabled="newLvCtrl.data.gesperrt">
@@ -63,7 +63,7 @@
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-4">
+				<div class="col-sm-6">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && (form.orgform.$error.required && !newLvCtrl.data.gesperrt))}">
 						<label for="orgform">Organisationsform*</label>
 						<select class="form-control input-sm" name="orgform" ng-model="newLvCtrl.data.orgform_kurzbz" ng-required="!newLvCtrl.data.gesperrt" ng-disabled="newLvCtrl.data.gesperrt">
@@ -71,8 +71,9 @@
 						</select>
 					</div>
 				</div>
+			</div>
 			<div class="row">
-				<div class="col-sm-4">
+				<div class="col-sm-6">
 					<div class="form-group" ng-class="{'has-error': (form.$submitted && form.studiengang.$error.required)}">
 						<label for="studiengang">Studiengang*</label>
 						<select class="form-control input-sm" name="studiengang" ng-model="newLvCtrl.data.studiengang_kz" required ng-disabled="newLvCtrl.data.gesperrt">
@@ -88,7 +89,7 @@
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-3">
 					<div class="form-group">
 						<label for="semester">Semester</label>
 						<select class="form-control input-sm" name="semester" ng-model="newLvCtrl.data.semester" ng-disabled="newLvCtrl.data.gesperrt">
@@ -174,6 +175,17 @@
 					<div class="form-group">
 						<label for="anmerkung">Anmerkung</label>
 						<input strip-html type="text" class="form-control input-sm"  name="anmerkung" ng-model="newLvCtrl.data.anmerkung"/>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-group">
+						<label for="lehrveranstaltung_template_id">LV Template Id</label>
+						<select class="form-control input-sm" name="lehrveranstaltung_template_id" ng-model="newLvCtrl.data.lehrveranstaltung_template_id"  ng-change="newLvCtrl.onTemplateChange()" ng-disabled="newLvCtrl.data.lehrtyp_kurzbz == 'tpl'">
+							<option></option>
+							<option ng-repeat="lehrveranstaltung_template_id in newLvCtrl.lvTemplateList" value="{{lehrveranstaltung_template_id.id}}">{{lehrveranstaltung_template_id.id}} - {{lehrveranstaltung_template_id.label}}</option>
+						</select>
 					</div>
 				</div>
 			</div>
@@ -326,30 +338,30 @@
 				</div>
 			</div>
 		</form>
-	</div>
-	<div class="col-sm-6">
-		<h2>Vorschläge</h2>
-		<table class="table" style="width: 100%">
-			<thead>
-				<tr>
-					<th width="40px"></th>
-					<th>Lehrveranstaltung</th>
-					<th width="60px">ECTS</th>
-					<th width="60px">Lehrtyp</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-show="!newLvCtrl.data.lehrveranstaltung_id && form.$pristine && !form.$dirty && form.$submitted">
-					<td><input form="newLehrveranstaltung" type="submit" class="btn btn-success btn-sm" ng-click="newLvCtrl.saveLehrveranstaltung()" value="erstellen" /></td>
-					<td colspan="3">neue Lehrveranstaltung anlegen</td>
-				</tr>
-				<tr ng-repeat="lv in newLvCtrl.lvSuggestionList" ng-show="newLvCtrl.lvSuggestionList.length > 0">
-					<td><button ng-show="lv.aktiv" class="btn btn-primary btn-sm" ng-click="stplCtrl.setFilter(lv.lehrveranstaltung_id, lv.oe_kurzbz, lv.lehrtyp_kurzbz, lv.semester)">auswählen</button></td>
-					<td>{{lv.bezeichnung}}</td>
-					<td>{{lv.ects}}</td>
-					<td>{{lv.lehrtyp_kurzbz}}</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="col-sm-6">
+			<h2>Vorschläge</h2>
+			<table class="table" style="width: 100%">
+				<thead>
+					<tr>
+						<th width="40px"></th>
+						<th>Lehrveranstaltung</th>
+						<th width="60px">ECTS</th>
+						<th width="60px">Lehrtyp</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-show="!newLvCtrl.data.lehrveranstaltung_id && form.$pristine && !form.$dirty && form.$submitted">
+						<td><input form="newLehrveranstaltung" type="submit" class="btn btn-success btn-sm" ng-click="newLvCtrl.saveLehrveranstaltung()" value="erstellen" /></td>
+						<td colspan="3">neue Lehrveranstaltung anlegen</td>
+					</tr>
+					<tr ng-repeat="lv in newLvCtrl.lvSuggestionList" ng-show="newLvCtrl.lvSuggestionList.length > 0">
+						<td><button ng-show="lv.aktiv" class="btn btn-primary btn-sm" ng-click="stplCtrl.setFilter(lv.lehrveranstaltung_id, lv.oe_kurzbz, lv.lehrtyp_kurzbz, lv.semester)">auswählen</button></td>
+						<td>{{lv.bezeichnung}}</td>
+						<td>{{lv.ects}}</td>
+						<td>{{lv.lehrtyp_kurzbz}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>

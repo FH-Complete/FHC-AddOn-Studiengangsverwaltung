@@ -116,6 +116,7 @@ function mapDataToLehrveranstaltung($data)
 		$lv->benotung = parseBoolean($data->benotung);
 		$lv->lvinfo = parseBoolean($data->lvinfo);
 		$lv->lehrauftrag = parseBoolean($data->lehrauftrag);
+		$lv->lehrveranstaltung_template_id = $data->lehrveranstaltung_template_id;
 	}
 	elseif($gesperrt && isset($data->bezeichnung))
 	{
