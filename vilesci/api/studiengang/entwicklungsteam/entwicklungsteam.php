@@ -55,7 +55,7 @@ if (isset($_GET['sort']))
 	}
 }
 
-if (count($sort) === 0)
+if (numberOfElements($sort) === 0)
 {
 		$sort[] = $sort_mapping['mitarbeiter_label'];
 }

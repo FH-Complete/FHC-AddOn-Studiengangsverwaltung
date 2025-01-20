@@ -43,7 +43,7 @@ $lehrveranstaltung = mapDataToLehrveranstaltung($data);
 $studienplan = new StudienplanAddonStgv();
 $studienplan->getStudienplanLehrveranstaltung($lehrveranstaltung->lehrveranstaltung_id);
 
-if(count($studienplan->result) > 1)
+if(numberOfElements($studienplan->result) > 1)
 {
 	$studienplanIds = "StplIds: ";
 	foreach($studienplan->result as $stpl)

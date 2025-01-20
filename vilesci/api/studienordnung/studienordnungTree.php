@@ -117,7 +117,7 @@ foreach($studienordnung->result as $key=>$sto)
 	    $temp_stpl->gueltigvon = $gueltigkeit[0];
 	
 	if(!empty($gueltigkeit))
-	    $temp_stpl->gueltigbis = $gueltigkeit[count($gueltigkeit)-1];
+	    $temp_stpl->gueltigbis = $gueltigkeit[numberOfElements($gueltigkeit)-1];
 	$temp_stpl->ects_stpl = $stpl->ects_stpl;
 	$temp_stpl->status_kurzbz = $sto->status_kurzbz;
 	

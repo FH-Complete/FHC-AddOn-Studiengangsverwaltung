@@ -142,7 +142,7 @@ if ((!empty($taetigkeitsfeld_old->result)) && (!empty($taetigkeitsfeld_new->resu
 	$diff_array["Tätigkeitsfelder"]["Aufgaben Text"]["diff"] = "";
 
 
-	if (count($taetigkeitsfeld_old->result[0]->data->aufgaben->elements) < count($taetigkeitsfeld_new->result[0]->data->aufgaben->elements))
+	if (numberOfElements($taetigkeitsfeld_old->result[0]->data->aufgaben->elements) < numberOfElements($taetigkeitsfeld_new->result[0]->data->aufgaben->elements))
 	{
 //	foreach ($taetigkeitsfeld_new->result[0]->data->aufgaben->elements as $key => $ele_new)
 //	{
@@ -179,7 +179,7 @@ if ((!empty($taetigkeitsfeld_old->result)) && (!empty($taetigkeitsfeld_new->resu
 	$diff_array["Tätigkeitsfelder"]["Branchen Text"]["new"] = "";
 	$diff_array["Tätigkeitsfelder"]["Branchen Text"]["diff"] = "";
 
-	if (count($taetigkeitsfeld_old->result[0]->data->branchen->elements) < count($taetigkeitsfeld_new->result[0]->data->branchen->elements))
+	if (numberOfElements($taetigkeitsfeld_old->result[0]->data->branchen->elements) < numberOfElements($taetigkeitsfeld_new->result[0]->data->branchen->elements))
 	{
 		foreach ($taetigkeitsfeld_new->result[0]->data->branchen->elements as $key => $ele_new)
 		{
@@ -216,7 +216,7 @@ if ((!empty($taetigkeitsfeld_old->result)) && (!empty($taetigkeitsfeld_new->resu
 	$diff_array["Tätigkeitsfelder"]["Positionen Text"]["new"] = "";
 	$diff_array["Tätigkeitsfelder"]["Positionen Text"]["diff"] = "";
 
-	if (count($taetigkeitsfeld_old->result[0]->data->positionen->elements) < count($taetigkeitsfeld_new->result[0]->data->positionen->elements))
+	if (numberOfElements($taetigkeitsfeld_old->result[0]->data->positionen->elements) < numberOfElements($taetigkeitsfeld_new->result[0]->data->positionen->elements))
 	{
 		foreach ($taetigkeitsfeld_new->result[0]->data->positionen->elements as $key => $ele_new)
 		{
@@ -272,13 +272,13 @@ if ((!empty($qualifikationsziel_old->result)) && (!empty($qualifikationsziel_new
 
 			if (isset($ele->elements))
 			{
-				//	    if (count($taetigkeitsfeld_old->result[0]->data->positionen->elements) < count($taetigkeitsfeld_new->result[0]->data->positionen->elements))
+				//	    if (numberOfElements($taetigkeitsfeld_old->result[0]->data->positionen->elements) < numberOfElements($taetigkeitsfeld_new->result[0]->data->positionen->elements))
 				$old = $ele->elements[$k];
 				$new = $qualifikationsziel_new->result[0]->data[$key]->elements[$k];
 
 				if ($new !== null && $old != null)
 				{
-					if (count($old) > count($new))
+					if (numberOfElements($old) > numberOfElements($new))
 					{
 						foreach ($old as $i => $o)
 						{
@@ -401,7 +401,7 @@ if (($studienplan_id_old !== 'undefined') && ($studienplan_id_new !== 'undefined
 	$diff_array["Studienpläne"]["Auslandssemester"]["new"] = "";
 	$diff_array["Studienpläne"]["Auslandssemester"]["diff"] = "";
 
-	if (count($auslandssemester_old->result) !== 0)
+	if (numberOfElements($auslandssemester_old->result) !== 0)
 	{
 		foreach ($auslandssemester_old->result as $a)
 		{
@@ -415,7 +415,7 @@ if (($studienplan_id_old !== 'undefined') && ($studienplan_id_new !== 'undefined
 		}
 	}
 
-	if (count($auslandssemester_new->result) !== 0)
+	if (numberOfElements($auslandssemester_new->result) !== 0)
 	{
 		foreach ($auslandssemester_new->result as $a)
 		{
@@ -440,7 +440,7 @@ if (($studienplan_id_old !== 'undefined') && ($studienplan_id_new !== 'undefined
 	$diff_array["Studienpläne"]["Berufspraktikum"]["new"] = "";
 	$diff_array["Studienpläne"]["Berufspraktikum"]["diff"] = "";
 
-	if (count($berufspraktikum_old->result) !== 0)
+	if (numberOfElements($berufspraktikum_old->result) !== 0)
 	{
 		foreach ($berufspraktikum_old->result as $a)
 		{
@@ -457,7 +457,7 @@ if (($studienplan_id_old !== 'undefined') && ($studienplan_id_new !== 'undefined
 		}
 	}
 
-	if (count($berufspraktikum_new->result) !== 0)
+	if (numberOfElements($berufspraktikum_new->result) !== 0)
 	{
 		foreach ($berufspraktikum_new->result as $a)
 		{
