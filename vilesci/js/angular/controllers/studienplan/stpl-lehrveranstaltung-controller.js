@@ -965,6 +965,7 @@ angular.module('stgv2')
 								lvnewtemplate.orgform_kurzbz=ctrl.studienplan.orgform_kurzbz;
 								lvnewtemplate.gesperrt=false;
 								lvnewtemplate.aktivGesperrt=true;
+								lvnewtemplate.anrechenbar=true;
 
 								$scope.$broadcast("editLehrveranstaltung", lvnewtemplate);
 							}
