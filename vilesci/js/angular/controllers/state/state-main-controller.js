@@ -1,7 +1,7 @@
 angular.module('stgv2')
 		.controller('StateMainCtrl', function ($rootScope, $stateParams, errorService) {
 			var ctrl = this;
-			ctrl.url = './api/studienordnung/studienordnungTree.php?stgkz=' + $stateParams.stgkz + '&state=' + $stateParams.state;
+			ctrl.url = './api/studienordnung/studienordnungTree.php?stgkz=' + $stateParams.stgkz + '&state=' + $stateParams.state + '&sort=substring(gueltigbis FROM 3 FOR 4),substring(gueltigbis FROM 1 FOR 2),substring(gueltigvon FROM 3 FOR 4),substring(gueltigvon FROM 1 FOR 2)&order=desc,desc,desc,desc';
 
 			//Studienordnungsdaten in TreeGrid laden
 			ctrl.loadTreegrid = function()
