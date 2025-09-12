@@ -7,7 +7,7 @@ angular.module('stgv2')
 			ctrl.data.studienordnung_id = $scope.studienordnung_id;
 			ctrl.temp = [];
 			ctrl.inputids = ["input_1", "input_2"];
-			
+
 			//enable tooltips after ngRepeat finished
 			$scope.$on("ngRepeatFinished",function(){
 				$('[data-toggle="tooltip"]').tooltip();
@@ -158,18 +158,18 @@ function Qualifikationsziel()
 	this.data = [
 		{
 			"header": "Bildungsauftrag FH-Studiengänge",
-			"fixed": 
+			"fixed":
 			[
 				"FH-Studiengänge haben die Aufgabe, eine wissenschaftlich fundierte Berufsausbildung anzubieten. Ihr Bildungsauftrag besteht in der Gewährleistung einer praxisbezogenen Ausbildung auf Hochschulniveau. Es geht um die Vermittlung der Fähigkeit, die Aufgaben des jeweiligen Berufsfeldes dem Stand der Wissenschaft und den aktuellen und zukünftigen Anforderungen der Praxis zu lösen. FH-Studiengänge sind curricular und didaktisch so zu gestalten, dass sich die Studierenden jene berufspraktisch relevanten Kenntnisse, Fertigkeiten und Kompetenzen auf wissenschaftlicher Grundlage aneignen können, die sie für eine erfolgreiche berufliche Tätigkeit benötigen. Im Rah-men eines integrativen Ansatzes, der wissenschaftliche Ansprüche und berufspraktische Anforde-rungen berücksichtigt, geht es um die Vermittlung zwischen Wissen und Anwendung, Theorie und Praxis, Reflexion und Handlung, Abstraktion und Problem, Bildung und Beruf."
 			],
 		},
 		{
 			"header": "Qualifikationsziele",
-			"fixed": 
+			"fixed":
 			[
 				"Aus der Beschreibung der beruflichen Tätigkeitsfelder und der Modulbeschreibungen wurden die Qualifikationsziele (Lernergebnisse des Studienganges) extrahiert. Sie werden in fachliche sowie personale und sozial-kommunikative Kompetenzen gegliedert.",
-				"Nach erfolgreichem Abschluss des Studiums sind die AbsolventInnen im Bereich der zentralen fachlichen Kompetenzen in der Lage, …",
-				"Nach erfolgreichem Abschluss des Studiums sind die AbsolventInnen im Bereich der personalen und sozial-kommunikativen Kompetenzen in der Lage, … "
+				"Nach erfolgreichem Abschluss des Studiums sind die Absolvent*innen im Bereich der fachlichen Kompetenzen in der Lage, …",
+				"Nach erfolgreichem Abschluss des Studiums sind die Absolvent*innen im Bereich der überfachlichen Kompetenzen in der Lage, …"
 			],
 			"elements": [[],[],[]]
 		}
