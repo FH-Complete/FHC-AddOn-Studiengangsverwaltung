@@ -210,14 +210,31 @@ angular.module('stgv2')
 
 			ctrl.update = function()
 			{
-					var updateData = {data: ""}
-					updateData.data = ctrl.entwicklungsteam;
+				var updateData = {data: ""};
+				updateData.data = ctrl.entwicklungsteam;
 
-					//GermanDateToISODate
-					if(ctrl.entwicklungsteam.beginn != null && ctrl.entwicklungsteam.beginn != '')
+				//GermanDateToISODate wenn Date nicht bereits im ISOFormat vorliegt
+				var isoDatePattern = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}Z)?$/;
+				if (ctrl.entwicklungsteam.beginn != null && ctrl.entwicklungsteam.beginn != '')
+				{
+					if (!isoDatePattern.test(ctrl.entwicklungsteam.beginn)) {
 						updateData.data.beginn = GermanDateToISODate(ctrl.entwicklungsteam.beginn);
-					if(ctrl.entwicklungsteam.ende != null && ctrl.entwicklungsteam.ende != '')
+					} else {
+						updateData.data.beginn = ctrl.entwicklungsteam.beginn;
+					}
+				}
+
+				if (ctrl.entwicklungsteam.ende != null && ctrl.entwicklungsteam.ende != '')
+				{
+					if (!isoDatePattern.test(ctrl.entwicklungsteam.ende)) {
 						updateData.data.ende = GermanDateToISODate(ctrl.entwicklungsteam.ende);
+					} else {
+						updateData.data.ende = ctrl.entwicklungsteam.ende;
+					}
+				}
+
+				if(ctrl.entwicklungsteam.studiengang_kz == null || ctrl.entwicklungsteam.studiengang_kz == '')
+					updateData.data.studiengang_kz = $scope.stgkz;
 
 					updateData.data.updateamum = new Date().toISOString().slice(0, 19);
 
