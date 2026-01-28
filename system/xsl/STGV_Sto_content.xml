@@ -1647,7 +1647,16 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
         <table:table-row table:style-name="Tabelle1.1">
           <table:table-cell table:style-name="Tabelle1.A1" office:value-type="string">
-            <text:p text:style-name="P27">Beschlussdatum Studiengang</text:p>
+            <text:p text:style-name="P27">
+              <xsl:choose>
+                    <xsl:when test="lgartcode!=''">
+                      Beschlussdatum Lehrgang
+                    </xsl:when>
+                    <xsl:otherwise>
+                      Beschlussdatum Studiengang
+                    </xsl:otherwise>
+                </xsl:choose>
+                </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle1.B1" office:value-type="string">
             <text:p text:style-name="P14"><xsl:value-of select="beschluss_studiengang"/></text:p>
@@ -1986,7 +1995,16 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
         <table:table-row table:style-name="Tabelle3.1">
           <table:table-cell table:style-name="Tabelle3.A1" office:value-type="string">
-            <text:p text:style-name="P27">Regelstudiendauer in Semestern</text:p>
+            <text:p text:style-name="P27">
+                <xsl:choose>
+                    <xsl:when test="../../lgartcode!=''">
+                      Lehrgangsdauer in Semestern
+                    </xsl:when>
+                    <xsl:otherwise>
+                      Regelstudiendauer in Semestern
+                    </xsl:otherwise>
+                </xsl:choose>
+            </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
             <text:p text:style-name="P29"><xsl:value-of select="regelstudiendauer"/></text:p>
