@@ -1703,7 +1703,16 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
         <table:table-row table:style-name="Tabelle2.1">
           <table:table-cell table:style-name="Tabelle2.A1" office:value-type="string">
-            <text:p text:style-name="P27">Studiengangsbezeichnung</text:p>
+            <text:p text:style-name="P27">
+                <xsl:choose>
+                    <xsl:when test="lgartcode!=''">
+                      Lehrgangsbezeichnung
+                    </xsl:when>
+                    <xsl:otherwise>
+                      Studiengangsbezeichnung
+                    </xsl:otherwise>
+                </xsl:choose>
+              </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle2.B1" office:value-type="string">
             <text:p text:style-name="P14"><xsl:value-of select="studiengangbezeichnung"/></text:p>
@@ -1711,7 +1720,16 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
         <table:table-row table:style-name="Tabelle2.1">
           <table:table-cell table:style-name="Tabelle2.A1" office:value-type="string">
-            <text:p text:style-name="P27">Studiengangskurzbezeichnung</text:p>
+            <text:p text:style-name="P27">
+                <xsl:choose>
+                    <xsl:when test="lgartcode!=''">
+                      Lehrgangskurzbezeichnung
+                    </xsl:when>
+                    <xsl:otherwise>
+                      Studiengangskurzbezeichnung
+                    </xsl:otherwise>
+                </xsl:choose>
+              </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle2.B1" office:value-type="string">
             <text:p text:style-name="P14"><xsl:value-of select="studiengangkurzbzlang"/></text:p>
