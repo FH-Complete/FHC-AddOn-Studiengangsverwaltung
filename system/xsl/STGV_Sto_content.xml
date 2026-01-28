@@ -1375,7 +1375,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			  <xsl:when test="studiengangstyp='m'">
 				Master-Studiengang
 			  </xsl:when>
-			  <xsl:when test="studiengangstyp='l'">
+			  <xsl:when test="studiengangstyp='l' || lgartcode!=''">
 				Lehrgang
 			  </xsl:when>
 			  <xsl:otherwise>
@@ -1698,7 +1698,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P27">StgKz</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle2.B1" office:value-type="string">
-            <text:p text:style-name="P14"><xsl:value-of select="studiengang_kz"/></text:p>
+            <text:p text:style-name="P14"><xsl:value-of select="melde_studiengang_kz"/></text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row table:style-name="Tabelle2.1">
@@ -1722,7 +1722,16 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P27">Studiengangsart</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle2.B1" office:value-type="string">
-            <text:p text:style-name="P14"><xsl:value-of select="studiengangstyp_bezeichnung"/></text:p>
+            <text:p text:style-name="P14">
+            			<xsl:choose>
+                    <xsl:when test="lgartcode!='' && studiengangstyp='e'">
+                      Hochschullehrgang zur Weiterbildung
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="studiengangstyp_bezeichnung"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+            </text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row table:style-name="Tabelle2.1">
