@@ -1375,8 +1375,11 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			  <xsl:when test="studiengangstyp='m'">
 				Master-Studiengang
 			  </xsl:when>
-			  <xsl:when test="studiengangstyp='l' or lgartcode!=''">
-				Lehrgang
+			  <xsl:when test="studiengangstyp='l' and lgartcode!=3">
+                Hochschullehrgang zur Weiterbildung
+			  </xsl:when>
+              <xsl:when test="lgartcode=3 or organisationseinheittyp_kurzbz='Programm'">
+				Programm
 			  </xsl:when>
 			  <xsl:otherwise>
 				Studiengang
@@ -1634,29 +1637,45 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P27">Gültig bis</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle1.B1" office:value-type="string">
-            <text:p text:style-name="P14"><xsl:value-of select="gueltigbis"/></text:p>
+            <text:p text:style-name="P14">
+              <xsl:choose>
+                <xsl:when test="lgartcode!=''">
+                laufend
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="gueltigbis"/>
+                </xsl:otherwise>
+              </xsl:choose>
+              </text:p>
           </table:table-cell>
         </table:table-row>
-        <table:table-row table:style-name="Tabelle1.1">
-          <table:table-cell table:style-name="Tabelle1.A1" office:value-type="string">
-            <text:p text:style-name="P27">Änderungsvariante</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Tabelle1.B1" office:value-type="string">
-            <text:p text:style-name="P14"><xsl:value-of select="aenderungsvariante_bezeichnung"/></text:p>
-          </table:table-cell>
-        </table:table-row>
+        <xsl:choose>
+          <xsl:when test="//lgartcode=''">
+            <table:table-row table:style-name="Tabelle1.1">
+              <table:table-cell table:style-name="Tabelle1.A1" office:value-type="string">
+                <text:p text:style-name="P27">Änderungsvariante</text:p>
+              </table:table-cell>
+              <table:table-cell table:style-name="Tabelle1.B1" office:value-type="string">
+                <text:p text:style-name="P14"><xsl:value-of select="aenderungsvariante_bezeichnung"/></text:p>
+              </table:table-cell>
+            </table:table-row>
+          </xsl:when>
+        </xsl:choose>
         <table:table-row table:style-name="Tabelle1.1">
           <table:table-cell table:style-name="Tabelle1.A1" office:value-type="string">
             <text:p text:style-name="P27">
               <xsl:choose>
-                    <xsl:when test="lgartcode!=''">
+                    <xsl:when test="lgartcode!=3 and lgartcode!=''">
                       Beschlussdatum Lehrgang
+                    </xsl:when>
+                    <xsl:when test="lgartcode=3 or organisationseinheittyp_kurzbz='Programm'">
+                      Beschlussdatum Programm
                     </xsl:when>
                     <xsl:otherwise>
                       Beschlussdatum Studiengang
                     </xsl:otherwise>
                 </xsl:choose>
-                </text:p>
+              </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle1.B1" office:value-type="string">
             <text:p text:style-name="P14"><xsl:value-of select="beschluss_studiengang"/></text:p>
@@ -1707,7 +1726,15 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P27">StgKz</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle2.B1" office:value-type="string">
-            <text:p text:style-name="P14"><xsl:value-of select="melde_studiengang_kz"/></text:p>
+           <xsl:choose>
+             <xsl:when test="(melde_studiengang_kz) ='0000'">
+               <text:p text:style-name="P14"> - </text:p>
+              </xsl:when>
+              <xsl:otherwise>
+                <text:p text:style-name="P14"><xsl:value-of select="melde_studiengang_kz"/></text:p>
+              </xsl:otherwise>
+          </xsl:choose>
+
           </table:table-cell>
         </table:table-row>
         <table:table-row table:style-name="Tabelle2.1">
@@ -1715,7 +1742,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P27">
                 <xsl:choose>
                     <xsl:when test="lgartcode!=''">
-                      Lehrgangsbezeichnung
+                      Bezeichnung
                     </xsl:when>
                     <xsl:otherwise>
                       Studiengangsbezeichnung
@@ -1732,7 +1759,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P27">
                 <xsl:choose>
                     <xsl:when test="lgartcode!=''">
-                      Lehrgangskurzbezeichnung
+                      Kurzbezeichnung
                     </xsl:when>
                     <xsl:otherwise>
                       Studiengangskurzbezeichnung
@@ -1749,7 +1776,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P27">
                   <xsl:choose>
                     <xsl:when test="lgartcode!=''">
-                      Lehrgangsart
+                      Art des Bildungsformats
                     </xsl:when>
                     <xsl:otherwise>
                       Studiengangsart
@@ -1759,9 +1786,12 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle2.B1" office:value-type="string">
             <text:p text:style-name="P14">
-            			<xsl:choose>
-                    <xsl:when test="lgartcode!='' and studiengangstyp='e'">
+                  <xsl:choose>
+                    <xsl:when test="lgartcode!=3 and lgartcode!=''">
                       Hochschullehrgang zur Weiterbildung
+                    </xsl:when>
+                     <xsl:when test="lgartcode=3 and studiengangstyp='e'">
+                      Programm
                     </xsl:when>
                     <xsl:otherwise>
                       <xsl:value-of select="studiengangstyp_bezeichnung"/>
@@ -1775,7 +1805,16 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P27">Akademischer Grad</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle2.B1" office:value-type="string">
-            <text:p text:style-name="P14"><xsl:value-of select="akadgrad"/></text:p>
+            <text:p text:style-name="P14">
+            <xsl:choose>
+              <xsl:when test="lgartcode=3 and studiengangstyp='e'">
+                Abschluss
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="akadgrad"/>
+              </xsl:otherwise>
+            </xsl:choose>
+            </text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row table:style-name="Tabelle2.1">
@@ -1842,87 +1881,108 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </text:list-item>
 	</text:list>
 	-->
-      <text:p text:style-name="P52">Überblick</text:p>
-      <text:p text:style-name="P12">
-			<xsl:value-of select="taetigkeitsfeld_ueberblick" disable-output-escaping="yes"/>
-      </text:p>
-      <text:p text:style-name="P52">1. Branchen und Sektoren</text:p>
-      <text:p text:style-name="P16">
-        <text:span text:style-name="T14"><xsl:value-of select="branchen_fixed"/></text:span>
-      </text:p>
+
+      <xsl:choose>
+        <xsl:when test="//lgartcode=''">
+
+          <text:p text:style-name="P52">Überblick</text:p>
+          <text:p text:style-name="P12">
+                <xsl:value-of select="taetigkeitsfeld_ueberblick" disable-output-escaping="yes"/>
+          </text:p>
+          <text:p text:style-name="P52">1. Branchen und Sektoren</text:p>
+          <text:p text:style-name="P16">
+            <text:span text:style-name="T14"><xsl:value-of select="branchen_fixed"/></text:span>
+          </text:p>
 
 
-		<xsl:apply-templates select="branchen_elements"/>
+            <xsl:apply-templates select="branchen_elements"/>
 
 
-      <text:p text:style-name="P52">2. Positionen und Funktionen</text:p>
-      <text:p text:style-name="P16">
-        <text:span text:style-name="T14"><xsl:value-of select="positionen_fixed" /></text:span>
-      </text:p>
+          <text:p text:style-name="P52">2. Positionen und Funktionen</text:p>
+          <text:p text:style-name="P16">
+            <text:span text:style-name="T14"><xsl:value-of select="positionen_fixed" /></text:span>
+          </text:p>
 
-      <xsl:apply-templates select="positionen_elements"/>
+          <xsl:apply-templates select="positionen_elements"/>
 
-      <text:p text:style-name="P52">3. Aufgaben und Tätigkeiten</text:p>
-      <text:p text:style-name="P16">
-        <text:soft-page-break/>
-        <text:span text:style-name="T14"><xsl:value-of select="aufgaben_fixed" /></text:span>
-      </text:p>
+          <text:p text:style-name="P52">3. Aufgaben und Tätigkeiten</text:p>
+          <text:p text:style-name="P16">
+            <text:soft-page-break/>
+            <text:span text:style-name="T14"><xsl:value-of select="aufgaben_fixed" /></text:span>
+          </text:p>
 
-	  <xsl:apply-templates select="aufgaben_elements"/>
+          <xsl:apply-templates select="aufgaben_elements"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <text:p text:style-name="P12">
+            <xsl:value-of select="taetigkeitsfeld_unzutreffend" />
+          </text:p>
+        </xsl:otherwise>
 
+      </xsl:choose>
       <text:p text:style-name="P20"/>
       <text:p text:style-name="P10"/>
-      <!--
-	  <text:list xml:id="list120528120972311" text:continue-list="list120527256834076" text:style-name="WWNum1">
-        <text:list-item>
-          <text:list>
-            <text:list-item>-->
-              <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2404_554519492"/><text:bookmark-start text:name="_Toc451354160"/>Qualifikationsziele<text:bookmark-end text:name="__RefHeading__2404_554519492"/><text:bookmark-end text:name="_Toc451354160"/></text:h>
-            <!--</text:list-item>
-          </text:list>
-        </text:list-item>
-	</text:list>-->
-     <text:p text:style-name="P52">Bildungsauftrag FH-Studiengänge</text:p>
-      <text:p text:style-name="PNORMAL">
-        <text:span text:style-name="T14">
-          <xsl:call-template name="replace">
-            <xsl:with-param name="string" select="qualifikation_bildungsauftrag"/>
-          </xsl:call-template>
-        </text:span>
-      </text:p>
 
-      <text:p text:style-name="P52">Qualifikationsziele</text:p>
-      <text:p text:style-name="PNORMAL">
-        <text:span text:style-name="T14">
-          <xsl:call-template name="replace">
-            <xsl:with-param name="string" select="qualifikation_beschreibung"/>
-          </xsl:call-template>
-        </text:span>
-      </text:p>
 
-      <text:p text:style-name="P4"/>
-      <text:p text:style-name="Standard">
-        <text:span text:style-name="T17"><xsl:value-of select="qualifikation_kompetenz1" /></text:span>
-      </text:p>
-      <text:p text:style-name="P54"/>
+      <xsl:choose>
+        <xsl:when test="//lgartcode=''">
 
-	  <xsl:apply-templates select="qualifikation_kompetenz1_elements"/>
+          <!--
+          <text:list xml:id="list120528120972311" text:continue-list="list120527256834076" text:style-name="WWNum1">
+            <text:list-item>
+              <text:list>
+                <text:list-item>-->
+                  <text:h text:style-name="PHEAD2" text:outline-level="2"><text:bookmark-start text:name="__RefHeading__2404_554519492"/><text:bookmark-start text:name="_Toc451354160"/>Qualifikationsziele<text:bookmark-end text:name="__RefHeading__2404_554519492"/><text:bookmark-end text:name="_Toc451354160"/></text:h>
+                <!--</text:list-item>
+              </text:list>
+            </text:list-item>
+        </text:list>-->
+         <text:p text:style-name="P52">Bildungsauftrag FH-Studiengänge</text:p>
+          <text:p text:style-name="PNORMAL">
+            <text:span text:style-name="T14">
+              <xsl:call-template name="replace">
+                <xsl:with-param name="string" select="qualifikation_bildungsauftrag"/>
+              </xsl:call-template>
+            </text:span>
+          </text:p>
 
-      <text:p text:style-name="P20"/>
-      <text:p text:style-name="P19"/>
-      <text:p text:style-name="P21">
-        <text:span text:style-name="T17"><xsl:value-of select="qualifikation_kompetenz2" /></text:span>
-      </text:p>
-      <text:p text:style-name="P53"/>
+          <text:p text:style-name="P52">Qualifikationsziele</text:p>
+          <text:p text:style-name="PNORMAL">
+            <text:span text:style-name="T14">
+              <xsl:call-template name="replace">
+                <xsl:with-param name="string" select="qualifikation_beschreibung"/>
+              </xsl:call-template>
+            </text:span>
+          </text:p>
 
-      <xsl:apply-templates select="qualifikation_kompetenz2_elements"/>
+          <text:p text:style-name="P4"/>
+          <text:p text:style-name="Standard">
+            <text:span text:style-name="T17"><xsl:value-of select="qualifikation_kompetenz1" /></text:span>
+          </text:p>
+          <text:p text:style-name="P54"/>
 
-      <text:p text:style-name="P19"/>
-      <text:p text:style-name="P10"/>
+          <xsl:apply-templates select="qualifikation_kompetenz1_elements"/>
 
-	<xsl:apply-templates select="studienplaene"/>
+          <text:p text:style-name="P20"/>
+          <text:p text:style-name="P19"/>
+          <text:p text:style-name="P21">
+            <text:span text:style-name="T17"><xsl:value-of select="qualifikation_kompetenz2" /></text:span>
+          </text:p>
+          <text:p text:style-name="P53"/>
+
+          <xsl:apply-templates select="qualifikation_kompetenz2_elements"/>
+
+          <text:p text:style-name="P19"/>
+          <text:p text:style-name="P10"/>
+
+          </xsl:when>
+      </xsl:choose>
+
+	  <xsl:apply-templates select="studienplaene"/>
 
       <text:p text:style-name="P40"/>
+
+
 <!--
       <text:list xml:id="list120527767775743" text:continue-list="list120527926051947" text:style-name="WWNum1">
         <text:list-item>
@@ -2018,24 +2078,30 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P29"><xsl:value-of select="summe_ects"/></text:p>
           </table:table-cell>
         </table:table-row>
-        <table:table-row table:style-name="Tabelle3.1">
-          <table:table-cell table:style-name="Tabelle3.A1" office:value-type="string">
-            <text:p text:style-name="P27">Pflicht-SWS</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
-            <text:p text:style-name="P8">
-              <text:span text:style-name="T35"><xsl:value-of select="pflicht_sws"/></text:span>
-            </text:p>
-          </table:table-cell>
-        </table:table-row>
-        <table:table-row table:style-name="Tabelle3.1">
-          <table:table-cell table:style-name="Tabelle3.A1" office:value-type="string">
-            <text:p text:style-name="P27">Pflicht-LVS</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
-            <text:p text:style-name="P15"><xsl:value-of select="pflicht_lvs"/></text:p>
-          </table:table-cell>
-        </table:table-row>
+
+        <xsl:choose>
+          <xsl:when test="//lgartcode=''">
+            <table:table-row table:style-name="Tabelle3.1">
+              <table:table-cell table:style-name="Tabelle3.A1" office:value-type="string">
+                <text:p text:style-name="P27">Pflicht-SWS</text:p>
+              </table:table-cell>
+              <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
+                <text:p text:style-name="P8">
+                  <text:span text:style-name="T35"><xsl:value-of select="pflicht_sws"/></text:span>
+                </text:p>
+              </table:table-cell>
+            </table:table-row>
+            <table:table-row table:style-name="Tabelle3.1">
+              <table:table-cell table:style-name="Tabelle3.A1" office:value-type="string">
+                <text:p text:style-name="P27">Pflicht-LVS</text:p>
+              </table:table-cell>
+              <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
+                <text:p text:style-name="P15"><xsl:value-of select="pflicht_lvs"/></text:p>
+              </table:table-cell>
+            </table:table-row>
+          </xsl:when>
+        </xsl:choose>
+
         <table:table-row table:style-name="Tabelle3.1">
           <table:table-cell table:style-name="Tabelle3.A1" office:value-type="string">
             <text:p text:style-name="P27">Sprache</text:p>
@@ -2049,7 +2115,16 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P27">Sprache Kommentar</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
-            <text:p text:style-name="P15"><xsl:value-of select="sprache_kommentar"/></text:p>
+            <text:p text:style-name="P15">
+              <xsl:choose>
+                <xsl:when test="string(sprache_kommentar)">
+                  <xsl:value-of select="sprache_kommentar"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  -
+                </xsl:otherwise>
+              </xsl:choose>
+            </text:p>
           </table:table-cell>
         </table:table-row>
       </table:table>
@@ -2065,9 +2140,16 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 	</text:list>-->
       <text:p text:style-name="PNORMAL">
         <text:span text:style-name="T14">
-			<xsl:call-template name="replace_linebreak">
-				<xsl:with-param name="string" select="erlaeuterungen"/>
-			</xsl:call-template>
+          <xsl:choose>
+            <xsl:when test="string(erlaeuterungen)">
+              <xsl:call-template name="replace_linebreak">
+                <xsl:with-param name="string" select="erlaeuterungen"/>
+              </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+              keine
+            </xsl:otherwise>
+          </xsl:choose>
 		</text:span>
       </text:p>
 
@@ -2168,7 +2250,15 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         <table:table-column table:style-name="Tabelle8.B"/>
         <table:table-column table:style-name="Tabelle8.C"/>
         <table:table-column table:style-name="Tabelle8.D"/>
-        <table:table-column table:style-name="Tabelle8.E" table:number-columns-repeated="2"/>
+
+        <xsl:choose>
+          <xsl:when test="//lgartcode=''">
+            <table:table-column table:style-name="Tabelle8.E" table:number-columns-repeated="2"/>
+          </xsl:when>
+        </xsl:choose>
+
+<!--        <table:table-column table:style-name="Tabelle8.E" table:number-columns-repeated="2"/>-->
+
         <table:table-column table:style-name="Tabelle8.G"/>
         <table:table-row table:style-name="Tabelle8.1">
           <table:table-cell table:style-name="Tabelle8.A1" office:value-type="string">
@@ -2186,25 +2276,44 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
           <table:table-cell table:style-name="Tabelle8.D1" office:value-type="string">
             <text:p text:style-name="P47"><xsl:value-of select="summe_ects"/></text:p>
           </table:table-cell>
-          <table:table-cell table:style-name="Tabelle8.D1" office:value-type="string">
-            <text:p text:style-name="P47"><xsl:value-of select="summe_sws"/></text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Tabelle8.D1" office:value-type="string">
-            <text:p text:style-name="P47"><xsl:value-of select="summe_lvs"/></text:p>
-          </table:table-cell>
+
+          <xsl:choose>
+            <xsl:when test="//lgartcode=''">
+            <table:table-cell table:style-name="Tabelle8.D1" office:value-type="string">
+              <text:p text:style-name="P47"><xsl:value-of select="summe_sws"/></text:p>
+            </table:table-cell>
+            <table:table-cell table:style-name="Tabelle8.D1" office:value-type="string">
+              <text:p text:style-name="P47"><xsl:value-of select="summe_lvs"/></text:p>
+            </table:table-cell>
+            </xsl:when>
+          </xsl:choose>
+
         </table:table-row>
       </table:table>
       <text:p text:style-name="P36">
         <text:s/>
       </text:p>
       <text:p text:style-name="P52">Abkürzungen</text:p>
-      <text:p text:style-name="P51">“Lehrform” [ist noch zu ergänzen]</text:p>
+      <text:p text:style-name="P51">“Lehrform”</text:p>
+
+      <text:list text:style-name="P73">
+        <xsl:apply-templates select="//lehrformen"/>
+      </text:list>
+
       <text:p text:style-name="P51">“Typ”</text:p>
       <text:list xml:id="list120528840599003" text:continue-list="list120528134157548" text:style-name="WWNum7">
         <text:list-item>
-          <text:p text:style-name="P73">
+          <text:p text:style-name="P74">
             <text:span text:style-name="T26">„Pfl.“: „Pflicht“: Es handelt sich um </text:span>
-            <text:span text:style-name="T25">Pflichtmodule bzw. Pflichtlehrveranstaltungen. Diese sind ein expliziter Teil des genehmigungspflichtigen Studienplans und von allen Studierenden verpflichtend zu absolvieren.</text:span>
+            <text:span text:style-name="T25">Pflichtmodule bzw. Pflichtlehrveranstaltungen. Diese sind ein expliziter Teil des genehmigungspflichtigen Studienplans und von allen </text:span>
+            <xsl:choose>
+              <xsl:when test="//lgartcode=''">
+                <text:span text:style-name="T25">Studierenden verpflichtend zu absolvieren.</text:span>
+              </xsl:when>
+              <xsl:otherwise>
+                <text:span text:style-name="T25">Teilnehmer*innen / ao. Studierenden verpflichtend zu absolvieren.</text:span>
+              </xsl:otherwise>
+            </xsl:choose>
           </text:p>
         </text:list-item>
         <text:list-item>
@@ -2264,7 +2373,13 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         <table:table-column table:style-name="Tabelle4.C"/>
         <table:table-column table:style-name="Tabelle4.D"/>
         <table:table-column table:style-name="Tabelle4.E"/>
-        <table:table-column table:style-name="Tabelle4.F" table:number-columns-repeated="2"/>
+
+        <xsl:choose>
+          <xsl:when test="//lgartcode=''">
+            <table:table-column table:style-name="Tabelle4.F" table:number-columns-repeated="2"/>
+          </xsl:when>
+        </xsl:choose>
+
         <table:table-column table:style-name="Tabelle4.H"/>
         <table:table-row table:style-name="Tabelle4.1">
           <table:table-cell table:style-name="Tabelle4.A1" office:value-type="string">
@@ -2285,12 +2400,18 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
           <table:table-cell table:style-name="Tabelle4.E1" office:value-type="string">
             <text:p text:style-name="P47"><xsl:value-of select="semester_summe_ects"/></text:p>
           </table:table-cell>
-          <table:table-cell table:style-name="Tabelle4.E1" office:value-type="string">
-            <text:p text:style-name="P47"><xsl:value-of select="semester_summe_sws"/></text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Tabelle4.E1" office:value-type="string">
-            <text:p text:style-name="P47"><xsl:value-of select="semester_summe_lvs"/></text:p>
-          </table:table-cell>
+
+          <xsl:choose>
+            <xsl:when test="//lgartcode=''">
+              <table:table-cell table:style-name="Tabelle4.E1" office:value-type="string">
+                <text:p text:style-name="P47"><xsl:value-of select="semester_summe_sws"/></text:p>
+              </table:table-cell>
+              <table:table-cell table:style-name="Tabelle4.E1" office:value-type="string">
+                <text:p text:style-name="P47"><xsl:value-of select="semester_summe_lvs"/></text:p>
+              </table:table-cell>
+            </xsl:when>
+          </xsl:choose>
+
         </table:table-row>
         <table:table-row table:style-name="Tabelle4.2">
           <table:table-cell table:style-name="Tabelle4.A2" office:value-type="string">
@@ -2311,12 +2432,18 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
           <table:table-cell table:style-name="Tabelle4.B2" office:value-type="string">
             <text:p text:style-name="P49">ECTS</text:p>
           </table:table-cell>
-          <table:table-cell table:style-name="Tabelle4.B2" office:value-type="string">
-            <text:p text:style-name="P49">SWS</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Tabelle4.B2" office:value-type="string">
-            <text:p text:style-name="P49">LVS</text:p>
-          </table:table-cell>
+
+          <xsl:choose>
+            <xsl:when test="//lgartcode=''">
+              <table:table-cell table:style-name="Tabelle4.B2" office:value-type="string">
+                <text:p text:style-name="P49">SWS</text:p>
+              </table:table-cell>
+              <table:table-cell table:style-name="Tabelle4.B2" office:value-type="string">
+                <text:p text:style-name="P49">LVS</text:p>
+              </table:table-cell>
+            </xsl:when>
+          </xsl:choose>
+
         </table:table-row>
 
 		<xsl:apply-templates select="lehrveranstaltungen"/>
@@ -2477,12 +2604,18 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 		  <table:table-cell table:style-name="Tabelle4.B4" office:value-type="string">
 			<text:p text:style-name="P49"><xsl:value-of select="ects"/></text:p>
 		  </table:table-cell>
-		  <table:table-cell table:style-name="Tabelle4.B4" office:value-type="string">
-			<text:p text:style-name="P49"><xsl:value-of select="sws"/></text:p>
-		  </table:table-cell>
-		  <table:table-cell table:style-name="Tabelle4.B4" office:value-type="string">
-			<text:p text:style-name="P49"><xsl:value-of select="lvs"/></text:p>
-		  </table:table-cell>
+
+          <xsl:choose>
+            <xsl:when test="//lgartcode=''">
+              <table:table-cell table:style-name="Tabelle4.B4" office:value-type="string">
+                <text:p text:style-name="P49"><xsl:value-of select="sws"/></text:p>
+              </table:table-cell>
+              <table:table-cell table:style-name="Tabelle4.B4" office:value-type="string">
+                <text:p text:style-name="P49"><xsl:value-of select="lvs"/></text:p>
+              </table:table-cell>
+            </xsl:when>
+          </xsl:choose>
+
 		</table:table-row>
 		</xsl:otherwise>
 	</xsl:choose>
@@ -2839,16 +2972,21 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 				  </text:p>
 				</table:table-cell>
 			  </table:table-row>
-			  <table:table-row table:style-name="TabelleLV.1">
-				<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
-				  <text:p text:style-name="P81">SWS</text:p>
-				</table:table-cell>
-				<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
-				  <text:p text:style-name="P85">
-					<text:span text:style-name="T37"><xsl:value-of select="sws" /></text:span>
-				  </text:p>
-				</table:table-cell>
-			  </table:table-row>
+              <xsl:choose>
+                <xsl:when test="lgartcode=''">
+                  <table:table-row table:style-name="TabelleLV.1">
+                    <table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
+                      <text:p text:style-name="P81">SWS</text:p>
+                    </table:table-cell>
+                    <table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
+                      <text:p text:style-name="P85">
+                        <text:span text:style-name="T37"><xsl:value-of select="sws" /></text:span>
+                      </text:p>
+                    </table:table-cell>
+                  </table:table-row>
+                </xsl:when>
+              </xsl:choose>
+
 			  <table:table-row table:style-name="TabelleLV.1">
 				<table:table-cell table:style-name="TabelleLV.A2" office:value-type="string">
 				  <text:p text:style-name="P81">Ausbildungssemester</text:p>
@@ -3003,5 +3141,18 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 	</text:list-item>
 </xsl:template>
 
+<!--Liste für Anzeige vorhandenerer Lehrformen in Abkürzungsverzeichnis-->
+<xsl:template match="lehrformen">
+  <xsl:apply-templates select="lehrform"/>
+</xsl:template>
+
+<xsl:template match="lehrform">
+  <text:list-item>
+    <text:p text:style-name="P74">
+      <xsl:value-of select="kurzbz"/>:
+      <xsl:value-of select="bezeichnung"/>
+    </text:p>
+  </text:list-item>
+</xsl:template>
 
 </xsl:stylesheet>
