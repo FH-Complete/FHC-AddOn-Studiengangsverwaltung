@@ -1915,7 +1915,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </xsl:when>
         <xsl:otherwise>
           <text:p text:style-name="P12">
-            <xsl:value-of select="taetigkeitsfeld_unzutreffend" />
+            Für dieses Format nicht zutreffend.
           </text:p>
         </xsl:otherwise>
 

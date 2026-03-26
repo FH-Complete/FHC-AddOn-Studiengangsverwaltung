@@ -296,7 +296,6 @@ foreach ($stpl->result as $row_stpl)
 $taetigkeitsfeld_ueberblick = '';
 $taetigkeitsfeld = new taetigkeitsfeld();
 $taetigkeitsfeld->getAll($studienordnung_id);
-$taetigkeitsfeld_unzutreffend = "";
 $aufgaben_elements = array();
 $positionen_elements = array();
 $branchen_elements = array();
@@ -411,7 +410,6 @@ $data = array(
 	'aufnahmeverfahren' => escapeGlobalP(html2odt($aufnahmeverfahren_data)),
 	'studienplaene' => $stpl_arr,
 	'taetigkeitsfeld_ueberblick' => escapeGlobalP(html2odt($taetigkeitsfeld_ueberblick)),
-	'taetigkeitsfeld_unzutreffend' => escapeGlobalP(html2odt("Für dieses Format nicht zutreffend.")),
 	'branchen_fixed' => html2odt($branchen_fixed),
 	'branchen_elements' => $branchen_elements,
 	'positionen_fixed' => $positionen_fixed,
