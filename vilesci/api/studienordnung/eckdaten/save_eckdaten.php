@@ -44,6 +44,7 @@ function mapDataToStudienordnung($data)
     $sto = new StudienordnungAddonStgv();
     $sto->loadStudienordnung($data->studienordnung_id);
     $sto->studiengangbezeichnung = $data->studiengangbezeichnung;
+	$sto->studiengangbezeichnung_englisch = $data->studiengangbezeichnung_englisch;
     $sto->studiengangkurzbzlang	= $data->studiengangkurzbzlang;
     $sto->studiengangsart = $data->studiengangsart;
     $sto->akadgrad_id = $data->akadgrad_id;
