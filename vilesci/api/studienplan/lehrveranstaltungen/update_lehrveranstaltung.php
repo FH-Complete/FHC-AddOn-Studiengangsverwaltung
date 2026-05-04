@@ -116,6 +116,7 @@ function mapDataToLehrveranstaltung($data)
 		$lv->benotung = parseBoolean($data->benotung);
 		$lv->lvinfo = parseBoolean($data->lvinfo);
 		$lv->lehrauftrag = parseBoolean($data->lehrauftrag);
+		$lv->evaluierung = parseBoolean($data->evaluierung);
 	}
 	elseif($gesperrt && isset($data->bezeichnung))
 	{
@@ -133,6 +134,7 @@ function mapDataToLehrveranstaltung($data)
 		$lv->benotung = parseBoolean($data->benotung);
 		$lv->lvinfo = parseBoolean($data->lvinfo);
 		$lv->lehrauftrag = parseBoolean($data->lehrauftrag);
+		$lv->evaluierung = parseBoolean($data->evaluierung);
 	}
 	else
 	{
@@ -141,6 +143,7 @@ function mapDataToLehrveranstaltung($data)
 		$lv->benotung = parseBoolean($data->benotung);
 		$lv->lvinfo = parseBoolean($data->lvinfo);
 		$lv->lehrauftrag = parseBoolean($data->lehrauftrag);
+		$lv->evaluierung = parseBoolean($data->evaluierung);
 	}
 	$lv->updatevon = get_uid();
 

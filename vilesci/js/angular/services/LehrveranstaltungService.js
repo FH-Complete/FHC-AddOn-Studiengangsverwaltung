@@ -43,6 +43,7 @@ angular.module('stgv2')
 				this.benotung = false;
 				this.lvinfo = false;
 				this.lehrauftrag = true;
+				this.evaluierung = true;
 				this.anmerkung = null;
 			};
 
