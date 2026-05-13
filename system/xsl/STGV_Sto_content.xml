@@ -1802,13 +1802,22 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         </table:table-row>
         <table:table-row table:style-name="Tabelle2.1">
           <table:table-cell table:style-name="Tabelle2.A1" office:value-type="string">
-            <text:p text:style-name="P27">Akademischer Grad</text:p>
+            <text:p text:style-name="P27">
+              <xsl:choose>
+                <xsl:when test="lgartcode=3 and studiengangstyp='e'">
+                  Abschluss
+                </xsl:when>
+                <xsl:otherwise>
+                  Akademischer Grad
+                </xsl:otherwise>
+              </xsl:choose>
+            </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle2.B1" office:value-type="string">
             <text:p text:style-name="P14">
             <xsl:choose>
               <xsl:when test="lgartcode=3 and studiengangstyp='e'">
-                Abschluss
+                Teilnahmebestätigung / Zertifikat
               </xsl:when>
               <xsl:otherwise>
                 <xsl:value-of select="akadgrad"/>
@@ -2050,24 +2059,45 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
             <text:p text:style-name="P13"><text:span text:style-name="T36"><xsl:value-of select="gueltig_ab_studiensemester"/></text:span></text:p>
-            <text:p text:style-name="P13"><xsl:value-of select="gueltig_ab_ausbildungssemester"/></text:p>
+            <text:p text:style-name="P13">
+              <xsl:choose>
+                <xsl:when test="../../lgartcode=3 or ../../organisationseinheittyp_kurzbz='Programm'">
+                  1
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="gueltig_ab_ausbildungssemester"/>
+                </xsl:otherwise>-
+              </xsl:choose>
+            </text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row table:style-name="Tabelle3.1">
           <table:table-cell table:style-name="Tabelle3.A1" office:value-type="string">
             <text:p text:style-name="P27">
-                <xsl:choose>
-                    <xsl:when test="../../lgartcode!=''">
-                      Lehrgangsdauer in Semestern
-                    </xsl:when>
-                    <xsl:otherwise>
-                      Regelstudiendauer in Semestern
-                    </xsl:otherwise>
-                </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="../../studiengangstyp='l' and ../../lgartcode!=3">
+                  Lehrgangsdauer in Semestern
+                </xsl:when>
+                <xsl:when test="../../lgartcode=3 or ../../organisationseinheittyp_kurzbz='Programm'">
+                  Programmdauer in Semestern
+                </xsl:when>
+                <xsl:otherwise>
+                  Regelstudiendauer in Semestern
+                </xsl:otherwise>-
+              </xsl:choose>
             </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
-            <text:p text:style-name="P29"><xsl:value-of select="regelstudiendauer"/></text:p>
+            <text:p text:style-name="P29">
+              <xsl:choose>
+                <xsl:when test="../../lgartcode=3 or ../../organisationseinheittyp_kurzbz='Programm'">
+                  1
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="regelstudiendauer"/>
+                </xsl:otherwise>-
+              </xsl:choose>
+            </text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row table:style-name="Tabelle3.1">
@@ -2075,7 +2105,25 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P27">ECTS</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle3.B1" office:value-type="string">
-            <text:p text:style-name="P29"><xsl:value-of select="summe_ects"/></text:p>
+            <text:p text:style-name="P29">
+              <xsl:choose>
+                <xsl:when test="
+                          (
+                            ../../lgartcode=3
+                            or ../../organisationseinheittyp_kurzbz='Programm'
+                                and
+                            (
+                              not(ects)
+                              or ects = 0
+                              or ects = ''
+                            )
+                          )
+                        "> - </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="summe_ects"/>
+                </xsl:otherwise>-
+              </xsl:choose>
+            </text:p>
           </table:table-cell>
         </table:table-row>
 
@@ -2274,7 +2322,25 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P48"> </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle8.D1" office:value-type="string">
-            <text:p text:style-name="P47"><xsl:value-of select="summe_ects"/></text:p>
+            <text:p text:style-name="P47">
+              <xsl:choose>
+                <xsl:when test="
+                          (
+                            ../../lgartcode=3
+                            or ../../organisationseinheittyp_kurzbz='Programm'
+                                and
+                            (
+                              not(ects)
+                              or ects = 0
+                              or ects = ''
+                            )
+                          )
+                        "> - </xsl:when>
+               <xsl:otherwise>
+                  <xsl:value-of select="summe_ects"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </text:p>
           </table:table-cell>
 
           <xsl:choose>
@@ -2296,7 +2362,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       <text:p text:style-name="P52">Abkürzungen</text:p>
       <text:p text:style-name="P51">“Lehrform”</text:p>
 
-      <text:list text:style-name="P73">
+      <text:list text:style-name="WWNum7">
         <xsl:apply-templates select="//lehrformen"/>
       </text:list>
 
@@ -2398,7 +2464,25 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
             <text:p text:style-name="P48"> </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Tabelle4.E1" office:value-type="string">
-            <text:p text:style-name="P47"><xsl:value-of select="semester_summe_ects"/></text:p>
+            <text:p text:style-name="P47">
+              <xsl:choose>
+                <xsl:when test="
+                          (
+                            ../../../../lgartcode=3
+                            or ../../../../organisationseinheittyp_kurzbz='Programm'
+                                and
+                            (
+                              not(ects)
+                              or ects = 0
+                              or ects = ''
+                            )
+                          )
+                        "> - </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="semester_summe_ects"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </text:p>
           </table:table-cell>
 
           <xsl:choose>
@@ -2552,7 +2636,25 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 					</text:p>
 				  </table:table-cell>
 				  <table:table-cell table:style-name="Tabelle4.B3" office:value-type="string">
-					<text:p text:style-name="P49"><xsl:value-of select="ects"/></text:p>
+					<text:p text:style-name="P49">
+                      <xsl:choose>
+                        <xsl:when test="
+                          (
+                            ../../../../../../lgartcode = 3
+                            or ../../../../../../organisationseinheittyp_kurzbz = 'Programm'
+                                and
+                            (
+                              not(ects)
+                              or ects = 0
+                              or ects = ''
+                            )
+                          )
+                        "> - </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="ects"/>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </text:p>
 				  </table:table-cell>
 				  <table:table-cell table:style-name="Tabelle4.B3" office:value-type="string">
 					<text:p text:style-name="P49"><xsl:value-of select="sws"/></text:p>
@@ -2602,7 +2704,25 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 			</text:p>
 		  </table:table-cell>
 		  <table:table-cell table:style-name="Tabelle4.B4" office:value-type="string">
-			<text:p text:style-name="P49"><xsl:value-of select="ects"/></text:p>
+			<text:p text:style-name="P49">
+              <xsl:choose>
+                <xsl:when test="
+                          (
+                            ../../../../../../../../lgartcode = 3
+                            or ../../../../../../../../organisationseinheittyp_kurzbz = 'Programm'
+                                and
+                            (
+                              not(ects)
+                              or ects = 0
+                              or ects = ''
+                            )
+                          )
+                        "> - </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="ects"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </text:p>
 		  </table:table-cell>
 
           <xsl:choose>
@@ -3147,12 +3267,13 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 </xsl:template>
 
 <xsl:template match="lehrform">
-  <text:list-item>
-    <text:p text:style-name="P74">
-      <xsl:value-of select="kurzbz"/>:
-      <xsl:value-of select="bezeichnung"/>
-    </text:p>
-  </text:list-item>
+ <text:list-item>
+      <text:p text:style-name="P74">
+        <xsl:value-of select="kurzbz"/>
+        <xsl:text>: </xsl:text>
+        <xsl:value-of select="bezeichnung"/>
+      </text:p>
+    </text:list-item>
 </xsl:template>
 
 </xsl:stylesheet>
