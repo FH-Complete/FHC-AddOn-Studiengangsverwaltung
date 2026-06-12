@@ -43,6 +43,15 @@
 			</div>
 			<div class="col-sm-4">
 				<div class="form-group">
+					<label for="bezeichnung">Studiengangbezeichnung englisch</label>
+					<div class="input-group">
+						<input type="text" class="form-control input-sm" name="bezeichnung_en" ng-model="ctrl.data.studiengangbezeichnung_englisch"/>
+						<span class="input-group-addon"><a href="#" data-toggle="tooltip" data-placement="right" title="Die bestehende oder die aufgrund der Änderung neue Studiengangsbezeichnung eingeben."><span style="font-size: 1em;" class="glyphicon glyphicon-info-sign glyph" aria-hidden="true"></span></a></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
 					<label for="akadGrad">Akademischer Grad</label>
 					<div class="input-group">
 						<select class="form-control input-sm" name="akadGrad" ng-model="ctrl.data.akadgrad_id">

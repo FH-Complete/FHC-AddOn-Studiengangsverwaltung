@@ -34,6 +34,7 @@ require_once('../../../include/standort.class.php');
 require_once('../../../include/lehrform.class.php');
 require_once('../../../include/sprache.class.php');
 require_once('../../../include/studienplan.class.php');
+require_once('../../../include/organisationseinheit.class.php');
 require_once('../include/studienordnungAddonStgv.class.php');
 require_once('../include/studienplanAddonStgv.class.php');
 require_once('../include/aenderungsvariante.class.php');
@@ -131,6 +132,13 @@ $akadgrad->load($studienordnung->akadgrad_id);
 $orgform = new organisationsform();
 $orgform->load($studiengang->orgform_kurzbz);
 
+// Organisationseinheit
+$oe_kurzbz = $studiengang->oe_kurzbz;
+$organisationseinheit = new organisationseinheit();
+$organisationseinheit->load($oe_kurzbz);
+if($organisationseinheit->organisationseinheittyp_kurzbz == 'Programm' || $studiengang->lgartcode == 3)
+	$stg_art = 'Programm';
+
 // Studiengangstyp
 $studiengang->getAllTypes();
 
@@ -151,6 +159,8 @@ $lehrform->getAll();
 $lehrform_arr = array();
 foreach ($lehrform->lehrform as $row)
 	$lehrform_arr[$row->lehrform_kurzbz] = $row->bezeichnung;
+$lehrform_descriptions_global = array();
+
 
 // Studienplan
 $stpl = new StudienplanAddonStgv();
@@ -286,7 +296,6 @@ foreach ($stpl->result as $row_stpl)
 		'auslandssemester' => $auslandssemester_semester,
 		'berufspraktikum_erlaeuterungen' => $berufspraktikum_erlaeuterungen,
 		'berufspraktikum' => $berufspraktikum_semester,
-
 	));
 }
 
@@ -392,6 +401,9 @@ $data = array(
 	'standort' => $standort->bezeichnung,
 	'status_kurzbz' => $studienordnung->status_kurzbz,
 	'studiengang_kz' => sprintf('%04s', $studiengang->studiengang_kz),
+	'melde_studiengang_kz' => sprintf('%04s', $studiengang->melde_studiengang_kz),
+	'lgartcode' => $studiengang->lgartcode,
+	'organisationseinheittyp_kurzbz' => $organisationseinheit->organisationseinheittyp_kurzbz,
 	'status_bezeichnung' => (isset($status_arr[$studienordnung->status_kurzbz]) ? $status_arr[$studienordnung->status_kurzbz] : $studienordnung->status_kurzbz),
 	'gueltigvon' => $studienordnung->gueltigvon,
 	'gueltigbis' => $studienordnung->gueltigbis,
@@ -418,6 +430,17 @@ $data = array(
 	'qualifikation_kompetenz1_elements' => $qualifikation_kompetenz1_elements,
 	'qualifikation_kompetenz2_elements' => $qualifikation_kompetenz2_elements,
 );
+
+$data['lehrformen'] = array();
+foreach ($lehrform_descriptions_global as $kurzbz => $bez)
+{
+	$data['lehrformen'][] = array(
+		'lehrform' => array(
+			'kurzbz' => $kurzbz,
+			'bezeichnung' => $bez
+		)
+	);
+}
 
 $files = array();
 if ($output == 'zgv') // TODO REMOVE
@@ -451,7 +474,7 @@ else
 
 function printLVTree($tree)
 {
-	global $semester_summe_sws, $semester_summe_lvs, $lehrform_arr;
+	global $semester_summe_sws, $semester_summe_lvs, $lehrform_arr, $lehrform_descriptions_global;
 	global $output_lvinfo, $sprache_arr, $ausgabesprache;
 
 	$data = array();
@@ -461,6 +484,14 @@ function printLVTree($tree)
 		// Nicht studienplanrelevante ueberspringen
 		if (!$lv->export)
 			continue;
+
+		if (!isset($lehrform_descriptions_global[$lv->lehrform_kurzbz]))
+		{
+			$lehrform_descriptions_global[$lv->lehrform_kurzbz] =
+				isset($lehrform_arr[$lv->lehrform_kurzbz])
+					? $lehrform_arr[$lv->lehrform_kurzbz]
+					: $lv->lehrform_kurzbz;
+		}
 
 		$semester_summe_sws += $lv->sws;
 		$semester_summe_lvs += $lv->lvs;

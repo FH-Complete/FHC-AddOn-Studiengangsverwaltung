@@ -21,7 +21,7 @@ angular.module('stgv2')
 				ctrl.data = data;
 				if(ctrl.data.lehrtyp_kurzbz === "modul")
 				{
-					ctrl.loadOrganisationseinheitenList("Studiengang");
+					ctrl.loadOrganisationseinheitenList();  // Removed to support LG Modules
 				}
 				else
 				{
@@ -80,7 +80,7 @@ angular.module('stgv2')
     					ctrl.data.lehrauftrag = false;
     					ctrl.data.lehre = false;
                     }
-					ctrl.loadOrganisationseinheitenList("Studiengang");
+					ctrl.loadOrganisationseinheitenList(); // Removed to support LG
 				}
 				else
 				{
