@@ -66,7 +66,7 @@ if($parent_id == null)
 			$node->ects = 0;
 
 			if($i==0) {
-				$node->bezeichnung = 'Validierung beruflicher Kompetenzen';
+				$node->bezeichnung = 'Validierung von beruflich erworbenen Kompetenzen';
 			}
 			else {
 				$node->bezeichnung = $i . '. Semester';
