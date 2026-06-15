@@ -7,12 +7,15 @@ angular.module('stgv2')
 			ctrl.studiensemesterList = [];
 			ctrl.studienplan = "";
 			ctrl.zuordnungList = "";
+			ctrl.isMasterLehrgang = false;
 
 			//loading data
 			StudienplanService.getStudienplan($scope.studienplan_id).then(function (result) {
 				ctrl.studienplan = result;
 				StudienordnungService.getStudienordnungByStudienplan($scope.studienplan_id).then(function (result) {
 					ctrl.studienplan.status_kurzbz = result.status_kurzbz;
+					ctrl.studienplan.studiengang_kz = result.studiengang_kz;
+					ctrl.isMasterLehrgang = ctrl.studienplan.studiengang_kz < 0 && ctrl.studienplan.ects_stpl >= 120;
 					StudiensemesterService.getStudiensemesterAfter(result.gueltigvon).then(function (result) {
 						ctrl.studiensemesterList = result;
 					}, function (error) {
@@ -128,4 +131,20 @@ angular.module('stgv2')
 					$(value).prop("checked", false);
 				})
 			}
+
+			//adapted range for Masterlehrgänge
+			ctrl.rangeWithSemesterNull = function (max)
+			{
+				var values = [];
+				if(ctrl.isMasterLehrgang)
+					start = 0;
+				else
+					start = 1;
+				for (i = start; i <= max; i++)
+				{
+					values.push(i);
+				}
+				return values;
+			}
+
 		});

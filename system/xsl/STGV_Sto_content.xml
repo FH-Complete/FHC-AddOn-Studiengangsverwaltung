@@ -2448,12 +2448,26 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 
         <table:table-column table:style-name="Tabelle4.H"/>
         <table:table-row table:style-name="Tabelle4.1">
-          <table:table-cell table:style-name="Tabelle4.A1" office:value-type="string">
-            <text:p text:style-name="P47"><xsl:value-of select="semester"/>.</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Tabelle4.B1" office:value-type="string">
-            <text:p text:style-name="P48">Ausbildungssemester</text:p>
-          </table:table-cell>
+          <!--berufliche Kompetenzen-->
+          <xsl:choose>
+            <xsl:when test="semester = '0'">
+              <table:table-cell table:style-name="Tabelle4.A1" office:value-type="string">
+                <text:p text:style-name="P47"></text:p>
+              </table:table-cell>
+              <table:table-cell table:style-name="Tabelle4.B1" office:value-type="string">
+                <text:p text:style-name="P48">Validierung von beruflich erworbenen Kompetenzen</text:p>
+              </table:table-cell>
+            </xsl:when>
+
+          <xsl:otherwise>
+            <table:table-cell table:style-name="Tabelle4.A1" office:value-type="string">
+              <text:p text:style-name="P47"><xsl:value-of select="semester"/>.</text:p>
+            </table:table-cell>
+            <table:table-cell table:style-name="Tabelle4.B1" office:value-type="string">
+              <text:p text:style-name="P48">Ausbildungssemester</text:p>
+            </table:table-cell>
+          </xsl:otherwise>
+          </xsl:choose>
           <table:table-cell table:style-name="Tabelle4.B1" office:value-type="string">
             <text:p text:style-name="P48"> </text:p>
           </table:table-cell>
@@ -2906,14 +2920,30 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 	<table:table table:name="Tabelle9" table:style-name="Tabelle9">
 	  <table:table-column table:style-name="Tabelle9.A"/>
 	  <table:table-column table:style-name="Tabelle9.B"/>
-	  <table:table-row table:style-name="Tabelle9.1">
-		<table:table-cell table:style-name="Tabelle9.A1" office:value-type="string">
-		  <text:p text:style-name="P80"><text:s text:c="4"/><xsl:value-of select="semester" />.</text:p>
-		</table:table-cell>
-		<table:table-cell table:style-name="Tabelle9.A1" office:value-type="string">
-		  <text:p text:style-name="P80">Ausbildungssemester</text:p>
-		</table:table-cell>
-	  </table:table-row>
+	  
+    <xsl:choose>
+				<xsl:when test="semester = '0'">
+					<table:table-row table:style-name="Tabelle9.1">
+						<table:table-cell table:style-name="Tabelle9.A1" office:value-type="string">
+							<text:p text:style-name="P80"><text:s text:c="4"/></text:p>
+						</table:table-cell>
+						<table:table-cell table:style-name="Tabelle9.A1" office:value-type="string">
+							<text:p text:style-name="P80">Validierung von beruflich erworbenen Kompetenzen</text:p>
+						</table:table-cell>
+					</table:table-row>
+				</xsl:when>
+
+				<xsl:otherwise>
+          <table:table-row table:style-name="Tabelle9.1">
+		        <table:table-cell table:style-name="Tabelle9.A1" office:value-type="string">
+		          <text:p text:style-name="P80"><text:s text:c="4"/><xsl:value-of select="semester" />.</text:p>
+		        </table:table-cell>
+		        <table:table-cell table:style-name="Tabelle9.A1" office:value-type="string">
+            <text:p text:style-name="P80">Ausbildungssemester</text:p>
+          </table:table-cell>
+          </table:table-row>
+        </xsl:otherwise>
+      </xsl:choose>
 	</table:table>
 	<text:p text:style-name="P4"/>
 	<xsl:apply-templates select="lehrveranstaltungen" mode="modulbeschreibung" />
@@ -2996,25 +3026,30 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 				  </text:p>
 				</table:table-cell>
 			  </table:table-row>
-			  <table:table-row table:style-name="TabelleModul.1">
-				<table:table-cell table:style-name="TabelleModul.A6" office:value-type="string">
-				  <text:p text:style-name="P81">Ausbildungssemester</text:p>
-				</table:table-cell>
-				<table:table-cell table:style-name="TabelleModul.A2" office:value-type="string">
-				  <text:p text:style-name="P85">
-					<text:span text:style-name="T37">
-						<xsl:choose>
-							<xsl:when test="../../semester">
-								<xsl:value-of select="../../semester" />
-							</xsl:when>
-							<xsl:when test="../../../../semester">
-								<xsl:value-of select="../../../../semester" />
-							</xsl:when>
-						</xsl:choose>
-					</text:span>
-				  </text:p>
-				</table:table-cell>
-			  </table:table-row>
+
+        <xsl:choose>
+          <xsl:when test="(../../semester!='0')"> <!-- 0. Semester nicht anzeigen -->
+            <table:table-row table:style-name="TabelleModul.1">
+            <table:table-cell table:style-name="TabelleModul.A6" office:value-type="string">
+              <text:p text:style-name="P81">Ausbildungssemester</text:p>
+            </table:table-cell>
+            <table:table-cell table:style-name="TabelleModul.A2" office:value-type="string">
+              <text:p text:style-name="P85">
+              <text:span text:style-name="T37">
+                <xsl:choose>
+                  <xsl:when test="../../semester">
+                    <xsl:value-of select="../../semester" />
+                  </xsl:when>
+                  <xsl:when test="../../../../semester">
+                    <xsl:value-of select="../../../../semester" />
+                  </xsl:when>
+                </xsl:choose>
+              </text:span>
+              </text:p>
+            </table:table-cell>
+            </table:table-row>
+          </xsl:when>
+        </xsl:choose>
 			  <xsl:if test="lvinfo">
 				  <table:table-row table:style-name="TabelleModul.1">
 					<table:table-cell table:style-name="TabelleModul.A7" office:value-type="string">
