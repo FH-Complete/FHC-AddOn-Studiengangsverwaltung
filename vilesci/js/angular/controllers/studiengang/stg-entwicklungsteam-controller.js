@@ -129,12 +129,25 @@ angular.module('stgv2')
 				$scope.besqualcode = row.besqualcode;
 				ctrl.entwicklungsteam = row;
 
-				//Iso Date to German String
-				if(ctrl.entwicklungsteam.beginn != null && ctrl.entwicklungsteam.beginn != '')
-					ctrl.entwicklungsteam.beginn = dateTimeStringToGermanDate(ctrl.entwicklungsteam.beginn);
+				//ISOdateToGermandDate wenn Date nicht bereits im GermanFormat vorliegt
+				var germanDatePattern = /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/;
+				if (ctrl.entwicklungsteam.beginn != null && ctrl.entwicklungsteam.beginn != '')
+				{
+					if (!germanDatePattern.test(ctrl.entwicklungsteam.beginn)) {
+						ctrl.entwicklungsteam.beginn = dateTimeStringToGermanDate(ctrl.entwicklungsteam.beginn);
+					} else {
+						ctrl.entwicklungsteam.beginn = ctrl.entwicklungsteam.beginn;
+					}
+				}
 
-				if(ctrl.entwicklungsteam.ende != null && ctrl.entwicklungsteam.ende != '')
-					ctrl.entwicklungsteam.ende = dateTimeStringToGermanDate(ctrl.entwicklungsteam.ende);
+				if (ctrl.entwicklungsteam.ende != null && ctrl.entwicklungsteam.ende != '')
+				{
+					if (!germanDatePattern.test(ctrl.entwicklungsteam.ende)) {
+						ctrl.entwicklungsteam.ende = dateTimeStringToGermanDate(ctrl.entwicklungsteam.ende);
+					} else {
+						ctrl.entwicklungsteam.ende = ctrl.entwicklungsteam.ende;
+					}
+				}
 				$scope.$apply();
 				$('#masuche').combobox('setValue', row.mitarbeiter_uid);
 				$("#entwicklungsteamDetails").show();
@@ -145,11 +158,24 @@ angular.module('stgv2')
 				var saveData = {data: ""};
 				saveData.data = ctrl.entwicklungsteam;
 
-				//GermanDateToISODate
-				if(ctrl.entwicklungsteam.beginn != null && ctrl.entwicklungsteam.beginn != '')
-					saveData.data.beginn = GermanDateToISODate(ctrl.entwicklungsteam.beginn);
-				if(ctrl.entwicklungsteam.ende != null && ctrl.entwicklungsteam.ende != '')
-					saveData.data.ende = GermanDateToISODate(ctrl.entwicklungsteam.ende);
+				//GermanDateToISODate wenn Date nicht bereits im ISOFormat vorliegt
+				var isoDatePattern = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}Z)?$/;
+				if (ctrl.entwicklungsteam.beginn != null && ctrl.entwicklungsteam.beginn != '')
+				{
+					if (!isoDatePattern.test(ctrl.entwicklungsteam.beginn)) {
+						saveData.data.beginn = GermanDateToISODate(ctrl.entwicklungsteam.beginn);
+					} else {
+						saveData.data.beginn = ctrl.entwicklungsteam.beginn;
+					}
+				}
+
+				if (ctrl.entwicklungsteam.ende != null && ctrl.entwicklungsteam.ende != '') {
+					if (!isoDatePattern.test(ctrl.entwicklungsteam.ende)) {
+						saveData.data.ende = GermanDateToISODate(ctrl.entwicklungsteam.ende);
+					} else {
+						saveData.data.ende = ctrl.entwicklungsteam.ende;
+					}
+				}
 
 				if(ctrl.entwicklungsteam.studiengang_kz == null || ctrl.entwicklungsteam.studiengang_kz == '')
 					saveData.data.studiengang_kz = $scope.stgkz;
@@ -173,14 +199,38 @@ angular.module('stgv2')
 							$("#dataGridEntwicklungsteam").datagrid('reload');
 							successService.setMessage(response.data.info);
 							$('#masuche').combobox('clear');
-							alert(response.data.info);
 						}
 						else
 						{
-							errorService.setError(getErrorMsg(response));
+							var errorMsg = response.data.message.message + "\n" + response.data.message.detail;
+							errorService.setError(errorMsg);
+
+							//set format to GermanDatePattern in Error case
+							var germanDatePattern = /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/;
+							if (saveData.data.beginn != null && saveData.data.beginn != '')
+							{
+								if (!germanDatePattern.test(saveData.data.beginn)) {
+									saveData.data.beginn = dateTimeStringToGermanDate(saveData.data.beginn);
+								} else {
+									saveData.data.beginn = ctrl.entwicklungsteam.beginn;
+								}
+							}
+
+							if (saveData.data.ende != null && saveData.data.ende != '')
+							{
+								if (!germanDatePattern.test(saveData.data.ende))
+								{
+									saveData.data.ende = dateTimeStringToGermanDate(saveData.data.ende);
+								} else {
+									saveData.data.ende = ctrl.entwicklungsteam.ende;
+								}
+							}
 						}
 					}, function error(response) {
-						errorService.setError(getErrorMsg(response));
+						// Fehlermeldung bei HTTP-Fehler anzeigen
+						var errorMsg = getErrorMsg(response);
+						errorService.setError(errorMsg);
+						alert(errorMsg);
 					});
 				}
 				else
@@ -191,14 +241,31 @@ angular.module('stgv2')
 
 			ctrl.update = function()
 			{
-					var updateData = {data: ""}
-					updateData.data = ctrl.entwicklungsteam;
+				var updateData = {data: ""};
+				updateData.data = ctrl.entwicklungsteam;
 
-					//GermanDateToISODate
-					if(ctrl.entwicklungsteam.beginn != null && ctrl.entwicklungsteam.beginn != '')
+				//GermanDateToISODate wenn Date nicht bereits im ISOFormat vorliegt
+				var isoDatePattern = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}Z)?$/;
+				if (ctrl.entwicklungsteam.beginn != null && ctrl.entwicklungsteam.beginn != '')
+				{
+					if (!isoDatePattern.test(ctrl.entwicklungsteam.beginn)) {
 						updateData.data.beginn = GermanDateToISODate(ctrl.entwicklungsteam.beginn);
-					if(ctrl.entwicklungsteam.ende != null && ctrl.entwicklungsteam.ende != '')
+					} else {
+						updateData.data.beginn = ctrl.entwicklungsteam.beginn;
+					}
+				}
+
+				if (ctrl.entwicklungsteam.ende != null && ctrl.entwicklungsteam.ende != '')
+				{
+					if (!isoDatePattern.test(ctrl.entwicklungsteam.ende)) {
 						updateData.data.ende = GermanDateToISODate(ctrl.entwicklungsteam.ende);
+					} else {
+						updateData.data.ende = ctrl.entwicklungsteam.ende;
+					}
+				}
+
+				if(ctrl.entwicklungsteam.studiengang_kz == null || ctrl.entwicklungsteam.studiengang_kz == '')
+					updateData.data.studiengang_kz = $scope.stgkz;
 
 					updateData.data.updateamum = new Date().toISOString().slice(0, 19);
 
@@ -223,12 +290,31 @@ angular.module('stgv2')
 								$("#dataGridEntwicklungsteam").datagrid('reload');
 								successService.setMessage(response.data.info);
 								$('#masuche').combobox('clear');
-
-								alert(response.data.info);
 							}
 							else
 							{
 								errorService.setError(getErrorMsg(response));
+
+								//set format to GermanDatePattern in Error case
+								var germanDatePattern = /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/;
+								if (updateData.data.beginn != null && updateData.data.beginn != '')
+								{
+									if (!germanDatePattern.test(updateData.data.beginn)) {
+										updateData.data.beginn = dateTimeStringToGermanDate(updateData.data.beginn);
+									} else {
+										updateData.data.beginn = ctrl.entwicklungsteam.beginn;
+									}
+								}
+
+								if (updateData.data.ende != null && updateData.data.ende != '')
+								{
+									if (!germanDatePattern.test(updateData.data.ende))
+									{
+										updateData.data.ende = dateTimeStringToGermanDate(updateData.data.ende);
+									} else {
+										updateData.data.ende = ctrl.entwicklungsteam.ende;
+									}
+								}
 							}
 						}, function error(response) {
 							errorService.setError(getErrorMsg(response));
