@@ -1264,6 +1264,36 @@ if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berecht
 	}
 }
 
+//Berechtigung zum Erstellen/editieren von Karrierepfaden
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/editKarrierepfad' LIMIT 1"))
+{
+	if($db->db_num_rows($result)==0)
+	{
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/editKarrierepfad','Recht zum Erstellen/Editieren von Karrierepfaden.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/editKarrierepfad','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+		echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+		echo ' system.tbl_berechtigung: Recht zum Erstellen/Editieren von Karrierepfaden.<br>';
+	}
+}
+
+//Berechtigung zum Löschen von Karrierepfaden
+if($result = @$db->db_query("SELECT 1 FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='stgv/deleteKarrierepfad' LIMIT 1"))
+{
+	if($db->db_num_rows($result)==0)
+	{
+	$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) VALUES ('stgv/deleteKarrierepfad','Recht zum Löschen von Karrierepfaden.');
+		INSERT INTO system.tbl_rolleberechtigung(berechtigung_kurzbz, rolle_kurzbz, art) VALUES('stgv/deleteKarrierepfad','addonStgv','suid');";
+
+	if (!$db->db_query($qry))
+		echo '<strong>system.tbl_berechtigung: ' . $db->db_last_error() . '</strong><br>';
+	else
+		echo ' system.tbl_berechtigung: Recht zum Löschen von Karrierepfaden.<br>';
+	}
+}
+
 // Unique Keys
 if($result = @$db->db_query("SELECT * FROM information_schema.table_constraints WHERE constraint_schema='addon' AND table_name='tbl_stgv_aufnahmeverfahren' AND constraint_name='uk_stgv_aufnahemverfahren_studienordnung_id' LIMIT 1;"))
 {

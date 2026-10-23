@@ -44,6 +44,11 @@ angular.module('stgv2').config(function ($stateProvider) {
 				url: '/entwicklungsteam',
 				templateUrl: './templates/pages/studiengang/betriebsdaten/entwicklungsteam/entwicklungsteam.html'
 			})
+			.state('betriebsdaten.karrierepfade', {
+				name: 'betriebsdaten.karrierepfade',
+				url: '/karrierepfade',
+				templateUrl: './templates/pages/studiengang/betriebsdaten/karrierepfade/karrierepfade.html'
+			})
 			.state('studienordnung', {
 				name: 'studienordnung',
 				url: '/studienordnung/:studienordnung_id',

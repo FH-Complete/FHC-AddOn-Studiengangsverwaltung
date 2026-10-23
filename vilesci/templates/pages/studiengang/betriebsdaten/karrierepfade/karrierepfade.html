@@ -1,0 +1,91 @@
+<div class="contentWrapper" ng-controller="StgKarrierepfadeCtrl as ctrl">
+	<div class="col-sm-2">
+		<div>
+			<label>&nbsp;</label>
+			<button class='btn btn-default btn-sm' ng-click='ctrl.newKarrierepfad()'>neuer Karrierepfad</button>
+		</div>
+	</div>
+	</br>
+	</br>
+	</br>
+	<table id="dataGridKarrierepfad" class="easyui-datagrid" style='height: 200px;'>
+	</table>
+	</br>
+	<div ng-show="ctrl.karrierepfad">
+		<form name="ctrl.form" novalidate>
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="form-group" ng-class="{'has-error': (ctrl.form.$submitted && ctrl.form.karrierepfad_kurzbz.$invalid)}">
+						<label for="karrierepfad_kurzbz">Kurzbezeichnung</label>
+						<input strip-html type="text" class="form-control input-sm" name="karrierepfad_kurzbz" ng-model="ctrl.karrierepfad.karrierepfad_kurzbz"
+							ng-readonly="ctrl.karrierepfad.karrierepfad_id" maxlength="32" ng-pattern="/^[A-Za-z0-9_-]+$/" required/>
+						<p class="help-block">Wert des URL-Parameters karrierepfad_kurzbz im Bewerbungstool. Nach dem Anlegen nicht änderbar.</p>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group" ng-class="{'has-error': (ctrl.form.$submitted && ctrl.form.karrierepfad_typ_kurzbz.$invalid)}">
+						<label for="karrierepfad_typ_kurzbz">Typ</label>
+						<select class="form-control input-sm" name="karrierepfad_typ_kurzbz" ng-model="ctrl.karrierepfad.karrierepfad_typ_kurzbz"
+							ng-options="typ.karrierepfad_typ_kurzbz as typ.bezeichnung_mehrsprachig.German for typ in ctrl.typen" required>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-1">
+					<div class="form-group" ng-class="{'has-error': (ctrl.form.$submitted && ctrl.form.sort.$invalid)}">
+						<label for="sort">Sortierung</label>
+						<input type="text" class="form-control input-sm" name="sort" ng-model="ctrl.karrierepfad.sort" ng-pattern="/^[0-9]*$/" maxlength="4"/>
+					</div>
+				</div>
+				<div class="col-sm-1">
+					<div class="form-group">
+						<label for="aktiv">Aktiv</label>
+						<div class="checkbox">
+							<input type="checkbox" name="aktiv" ng-model="ctrl.karrierepfad.aktiv"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="form-group" ng-class="{'has-error': (ctrl.form.$submitted && ctrl.form.bezeichnung_german.$invalid)}">
+						<label for="bezeichnung_german">Bezeichnung</label>
+						<input strip-html type="text" class="form-control input-sm" name="bezeichnung_german" ng-model="ctrl.karrierepfad.bezeichnung_mehrsprachig.German" maxlength="256" required/>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group" ng-class="{'has-error': (ctrl.form.$submitted && ctrl.form.bezeichnung_english.$invalid)}">
+						<label for="bezeichnung_english">Bezeichnung Englisch</label>
+						<input strip-html type="text" class="form-control input-sm" name="bezeichnung_english" ng-model="ctrl.karrierepfad.bezeichnung_mehrsprachig.English" maxlength="256" required/>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-8">
+					<div class="form-group">
+						<label>Studienpläne</label>
+						<p class="help-block">Im Bewerbungstool steht der Karrierepfad nur bei diesen Studienplänen zur Auswahl.</p>
+						<div class="checkbox" ng-repeat="sp in ctrl.studienplaene">
+							<label>
+								<input type="checkbox" ng-checked="ctrl.hasStudienplan(sp.studienplan_id)" ng-click="ctrl.toggleStudienplan(sp.studienplan_id)"/>
+								{{sp.bezeichnung}} ({{sp.orgform_kurzbz}}<span ng-if="sp.sprache">, {{sp.sprache}}</span>)<span ng-if="!sp.aktiv"> – inaktiv</span>
+							</label>
+						</div>
+						<p ng-if="ctrl.studienplaene.length == 0">Dieser Studiengang hat keine Studienpläne.</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-8">
+					<div class="form-group">
+						<p class="help-block" ng-if="ctrl.karrierepfad.anzahl_prestudenten > 0">
+							{{ctrl.karrierepfad.anzahl_prestudenten}} Bewerbung(en) verwenden diesen Karrierepfad. Statt zu löschen, bitte deaktivieren.
+						</p>
+						<button type="submit" class="btn btn-success btn-sm" ng-click="ctrl.save()">Speichern</button>
+						<button type="button" class="btn btn-danger btn-sm" ng-show="ctrl.karrierepfad.karrierepfad_id"
+							ng-disabled="ctrl.karrierepfad.anzahl_prestudenten > 0" ng-click="ctrl.delete()">Löschen</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

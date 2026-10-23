@@ -9,6 +9,7 @@ angular.module('stgv2')
 			{label: 'Förderungen', link: '.foerderungen'},
 			{label: 'Doktorat', link: '.doktorat'},
 			{label: 'Entwicklungsteam', link: '.entwicklungsteam'},
+			{label: 'Karrierepfade', link: '.karrierepfade'},
 		];
 
 		$rootScope.$broadcast("loadTreeGrid",{"stgkz": $scope.stgkz, "state": "all"});
