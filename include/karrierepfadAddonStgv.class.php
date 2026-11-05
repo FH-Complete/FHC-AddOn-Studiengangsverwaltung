@@ -81,7 +81,7 @@ class karrierepfadAddonStgv extends karrierepfad
 	}
 
 	/**
-	 * Loads all Studienpläne of a Studiengang into $this->result (stdClass rows)
+	 * Loads all Studienpläne of a Studiengang into $this->result (stdClass rows), newest Gültigkeit first
 	 * @param integer $studiengang_kz
 	 * @return boolean
 	 */
@@ -93,11 +93,12 @@ class karrierepfadAddonStgv extends karrierepfad
 			return false;
 		}
 
-		$qry = "SELECT sp.studienplan_id, sp.bezeichnung, sp.orgform_kurzbz, sp.sprache, sp.aktiv
+		$qry = "SELECT sp.studienplan_id, sp.bezeichnung, sp.orgform_kurzbz, sp.sprache, sp.aktiv, sto.gueltigvon
 				FROM lehre.tbl_studienplan sp
-				JOIN lehre.tbl_studienordnung USING(studienordnung_id)
-				WHERE studiengang_kz=".$this->db_add_param($studiengang_kz, FHC_INTEGER)."
-				ORDER BY sp.aktiv DESC, sp.bezeichnung";
+				JOIN lehre.tbl_studienordnung sto USING(studienordnung_id)
+				LEFT JOIN public.tbl_studiensemester ss ON ss.studiensemester_kurzbz = sto.gueltigvon
+				WHERE sto.studiengang_kz=".$this->db_add_param($studiengang_kz, FHC_INTEGER)."
+				ORDER BY ss.start DESC NULLS LAST, sp.bezeichnung";
 
 		if (!$this->db_query($qry))
 		{
@@ -171,11 +172,6 @@ class karrierepfadAddonStgv extends karrierepfad
 			$this->errormsg = 'Der Studiengang fehlt.';
 			return false;
 		}
-		if ($this->sort !== '' && !is_null($this->sort) && !ctype_digit((string) $this->sort))
-		{
-			$this->errormsg = 'Die Sortierung muss eine positive ganze Zahl sein.';
-			return false;
-		}
 		foreach ($this->studienplan_ids as $studienplan_id)
 		{
 			if (!ctype_digit((string) $studienplan_id))
@@ -224,7 +220,7 @@ class karrierepfadAddonStgv extends karrierepfad
 	}
 
 	/**
-	 * Saves the Karrierepfad and replaces its Studienplan links
+	 * Saves the Karrierepfad and replaces its Studienplan links. The sort stays: saveSort() owns it, a new one goes last.
 	 * @return boolean
 	 */
 	public function save()
@@ -242,7 +238,8 @@ class karrierepfadAddonStgv extends karrierepfad
 					$this->db_add_param($this->karrierepfad_typ_kurzbz).", ".
 					$this->db_add_param($this->studiengang_kz, FHC_INTEGER).", ".
 					$this->db_add_param($this->bezeichnung_mehrsprachig, FHC_LANG_ARRAY).", ".
-					$this->db_add_param($this->sort, FHC_INTEGER).", ".
+					"(SELECT coalesce(max(sort), 0) + 1 FROM public.tbl_karrierepfad WHERE studiengang_kz=".
+						$this->db_add_param($this->studiengang_kz, FHC_INTEGER)."), ".
 					$this->db_add_param($this->aktiv, FHC_BOOLEAN).", ".
 					"now(), ".
 					$this->db_add_param($this->insertvon).")
@@ -254,7 +251,6 @@ class karrierepfadAddonStgv extends karrierepfad
 					" karrierepfad_kurzbz=".$this->db_add_param($this->karrierepfad_kurzbz).",".
 					" karrierepfad_typ_kurzbz=".$this->db_add_param($this->karrierepfad_typ_kurzbz).",".
 					" bezeichnung_mehrsprachig=".$this->db_add_param($this->bezeichnung_mehrsprachig, FHC_LANG_ARRAY).",".
-					" sort=".$this->db_add_param($this->sort, FHC_INTEGER).",".
 					" aktiv=".$this->db_add_param($this->aktiv, FHC_BOOLEAN).",".
 					" updateamum=now(),".
 					" updatevon=".$this->db_add_param($this->updatevon).
@@ -290,6 +286,65 @@ class karrierepfadAddonStgv extends karrierepfad
 
 		$this->db_query('COMMIT');
 		$this->new = false;
+		return true;
+	}
+
+	/**
+	 * Saves the order of the Karrierepfade of a Studiengang: sort = position in the list
+	 * @param integer $studiengang_kz
+	 * @param array $karrierepfad_ids all Karrierepfade of the Studiengang in the new order
+	 * @param string $uid
+	 * @return boolean
+	 */
+	public function saveSort($studiengang_kz, $karrierepfad_ids, $uid)
+	{
+		if (!is_numeric($studiengang_kz))
+		{
+			$this->errormsg = 'Studiengang ist ungueltig';
+			return false;
+		}
+		foreach ($karrierepfad_ids as $karrierepfad_id)
+		{
+			if (!ctype_digit((string) $karrierepfad_id))
+			{
+				$this->errormsg = 'Ungültige Karrierepfad ID.';
+				return false;
+			}
+		}
+		$karrierepfad_ids = array_map('intval', $karrierepfad_ids);
+
+		// the list must hold exactly the Karrierepfade of the Studiengang, else another user changed them meanwhile
+		$qry = "SELECT karrierepfad_id FROM public.tbl_karrierepfad
+				WHERE studiengang_kz=".$this->db_add_param($studiengang_kz, FHC_INTEGER);
+		if (!$this->db_query($qry))
+		{
+			$this->errormsg = 'Fehler beim Laden der Karrierepfade';
+			return false;
+		}
+		$existing_ids = array();
+		while ($row = $this->db_fetch_object())
+			$existing_ids[] = (int) $row->karrierepfad_id;
+		$new_ids = $karrierepfad_ids;
+		sort($existing_ids);
+		sort($new_ids);
+		if (count($new_ids) == 0 || $new_ids !== $existing_ids)
+		{
+			$this->errormsg = 'Die Karrierepfade wurden inzwischen geändert. Bitte laden Sie die Seite neu.';
+			return false;
+		}
+
+		$qry = "UPDATE public.tbl_karrierepfad kp SET
+					sort=pos.sort,
+					updateamum=now(),
+					updatevon=".$this->db_add_param($uid)."
+				FROM unnest(ARRAY[".implode(',', $karrierepfad_ids)."]::integer[]) WITH ORDINALITY AS pos(karrierepfad_id, sort)
+				WHERE kp.karrierepfad_id=pos.karrierepfad_id
+				AND kp.sort IS DISTINCT FROM pos.sort";
+		if (!$this->db_query($qry))
+		{
+			$this->errormsg = 'Fehler beim Speichern der Reihenfolge';
+			return false;
+		}
 		return true;
 	}
 

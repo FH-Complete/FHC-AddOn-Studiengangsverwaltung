@@ -46,7 +46,6 @@ foreach (array('German', 'English') as $sprache)
 
 $karrierepfad->bezeichnung_mehrsprachig = $bezeichnung_mehrsprachig;
 $karrierepfad->karrierepfad_typ_kurzbz = isset($data->karrierepfad_typ_kurzbz) ? $data->karrierepfad_typ_kurzbz : '';
-$karrierepfad->sort = isset($data->sort) ? trim($data->sort) : '';
 $karrierepfad->aktiv = isset($data->aktiv) ? parseBoolean($data->aktiv) : false;
 $karrierepfad->studienplan_ids = isset($data->studienplan_ids) && is_array($data->studienplan_ids) ? array_values($data->studienplan_ids) : array();
 

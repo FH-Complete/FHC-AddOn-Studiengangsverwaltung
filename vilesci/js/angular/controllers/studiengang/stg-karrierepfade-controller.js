@@ -4,6 +4,7 @@ angular.module('stgv2')
 			var ctrl = this;
 			ctrl.karrierepfad = null;
 			ctrl.selectedId = null;
+			ctrl.keepForm = false;
 			ctrl.typen = [];
 			ctrl.studienplaene = [];
 
@@ -47,14 +48,23 @@ angular.module('stgv2')
 				errorService.setError(getErrorMsg(response));
 			});
 
-			ctrl.getStudienplanBezeichnung = function (studienplan_id)
+			// Studienpläne in the order of ctrl.studienplaene, newest Gültigkeit first
+			ctrl.getStudienplaene = function (studienplan_ids)
 			{
-				for (var i = 0; i < ctrl.studienplaene.length; i++)
-				{
-					if (String(ctrl.studienplaene[i].studienplan_id) === String(studienplan_id))
-						return ctrl.studienplaene[i].bezeichnung;
-				}
-				return studienplan_id;
+				var ids = studienplan_ids.map(String);
+				return ctrl.studienplaene.filter(function (sp) {
+					return ids.indexOf(String(sp.studienplan_id)) !== -1;
+				});
+			};
+
+			ctrl.getStudienplaeneLabel = function ()
+			{
+				if (ctrl.karrierepfad === null)
+					return '';
+				var bezeichnungen = ctrl.getStudienplaene(ctrl.karrierepfad.studienplan_ids).map(function (sp) {
+					return sp.bezeichnung;
+				});
+				return bezeichnungen.length > 0 ? bezeichnungen.join(', ') : 'Keine Studienpläne gewählt';
 			};
 
 			ctrl.loadDataGrid = function ()
@@ -65,15 +75,27 @@ angular.module('stgv2')
 					singleSelect: true,
 					onLoadSuccess: function (data)
 					{
-						// keep the selection after a save
+						// keep the selection after a save, and the unsaved form after a move
 						for (var i = 0; i < data.rows.length; i++)
 						{
 							if (String(data.rows[i].karrierepfad_id) === String(ctrl.selectedId))
 							{
 								$("#dataGridKarrierepfad").datagrid('selectRow', i);
-								ctrl.showDetails(data.rows[i]);
+								if (!ctrl.keepForm)
+									ctrl.showDetails(data.rows[i]);
 							}
 						}
+						ctrl.keepForm = false;
+
+						// bound on the arrows, so the click does not select the row
+						$("#dataGridKarrierepfad").datagrid('getPanel').find('.karrierepfadMove').click(function (event) {
+							event.stopPropagation();
+							var index = parseInt($(this).closest('tr.datagrid-row').attr('datagrid-row-index'), 10);
+							var direction = parseInt($(this).attr('data-direction'), 10);
+							$scope.$evalAsync(function () {
+								ctrl.move(index, direction);
+							});
+						});
 					},
 					loadFilter: function (data) {
 						var result = {rows: [], total: 0};
@@ -94,6 +116,10 @@ angular.module('stgv2')
 						ctrl.showDetails(row);
 					},
 					columns: [[
+						{field: 'move', align: 'center', title: 'Reihenfolge', formatter: function () {
+							return '<span class="karrierepfadMove glyphicon glyphicon-arrow-up" data-direction="-1" title="nach oben" style="cursor: pointer"></span>' +
+								'&nbsp;&nbsp;<span class="karrierepfadMove glyphicon glyphicon-arrow-down" data-direction="1" title="nach unten" style="cursor: pointer"></span>';
+						}},
 						{field: 'karrierepfad_kurzbz', align: 'left', title: 'Kurzbezeichnung', formatter: escapeHtml},
 						{field: 'bezeichnung_german', align: 'left', title: 'Bezeichnung', formatter: function (value, row) {
 							return escapeHtml(row.bezeichnung_mehrsprachig.German);
@@ -102,13 +128,12 @@ angular.module('stgv2')
 							return escapeHtml(row.bezeichnung_mehrsprachig.English);
 						}},
 						{field: 'karrierepfad_typ_kurzbz', align: 'left', title: 'Typ', formatter: escapeHtml},
-						{field: 'sort', align: 'right', title: 'Sortierung'},
 						{field: 'aktiv', align: 'left', title: 'Aktiv', formatter: function (value) {
 							return value ? 'Ja' : 'Nein';
 						}},
 						{field: 'studienplan_ids', align: 'left', title: 'Studienpläne', formatter: function (value) {
-							return value.map(function (id) {
-								return escapeHtml(ctrl.getStudienplanBezeichnung(id));
+							return ctrl.getStudienplaene(value).map(function (sp) {
+								return escapeHtml(sp.bezeichnung);
 							}).join(', ');
 						}},
 						{field: 'anzahl_prestudenten', align: 'right', title: 'Bewerbungen'}
@@ -135,7 +160,6 @@ angular.module('stgv2')
 					karrierepfad_typ_kurzbz: ctrl.typen.length > 0 ? ctrl.typen[0].karrierepfad_typ_kurzbz : "",
 					studiengang_kz: $scope.stgkz,
 					bezeichnung_mehrsprachig: {German: "", English: ""},
-					sort: "",
 					aktiv: true,
 					studienplan_ids: [],
 					anzahl_prestudenten: 0
@@ -158,6 +182,40 @@ angular.module('stgv2')
 					ctrl.karrierepfad.studienplan_ids.splice(index, 1);
 			};
 
+			ctrl.move = function (index, direction)
+			{
+				var rows = $("#dataGridKarrierepfad").datagrid('getRows');
+				var target = index + direction;
+				if (target < 0 || target >= rows.length)
+					return;
+
+				var karrierepfad_ids = rows.map(function (row) {
+					return row.karrierepfad_id;
+				});
+				karrierepfad_ids.splice(target, 0, karrierepfad_ids.splice(index, 1)[0]);
+
+				$http({
+					method: 'POST',
+					url: './api/studiengang/karrierepfad/save_sort.php',
+					data: $.param({data: {studiengang_kz: $scope.stgkz, karrierepfad_ids: karrierepfad_ids}}),
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
+				}).then(function success(response) {
+					if (response.data.erfolg)
+					{
+						ctrl.keepForm = true;
+						$("#dataGridKarrierepfad").datagrid('reload');
+					}
+					else
+					{
+						errorService.setError(getErrorMsg(response));
+					}
+				}, function error(response) {
+					errorService.setError(getErrorMsg(response));
+				});
+			};
+
 			ctrl.save = function ()
 			{
 				if (!ctrl.form.$valid)
@@ -173,7 +231,6 @@ angular.module('stgv2')
 							German: ctrl.karrierepfad.bezeichnung_mehrsprachig.German,
 							English: ctrl.karrierepfad.bezeichnung_mehrsprachig.English
 						},
-						sort: ctrl.karrierepfad.sort,
 						aktiv: ctrl.karrierepfad.aktiv,
 						studienplan_ids: ctrl.karrierepfad.studienplan_ids
 					}

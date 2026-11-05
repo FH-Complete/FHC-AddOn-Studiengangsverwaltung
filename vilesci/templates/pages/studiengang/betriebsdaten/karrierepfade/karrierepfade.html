@@ -31,12 +31,6 @@
 					</div>
 				</div>
 				<div class="col-sm-1">
-					<div class="form-group" ng-class="{'has-error': (ctrl.form.$submitted && ctrl.form.sort.$invalid)}">
-						<label for="sort">Sortierung</label>
-						<input type="text" class="form-control input-sm" name="sort" ng-model="ctrl.karrierepfad.sort" ng-pattern="/^[0-9]*$/" maxlength="4"/>
-					</div>
-				</div>
-				<div class="col-sm-1">
 					<div class="form-group">
 						<label for="aktiv">Aktiv</label>
 						<div class="checkbox">
@@ -64,11 +58,19 @@
 					<div class="form-group">
 						<label>Studienpläne</label>
 						<p class="help-block">Im Bewerbungstool steht der Karrierepfad nur bei diesen Studienplänen zur Auswahl.</p>
-						<div class="checkbox" ng-repeat="sp in ctrl.studienplaene">
-							<label>
-								<input type="checkbox" ng-checked="ctrl.hasStudienplan(sp.studienplan_id)" ng-click="ctrl.toggleStudienplan(sp.studienplan_id)"/>
-								{{sp.bezeichnung}} ({{sp.orgform_kurzbz}}<span ng-if="sp.sprache">, {{sp.sprache}}</span>)<span ng-if="!sp.aktiv"> – inaktiv</span>
-							</label>
+						<div class="dropdown" ng-if="ctrl.studienplaene.length > 0">
+							<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" style="white-space: normal; text-align: left">
+								{{ctrl.getStudienplaeneLabel()}} <span class="caret"></span>
+							</button>
+							<!-- stopPropagation keeps the menu open while ticking several Studienpläne -->
+							<ul class="dropdown-menu" style="max-height: 300px; overflow-y: auto" ng-click="$event.stopPropagation()">
+								<li ng-repeat="sp in ctrl.studienplaene">
+									<label style="display: block; padding: 3px 20px; font-weight: normal; white-space: nowrap; cursor: pointer">
+										<input type="checkbox" ng-checked="ctrl.hasStudienplan(sp.studienplan_id)" ng-click="ctrl.toggleStudienplan(sp.studienplan_id)"/>
+										{{sp.bezeichnung}} ({{sp.orgform_kurzbz}}<span ng-if="sp.sprache">, {{sp.sprache}}</span><span ng-if="sp.gueltigvon">, gültig ab {{sp.gueltigvon}}</span>)<span ng-if="!sp.aktiv"> – inaktiv</span>
+									</label>
+								</li>
+							</ul>
 						</div>
 						<p ng-if="ctrl.studienplaene.length == 0">Dieser Studiengang hat keine Studienpläne.</p>
 					</div>
